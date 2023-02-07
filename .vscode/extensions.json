@@ -1,7 +1,10 @@
 {
   "recommendations": [
-    
     "nrwl.angular-console",
-    "esbenp.prettier-vscode"
+    "esbenp.prettier-vscode",
+    "vue.volar",
+    "cpylua.language-postcss",
+    "dbaeumer.vscode-eslint",
+    "firsttris.vscode-jest-runner"
   ]
 }
