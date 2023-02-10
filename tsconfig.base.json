@@ -14,7 +14,9 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {},
+    "paths": {
+      "@smart-cabinet/my-swc-lib": ["packages/my-swc-lib/src/index.ts"]
+    },
     "resolveJsonModule": true
   },
   "exclude": ["node_modules", "tmp"]

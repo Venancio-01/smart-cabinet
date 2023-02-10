@@ -1,12 +1,12 @@
-// const { addAlias } = require('module-alias')
-// addAlias('@', __dirname + '../../')
+import { addAlias } from 'module-alias';
+addAlias('@', __dirname);
 import { app, BrowserWindow, shell, globalShortcut } from 'electron';
 import { join } from 'path';
 import { WINDOW_SIZE } from '@/config/window';
 import { services, makeChannelName } from '@/services';
 import { ipcMain } from 'electron';
 
-const url = 'http://127.0.0.1:3000/';
+const url = 'http://localhost:4200/';
 const indexHtml = join(__dirname, '../../dist/index.html');
 
 // Disable GPU Acceleration for Linux.
@@ -23,7 +23,6 @@ if (!app.requestSingleInstanceLock()) {
 // process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
 let win: BrowserWindow | null = null;
-const preload = join(__dirname, '../preload/index.js');
 
 async function createWindow() {
   win = new BrowserWindow({
@@ -32,7 +31,7 @@ async function createWindow() {
     // icon: join(process.env.PUBLIC, 'favicon.ico'),
     frame: false,
     webPreferences: {
-      preload,
+      preload: './preload/index.js',
       nodeIntegration: false,
       contextIsolation: true,
     },

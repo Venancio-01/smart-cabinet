@@ -3,14 +3,13 @@ import { convertDecimalToBinary, genResponseData } from '@/utils'
 import { generateCommand } from '@/utils/lock-control'
 import SerialPort from '@/utils/serial-port'
 import { SerialPort as SerialPortLib } from 'serialport'
-import { boolean, string } from 'yargs'
 
 // 串口实例
 let instance: SerialPort | null = null
 let connected = false
 
 const lockControlService = {
-  name: 'lockControl' as 'lockControl',
+  name: 'lockControl' as const,
   fns: {
     async getConnectState() {
       const list = await SerialPortLib.list()

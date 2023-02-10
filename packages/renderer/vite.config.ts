@@ -12,7 +12,7 @@ export default defineConfig({
   cacheDir: '../../node_modules/.vite/renderer',
 
   server: {
-    port: 3000,
+    port: 4200,
     host: 'localhost',
   },
 

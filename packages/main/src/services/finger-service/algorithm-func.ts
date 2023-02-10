@@ -1,6 +1,6 @@
 import { ALGORITHM_SDK_PATH, CRC_SDK_PATH, VERIFY_SCORE_THRESHOLD } from '@/config/finger'
 import { HandleType, IntType, TemplateType, UcharType } from './types'
-const { Library } = require('ffi-napi')
+import { Library } from 'ffi-napi';
 
 // const crcSDK = Library(CRC_SDK_PATH, {
 //   CRC16_CCITT: ['int', [UcharType, 'int']]

@@ -5,46 +5,33 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/esbuild:esbuild",
+      "executor": "@nrwl/js:tsc",
       "outputs": [
         "{options.outputPath}"
       ],
       "options": {
         "outputPath": "dist/packages/main",
-        "format": [
-          "cjs"
-        ],
         "main": "packages/main/src/index.ts",
         "tsConfig": "packages/main/tsconfig.app.json",
         "assets": [
           {
-            "input": "packages/main/public/crc-lib",
-            "glob": "*.so",
-            "output": "/public/crc-lib"
-          },
-          {
             "input": "packages/main/public/finger-lib",
             "glob": "*.so",
-            "output": "/public/finger-lib"
+            "output": "./public/finger-lib"
+          },
+          {
+            "input": "packages/main/public/crc-lib",
+            "glob": "*.so",
+            "output": "./public/crc-lib"
           }
-        ],
-        "esbuildOptions": {
-          "alias": {
-            "@": "src"
-          }
-        }
+        ]
       }
     },
     "dev": {
-      "executor": "@nrwl/js:node",
-      "options": {
-        "buildTarget": "main:build"
-      },
-      "configurations": {
-        "production": {
-          "buildTarget": "main:build:production"
-        }
-      }
+      "dependsOn": [
+        "build"
+      ],
+      "command": "sudo node node_modules/.bin/electron dist/packages/main/src/index.js --no-sandbox"
     }
   },
   "tags": []
