@@ -1,44 +1,57 @@
-import { useStore } from '@/store'
-import createAlert from '@/components/BaseAlert'
-import { CHECK_TIME } from '@/config'
-import useDocument from './useDocument'
-import useCabinet from './useCabinet'
+import { useStore } from '@/store';
+import createAlert from '@/components/BaseAlert';
+import { CHECK_TIME } from '@/config';
+import useDocument from './useDocument';
+import useCabinet from './useCabinet';
 
 export default function () {
-  const store = useStore()
-  const { changeRfidIsConnected, saveCabinetDoorList, changeCabinetDoorData } = store
-  const { cabinetDoorList, misPlaceDocumentCount, isChecking } = storeToRefs(store)
-  const { updateDocumentStatus, getAllDocumentData, getMisPlaceDocuments, generateCheckResult } = useDocument()
-  const { getCabinetDoorInfo } = useCabinet()
+  const store = useStore();
+  const { changeRfidIsConnected, changeCabinetDoorData } = store;
+  const { cabinetDoorList, misPlaceDocumentCount, isChecking } =
+    storeToRefs(store);
+  const {
+    updateDocumentStatus,
+    getAllDocumentData,
+    getMisPlaceDocuments,
+    generateCheckResult,
+  } = useDocument();
+  const { getCabinetDoorInfo } = useCabinet();
 
   // 获取 RFID 连接状态
   const getRfidConnectState = async () => {
-    await initRfid()
-    await destroyRfid()
-  }
+    const result = [];
+    for (let i = 0; i < cabinetDoorList.value.length; i++) {
+      const { TXADDR, TXADDRPORT } = cabinetDoorList.value[i];
+      if (TXADDR === null) continue;
+      result.push(await window.JSBridge.rfid.init(TXADDR, TXADDRPORT));
+      await destroyRfid(TXADDR);
+    }
 
-  const initRfid = async () => {
-    const { TXADDR, TXADDRPORT } = cabinetDoorList.value[0]
-    if (TXADDR === null) return
-    const isConnected = await window.JSBridge.rfid.init(TXADDR, TXADDRPORT)
-    changeRfidIsConnected(isConnected)
-    return isConnected
-  }
+    const isConnected = result.every(Boolean);
+    changeRfidIsConnected(isConnected);
+    return isConnected;
+  };
+
+  const initRfid = async (address: string, port: number) => {
+    const isConnected = await window.JSBridge.rfid.init(address, port);
+    changeRfidIsConnected(isConnected);
+    return isConnected;
+  };
 
   const sendOpenCommand = async (antennaIds: string | null) => {
-    if (!antennaIds) return
+    if (!antennaIds) return;
 
-    const antennaIdList = antennaIds.split(',').map(item => Number(item))
-    return await window.JSBridge.rfid.sendOpenCommand(antennaIdList)
-  }
+    const antennaIdList = antennaIds.split(',').map((item) => Number(item));
+    return await window.JSBridge.rfid.sendOpenCommand(antennaIdList);
+  };
 
   const sendCloseCommand = async () => {
-    return await window.JSBridge.rfid.sendCloseCommand()
-  }
+    return await window.JSBridge.rfid.sendCloseCommand();
+  };
 
-  const destroyRfid = async () => {
-    return await window.JSBridge.rfid.destroy()
-  }
+  const destroyRfid = async (address: string) => {
+    return await window.JSBridge.rfid.destroy(address);
+  };
 
   /**
    * @description: 开启盘点
@@ -98,47 +111,58 @@ export default function () {
    */
   const startInventory = async (doorId: number) => {
     const door = computed(() => {
-      return cabinetDoorList.value.find(item => item.ID === doorId)
-    })
+      return cabinetDoorList.value.find((item) => item.ID === doorId);
+    });
 
-    if (door.value === undefined) return
+    if (door.value === undefined) return;
+    const { TXADDR: address, TXADDRPORT: port } = door.value;
+    if (address === null) return;
 
-    const isConnected = await initRfid()
+    const isConnected = await initRfid(address, port);
     if (!isConnected) {
-      createAlert('读取连接设备失败')
-      return false
+      createAlert('读取连接设备失败');
+      return false;
     }
 
-    const isInventory = door.value.checkCountDown !== 10
+    const isInventory = door.value.checkCountDown !== 10;
     if (isInventory) {
-      createAlert('该柜门正在盘点中')
-      return false
+      createAlert('该柜门正在盘点中');
+      return false;
     }
 
-    await sendCloseCommand()
-    console.log("🚀 ~ file: useRfid.ts:120 ~ startInventory ~ door.value.TXID", door.value.TXID)
-    await sendOpenCommand(door.value.TXID)
+    await sendCloseCommand();
+    console.log(
+      '🚀 ~ file: useRfid.ts:120 ~ startInventory ~ door.value.TXID',
+      door.value.TXID
+    );
+    await sendOpenCommand(door.value.TXID);
 
     // const beforeDocuments = await getAllDocumentData()
     // const beforeMisPlaceDocumentCount = misPlaceDocumentCount.value
 
-    let timer = window.setInterval(async () => {
-      if (door.value === undefined) return
+    const timer = window.setInterval(async () => {
+      if (door.value === undefined) return;
 
-      changeCabinetDoorData({ ...door.value, checkCountDown: door.value.checkCountDown - 1 })
-      console.log("🚀 ~ file: useRfid.ts:128 ~ timer ~ door.value.checkCountDown", door.value.checkCountDown)
+      changeCabinetDoorData({
+        ...door.value,
+        checkCountDown: door.value.checkCountDown - 1,
+      });
+      console.log(
+        '🚀 ~ file: useRfid.ts:128 ~ timer ~ door.value.checkCountDown',
+        door.value.checkCountDown
+      );
 
       if (door.value.checkCountDown === 0) {
-        console.log('盘点计时结束')
+        console.log('盘点计时结束');
 
-        clearInterval(timer)
+        clearInterval(timer);
 
         // 发送关闭命令
-        await sendCloseCommand()
+        await sendCloseCommand();
         // 更新文件状态
-        await updateDocumentStatus(door.value)
+        await updateDocumentStatus(door.value);
         // 重新获取柜门文件信息
-        getCabinetDoorInfo()
+        getCabinetDoorInfo();
 
         // 获取更新后的文件以及错位文件数量，生成盘点结果
         // const afterDocuments = await getAllDocumentData()
@@ -147,20 +171,20 @@ export default function () {
         // generateCheckResult({ beforeDocuments, afterDocuments, beforeMisPlaceDocumentCount, afterMisPlaceDocumentCount })
 
         nextTick(async () => {
-          if (door.value === undefined) return
+          if (door.value === undefined) return;
           // 复原倒计时
-          changeCabinetDoorData({ ...door.value, checkCountDown: CHECK_TIME })
+          changeCabinetDoorData({ ...door.value, checkCountDown: CHECK_TIME });
 
           // 如果没有正在盘点的柜门，则销毁 socket 实例
-          if (!isChecking.value) await destroyRfid()
-        })
+          if (!isChecking.value) await destroyRfid(door.value.TXADDR);
+        });
       }
-    }, 1000)
-  }
+    }, 1000);
+  };
 
   return {
     getRfidConnectState,
     // startCheck
-    startInventory
-  }
+    startInventory,
+  };
 }

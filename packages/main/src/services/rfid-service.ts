@@ -23,7 +23,11 @@ const crcSDK = Library(CRC_SDK_PATH, {
   CRC16_CCITT: ['int', [UcharType, 'int']],
 });
 
-let instance: TcpSocket | null = null;
+type InstanceMap = {
+  [k in string]: TcpSocket;
+};
+
+const instanceMap: InstanceMap = {};
 
 const generateAntennaCommand = (antennaIds: number[]) => {
   const binary = generateBinaryString(antennaIds);
@@ -39,9 +43,9 @@ const rfidService = {
      * @return {*}
      */
     async init(address: string, port: number) {
-      instance = new TcpSocket(address, port);
+      instanceMap[address] = new TcpSocket(address, port);
       try {
-        await instance.init();
+        await instanceMap[address].init();
         return true;
       } catch (e) {
         console.log(e, 'socket 连接失败');
@@ -53,21 +57,21 @@ const rfidService = {
      * @description: 关闭 socket 连接
      * @return {*}
      */
-    destroy() {
-      if (!instance) return;
+    destroy(address: string) {
+      if (!instanceMap[address]) return;
 
-      instance.destroy();
-      instance = null;
+      instanceMap[address].destroy();
+      instanceMap[address] = null;
     },
 
     /**
      * @description: 发送关闭命令
      * @return {*}
      */
-    sendCloseCommand() {
-      if (!instance) return;
+    sendCloseCommand(address: string) {
+      if (!instanceMap[address]) return;
 
-      instance.write(Buffer.from('5A000102FF0000885A', 'hex'));
+      instanceMap[address].write(Buffer.from('5A000102FF0000885A', 'hex'));
     },
 
     /**
@@ -75,8 +79,8 @@ const rfidService = {
      * @param {number[]} antennaIds 天线 id
      * @return {*}
      */
-    sendOpenCommand(antennaIds: number[]) {
-      if (!instance) return;
+    sendOpenCommand(address: string, antennaIds: number[]) {
+      if (!instanceMap[address]) return;
 
       const COMMAND_HEADER = '5A';
       const commandBody = `000102100008${generateAntennaCommand(
@@ -92,17 +96,17 @@ const rfidService = {
         '🚀 ~ file: rfid-service.ts:82 ~ sendOpenCommand ~ command',
         command
       );
-      instance.write(Buffer.from(command, 'hex'));
+      instanceMap[address].write(Buffer.from(command, 'hex'));
     },
 
     /**
      * @description: 获取主动上报的读卡数据
      * @return {*}
      */
-    getReportData() {
-      if (!instance) return;
+    getReportData(address: string) {
+      if (!instanceMap[address]) return;
 
-      const data = instance.getData();
+      const data = instanceMap[address].getData();
       const reportData = parseRFIDReportData(data);
       const TIDList = [
         ...new Set(reportData.map((item) => getTIDByReportData(item))),
@@ -119,7 +123,7 @@ const rfidService = {
       cabinetDoorData: rfid_cabinet_door,
       userId?: number
     ) {
-      const TIDList = rfidService.fns.getReportData();
+      const TIDList = rfidService.fns.getReportData(cabinetDoorData.TXADDR);
       console.log(cabinetDoorData.ID, 'ID');
       console.log(
         '🚀 ~ file: rfid-service.ts:105 ~ updateDocumentStateAfterCheck ~ TIDList',

@@ -1,7 +1,7 @@
 import { addAlias } from 'module-alias';
-addAlias('@', __dirname + '../');
+addAlias('@', __dirname + '../../');
 import { contextBridge, ipcRenderer } from 'electron/renderer';
-import { services, makeChannelName } from '../services';
+import { services, makeChannelName } from '@/services';
 import './loading';
 
 function createJsBridge() {
@@ -17,7 +17,7 @@ function createJsBridge() {
 }
 
 const bridge = createJsBridge();
-console.log("🚀 ~ file: index.ts:20 ~ bridge", bridge)
+console.log('🚀 ~ file: index.ts:20 ~ bridge', bridge);
 contextBridge.exposeInMainWorld('JSBridge', bridge);
 
 type Service = typeof services;

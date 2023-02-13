@@ -7,7 +7,8 @@ import { services, makeChannelName } from '@/services';
 import { ipcMain } from 'electron';
 
 const url = 'http://localhost:4200/';
-const indexHtml = join(__dirname, '../../dist/index.html');
+const indexHtml = join(__dirname, '../../renderer/index.html');
+const preload = join(__dirname, './preload/index.js');
 
 // Disable GPU Acceleration for Linux.
 app.disableHardwareAcceleration();
@@ -31,7 +32,7 @@ async function createWindow() {
     // icon: join(process.env.PUBLIC, 'favicon.ico'),
     frame: false,
     webPreferences: {
-      preload: './preload/index.js',
+      preload,
       nodeIntegration: false,
       contextIsolation: true,
     },
