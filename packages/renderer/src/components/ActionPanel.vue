@@ -59,7 +59,7 @@ const setCardVisible = ref(false)
 const setPasswordVisible = ref(false)
 const setFingerVisible = ref(false)
 const viewDocumentVisible = ref(false)
-const fingerOrder = ref(1)
+const fingerOrder = ref<FingerOrder>(1)
 
 /**
  * @description: 打开设置密码的弹框
@@ -74,7 +74,7 @@ const openSetPasswordDialog = () => {
  * @param {*} order 指纹序号
  * @return {*}
  */
-const openSetFingerDialog = (order: number) => {
+const openSetFingerDialog = (order: FingerOrder) => {
   fingerOrder.value = order
   setFingerVisible.value = true
 }
@@ -100,7 +100,7 @@ const onManualCheck = () => {
     createAlert('正在盘点中，请勿重复点击')
     return
   }
-  
+
   cabinetDoorList.value.forEach(item => {
     startInventory(item.ID)
   })

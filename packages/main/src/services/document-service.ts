@@ -1,6 +1,15 @@
-import { queryInPlaceDocumentCountByCabinetId, queryMisplacedDocument } from '@/database/methods/document'
+import {
+  queryInPlaceDocumentCountByCabinetId,
+  queryMisplacedDocument,
+  addMisPlacedDocument,
+  queryMisplacedDocumentCountByTid,
+  updateDocStatusByID,
+  updateMisPlaceDocument
+} from '@/database/methods/document'
 import prisma from '@/prisma'
-import { doc_document, rfid_switch_record } from '@prisma/client'
+import { generateCurrentTime } from '@/utils'
+import { doc_document, rfid_cabinet_door, rfid_switch_record } from '@prisma/client'
+import rfidService from './rfid-service'
 
 const documentService = {
   name: 'document',
@@ -71,6 +80,56 @@ const documentService = {
 
     async getMisPlaceDocuments(): Promise<rfid_switch_record[]> {
       return await queryMisplacedDocument()
+    },
+
+    /**
+     * @description: 盘点之后更新文件状态
+     * @return {*}
+     */
+    async updateDocumentStateAfterCheck(cabinetDoorData: rfid_cabinet_door, userId?: number) {
+      const TIDList = rfidService.fns.getReportData(cabinetDoorData.TXADDR)
+      console.log(cabinetDoorData.ID, 'ID')
+      console.log('🚀 ~ file: rfid-service.ts:105 ~ updateDocumentStateAfterCheck ~ TIDList', TIDList)
+      const documents = await documentService.fns.getAllDocumentData()
+      const misPlaceDocuments = await queryMisplacedDocument()
+
+      for (let i = 0; i < documents.length; i++) {
+        const doc = documents[i]
+
+        // 如果不是本柜门文件
+        if (doc.CABINET_DOOR_ID !== cabinetDoorData.ID) {
+          const isWarningDocument = (await queryMisplacedDocumentCountByTid(doc.DOC_RFID)) !== 0
+          if (isWarningDocument) continue
+
+          const data = {
+            CABINETDOORID: String(cabinetDoorData.ID),
+            CABINETID: String(cabinetDoorData.CABINETID),
+            CONTENT: `文件[${doc.DOC_NAME}]错放`,
+            DATETIME: generateCurrentTime(),
+            OPERATIONID: TIDList.includes(doc.DOC_RFID) ? doc.DOC_RFID : '0',
+            TYPE: '1',
+            USERID: userId || null
+          }
+          await addMisPlacedDocument(data)
+        } else {
+          // 归还
+          if (TIDList.includes(doc.DOC_RFID) && doc.DOC_REISSUENUMBER == 1) {
+            await updateDocStatusByID(doc.DOC_ID, 0)
+          }
+          // 借出
+          else if (!TIDList.includes(doc.DOC_RFID) && doc.DOC_REISSUENUMBER == 0) {
+            await updateDocStatusByID(doc.DOC_ID, 1)
+          }
+        }
+      }
+
+      // 清除错放记录
+      for (let i = 0; i < misPlaceDocuments.length; i++) {
+        const doc = misPlaceDocuments[i]
+        if (!TIDList.includes(doc.OPERATIONID)) {
+          await updateMisPlaceDocument(doc.OPERATIONID)
+        }
+      }
     }
   }
 }

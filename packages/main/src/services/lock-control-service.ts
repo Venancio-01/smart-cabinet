@@ -1,6 +1,6 @@
 import { SERIALPORT_PATH } from '@/config/lock-control'
-import { convertDecimalToBinary, genResponseData } from '@/utils'
-import { generateCommand } from '@/utils/lock-control'
+import { convertDecimalToBinary } from '@/utils'
+import { generateLockCommand } from '@/utils'
 import SerialPort from '@/utils/serial-port'
 import { SerialPort as SerialPortLib } from 'serialport'
 
@@ -37,7 +37,7 @@ const lockControlService = {
     queryAllState() {
       if (!instance) return false
 
-      const command = generateCommand('80010033')
+      const command = generateLockCommand('80010033')
       instance.write(command)
     },
 
@@ -50,7 +50,7 @@ const lockControlService = {
     open(boardAddress = '01', lockAddress = '01') {
       if (!instance) return false
 
-      const command = generateCommand(`8a${boardAddress}${lockAddress}11`)
+      const command = generateLockCommand(`8a${boardAddress}${lockAddress}11`)
       instance.write(command)
     },
 
@@ -61,7 +61,7 @@ const lockControlService = {
     openAll() {
       if (!instance) return false
 
-      const command = generateCommand('8a010011')
+      const command = generateLockCommand('8a010011')
       instance.write(command)
     },
 

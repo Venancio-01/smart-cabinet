@@ -53,7 +53,7 @@ export default function () {
    */
   const updateDocumentStatus = async (door: CabinetDoorProps) => {
     const USERID = user.value?.USER_ID
-    await window.JSBridge.rfid.updateDocumentStateAfterCheck({ ...door }, USERID)
+    await window.JSBridge.document.updateDocumentStateAfterCheck({ ...door }, USERID)
   }
 
   const generateCheckResult = async ({
@@ -69,7 +69,7 @@ export default function () {
   }) => {
     let lendCount = 0
     let returnCount = 0
-    let misPlaceDocumentCount =
+    const misPlaceDocumentCount =
       afterMisPlaceDocumentCount > beforeMisPlaceDocumentCount ? afterMisPlaceDocumentCount - beforeMisPlaceDocumentCount : 0
 
     beforeDocuments.forEach(item => {

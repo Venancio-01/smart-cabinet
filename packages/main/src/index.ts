@@ -1,5 +1,3 @@
-import { addAlias } from 'module-alias';
-addAlias('@', __dirname);
 import { app, BrowserWindow, shell, globalShortcut } from 'electron';
 import { join } from 'path';
 import { WINDOW_SIZE } from '@/config/window';

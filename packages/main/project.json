@@ -4,31 +4,11 @@
   "sourceRoot": "packages/main/src",
   "projectType": "application",
   "targets": {
-    "generate-db":{
+    "generate-db": {
       "command": "cd packages/main/src/prisma && npx prisma generate"
     },
     "build": {
-      "executor": "@nrwl/js:tsc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
-      "options": {
-        "outputPath": "dist/packages/main",
-        "main": "packages/main/src/index.ts",
-        "tsConfig": "packages/main/tsconfig.app.json",
-        "assets": [
-          {
-            "input": "packages/main/public/finger-lib",
-            "glob": "*.so",
-            "output": "./public/finger-lib"
-          },
-          {
-            "input": "packages/main/public/crc-lib",
-            "glob": "*.so",
-            "output": "./public/crc-lib"
-          }
-        ]
-      }
+      "command": "npx swc packages/main --out-dir dist/packages"
     },
     "dev": {
       "dependsOn": [

@@ -23,7 +23,7 @@
         }
       }
     },
-    "serve": {
+    "dev": {
       "executor": "@nrwl/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {

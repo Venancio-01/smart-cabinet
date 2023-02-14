@@ -1,5 +1,12 @@
 {
   "cSpell.words": [
-    "Rfid"
-  ]
+    "BIOKEY",
+    "libzkfp",
+    "libzkfpcap",
+    "rfid",
+    "ZKFPM"
+  ],
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false
 }
