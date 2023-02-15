@@ -1,4 +1,3 @@
-let fnList: Function[] = []
 let preFn: Function | null = null
 let curFn: Function | null = null
 

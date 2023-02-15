@@ -5,7 +5,7 @@ import {
   queryMisplacedDocumentCountByTid,
   updateDocStatusByID,
   updateMisPlaceDocument
-} from '@/database/methods/document'
+} from '@/prisma/methods/document'
 import prisma from '@/prisma'
 import { generateCurrentTime } from '@/utils'
 import { doc_document, rfid_cabinet_door, rfid_switch_record } from '@prisma/client'
@@ -29,17 +29,17 @@ const documentService = {
       const where = {}
 
       if (condition.cabinetId) {
-        where['CABINET_DOOR_ID'] = condition.cabinetId
+        where['cabinet_door_id'] = condition.cabinetId
       }
 
       if (condition.title) {
-        where['DOC_NAME'] = {
+        where['doc_name'] = {
           contains: condition.title
         }
       }
 
       if (condition.state !== null) {
-        where['DOC_REISSUENUMBER'] = condition.state
+        where['doc_reissue_number'] = condition.state
       }
 
       const records = await prisma.doc_document.findMany({
@@ -66,7 +66,7 @@ const documentService = {
     async getDocumentByCabinetId(cabinetId: number): Promise<doc_document[]> {
       const records = await prisma.doc_document.findMany({
         where: {
-          CABINET_DOOR_ID: cabinetId
+          cabinet_door_id: cabinetId
         }
       })
 
@@ -86,9 +86,8 @@ const documentService = {
      * @description: 盘点之后更新文件状态
      * @return {*}
      */
-    async updateDocumentStateAfterCheck(cabinetDoorData: rfid_cabinet_door, userId?: number) {
-      const TIDList = rfidService.fns.getReportData(cabinetDoorData.TXADDR)
-      console.log(cabinetDoorData.ID, 'ID')
+    async updateDocumentStateAfterCheck(cabinetDoorData: CabinetDoorProps, userId?: number) {
+      const TIDList = rfidService.fns.getReportData(cabinetDoorData.antenna_address)
       console.log('🚀 ~ file: rfid-service.ts:105 ~ updateDocumentStateAfterCheck ~ TIDList', TIDList)
       const documents = await documentService.fns.getAllDocumentData()
       const misPlaceDocuments = await queryMisplacedDocument()
@@ -97,28 +96,28 @@ const documentService = {
         const doc = documents[i]
 
         // 如果不是本柜门文件
-        if (doc.CABINET_DOOR_ID !== cabinetDoorData.ID) {
-          const isWarningDocument = (await queryMisplacedDocumentCountByTid(doc.DOC_RFID)) !== 0
+        if (doc.cabinet_door_id !== cabinetDoorData.id) {
+          const isWarningDocument = (await queryMisplacedDocumentCountByTid(doc.doc_rfid)) !== 0
           if (isWarningDocument) continue
 
           const data = {
-            CABINETDOORID: String(cabinetDoorData.ID),
-            CABINETID: String(cabinetDoorData.CABINETID),
-            CONTENT: `文件[${doc.DOC_NAME}]错放`,
+            CABINETDOORID: String(cabinetDoorData.id),
+            cabinet_id: String(cabinetDoorData.cabinet_id),
+            CONTENT: `文件[${doc.doc_name}]错放`,
             DATETIME: generateCurrentTime(),
-            OPERATIONID: TIDList.includes(doc.DOC_RFID) ? doc.DOC_RFID : '0',
+            operation_id: TIDList.includes(doc.doc_rfid) ? doc.doc_rfid : '0',
             TYPE: '1',
-            USERID: userId || null
+            user_id: userId || null
           }
           await addMisPlacedDocument(data)
         } else {
           // 归还
-          if (TIDList.includes(doc.DOC_RFID) && doc.DOC_REISSUENUMBER == 1) {
-            await updateDocStatusByID(doc.DOC_ID, 0)
+          if (TIDList.includes(doc.doc_rfid) && doc.doc_reissue_number == 1) {
+            await updateDocStatusByID(doc.doc_id, 0)
           }
           // 借出
-          else if (!TIDList.includes(doc.DOC_RFID) && doc.DOC_REISSUENUMBER == 0) {
-            await updateDocStatusByID(doc.DOC_ID, 1)
+          else if (!TIDList.includes(doc.doc_rfid) && doc.doc_reissue_number == 0) {
+            await updateDocStatusByID(doc.doc_id, 1)
           }
         }
       }
@@ -126,8 +125,8 @@ const documentService = {
       // 清除错放记录
       for (let i = 0; i < misPlaceDocuments.length; i++) {
         const doc = misPlaceDocuments[i]
-        if (!TIDList.includes(doc.OPERATIONID)) {
-          await updateMisPlaceDocument(doc.OPERATIONID)
+        if (!TIDList.includes(doc.operation_id)) {
+          await updateMisPlaceDocument(doc.operation_id)
         }
       }
     }

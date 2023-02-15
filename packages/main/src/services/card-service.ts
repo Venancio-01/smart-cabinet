@@ -6,10 +6,10 @@ const cardService = {
     async updateCardNumber(userId, cardNumber) {
       const result = await prisma.rfid_card_user.updateMany({
         where: {
-          USERID: userId
+          user_id: userId
         },
         data: {
-          CARDDATA: cardNumber
+          carddata: cardNumber
         }
       })
       return result

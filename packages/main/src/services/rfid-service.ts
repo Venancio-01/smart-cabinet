@@ -4,7 +4,7 @@ import {
   queryMisplacedDocumentCountByTid,
   updateDocStatusByID,
   updateMisPlaceDocument
-} from '@/database/methods/document'
+} from '@/prisma/methods/document'
 import { binaryToHex, generateBinaryString, generateCurrentTime, getTIDByReportData, parseRFIDReportData } from '@/utils'
 import TcpSocket from '@/utils/socket'
 import { rfid_cabinet_door } from '@prisma/client'

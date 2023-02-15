@@ -2,7 +2,7 @@
 export const OPERATION_TIMEOUT = 90
 
 // 三种登录方式索引
-export const PASSWORD_KEY = 1
+export const password_KEY = 1
 export const FINGER_KEY = 2
 export const CARD_KEY = 3
 

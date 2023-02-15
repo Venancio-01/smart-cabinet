@@ -1,5 +1,4 @@
 import { useStore } from '@/store'
-import { WatchStopHandle } from 'vue'
 import useRfid from './useRfid'
 
 export default function () {
@@ -13,14 +12,14 @@ export default function () {
       if (value === null) return
 
       cabinetDoorList.value.forEach(door => {
-        const isOpen = value[door.KGBH]
+        const isOpen = value[door.kgbh]
 
         if (door.isOpen && !isOpen && door.checkCountDown === 10) {
-          console.log(`${door.KGBH} - 门锁关闭`)
-          startInventory(door.ID)
+          console.log(`${door.kgbh} - 门锁关闭`)
+          startInventory(door.id)
           changeCabinetDoorData({ ...door, isOpen: false })
         } else if (isOpen) {
-          console.log(`${door.KGBH} - 门锁开启`)
+          console.log(`${door.kgbh} - 门锁开启`)
           changeCabinetDoorData({ ...door, isOpen: true })
         }
       })

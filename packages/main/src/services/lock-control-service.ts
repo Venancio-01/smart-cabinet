@@ -1,6 +1,5 @@
 import { SERIALPORT_PATH } from '@/config/lock-control'
-import { convertDecimalToBinary } from '@/utils'
-import { generateLockCommand } from '@/utils'
+import { convertDecimalToBinary, generateLockCommand } from '@/utils'
 import SerialPort from '@/utils/serial-port'
 import { SerialPort as SerialPortLib } from 'serialport'
 

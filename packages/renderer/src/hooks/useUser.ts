@@ -17,7 +17,7 @@ export default function () {
   }
 
   const updateUserPassword = async (password: string) => {
-    const success = await window.JSBridge.sys.updatePassword(user.value?.USER_ID, password)
+    const success = await window.JSBridge.sys.updatePassword(user.value?.id, password)
     return success
   }
 

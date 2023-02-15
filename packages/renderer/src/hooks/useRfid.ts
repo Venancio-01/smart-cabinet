@@ -15,10 +15,10 @@ export default function () {
   const getRfidConnectState = async () => {
     const result = []
     for (let i = 0; i < cabinetDoorList.value.length; i++) {
-      const { TXADDR, TXADDRPORT } = cabinetDoorList.value[i]
-      if (TXADDR === null) continue
-      result.push(await window.JSBridge.rfid.init(TXADDR, TXADDRPORT))
-      await destroyRfid(TXADDR)
+      const { antenna_address, antenna_port } = cabinetDoorList.value[i]
+      if (antenna_address === null) continue
+      result.push(await window.JSBridge.rfid.init(antenna_address, antenna_port))
+      await destroyRfid(antenna_address)
     }
 
     const isConnected = result.every(Boolean)
@@ -103,12 +103,12 @@ export default function () {
    */
   const startInventory = async (doorId: number) => {
     const door = computed(() => {
-      return cabinetDoorList.value.find(item => item.ID === doorId)
+      return cabinetDoorList.value.find(item => item.id === doorId)
     })
 
     if (door.value === undefined) return
 
-    const { TXADDR: address, TXADDRPORT: port, TXID: antennaId } = door.value
+    const { antenna_address: address, antenna_port: port, antenna_id: antennaId } = door.value
     if (address === null || antennaId === null) return
 
     const isConnected = await initRfid(address, port)

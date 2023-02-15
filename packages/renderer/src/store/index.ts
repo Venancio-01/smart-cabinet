@@ -1,4 +1,4 @@
-import { CHECK_TIME, OPERATION_TIMEOUT } from '@/config'
+import { OPERATION_TIMEOUT } from '@/config'
 import { rfid_cabinet, sys_dept } from '@prisma/client'
 import { defineStore } from 'pinia'
 
@@ -25,7 +25,7 @@ export const useStore = defineStore('main', {
     return {
       lockControlIsOnline: true,
       networkIsOnline: true,
-      fingerIsOnline: true,
+      fingerIsOnline: false,
       rfidIsOnline: true,
       loginVisible: false,
       loginModeIndex: 1,
@@ -78,7 +78,7 @@ export const useStore = defineStore('main', {
     },
     changeCabinetDoorData(data: CabinetDoorProps) {
       this.cabinetDoorList = this.cabinetDoorList.map(item => {
-        if (item.ID !== data.ID) return item
+        if (item.id !== data.id) return item
         else return reactive(data)
       })
     },

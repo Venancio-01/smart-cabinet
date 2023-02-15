@@ -11,7 +11,7 @@ export default class SerialPort {
 
   private init({ path, baudRate = 9600 }: { path: string; baudRate?: number }) {
     if (this.portInstance) return
-    
+
     this.portInstance = new SerialPortLib({ path, baudRate }, err => {
       if (err) {
         console.log(`串口打开失败,${err}`)
@@ -37,6 +37,10 @@ export default class SerialPort {
   // 添加数据返回的监听器
   addDataListener() {
     if (!this.portInstance) return
+
+    this.portInstance.on('open', () => {
+      console.log('open')
+    })
 
     this.portInstance.on('data', data => {
       this.data += data.toString('hex')

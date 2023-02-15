@@ -15,13 +15,13 @@
     <div class="user-info mt-[16px]">
       <div class="user-info-item">
         <span class="label">用户名称：</span>
-        <span class="content">{{ user?.USER_NAME }}</span>
+        <span class="content">{{ user?.user_name }}</span>
       </div>
     </div>
     <div class="user-info">
       <div class="user-info-item">
         <span class="label">登录名称：</span>
-        <span class="content">{{ user?.LOGIN_NAME }}</span>
+        <span class="content">{{ user?.login_name }}</span>
       </div>
     </div>
     <div class="user-info">
@@ -102,7 +102,7 @@ const onManualCheck = () => {
   }
 
   cabinetDoorList.value.forEach(item => {
-    startInventory(item.ID)
+    startInventory(item.id)
   })
 
   resetOperationTimeout()

@@ -18,7 +18,7 @@ export default function () {
 
     if (user.value === null) return false
 
-    const success = await window.JSBridge.card.updateCardNumber(user.value.USER_ID, cardNumber)
+    const success = await window.JSBridge.card.updateCardNumber(user.value.id, cardNumber)
     const tips = success ? '卡号设置成功' : '卡号设置失败'
     createAlert(tips)
 

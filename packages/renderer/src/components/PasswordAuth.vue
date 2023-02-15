@@ -24,7 +24,7 @@
 import { useStore } from '@/store'
 import useListenEnter from '@/hooks/useListenEnter'
 import useLogin, { FormData } from '@/hooks/useLogin'
-import { PASSWORD_KEY } from '@/config'
+import { password_KEY } from '@/config'
 
 const store = useStore()
 const { loginModeIndex } = storeToRefs(store)
@@ -41,7 +41,7 @@ const handleLogin = () => {
 }
 
 const isActive = computed(() => {
-  return loginModeIndex.value === PASSWORD_KEY
+  return loginModeIndex.value === password_KEY
 })
 
 // 监听当前登录方式的变化

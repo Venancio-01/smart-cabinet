@@ -16,7 +16,7 @@
 
       <a-form-item label="柜门" name="title">
         <a-select ref="select" v-model:value="condition.cabinetId" allowClear>
-          <a-select-option v-for="item in cabinetDoorList" :key="item.ID" :value="item.ID">{{ item.name }}</a-select-option>
+          <a-select-option v-for="item in cabinetDoorList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
         </a-select>
       </a-form-item>
 
@@ -125,23 +125,23 @@ watch(show, async value => {
 const columns: ColumnsType = [
   {
     title: '文件名',
-    dataIndex: 'DOC_NAME',
-    key: 'DOC_NAME'
+    dataIndex: 'doc_name',
+    key: 'doc_name'
   },
   {
     title: '状态',
-    dataIndex: 'DOC_REISSUENUMBER',
-    key: 'DOC_REISSUENUMBER',
+    dataIndex: 'doc_reissue_number',
+    key: 'doc_reissue_number',
     customRender: ({ record }) => {
-      return record.DOC_REISSUENUMBER === 0 ? '在位' : '借出'
+      return record.doc_reissue_number === 0 ? '在位' : '借出'
     }
   },
   {
     title: '最后操作时间',
-    dataIndex: 'DOC_LAST_TIME',
-    key: 'DOC_LAST_TIME',
+    dataIndex: 'doc_last_time',
+    key: 'doc_last_time',
     customRender: ({ record }) => {
-      return dayjs(record.DOC_LAST_TIME).format('YYYY-MM-DD HH:mm:ss')
+      return dayjs(record.doc_last_time).format('YYYY-MM-DD HH:mm:ss')
     }
   }
 ]

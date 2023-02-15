@@ -65,7 +65,7 @@ const onOpenDoor = () => {
   }
 
   selectedList.forEach(item => {
-    openLock(item.KGBH)
+    openLock(item.kgbh)
     setTimeout(() => {
       changeCabinetDoorData({ ...item, isOpen: true })
     }, 1000)

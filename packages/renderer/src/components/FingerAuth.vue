@@ -4,7 +4,7 @@
       <img class="h-[188px] w-[122px]" :src="FingerGIF" alt="finger" />
     </div>
     <div class="relative m-4 flex flex-1 select-none items-center justify-center rounded-lg border-[2px] border-white text-white">
-      <div class="absolute top-[-10px] left-[5px] w-[35px] select-none bg-primary-color text-center text-white">提示</div>
+      <div class="bg-primary-color absolute top-[-10px] left-[5px] w-[35px] select-none text-center text-white">提示</div>
       {{ message }}
     </div>
   </div>
@@ -42,36 +42,29 @@ watch(
   }
 )
 
-const message = ref('请录入指纹')
-watch(fingerIsOnline, value => {
-  if (value) message.value = '请录入指纹'
-  else message.value = '设备未连接'
+const message = computed(() => {
+  if (!fingerIsOnline.value) return '设备未连接'
+  else {
+    if (identifyResult.value?.msg) return identifyResult.value.msg
+    else return '请录入指纹'
+  }
 })
-
-// const message = computed(() => {
-//   if (fingerIsOnline.value) {
-//     if (identifyResult.value?.msg) {
-//       return identifyResult.value?.msg
-//     } else return '请录入指纹'
-//   } else return '设备未连接'
-// })
 
 watch(identifyResult, value => {
   if (!value) return
-  const { success, msg, data } = value
-  if (msg && fingerIsOnline.value) {
-    message.value = msg
-  }
+  const { success, data } = value
+
   if (success && data) {
     const userId = data as number
     onFingerLogin(userId)
   }
 })
 
+// 关闭登录窗口时，关闭指纹设备并结束指纹识别
 watch(loginVisible, async value => {
-  if (!value) {
-    await closeFingerDevice()
-    endIdentifyFinger()
-  }
+  if (value) return
+
+  await closeFingerDevice()
+  endIdentifyFinger()
 })
 </script>

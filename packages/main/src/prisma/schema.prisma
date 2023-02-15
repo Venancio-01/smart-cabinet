@@ -8,347 +8,310 @@ datasource db {
 }
 
 model doc_document {
-  DOC_ID                 Int       @id @default(autoincrement())
-  BIND_USER_ID           Int?
-  BINDING_DEPT_ID        Int?
-  BINDING_ID             Int?
-  BINDINGTYPE            Int?
-  BUREAU_DEPID           Int?
-  CABINET_DOOR_ID        Int?
-  CABINET_ID             Int?
-  CARRIERTYPE            Int?
-  CODE                   String?   @db.VarChar(255)
-  CONFIDENTIALITY_PERIOD Int?
-  CREATE_TIME            DateTime  @default(dbgenerated("'0000-00-00 00:00:00'")) @db.Timestamp(0)
-  DEVICE_BRAND           String?   @db.VarChar(255)
-  DEVICE_CAPACITY        String?   @db.VarChar(255)
-  DEVICE_MODEL           String?   @db.VarChar(255)
-  DEVICE_PURPOSE         String?   @db.VarChar(255)
-  DOC_LAST_TIME          DateTime? @db.Timestamp(0)
-  DOC_NAME               String    @db.VarChar(255)
-  DOC_P_STATUS           Int?
-  DOC_RFID               String?   @db.VarChar(255)
-  DOC_SECRET_LEVEL       Int?
-  DOC_TYPE               Int?
-  END_TIME               DateTime? @db.Timestamp(0)
-  IS_ONE                 String?   @db.VarChar(255)
-  NETWORK_TYPE           Int?
-  PAGE_NUMBER            Int?
-  PARTICULAR_YEAR        Int?
-  PERSON_DUTY            String?   @db.VarChar(255)
-  REMARK                 String?   @db.VarChar(255)
-  REMOVE_STATUS          Int?
-  SEND_CODE              String?   @db.VarChar(255)
-  SEND_DATE              DateTime? @db.Timestamp(0)
-  SEND_DEP_              String?   @db.VarChar(255)
-  SERIAL_NUMBER          Int?
-  SHARE_NUMBER           Int?
-  START_DATE             DateTime? @db.Timestamp(0)
-  STORAGE_LOCATION       String?   @db.VarChar(255)
-  UPDATE_TIME            DateTime? @db.Timestamp(0)
-  URGENCY                Int?
-  USER_ID                Int?
-  DEPT_DUTY              String?   @db.VarChar(255)
-  DEPTID_DUTY            Int?
-  PERSONID_DUTY          Int?
-  DOC_RFIDKEY            String?   @db.VarChar(255)
-  DOC_REISSUENUMBER      Int
-  DOC_REISSUEDATE        DateTime? @db.Timestamp(0)
-  DOC_REISSUEFID         Int
-
-  @@map("DOC_DOCUMENT")
+  doc_id                 Int       @id @default(autoincrement())
+  bind_user_id           Int?
+  binding_dept_id        Int?
+  binding_id             Int?
+  binding_type           Int?
+  bureau_depid           Int?
+  cabinet_door_id        Int?
+  cabinet_id             Int?
+  carrier_type           Int?
+  code                   String?   @db.VarChar(255)
+  confidentiality_period Int?
+  create_time            DateTime? @db.Timestamp(0)
+  device_brand           String?   @db.VarChar(255)
+  device_capacity        String?   @db.VarChar(255)
+  device_model           String?   @db.VarChar(255)
+  device_purpose         String?   @db.VarChar(255)
+  doc_last_time          DateTime? @db.Timestamp(0)
+  doc_name               String    @db.VarChar(255)
+  doc_p_status           Int?
+  doc_rfid               String?   @db.VarChar(255)
+  doc_secret_level       Int?
+  doc_type               Int?
+  end_time               DateTime? @db.Timestamp(0)
+  is_one                 String?   @db.VarChar(255)
+  network_type           Int?
+  page_number            Int?
+  particular_year        Int?
+  person_duty            String?   @db.VarChar(255)
+  remark                 String?   @db.VarChar(255)
+  remove_status          Int?
+  send_code              String?   @db.VarChar(255)
+  send_date              DateTime? @db.Timestamp(0)
+  send_dep_              String?   @db.VarChar(255)
+  serial_number          Int?
+  share_number           Int?
+  start_date             DateTime? @db.Timestamp(0)
+  storage_location       String?   @db.VarChar(255)
+  update_time            DateTime? @db.Timestamp(0)
+  urgency                Int?
+  user_id                Int?
+  dept_duty              String?   @db.VarChar(255)
+  deptid_duty            Int?
+  personid_duty          Int?
+  doc_rfidkey            String?   @db.VarChar(255)
+  doc_reissue_number     Int
+  doc_reissue_date       DateTime? @db.Timestamp(0)
+  doc_reissue_rfid       Int
 }
 
 model doc_user {
-  DOC_USER_ID     Int       @id
-  USER_ID         Int
-  DOC_ID          Int
-  TASK_IS         Int
-  TAKE_TIMESTART  DateTime? @db.Timestamp(0)
-  TAKE_TIMEEND    DateTime? @db.Timestamp(0)
-  STILL_IS        Int
-  STILL_TIMESTART DateTime? @db.Timestamp(0)
-  STILL_TIMEEND   DateTime? @db.Timestamp(0)
-  PERSON_DUTY     String?   @db.VarChar(255)
-  CREATE_BY       String?   @db.VarChar(255)
-  CREATE_BYID     Int
-  CREATE_TIME     DateTime? @db.Timestamp(0)
-
-  @@map("DOC_USER")
+  id               Int       @id
+  user_id          Int
+  doc_id           Int
+  task_is          Int
+  take_time_start  DateTime? @db.Timestamp(0)
+  take_time_end    DateTime? @db.Timestamp(0)
+  still_is         Int
+  still_time_start DateTime? @db.Timestamp(0)
+  still_time_end   DateTime? @db.Timestamp(0)
+  person_duty      String?   @db.VarChar(255)
+  create_by        String?   @db.VarChar(255)
+  create_byid      Int
+  create_time      DateTime? @db.Timestamp(0)
 }
 
 model rfid_cabinet {
-  ID                Int     @id
-  CABADDR           String? @db.VarChar(255)
-  CABINDEX          String? @db.VarChar(255)
-  DEPT_ID           Int?
-  NAME              String? @db.VarChar(255)
-  OPENDOOR          String? @db.VarChar(255)
-  OPENBAUDRATE      Int
-  ALARM_DURATION    Int
-  ALARM_COMBAUDRATE Int
-  ALARM_COM         String? @db.VarChar(255)
-  SECRETLEVEL       String? @db.VarChar(255)
-  CLASSIFICATION    String? @db.VarChar(255)
-  STATE             String? @db.VarChar(255)
-  TYPECLASS         String? @db.VarChar(255)
-
-  @@map("RFID_CABINET")
+  id                Int     @id
+  cabinet_address   String? @db.VarChar(255)
+  cabinet_index     String? @db.VarChar(255)
+  dept_id           Int?
+  name              String? @db.VarChar(255)
+  opendoor          String? @db.VarChar(255)
+  open_baudrate     Int
+  alarm_duration    Int
+  alarm_combaudrate Int
+  alarm_com         String? @db.VarChar(255)
+  secret_level      String? @db.VarChar(255)
+  classification    String? @db.VarChar(255)
+  state             String? @db.VarChar(255)
+  typeclass         String? @db.VarChar(255)
 }
 
 model rfid_cabinet_door {
-  ID          Int     @id
-  BINDINGTYPE Int?
-  CABINETID   Int
-  FOLDERPATH  String? @db.VarChar(255)
-  KGBH        Int
-  KGZT        Int
-  NAME        Int?
-  ORDERINDEX  String? @db.VarChar(255)
-  STATE       String? @db.VarChar(255)
-  TXADDR      String? @db.VarChar(255)
-  TXADDRPORT  Int
-  TXID        String? @db.VarChar(255)
-  VIEWNAME    String? @db.VarChar(255)
-  BINDING_ID  String? @db.VarChar(50)
-
-  @@map("RFID_CABINETDOOR")
+  id              Int     @id
+  binding_type    Int?
+  cabinet_id      Int
+  folder_path     String? @db.VarChar(255)
+  kgbh            Int
+  kgzt            Int
+  name            Int?
+  order_index     String? @db.VarChar(255)
+  state           String? @db.VarChar(255)
+  antenna_address String? @db.VarChar(255)
+  antenna_port    Int
+  antenna_id      String? @db.VarChar(255)
+  view_name       String? @db.VarChar(255)
+  binding_id      String? @db.VarChar(50)
 }
 
 model rfid_card_user {
-  CARDID     Int       @id @default(autoincrement())
-  USERID     Int?
-  CREATEDATE DateTime? @db.DateTime(0)
-  CARDDATA   String?   @db.VarChar(510)
-
-  @@map("RFID_CARD_USER")
+  cardid     Int       @id @default(autoincrement())
+  user_id     Int?
+  createdate DateTime? @db.DateTime(0)
+  carddata   String?   @db.VarChar(510)
 }
 
 model rfid_door_dept {
-  DD_ID  Int @id
-  DEPTID Int
-  DOORID Int
-
-  @@map("RFID_DOOR_DEPT")
+  id      Int @id
+  dept_id Int
+  door_id Int
 }
 
 model rfid_door_user {
-  DU_ID  Int @id
-  DOORID Int
-  USERID Int
-
-  @@map("RFID_DOOR_USER")
+  id      Int @id
+  door_id Int
+  user_id Int
 }
 
 model rfid_finger_user {
-  FINGERID    Int       @id @default(autoincrement())
-  CREATEDATE  DateTime? @db.Timestamp(0)
-  FINGERDATA  String?   @db.VarChar(3200)
-  FINGERORDER Int?
-  USERID      Int?
-
-  @@map("RFID_FINGER_USER")
+  id         Int       @id @default(autoincrement())
+  createdate DateTime? @db.Timestamp(0)
+  data       String?   @db.VarChar(3200)
+  order      Int?
+  user_id    Int?
 }
 
 model rfid_rfid_record {
-  ID               Int       @id @default(autoincrement())
-  CAB_NAME         String?   @db.VarChar(255)
-  CABDOOR_NAME     String?   @db.VarChar(255)
-  CABDOORID        Int?
-  CABINETID        Int?
-  CREATETIME       DateTime? @db.Timestamp(0)
-  DOC_CAR_NAME     String?   @db.VarChar(255)
-  DOCCAR_DEPT_NAME String?   @db.VarChar(255)
-  HANDLEID         Int
-  ISBORROW         String?   @db.VarChar(255)
-  ISOPEN           String?   @db.VarChar(255)
-  OPERATIONID      String?   @db.VarChar(255)
-  RFIDID           String?   @db.VarChar(255)
-  DOCID            Int
-  TYPE             Int?
-  USER_DEPT_NAME   String?   @db.VarChar(255)
-  USER_NAME        String?   @db.VarChar(255)
-  USERID           Int?
-
-  @@map("RFID_RFID_RECORD")
+  id                Int       @id @default(autoincrement())
+  cabinet_name      String?   @db.VarChar(255)
+  cabinet_door_name String?   @db.VarChar(255)
+  cabinet_door_id   Int?
+  cabinet_id        Int?
+  createtime        DateTime? @db.Timestamp(0)
+  doc_car_name      String?   @db.VarChar(255)
+  doccar_dept_name  String?   @db.VarChar(255)
+  handle_id         Int
+  is_borrow         String?   @db.VarChar(255)
+  is_open           String?   @db.VarChar(255)
+  operation_id      String?   @db.VarChar(255)
+  rfid_id           String?   @db.VarChar(255)
+  doc_id            Int
+  type              Int?
+  user_dept_name    String?   @db.VarChar(255)
+  user_name         String?   @db.VarChar(255)
+  user_id           Int?
 }
 
 model rfid_switch_record {
-  ID            Int     @id @default(autoincrement())
-  CABINETDOORID String? @db.VarChar(255)
-  CABINETID     String? @db.VarChar(255)
-  CONTENT       String? @db.VarChar(255)
-  DATETIME      String? @db.VarChar(255)
-  OPERATIONID   String? @db.VarChar(255)
-  TYPE          String? @db.VarChar(255)
-  USERID        Int?
-  STATE         Int?
-  NAME          String? @db.VarChar(50)
-
-  @@map("RFID_SWITCH_RECORD")
+  id              Int     @id @default(autoincrement())
+  cabinet_door_id String? @db.VarChar(255)
+  cabinet_id      String? @db.VarChar(255)
+  content         String? @db.VarChar(255)
+  datetime        String? @db.VarChar(255)
+  operation_id    String? @db.VarChar(255)
+  type            String? @db.VarChar(255)
+  user_id         Int?
+  state           Int?
+  name            String? @db.VarChar(50)
 }
 
 model sys_dept {
-  DEPT_ID     Int       @id
-  ANCESTORS   String?   @db.VarChar(255)
-  CODE        Int?
-  CREATE_BY   String?   @db.VarChar(255)
-  CREATE_TIME DateTime? @db.Timestamp(0)
-  DEL_FLAG    String?   @db.VarChar(255)
-  DEPT_NAME   String?   @db.VarChar(255)
-  EMAIL       String?   @db.VarChar(255)
-  LEADER      String?   @db.VarChar(255)
-  LEVEL       Int?
-  ORDER_NUM   Int?
-  PARENT_ID   Int?
-  PHONE       String?   @db.VarChar(255)
-  STATUS      String?   @db.VarChar(255)
-  UPDATE_BY   String?   @db.VarChar(255)
-  UPDATE_TIME DateTime? @db.Timestamp(0)
-
-  @@map("SYS_DEPT")
+  id          Int       @id
+  ancestors   String?   @db.VarChar(255)
+  code        Int?
+  create_by   String?   @db.VarChar(255)
+  create_time DateTime? @db.Timestamp(0)
+  del_flag    String?   @db.VarChar(255)
+  dept_name   String?   @db.VarChar(255)
+  email       String?   @db.VarChar(255)
+  leader      String?   @db.VarChar(255)
+  level       Int?
+  order_num   Int?
+  parent_id   Int?
+  phone       String?   @db.VarChar(255)
+  status      String?   @db.VarChar(255)
+  update_by   String?   @db.VarChar(255)
+  update_time DateTime? @db.Timestamp(0)
 }
 
 model sys_dict_data {
-  DICT_CODE     Int       @id
-  CREATE_BY     String?   @db.VarChar(255)
-  CREATE_TIME   DateTime? @db.Timestamp(0)
-  CSS_CLASS     String?   @db.VarChar(255)
-  DICT_LABEL    String?   @db.VarChar(255)
-  DICT_SORT     Int?
-  DICT_TYPE     String?   @db.VarChar(255)
-  DICT_VALUE    String?   @db.VarChar(255)
-  IS_DEFAULT    String?   @db.VarChar(255)
-  LIST_CLASS    String?   @db.VarChar(255)
-  REMARK        String?   @db.VarChar(255)
-  STATUS        String?   @db.VarChar(255)
-  UPDATE_BY     String?   @db.VarChar(255)
-  UPDATE_TIME   DateTime? @db.Timestamp(0)
-  DICT_LABELKEY String?   @db.VarChar(255)
-
-  @@map("SYS_DICT_DATA")
+  dict_code     Int       @id
+  create_by     String?   @db.VarChar(255)
+  create_time   DateTime? @db.Timestamp(0)
+  css_class     String?   @db.VarChar(255)
+  dict_label    String?   @db.VarChar(255)
+  dict_sort     Int?
+  dict_type     String?   @db.VarChar(255)
+  dict_value    String?   @db.VarChar(255)
+  is_default    String?   @db.VarChar(255)
+  list_class    String?   @db.VarChar(255)
+  remark        String?   @db.VarChar(255)
+  status        String?   @db.VarChar(255)
+  update_by     String?   @db.VarChar(255)
+  update_time   DateTime? @db.Timestamp(0)
+  dict_labelkey String?   @db.VarChar(255)
 }
 
 model sys_dict_type {
-  DICT_ID     Int       @id
-  CREATE_BY   String?   @db.VarChar(255)
-  CREATE_TIME DateTime? @db.Timestamp(0)
-  DICT_NAME   String?   @db.VarChar(255)
-  DICT_TYPE   String?   @db.VarChar(255)
-  REMARK      String?   @db.VarChar(255)
-  STATUS      String?   @db.VarChar(255)
-  UPDATE_BY   String?   @db.VarChar(255)
-  UPDATE_TIME DateTime? @db.Timestamp(0)
-
-  @@map("SYS_DICT_TYPE")
+  dict_id     Int       @id
+  create_by   String?   @db.VarChar(255)
+  create_time DateTime? @db.Timestamp(0)
+  dict_name   String?   @db.VarChar(255)
+  dict_type   String?   @db.VarChar(255)
+  remark      String?   @db.VarChar(255)
+  status      String?   @db.VarChar(255)
+  update_by   String?   @db.VarChar(255)
+  update_time DateTime? @db.Timestamp(0)
 }
 
 model sys_loginfo {
-  LOGINFO_ID           Int       @id
-  LOGINFO_TYPE         Int
-  LOGINFO_MODULAR_NAME String?   @db.VarChar(255)
-  LOGINFO_MODULAR_TYPE Int
-  LOGINFO_USER_ID      Int
-  LOGINFO_USER_NAME    String?   @db.VarChar(255)
-  LOGINFO_ROLE_ID      Int
-  LOGINFO_ROLE_NAME    String?   @db.VarChar(255)
-  LOGINFO_CABINET      Int
-  LOGINFO_CABINETNAME  String?   @db.VarChar(255)
-  LOGINFO_DOOR         Int
-  LOGINFO_DOORNAME     String?   @db.VarChar(255)
-  LOGINFO_DOC          Int
-  LOGINFO_DOCNAME      String?   @db.VarChar(255)
-  LOGINFO_MESSAGE      String?   @db.VarChar(255)
-  LOGINFO_RESULT       Int
-  LOGINFO_ALARMRESULT  Int
-  LOGINFO_CREATE_TIME  DateTime? @db.Timestamp(0)
-
-  @@map("SYS_LOGINFO")
+  loginfo_id           Int       @id
+  loginfo_type         Int
+  loginfo_modular_name String?   @db.VarChar(255)
+  loginfo_modular_type Int
+  loginfo_user_id      Int
+  loginfo_user_name    String?   @db.VarChar(255)
+  loginfo_role_id      Int
+  loginfo_role_name    String?   @db.VarChar(255)
+  loginfo_cabinet      Int
+  loginfo_cabinetname  String?   @db.VarChar(255)
+  loginfo_door         Int
+  loginfo_doorname     String?   @db.VarChar(255)
+  loginfo_doc          Int
+  loginfo_docname      String?   @db.VarChar(255)
+  loginfo_message      String?   @db.VarChar(255)
+  loginfo_result       Int
+  loginfo_alarmresult  Int
+  loginfo_create_time  DateTime? @db.Timestamp(0)
 }
 
 model sys_menu {
-  MENU_ID     Int       @id
-  CREATE_BY   String?   @db.VarChar(255)
-  CREATE_TIME DateTime? @db.Timestamp(0)
-  ICON        String?   @db.VarChar(255)
-  MENU_NAME   String    @db.VarChar(255)
-  MENU_TYPE   String?   @db.VarChar(255)
-  ORDER_NUM   Int?
-  PARENT_ID   Int?
-  PERMS       String?   @db.VarChar(255)
-  REMARK      String?   @db.VarChar(255)
-  UPDATE_BY   String?   @db.VarChar(255)
-  UPDATE_TIME DateTime? @db.Timestamp(0)
-  URL         String?   @db.VarChar(255)
-  VISIBLE     String?   @db.VarChar(255)
-
-  @@map("SYS_MENU")
+  id          Int       @id
+  create_by   String?   @db.VarChar(255)
+  create_time DateTime? @db.Timestamp(0)
+  icon        String?   @db.VarChar(255)
+  menu_name   String    @db.VarChar(255)
+  menu_type   String?   @db.VarChar(255)
+  order_num   Int?
+  parent_id   Int?
+  perms       String?   @db.VarChar(255)
+  remark      String?   @db.VarChar(255)
+  update_by   String?   @db.VarChar(255)
+  update_time DateTime? @db.Timestamp(0)
+  url         String?   @db.VarChar(255)
+  visible     String?   @db.VarChar(255)
 }
 
 model sys_role {
-  ROLE_ID     Int       @id
-  CREATE_BY   String?   @db.VarChar(255)
-  CREATE_TIME DateTime? @db.Timestamp(0)
-  DATA_SCOPE  String?   @db.VarChar(255)
-  DEL_FLAG    String?   @db.VarChar(255)
-  REMARK      String?   @db.VarChar(255)
-  ROLE_KEY    String    @db.VarChar(255)
-  ROLE_NAME   String    @db.VarChar(255)
-  ROLE_SORT   Int
-  STATUS      String    @db.VarChar(255)
-  UPDATE_BY   String?   @db.VarChar(255)
-  UPDATE_TIME DateTime? @db.Timestamp(6)
-
-  @@map("SYS_ROLE")
+  id          Int       @id
+  create_by   String?   @db.VarChar(255)
+  create_time DateTime? @db.Timestamp(0)
+  data_scope  String?   @db.VarChar(255)
+  del_flag    String?   @db.VarChar(255)
+  remark      String?   @db.VarChar(255)
+  role_key    String    @db.VarChar(255)
+  role_name   String    @db.VarChar(255)
+  role_sort   Int
+  status      String    @db.VarChar(255)
+  update_by   String?   @db.VarChar(255)
+  update_time DateTime? @db.Timestamp(6)
 }
 
 model sys_role_menu {
-  MENU_ID Int
-  ROLE_ID Int
+  menu_id Int
+  role_id Int
 
-  @@id([MENU_ID, ROLE_ID])
-  @@map("SYS_ROLE_MENU")
+  @@id([menu_id, role_id])
 }
 
-model sys_role_showrole {
-  ROLE_ID     Int
-  SHOWROLE_ID Int
+model sys_role_show {
+  role_id     Int
+  showrole_id Int
 
-  @@id([ROLE_ID, SHOWROLE_ID])
-  @@map("SYS_ROLE_SHOWROLE")
+  @@id([role_id, showrole_id])
 }
 
 model sys_user {
-  USER_ID     Int       @id
-  AVATAR      String?   @db.VarChar(255)
-  CODE        String?   @db.VarChar(255)
-  CREATE_BY   String?   @db.VarChar(255)
-  CREATE_TIME DateTime? @db.Timestamp(0)
-  DEL_FLAG    String?   @db.VarChar(255)
-  DEPT_ID     Int?
-  EMAIL       String?   @db.VarChar(255)
-  LOGIN_DATE  DateTime? @db.Timestamp(0)
-  LOGIN_IP    String?   @db.VarChar(255)
-  LOGIN_NAME  String    @db.VarChar(255)
-  PASSWORD    String?   @db.VarChar(255)
-  PHONENUMBER String?   @db.VarChar(255)
-  REMARK      String?   @db.VarChar(255)
-  SALT        String    @db.VarChar(255)
-  SEX         String?   @db.VarChar(255)
-  STATUS      String?   @db.VarChar(255)
-  TYPE        Int?
-  UPDATE_BY   String?   @db.VarChar(255)
-  UPDATE_TIME DateTime? @db.Timestamp(0)
-  USER_NAME   String    @db.VarChar(255)
-  USER_TYPE   String?   @db.VarChar(255)
-
-  @@map("SYS_USER")
+  id           Int       @id
+  avatar       String?   @db.VarChar(255)
+  code         String?   @db.VarChar(255)
+  create_by    String?   @db.VarChar(255)
+  create_time  DateTime? @db.Timestamp(0)
+  del_flag     String?   @db.VarChar(255)
+  dept_id      Int?
+  email        String?   @db.VarChar(255)
+  login_date   DateTime? @db.Timestamp(0)
+  login_ip     String?   @db.VarChar(255)
+  login_name   String    @db.VarChar(255)
+  password     String?   @db.VarChar(255)
+  phone_number String?   @db.VarChar(255)
+  remark       String?   @db.VarChar(255)
+  salt         String    @db.VarChar(255)
+  sex          String?   @db.VarChar(255)
+  status       String?   @db.VarChar(255)
+  type         Int?
+  update_by    String?   @db.VarChar(255)
+  update_time  DateTime? @db.Timestamp(0)
+  user_name    String    @db.VarChar(255)
+  user_type    String?   @db.VarChar(255)
 }
 
 model sys_user_role {
-  ROLE_ID Int
-  USER_ID Int
+  role_id Int
+  user_id Int
 
-  @@id([ROLE_ID, USER_ID])
-  @@map("SYS_USER_ROLE")
+  @@id([role_id, user_id])
 }

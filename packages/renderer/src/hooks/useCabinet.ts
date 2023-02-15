@@ -28,13 +28,13 @@ export default function () {
     for (let index = 0; index < records.length; index++) {
       const item = records[index]
 
-      const totalDocument = await getDocumentByCabinetId(item.ID)
+      const totalDocument = await getDocumentByCabinetId(item.id)
       const totalDocumentCount = totalDocument.length
-      const inPlaceDocumentCount = await getInPlaceDocumentCountByCabinetId(item.ID)
+      const inPlaceDocumentCount = await getInPlaceDocumentCountByCabinetId(item.id)
 
       list.push({
         ...item,
-        name: departmentList.value.find(department => department.DEPT_ID === Number(item.BINDING_ID))?.DEPT_NAME,
+        name: departmentList.value.find(department => department.id === Number(item.binding_id))?.dept_name,
         totalDocumentCount,
         inPlaceDocumentCount,
         isSelected: false,

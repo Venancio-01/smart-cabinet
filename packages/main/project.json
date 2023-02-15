@@ -15,6 +15,17 @@
         "build"
       ],
       "command": "sudo node node_modules/.bin/electron dist/packages/main/src/index.js --no-sandbox"
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/main/**/*.ts"
+        ]
+      }
     }
   },
   "tags": []

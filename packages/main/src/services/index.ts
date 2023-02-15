@@ -8,6 +8,8 @@ import documentService from './document-service'
 import cardService from './card-service'
 import networkService from './network-status'
 
+export type LoginServiceType = typeof loginService.fns
+
 export const services: [
   typeof loginService,
   typeof lockControlService,

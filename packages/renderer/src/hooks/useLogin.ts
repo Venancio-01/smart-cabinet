@@ -1,7 +1,7 @@
 import { useStore } from '@/store'
 import createAlert from '@/components/BaseAlert'
 import useUser from './useUser'
-import { PASSWORD_KEY } from '@/config'
+import { password_KEY } from '@/config'
 
 export interface FormData {
   username: string
@@ -16,7 +16,7 @@ export default function () {
   const onLogin = (userData: any) => {
     changeIsLoggedIn(true)
     changeLoginVisible(false)
-    changeLoginModeIndex(PASSWORD_KEY)
+    changeLoginModeIndex(password_KEY)
     saveUserData(userData)
   }
 

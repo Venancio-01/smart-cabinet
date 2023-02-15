@@ -4,16 +4,7 @@
   "main": "index.js",
   "homepage": "http://www.baidu.com",
   "description": "智能柜管理系统",
-  "scripts": {
-    "app:start": "sudo node node_modules/.bin/electron . --no-sandbox",
-    "app:dev:build": "./script/env.development.sh && tsc -p ./electron",
-    "app:prod:build": "./script/env.production.sh && tsc -p ./electron",
-    "app:dev": "npm-run-all app:dev:build app:start",
-    "gen-db": "rm -rf electron/database/entities & npx typeorm-model-generator -h localhost -d double_door -p 3306 -u sa -x js123456 -e mysql -o electron/database/entities --noConfig true --ce pascal --cp camel",
-    "build": "npm-run-all vite:build app:prod:build",
-    "package": "npm-run-all build && electron-builder --linux",
-    "publish": "node node_modules/.bin/publish"
-  },
+  "scripts": {},
   "keywords": [
     "electron",
     "vue"

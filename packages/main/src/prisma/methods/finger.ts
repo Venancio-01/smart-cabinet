@@ -4,8 +4,8 @@ import prisma from '@/prisma'
 export const queryFingerByUserIdAndOrder = async (userId: number, order: FingerOrder) => {
   const record = await prisma.rfid_finger_user.findFirst({
     where: {
-      USERID: userId,
-      FINGERORDER: order
+      user_id: userId,
+      order: order
     }
   })
 
@@ -15,11 +15,11 @@ export const queryFingerByUserIdAndOrder = async (userId: number, order: FingerO
 export const updateFingerByUserIdAndOrder = async (userId: number, order: FingerOrder, data: string) => {
   const result = await prisma.rfid_finger_user.updateMany({
     where: {
-      USERID: userId,
-      FINGERORDER: order
+      user_id: userId,
+      order: order
     },
     data: {
-      FINGERDATA: data
+      data: data
     }
   })
   return result
@@ -28,10 +28,10 @@ export const updateFingerByUserIdAndOrder = async (userId: number, order: Finger
 export const addFinger = async (userId: number, order: FingerOrder, data: string) => {
   const result = await prisma.rfid_finger_user.create({
     data: {
-      FINGERDATA: data,
-      FINGERORDER: order,
-      USERID: userId,
-      CREATEDATE: generateCurrentTime()
+      data: data,
+      order: order,
+      user_id: userId,
+      createdate: generateCurrentTime()
     }
   })
   return result

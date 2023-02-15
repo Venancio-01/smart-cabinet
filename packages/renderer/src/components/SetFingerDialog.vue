@@ -67,7 +67,7 @@ watch(show, async value => {
   resetOperationTimeout()
   if (value) {
     await openFingerDevice()
-    if (user.value?.USER_ID) startRegisterFinger(user.value?.USER_ID, props.order)
+    if (user.value?.id) startRegisterFinger(user.value?.id, props.order)
   } else {
     await closeFingerDevice()
     endRegisterFinger()

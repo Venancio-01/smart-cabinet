@@ -52,7 +52,7 @@ const store = useStore()
 const { resetOperationTimeout } = store
 const { updateUserPassword } = useUser()
 const { user } = storeToRefs(store)
-const loginName = user.value?.LOGIN_NAME || ''
+const loginName = user.value?.login_name || ''
 
 const show = computed({
   get: () => {

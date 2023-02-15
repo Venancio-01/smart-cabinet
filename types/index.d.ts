@@ -1,6 +1,19 @@
-import { JSBridgeType } from '../packages/main/src/preload'
-import { rfid_cabinet_door } from '@prisma/client'
+import { rfid_cabinet_door, sys_user } from '@prisma/client'
 export {}
+
+type ServiceType = typeof import('../packages/main/src/services').services
+
+type JSBridgeType = {
+  login: ServiceType[0]['fns']
+  lockControl: ServiceType[1]['fns']
+  rfid: ServiceType[2]['fns']
+  finger: ServiceType[3]['fns']
+  sys: ServiceType[4]['fns']
+  cabinet: ServiceType[5]['fns']
+  document: ServiceType[6]['fns']
+  card: ServiceType[7]['fns']
+  network: ServiceType[8]['fns']
+}
 
 declare global {
   interface Window {
@@ -15,29 +28,7 @@ declare global {
     data?: T
   }
 
-  interface UserProps {
-    USER_ID: number
-    AVATAR: string
-    CODE: string
-    CREATE_BY: string
-    CREATE_TIME: string
-    DEL_FLAG: string
-    DEPT_ID: number
-    EMAIL: string
-    LOGIN_DATE: string
-    LOGIN_IP: string
-    LOGIN_NAME: string
-    PASSWORD: string
-    PHONENUMBER: string
-    REMARK: string
-    SALT: string
-    SEX: string
-    STATUS: string
-    TYPE: number
-    UPDATE_BY: string
-    UPDATE_TIME: string
-    USER_NAME: string
-    USER_TYPE: string
+  interface UserProps extends sys_user {
     roleName: string
     deptName: string
   }

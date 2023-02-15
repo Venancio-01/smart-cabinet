@@ -9,5 +9,5 @@
   },
   "files": ["auto-imports.d.ts", "components.d.ts"],
   "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],
-  "include": ["src", "src/**/*.ts", "../../types"]
+  "include": ["src", "src/**/*.ts", "../../types/**/*.d.ts"]
 }

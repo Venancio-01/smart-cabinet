@@ -52,8 +52,8 @@ export default function () {
    * @return {*}
    */
   const updateDocumentStatus = async (door: CabinetDoorProps) => {
-    const USERID = user.value?.USER_ID
-    await window.JSBridge.document.updateDocumentStateAfterCheck({ ...door }, USERID)
+    const user_id = user.value?.id
+    await window.JSBridge.document.updateDocumentStateAfterCheck({ ...door }, user_id)
   }
 
   const generateCheckResult = async ({
@@ -74,9 +74,9 @@ export default function () {
 
     beforeDocuments.forEach(item => {
       afterDocuments.forEach(subItem => {
-        if (item.DOC_ID !== subItem.DOC_ID) return
-        if (item.DOC_REISSUENUMBER === 0 && subItem.DOC_REISSUENUMBER === 1) lendCount++
-        if (item.DOC_REISSUENUMBER === 1 && subItem.DOC_REISSUENUMBER === 0) returnCount++
+        if (item.doc_id !== subItem.doc_id) return
+        if (item.doc_reissue_number === 0 && subItem.doc_reissue_number === 1) lendCount++
+        if (item.doc_reissue_number === 1 && subItem.doc_reissue_number === 0) returnCount++
       })
     })
 

@@ -1,6 +1,6 @@
-const ref = require('ref-napi');
-const ArrayType = require('ref-array-di');
-const StructType = require('ref-struct-di');
+import ref from 'ref-napi';
+import ArrayType from 'ref-array-di';
+import StructType from 'ref-struct-di';
 
 export const CArray = ArrayType(ref);
 export const CStruct = StructType(ref);

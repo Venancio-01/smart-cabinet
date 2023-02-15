@@ -11,7 +11,7 @@ import {
 import { DeviceArrayType, IntType, TemplateType, UcharType } from './types'
 import { MAX_DEVICE_NUM, MAX_REGISTRATION_COUNT, TEMPLATE_BYTE_LENGTH } from '@/config/finger'
 import { genResponseData } from '@/utils'
-import { addFinger, queryFingerByUserIdAndOrder, updateFingerByUserIdAndOrder } from '@/database/methods/finger'
+import { addFinger, queryFingerByUserIdAndOrder, updateFingerByUserIdAndOrder } from '@/prisma/methods/finger'
 import prisma from '@/prisma'
 
 // 指纹仪设备数组
@@ -38,7 +38,7 @@ let registerCurrentIndex = 0
 let userFingerData = []
 
 const fingerService = {
-  name: 'finger' as 'finger',
+  name: 'finger',
   fns: {
     /**
      * @description: 查询当前设备在线情况
@@ -235,7 +235,7 @@ const fingerService = {
       const success = result === 1
       const msg = success ? '识别成功!' : '识别失败'
       const fingerIndex = fingerId[0] - 1
-      const userId = userFingerData[fingerIndex]?.USERID
+      const userId = userFingerData[fingerIndex]?.user_id
       return genResponseData(success, msg, userId)
     },
 
@@ -257,15 +257,15 @@ const fingerService = {
     async loadAllTemplate() {
       userFingerData = await prisma.rfid_finger_user.findMany({
         select: {
-          FINGERDATA: true,
-          USERID: true
+          data: true,
+          user_id: true
         }
       })
       if (userFingerData.length === 0) return
 
       userFingerData.forEach((item, index) => {
-        if (item.FINGERDATA) {
-          const buf = Buffer.from(item.FINGERDATA, 'base64')
+        if (item.data) {
+          const buf = Buffer.from(item.data, 'base64')
           addTemplateToDb(algorithmHandler, index + 1, TEMPLATE_BYTE_LENGTH, buf)
         }
       })
