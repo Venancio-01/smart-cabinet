@@ -52,7 +52,7 @@ const rfidService = {
 
     /**
      * @description: 关闭 socket 连接
-     * @return {*} 
+     * @return {*}
      */
     destroy(address: string) {
       if (!instanceMap[address]) return

@@ -108,10 +108,10 @@ model rfid_cabinet_door {
 }
 
 model rfid_card_user {
-  cardid     Int       @id @default(autoincrement())
-  user_id     Int?
+  card_id    Int       @id @default(autoincrement())
+  user_id    Int?
   createdate DateTime? @db.DateTime(0)
-  carddata   String?   @db.VarChar(510)
+  card_data  String?   @db.VarChar(510)
 }
 
 model rfid_door_dept {

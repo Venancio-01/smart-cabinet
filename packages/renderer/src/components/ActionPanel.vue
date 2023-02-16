@@ -52,7 +52,7 @@ import createAlert from '@/components/BaseAlert'
 
 const store = useStore()
 const { resetOperationTimeout } = store
-const { user, isChecking, cabinetDoorList } = storeToRefs(store)
+const { user, isChecking, rfidIsOnline,cabinetDoorList } = storeToRefs(store)
 const { startInventory } = useRfid()
 
 const setCardVisible = ref(false)
@@ -96,6 +96,11 @@ const openViewDocumentDialog = () => {
  * @return {*}
  */
 const onManualCheck = () => {
+  if (!rfidIsOnline.value) {
+    createAlert('读取器连接失败')
+    return
+  }
+
   if (isChecking.value) {
     createAlert('正在盘点中，请勿重复点击')
     return

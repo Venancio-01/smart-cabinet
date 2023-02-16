@@ -171,7 +171,5 @@ export const generateLockCommand = (source: string) => {
     .join('')
     .toLocaleUpperCase()
 
-  console.log('🚀 ~ file: index.ts:170 ~ generateLockCommand ~ command', command)
-
   return Buffer.from(command, 'hex')
 }
