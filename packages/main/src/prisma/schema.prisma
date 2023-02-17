@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://root:lqs988910@localhost:3306/double_door?schema=public"
+  url      = "mysql://remote_user:lqs988910@192.168.112.73:3306/double_door?schema=public"
 }
 
 model doc_document {

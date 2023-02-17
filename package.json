@@ -44,7 +44,6 @@
     "jest": "28.1.1",
     "jest-environment-jsdom": "28.1.1",
     "jsdom": "~20.0.3",
-    "nx": "15.6.3",
     "pinia": "^2.0.28",
     "postcss": "^8.4.19",
     "prettier": "^2.6.2",

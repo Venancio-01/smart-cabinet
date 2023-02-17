@@ -4,8 +4,8 @@
   "sourceRoot": "packages/main/src",
   "projectType": "application",
   "targets": {
-    "introspect":{
-      "command": "cd packages/main/src/prisma && npx prisma introspect"
+    "pull-db":{
+      "command": "cd packages/main/src/prisma && npx prisma db pull"
     },
     "generate-db": {
       "command": "cd packages/main/src/prisma && npx prisma generate"
