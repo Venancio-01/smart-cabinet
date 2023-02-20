@@ -1,21 +1,5 @@
-import {
-  addMisPlacedDocument,
-  queryMisplacedDocument,
-  queryMisplacedDocumentCountByTid,
-  updateDocStatusByID,
-  updateMisPlaceDocument
-} from '@/prisma/methods/document'
-import { binaryToHex, generateBinaryString, generateCurrentTime, getTIDByReportData, parseRFIDReportData } from '@/utils'
+import { binaryToHex, generateBinaryString, generateCRC16Code, getTIDByReportData, parseRFIDReportData } from '@/utils'
 import TcpSocket from '@/utils/socket'
-import { rfid_cabinet_door } from '@prisma/client'
-import documentService from './document-service'
-import { CRC_SDK_PATH } from '@/config/finger'
-import { UcharType } from './finger-service/types'
-import { Library } from 'ffi-napi'
-
-const crcSDK = Library(CRC_SDK_PATH, {
-  CRC16_CCITT: ['int', [UcharType, 'int']]
-})
 
 type InstanceMap = {
   [k in string]: TcpSocket
@@ -81,8 +65,7 @@ const rfidService = {
 
       const COMMAND_HEADER = '5A'
       const commandBody = `000102100008${generateAntennaCommand(antennaIds)}01020006`
-      const commandBodyBuf = Buffer.from(commandBody, 'hex')
-      const checkCode = crcSDK.CRC16_CCITT(commandBodyBuf, commandBodyBuf.length).toString(16)
+      const checkCode = generateCRC16Code(commandBody)
       const command = COMMAND_HEADER + commandBody + checkCode
 
       instanceMap[address].write(Buffer.from(command, 'hex'))

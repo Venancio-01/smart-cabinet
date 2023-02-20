@@ -1,4 +1,7 @@
 <template>
+  <!-- 查看文件 -->
+  <ViewDocumentDialog></ViewDocumentDialog>
+
   <div class="relative flex h-full w-full items-center justify-center bg-[url('@/assets/images/bj.png')] bg-cover">
     <!-- 登出倒计时 -->
     <div v-show="currentTimeVisible" class="absolute top-[4px] left-[8px] select-none text-lg text-white">
@@ -23,7 +26,7 @@
     <!-- 设备状态 -->
     <DeviceStatus />
 
-    <CheckPanel v-show="checkPanelVisible"></CheckPanel>
+    <CheckPanel v-show="checkStatusDialogVisible"></CheckPanel>
   </div>
 </template>
 
@@ -38,17 +41,11 @@ import useOnAppOpen from '@/hooks/useOnAppOpen'
 
 const store = useStore()
 const { changeLoginVisible } = store
-const { loginVisible, isLoggedIn, operationTimeout, isChecking } = storeToRefs(store)
+const { loginVisible, isLoggedIn, operationTimeout, checkStatusDialogVisible } = storeToRefs(store)
 const { currentTime, currentTimeVisible } = useTime()
 useOnAppOpen()
 
 const openLogin = () => {
   changeLoginVisible(true)
 }
-
-// 未登录时，触发盘点显示盘点面板
-const checkPanelVisible = ref(false)
-watch(isChecking, (newVal, oldVal) => {
-  checkPanelVisible.value = newVal && !oldVal
-})
 </script>

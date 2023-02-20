@@ -1,4 +1,5 @@
 import prisma from '@/prisma'
+import { rfid_switch_record } from '@prisma/client'
 
 /**
  * @description: 根据柜门 id 获取柜内文件总数
@@ -15,32 +16,21 @@ export const queryDocumentCountByCabinetId = async (cabinetId = 1) => {
 }
 
 /**
- * @description: 根据柜门 id 获取柜内在位文件数
+ * @description: 获取柜内在位文件数
  * @param {*} cabinetId 柜门 id
  * @return {*}
  */
-export const queryInPlaceDocumentCountByCabinetId = async (cabinetId = 1) => {
+export const queryInPlaceDocumentCount = async (cabinetId?: number) => {
+  const where = {
+    doc_reissue_number: 0
+  }
+
+  if (cabinetId) {
+    where['cabinet_door_id'] = cabinetId
+  }
+
   const count = await prisma.doc_document.count({
-    where: {
-      cabinet_door_id: cabinetId,
-      doc_reissue_number: 0
-    }
-  })
-
-  return count
-}
-
-/**
- * @description: 获取错放文件数量
- * @return {*}
- */
-export const queryMisplacedDocumentCount = async () => {
-  const count = await prisma.rfid_switch_record.count({
-    where: {
-      operation_id: {
-        not: '0'
-      }
-    }
+    where
   })
 
   return count
@@ -50,12 +40,13 @@ export const queryMisplacedDocumentCount = async () => {
  * @description: 获取错放文件信息
  * @return {*}
  */
-export const queryMisplacedDocument = async () => {
+export const queryMisplacedDocument = async (cabinetDoorID?: number) => {
   const records = await prisma.rfid_switch_record.findMany({
     where: {
       operation_id: {
         not: '0'
-      }
+      },
+      cabinet_door_id: cabinetDoorID || undefined
     }
   })
 
@@ -67,14 +58,14 @@ export const queryMisplacedDocument = async () => {
  * @param {number} tid
  * @return {*}
  */
-export const queryMisplacedDocumentCountByTid = async (id: string) => {
-  const records = await prisma.rfid_switch_record.findMany({
+export const queryMisplacedDocumentCount = async (cabinetDoorId?: number, rfid?: string) => {
+  const count = await prisma.rfid_switch_record.count({
     where: {
-      operation_id: id
+      operation_id: rfid || undefined,
+      cabinet_door_id: cabinetDoorId || undefined
     }
   })
 
-  const count = Number(records?.length)
   return count
 }
 
@@ -103,7 +94,7 @@ export const updateDocStatusByID = async (id: number, state: number) => {
  * @param {any} document
  * @return {*}
  */
-export const addMisPlacedDocument = async (document: any) => {
+export const addMisPlacedDocument = async (document: Partial<rfid_switch_record>) => {
   const result = await prisma.rfid_switch_record.create({
     data: document
   })

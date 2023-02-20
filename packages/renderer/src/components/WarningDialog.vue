@@ -43,8 +43,8 @@ const active = ref(1)
 const data = computed(() => {
   if (misPlaceDocumentData.value[active.value - 1]) {
     return {
-      content: misPlaceDocumentData.value[active.value - 1].CONTENT,
-      time: misPlaceDocumentData.value[active.value - 1].DATETIME
+      content: misPlaceDocumentData.value[active.value - 1].content,
+      time: misPlaceDocumentData.value[active.value - 1].datetime
     }
   } else return {}
 })

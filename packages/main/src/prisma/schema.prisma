@@ -157,8 +157,8 @@ model rfid_rfid_record {
 
 model rfid_switch_record {
   id              Int     @id @default(autoincrement())
-  cabinet_door_id String? @db.VarChar(255)
-  cabinet_id      String? @db.VarChar(255)
+  cabinet_door_id Int?
+  cabinet_id      Int?
   content         String? @db.VarChar(255)
   datetime        String? @db.VarChar(255)
   operation_id    String? @db.VarChar(255)

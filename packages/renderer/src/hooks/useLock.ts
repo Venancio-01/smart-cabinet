@@ -1,13 +1,10 @@
 import { useStore } from '@/store'
 import { QUERY_OPEN_STATE_INTERVAL, SEND_QUERY_COMMAND_INTERVAL } from '@/config'
-import useRfid from './useRfid'
-import useCheck from './useCheck'
 
 export default function () {
   const store = useStore()
-  const { changeLockControlIsOnline, changeLockCommandInterval, changeLockControlState } = store
-  const { lockCommandInterval } = storeToRefs(store)
-  const { watchLockControlState } = useCheck()
+  const { changeLockControlIsOnline, changeLockControlState } = store
+  const { cabinetData } = storeToRefs(store)
 
   // 查询锁孔开启状态的定时器
   const queryLockOpenStatusTimer = ref<number | null>(null)
@@ -16,13 +13,23 @@ export default function () {
 
   // 获取锁控板连接状态
   const getLockControlConnectState = async () => {
-    const isConnected = await window.JSBridge.lockControl.getConnectState()
+    if (cabinetData.value === null) return
+
+    const { opendoor } = cabinetData.value
+    if (opendoor === null) return
+
+    const isConnected = await window.JSBridge.lockControl.getConnectState(opendoor)
     changeLockControlIsOnline(isConnected)
   }
 
   // 初始化锁控板连接
   const initLockControl = async () => {
-    await window.JSBridge.lockControl.init()
+    if (cabinetData.value === null) return
+
+    const { opendoor, open_baudrate } = cabinetData.value
+    if (opendoor === null) return
+
+    await window.JSBridge.lockControl.init(opendoor, open_baudrate)
   }
 
   // 打开某个锁

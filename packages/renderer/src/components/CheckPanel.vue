@@ -4,7 +4,7 @@
       class="flex h-[300px] w-[400px] flex-col items-center justify-center rounded-md bg-[url('@/assets/images/bj.png')] bg-cover text-xl text-white shadow-[0px_0px_16px] shadow-black"
     >
       <p>柜门盘点中</p>
-      <p>剩余时间： {{ checkTime }} 秒</p>
+      <p>剩余时间： {{ currentCheckCabinetDoor?.checkCountDown }} 秒</p>
     </div>
   </div>
 </template>
@@ -13,11 +13,6 @@
 import { useStore } from '@/store'
 
 const store = useStore()
-const { cabinetDoorList, isChecking } = storeToRefs(store)
+const { cabinetDoorList, isChecking,currentCheckCabinetDoor } = storeToRefs(store)
 
-const checkTime = computed(() => {
-  if (isChecking.value)
-    return Math.max(...cabinetDoorList.value.filter(item => item.checkCountDown !== 10).map(item => item.checkCountDown))
-  else return 10
-})
 </script>

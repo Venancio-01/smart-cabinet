@@ -6,7 +6,11 @@
 
   <div class="absolute bottom-0 left-0 flex h-[50px] w-full items-center justify-between bg-black bg-opacity-30 px-4">
     <div class="flex h-full select-none items-center text-lg text-white">
-      <span>文件总数：{{ count }}，</span>
+      <span class="mr-4"
+        >在位文件：<span class="text-xl text-blue-400 underline" @click="handleOpenDocumentDialog"
+          >{{ inPlaceDocumentTotal }} / {{ documentTotal }}</span
+        ></span
+      >
       <span>错放数：{{ misPlaceDocumentCount }}</span>
     </div>
     <div class="state-display-area">
@@ -37,13 +41,20 @@ import WarningFailState from '@/assets/images/state_warning_bad.png'
 import useDocument from '@/hooks/useDocument'
 
 const store = useStore()
-const { rfidIsOnline, misPlaceDocumentCount, networkIsOnline, lockControlIsOnline } = storeToRefs(store)
-const { getAllDocumentCount } = useDocument()
+const { changeCurrentCabinetDoorId, changeViewDocumentVisible } = store
+const { rfidIsOnline, misPlaceDocumentCount, networkIsOnline, lockControlIsOnline, documentTotal, inPlaceDocumentTotal } =
+  storeToRefs(store)
+const {} = useDocument()
 
 const rfidVisible = ref(false)
 const rockVisible = ref(false)
 const networkVisible = ref(false)
 const warningVisible = ref(false)
+
+const handleOpenDocumentDialog = () => {
+  changeCurrentCabinetDoorId(0)
+  changeViewDocumentVisible(true)
+}
 
 const onShowWarning = () => {
   if (misPlaceDocumentCount.value === 0) {
@@ -52,11 +63,6 @@ const onShowWarning = () => {
   }
   warningVisible.value = true
 }
-
-const count = ref(0)
-onMounted(async () => {
-  count.value = await getAllDocumentCount()
-})
 </script>
 
 <style scoped>

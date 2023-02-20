@@ -6,7 +6,7 @@ import useCabinet from './useCabinet'
 
 export default function () {
   const store = useStore()
-  const { changeRfidIsConnected, changeCabinetDoorData } = store
+  const { changeRfidIsConnected, changeCabinetDoorData, changeCheckStatusDialogVisible, changeCurrentCheckCabinetDoor } = store
   const { cabinetDoorList, misPlaceDocumentCount, isChecking } = storeToRefs(store)
   const { updateDocumentStatus, getAllDocumentData, getMisPlaceDocuments, generateCheckResult } = useDocument()
   const { getCabinetDoorInfo } = useCabinet()
@@ -106,6 +106,8 @@ export default function () {
       return cabinetDoorList.value.find(item => item.id === doorId)
     })
 
+    console.log('🚀 ~ file: useRfid.ts:108 ~ door ~ door:', door)
+
     if (door.value === undefined) return
 
     const { antenna_address: address, antenna_port: port, antenna_id: antennaId } = door.value
@@ -123,11 +125,12 @@ export default function () {
       return false
     }
 
+    changeCurrentCheckCabinetDoor(door.value)
+    // 开启盘点面板
+    changeCheckStatusDialogVisible(true)
+
     await sendCloseCommand(address)
     await sendOpenCommand(address, antennaId)
-
-    // const beforeDocuments = await getAllDocumentData()
-    // const beforeMisPlaceDocumentCount = misPlaceDocumentCount.value
 
     const timer = window.setInterval(async () => {
       if (door.value === undefined) return
@@ -136,41 +139,37 @@ export default function () {
         ...door.value,
         checkCountDown: door.value.checkCountDown - 1
       })
-      console.log('🚀 ~ file: useRfid.ts:128 ~ timer ~ door.value.checkCountDown', door.value.checkCountDown)
 
-      if (door.value.checkCountDown === 0) {
-        console.log('盘点计时结束')
+      if (door.value.checkCountDown !== 0) return
+      console.log('盘点计时结束')
 
-        clearInterval(timer)
+      clearInterval(timer)
 
-        // 发送关闭命令
-        await sendCloseCommand(address)
-        // 更新文件状态
-        await updateDocumentStatus(door.value)
-        // 重新获取柜门文件信息
-        getCabinetDoorInfo()
+      // 发送关闭命令
+      await sendCloseCommand(address)
+      // 更新文件状态
+      await updateDocumentStatus(door.value)
+      // 重新获取柜门信息
+      getCabinetDoorInfo()
+      // 重新获取文件信息
+      getAllDocumentData()
+      // 重新获取错放文件数量
+      getMisPlaceDocuments()
 
-        // 获取更新后的文件以及错位文件数量，生成盘点结果
-        // const afterDocuments = await getAllDocumentData()
-        // await getMisPlaceDocuments()
-        // const afterMisPlaceDocumentCount = misPlaceDocumentCount.value
-        // generateCheckResult({ beforeDocuments, afterDocuments, beforeMisPlaceDocumentCount, afterMisPlaceDocumentCount })
+      if (door.value === undefined) return
+      // 复原倒计时
+      changeCabinetDoorData({ ...door.value, checkCountDown: CHECK_TIME })
 
-        nextTick(async () => {
-          if (door.value === undefined) return
-          // 复原倒计时
-          changeCabinetDoorData({ ...door.value, checkCountDown: CHECK_TIME })
-
-          // 如果没有正在盘点的柜门，则销毁 socket 实例
-          if (!isChecking.value) await destroyRfid(address)
-        })
+      // 如果没有正在盘点的柜门，则销毁 socket 实例
+      if (!isChecking.value) {
+        await destroyRfid(address)
+        changeCheckStatusDialogVisible(false)
       }
     }, 1000)
   }
 
   return {
     getRfidConnectState,
-    // startCheck
     startInventory
   }
 }

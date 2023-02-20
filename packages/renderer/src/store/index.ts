@@ -1,5 +1,5 @@
-import { OPERATION_TIMEOUT } from '@/config'
-import { rfid_cabinet, sys_dept } from '@prisma/client'
+import { CHECK_TIME, OPERATION_TIMEOUT } from '@/config'
+import { doc_document, rfid_cabinet, rfid_switch_record, sys_dept } from '@prisma/client'
 import { defineStore } from 'pinia'
 
 interface State {
@@ -12,12 +12,17 @@ interface State {
   isLoggedIn: boolean
   user: UserProps | null
   departmentList: sys_dept[]
-  misPlaceDocumentData: any[]
+  documentList: doc_document[]
+  misPlaceDocumentData: rfid_switch_record[]
   cabinetData: rfid_cabinet | null
   cabinetDoorList: CabinetDoorProps[]
   operationTimeout: number
   lockCommandInterval: number
   lockControlState: null | LockControlStateProps
+  currentCabinetDoorId: number
+  viewDocumentVisible: boolean
+  checkStatusDialogVisible: boolean
+  currentCheckCabinetDoor: CabinetDoorProps | null
 }
 
 export const useStore = defineStore('main', {
@@ -32,17 +37,31 @@ export const useStore = defineStore('main', {
       isLoggedIn: false,
       user: null,
       departmentList: [],
+      documentList: [],
       cabinetData: null,
       cabinetDoorList: [],
       misPlaceDocumentData: [],
       operationTimeout: OPERATION_TIMEOUT,
       lockCommandInterval: 10,
-      lockControlState: null
+      lockControlState: null,
+      currentCabinetDoorId: 0,
+      viewDocumentVisible: false,
+      checkStatusDialogVisible: false,
+      currentCheckCabinetDoor: null
     }
   },
   getters: {
     misPlaceDocumentCount(state) {
       return state.misPlaceDocumentData.length
+    },
+    documentTotal(state) {
+      return state.documentList.length
+    },
+    inPlaceDocumentTotal(state) {
+      return state.documentList.reduce((total, item) => {
+        if (item.doc_reissue_number === 0) total += 1
+        return total
+      }, 0)
     },
     isChecking(state) {
       return state.cabinetDoorList.some(item => item.checkCountDown !== 10)
@@ -77,12 +96,11 @@ export const useStore = defineStore('main', {
       this.cabinetDoorList = list
     },
     changeCabinetDoorData(data: CabinetDoorProps) {
-      this.cabinetDoorList = this.cabinetDoorList.map(item => {
-        if (item.id !== data.id) return item
-        else return reactive(data)
-      })
+      const id = data.id
+      const index = this.cabinetDoorList.findIndex(item => item.id === id)
+      this.cabinetDoorList[index] = data
     },
-    saveMisPlaceDocumentData(data: any[]) {
+    saveMisPlaceDocumentData(data: rfid_switch_record[]) {
       this.misPlaceDocumentData = data
     },
     saveUserData(user: UserProps | null) {
@@ -90,6 +108,9 @@ export const useStore = defineStore('main', {
     },
     saveDepartmentList(list: sys_dept[]) {
       this.departmentList = list
+    },
+    saveDocumentList(list: doc_document[]) {
+      this.documentList = list
     },
     changeOperationTimeout(time: number) {
       this.operationTimeout = time
@@ -102,6 +123,18 @@ export const useStore = defineStore('main', {
     },
     changeLockControlState(state: LockControlStateProps | null) {
       this.lockControlState = state
+    },
+    changeCurrentCabinetDoorId(id: number) {
+      this.currentCabinetDoorId = id
+    },
+    changeViewDocumentVisible(visible: boolean) {
+      this.viewDocumentVisible = visible
+    },
+    changeCheckStatusDialogVisible(visible: boolean) {
+      this.checkStatusDialogVisible = visible
+    },
+    changeCurrentCheckCabinetDoor(cabinetDoor: CabinetDoorProps | null) {
+      this.currentCheckCabinetDoor = cabinetDoor
     }
   }
 })

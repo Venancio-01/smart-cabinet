@@ -36,7 +36,7 @@ declare module '@vue/runtime-core' {
     TheLogin: typeof import('./src/components/TheLogin.vue')['default']
     TheMain: typeof import('./src/components/TheMain.vue')['default']
     TheMainPanel: typeof import('./src/components/TheMainPanel.vue')['default']
-    ViewDocumentDialog: typeof import('./src/components/viewDocumentDialog.vue')['default']
+    ViewDocumentDialog: typeof import('./src/components/ViewDocumentDialog.vue')['default']
     WarningDialog: typeof import('./src/components/WarningDialog.vue')['default']
   }
 }

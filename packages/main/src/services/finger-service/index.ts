@@ -46,7 +46,6 @@ const fingerService = {
      */
     queryConnectState() {
       const count = getDeviceCount(deviceList, MAX_DEVICE_NUM)
-      console.log("🚀 ~ file: index.ts:49 ~ queryConnectState ~ count", count)
       connected = count > 0
       return connected
     },

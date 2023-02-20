@@ -1,5 +1,8 @@
 import { MD5 } from 'crypto-js'
 import dayjs from 'dayjs'
+import { Library } from 'ffi-napi'
+import { UcharType } from '@/services/finger-service/types'
+import { CRC_SDK_PATH } from '@/config/finger'
 
 /**
  * @description: 生成 ipc 通信的返回数据结构
@@ -46,47 +49,27 @@ export const parseRFIDReportData = (data: string): string[] => {
  * @param {string} command
  * @return {*}
  */
-// export const getTIDByReportData = (data: string) => {
-//   let str = data
-//   const PREFIX = '5a00011200'
-//   const TIDLengthCommandLength = 4
-//   const MidCommandLength = 16
-
-//   str = str.replace(PREFIX, '')
-
-//   const EPCLength = parseInt('0x' + str.substring(4, 8), 16) * 2
-//   const TIDLength =
-//     parseInt(
-//       '0x' + str.substring(8 + EPCLength + MidCommandLength, 8 + EPCLength + MidCommandLength + TIDLengthCommandLength),
-//       16
-//     ) * 2
-
-//   const EPC = str.substring(8, 8 + EPCLength)
-//   const TID = str.substring(
-//     8 + EPCLength + MidCommandLength + TIDLengthCommandLength,
-//     8 + EPCLength + MidCommandLength + TIDLengthCommandLength + TIDLength
-//   )
-
-//   return TID.toLocaleUpperCase()
-// }
-
 export const getTIDByReportData = (data: string) => {
   let str = data
   const PREFIX = '5a00011200'
   const TIDLengthCommandLength = 4
   const MidCommandLength = 16
-  const EPCLengthStart = 8
-  const TIDStart = 8 + MidCommandLength + TIDLengthCommandLength + EPCLengthStart
 
   str = str.replace(PREFIX, '')
 
   const EPCLength = parseInt('0x' + str.substring(4, 8), 16) * 2
   const TIDLength =
-    parseInt('0x' + str.substring(EPCLengthStart + EPCLength, EPCLengthStart + EPCLength + TIDLengthCommandLength), 16) * 2
+    parseInt(
+      '0x' + str.substring(8 + EPCLength + MidCommandLength, 8 + EPCLength + MidCommandLength + TIDLengthCommandLength),
+      16
+    ) * 2
 
-  const TID = str.substring(TIDStart, TIDStart + TIDLength)
+  const TID = str.substring(
+    8 + EPCLength + MidCommandLength + TIDLengthCommandLength,
+    8 + EPCLength + MidCommandLength + TIDLengthCommandLength + TIDLength
+  )
 
-  return TID.toLocaleUpperCase()
+  return TID
 }
 
 export const generateCurrentTime = () => {
@@ -172,4 +155,18 @@ export const generateLockCommand = (source: string) => {
     .toLocaleUpperCase()
 
   return Buffer.from(command, 'hex')
+}
+
+/**
+ * @description: 生成 CRC16 校验码
+ * @param {string} str
+ * @return {*}
+ */
+export const generateCRC16Code = (str: string) => {
+  const crcSDK = Library(CRC_SDK_PATH, {
+    CRC16_CCITT: ['int', [UcharType, 'int']]
+  })
+
+  const buffer = Buffer.from(str, 'hex')
+  return crcSDK.CRC16_CCITT(buffer, buffer.length).toString(16)
 }

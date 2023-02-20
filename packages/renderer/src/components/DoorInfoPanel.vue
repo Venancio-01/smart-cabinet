@@ -7,17 +7,19 @@
     </div>
 
     <!-- 柜门显示区域 -->
-    <div class="grid h-[460px] w-[700px] grid-cols-4 gap-1">
+    <div class="grid h-[460px] w-[700px] grid-flow-col grid-rows-4 gap-[4px]">
       <div
         v-for="(door, index) in cabinetDoorList"
         :key="index"
-        class="flex h-[120px] border-[1px] border-[#bebebe] bg-white"
+        class="flex w-[180px] border-[1px] border-[#bebebe] bg-white"
         @click="onClickDoor(door)"
       >
         <div class="relative flex flex-1 items-center justify-center">
           <div class="flex select-none flex-col items-center justify-center text-sm">
             <p>{{ door.name }}</p>
-            <p>{{ door.inPlaceDocumentCount }} / {{ door.totalDocumentCount }}</p>
+            <p class="mt-2 text-lg underline" @click.stop="handleOpenDocumentDialog(door.id)">
+              {{ door.inPlaceDocumentCount }} / {{ door.totalDocumentCount }}
+            </p>
           </div>
         </div>
         <div class="w-[40px] border-l-[1px] border-[#bebebe]">
@@ -33,10 +35,9 @@ import { useStore } from '@/store'
 import useLock from '@/hooks/useLock'
 import useLogin from '@/hooks/useLogin'
 import createAlert from '@/components/BaseAlert'
-import useDocument from '@/hooks/useDocument'
 
 const store = useStore()
-const { resetOperationTimeout, changeCabinetDoorData } = store
+const { resetOperationTimeout, changeCabinetDoorData, changeCurrentCabinetDoorId, changeViewDocumentVisible } = store
 const { cabinetDoorList, lockControlIsOnline } = storeToRefs(store)
 const { openLock } = useLock()
 const { onLogout } = useLogin()
@@ -44,8 +45,16 @@ const { onLogout } = useLogin()
 const onClickDoor = (door: CabinetDoorProps) => {
   resetOperationTimeout()
   openLock(door.kgbh)
-  changeCabinetDoorData({ ...door, isOpen: true })
   onLogout()
+
+  setTimeout(() => {
+    changeCabinetDoorData({ ...door, isOpen: true })
+  }, 1000)
+}
+
+const handleOpenDocumentDialog = (id: number) => {
+  changeCurrentCabinetDoorId(id)
+  changeViewDocumentVisible(true)
 }
 
 const message = ref('柜门状态正常')

@@ -6,8 +6,6 @@
     <SetFingerDialog v-model:visible="setFingerVisible" :order="fingerOrder"></SetFingerDialog>
     <!-- 设置卡号 -->
     <SetCardDialog v-model:visible="setCardVisible"></SetCardDialog>
-    <!-- 查看文件 -->
-    <ViewDocumentDialog v-model:visible="viewDocumentVisible"></ViewDocumentDialog>
 
     <div class="flex h-[50px] w-full select-none items-center justify-center border-b-[2px] border-white text-lg text-white">
       基本信息
@@ -51,14 +49,13 @@ import useRfid from '@/hooks/useRfid'
 import createAlert from '@/components/BaseAlert'
 
 const store = useStore()
-const { resetOperationTimeout } = store
-const { user, isChecking, rfidIsOnline,cabinetDoorList } = storeToRefs(store)
+const { resetOperationTimeout, changeCurrentCabinetDoorId, changeViewDocumentVisible } = store
+const { user, isChecking, rfidIsOnline, cabinetDoorList } = storeToRefs(store)
 const { startInventory } = useRfid()
 
 const setCardVisible = ref(false)
 const setPasswordVisible = ref(false)
 const setFingerVisible = ref(false)
-const viewDocumentVisible = ref(false)
 const fingerOrder = ref<FingerOrder>(1)
 
 /**
@@ -88,7 +85,8 @@ const openSetCardDialog = () => {
 }
 
 const openViewDocumentDialog = () => {
-  viewDocumentVisible.value = true
+  changeCurrentCabinetDoorId(0)
+  changeViewDocumentVisible(true)
 }
 
 /**
@@ -109,6 +107,8 @@ const onManualCheck = () => {
   cabinetDoorList.value.forEach(item => {
     startInventory(item.id)
   })
+
+  // startInventory(cabinetDoorList.value[0].id)
 
   resetOperationTimeout()
 }

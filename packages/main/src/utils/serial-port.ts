@@ -22,15 +22,19 @@ export default class SerialPort {
   // 写入数据
   write(data) {
     if (!this.portInstance) return
+
     this.portInstance.write(data)
   }
 
   getData() {
     if (!this.portInstance) return
+
     return this.data
   }
 
   setData(source: string) {
+    if (!this.portInstance) return
+
     this.data = source
   }
 
@@ -39,7 +43,15 @@ export default class SerialPort {
     if (!this.portInstance) return
 
     this.portInstance.on('open', () => {
-      console.log('open')
+      console.log('串口打开成功')
+    })
+
+    this.portInstance.on('close', () => {
+      console.log('串口关闭')
+    })
+
+    this.portInstance.on('error', error => {
+      console.log('串口出错：', error)
     })
 
     this.portInstance.on('data', data => {
@@ -48,8 +60,9 @@ export default class SerialPort {
   }
 
   // 关闭串口
-  close() {
+  destroy() {
     if (!this.portInstance) return
+
     this.portInstance.close()
     this.portInstance = null
     this.data = ''

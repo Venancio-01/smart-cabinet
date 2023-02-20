@@ -4,15 +4,12 @@ import { doc_document } from '@prisma/client'
 
 export default function () {
   const store = useStore()
-  const { saveMisPlaceDocumentData } = store
+  const { saveMisPlaceDocumentData, saveDocumentList } = store
   const { user } = storeToRefs(store)
 
   const getAllDocumentData = async () => {
-    return await window.JSBridge.document.getAllDocumentData()
-  }
-
-  const getAllDocumentCount = async () => {
-    return await window.JSBridge.document.getAllDocumentCount()
+    const documents = await window.JSBridge.document.getAllDocumentData()
+    saveDocumentList(documents)
   }
 
   const getDocumentData = async (condition: DocumentQueryProps) => {
@@ -29,12 +26,12 @@ export default function () {
   }
 
   /**
-   * @description: 根据柜门 ID 获取在位文件数量
+   * @description: 获取在位文件数量
    * @param {number} cabinetId 柜门 ID
    * @return {*}
    */
-  const getInPlaceDocumentCountByCabinetId = async (cabinetId: number) => {
-    return await window.JSBridge.document.getInPlaceDocumentCountByCabinetId(cabinetId)
+  const getInPlaceDocumentCount = async (cabinetId?: number) => {
+    return await window.JSBridge.document.getInPlaceDocumentCount(cabinetId)
   }
 
   /**
@@ -88,11 +85,10 @@ export default function () {
   return {
     getDocumentData,
     getAllDocumentData,
-    getAllDocumentCount,
     getMisPlaceDocuments,
     updateDocumentStatus,
     generateCheckResult,
     getDocumentByCabinetId,
-    getInPlaceDocumentCountByCabinetId
+    getInPlaceDocumentCount,
   }
 }

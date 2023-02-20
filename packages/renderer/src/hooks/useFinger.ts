@@ -18,7 +18,6 @@ export default function () {
   // 获取指纹仪连接状态
   const getFingerStatus = async () => {
     const isOnline = await window.JSBridge.finger.queryConnectState()
-    console.log("🚀 ~ file: useFinger.ts:21 ~ getFingerStatus ~ isOnline", isOnline)
     changeFingerIsOnline(isOnline)
   }
 

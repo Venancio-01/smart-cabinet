@@ -51,7 +51,6 @@ declare global {
   interface CabinetDoorProps extends rfid_cabinet_door {
     totalDocumentCount: number
     inPlaceDocumentCount: number
-    isSelected: boolean
     name: string | null | undefined
     checkCountDown: number
     isOpen: boolean
@@ -65,8 +64,9 @@ declare global {
     page?: number
     size?: number
     title?: string
-    state?: number | null
-    cabinetId?: number | null
+    cabinetId?: string
+    departmentId?: string
+    state?: string
   }
 
   type FingerOrder = 1 | 2

@@ -1,23 +1,16 @@
 <template>
-  <BaseDialog v-model:visible="show" title="查看文件" :width="700" :height="550" @close="onClose">
+  <BaseDialog v-model:visible="show" title="查看文件" :width="700" :height="600" @close="onClose">
     <a-form
       :model="condition"
       name="basic"
       :label-col="{ span: 8 }"
       :wrapper-col="{ span: 16 }"
-      class="grid grid-cols-[1fr_1fr_1fr_160px] py-4"
-      layout="inline"
+      class="gird-rows-2 grid grid-cols-[1fr_1fr_200px] gap-y-2 py-4"
       autocomplete="off"
       @finish="onFinish"
     >
       <a-form-item label="文件名" name="title">
         <a-input v-model:value="condition.title" />
-      </a-form-item>
-
-      <a-form-item label="柜门" name="title">
-        <a-select ref="select" v-model:value="condition.cabinetId" allowClear>
-          <a-select-option v-for="item in cabinetDoorList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
-        </a-select>
       </a-form-item>
 
       <a-form-item label="状态" name="title">
@@ -27,11 +20,23 @@
         </a-select>
       </a-form-item>
 
-      <a-form-item>
-        <div class="flex">
-          <a-button @click="onReset" class="mr-4">重置</a-button>
+      <a-form-item class="row-span-2" :wrapper-col="{ span: 24 }">
+        <div class="flex h-full w-full items-center justify-center">
           <a-button html-type="submit" type="primary">搜索</a-button>
+          <a-button @click="handleReset" class="ml-4">重置</a-button>
         </div>
+      </a-form-item>
+
+      <a-form-item v-show="currentCabinetDoorId === 0" label="柜门" name="title">
+        <a-select ref="select" v-model:value="condition.cabinetId" allowClear>
+          <a-select-option v-for="item in cabinetDoorList" :key="item.id" :value="item.id">{{ item.view_name }}</a-select-option>
+        </a-select>
+      </a-form-item>
+
+      <a-form-item v-show="currentCabinetDoorId === 0" label="部门" name="title">
+        <a-select ref="select" v-model:value="condition.departmentId" allowClear>
+          <a-select-option v-for="item in departmentList" :key="item.id" :value="item.id">{{ item.dept_name }}</a-select-option>
+        </a-select>
       </a-form-item>
     </a-form>
 
@@ -45,6 +50,12 @@
         onChange: onPageChange
       }"
     >
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.dataIndex === 'doc_reissue_number'">
+          <span v-if="record['doc_reissue_number'] === 0" class="text-green-500">在位</span>
+          <span v-if="record['doc_reissue_number'] === 1" class="text-yellow-500">借出</span>
+        </template>
+      </template>
       <template v-slot:emptyText>
         <span>暂无数据</span>
       </template>
@@ -58,26 +69,17 @@ import { useStore } from '@/store'
 import { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
 
-interface Props {
-  visible: boolean
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  visible: false
-})
-
-const emits = defineEmits(['update:visible'])
 const store = useStore()
-const { resetOperationTimeout } = store
-const { cabinetDoorList } = storeToRefs(store)
+const { resetOperationTimeout, changeViewDocumentVisible } = store
+const { cabinetDoorList, viewDocumentVisible, departmentList, currentCabinetDoorId } = storeToRefs(store)
 const { getDocumentData } = useDocument()
 
 const show = computed({
   get: () => {
-    return props.visible
+    return viewDocumentVisible.value
   },
   set: value => {
-    emits('update:visible', value)
+    changeViewDocumentVisible(value)
   }
 })
 
@@ -87,16 +89,18 @@ const condition = reactive({
   page: 1,
   size: 5,
   title: '',
-  cabinetId: null,
-  state: null
+  cabinetId: '',
+  departmentId: '',
+  state: ''
 })
 
 const onPageChange = async (page: number) => {
   condition.page = page
-  onQueryDocumentData()
+
+  searchDocumentData()
 }
 
-const onQueryDocumentData = async () => {
+const searchDocumentData = async () => {
   const result = await getDocumentData(condition)
   data.value = result.data
   total.value = result.total
@@ -104,22 +108,28 @@ const onQueryDocumentData = async () => {
 
 const onFinish = async () => {
   condition.page = 1
-  onQueryDocumentData()
+
+  searchDocumentData()
 }
 
-const onReset = () => {
+const handleReset = () => {
   condition.page = 1
   condition.title = ''
-  condition.cabinetId = null
-  condition.state = null
-  onQueryDocumentData()
+  condition.cabinetId = currentCabinetDoorId.value ? String(currentCabinetDoorId.value) : ''
+  condition.departmentId = ''
+  condition.state = ''
+  data.value = []
+
+  searchDocumentData()
 }
 
 watch(show, async value => {
-  if (value) {
-    onQueryDocumentData()
-    resetOperationTimeout()
-  }
+  if (!value) return
+
+  condition.cabinetId = currentCabinetDoorId.value ? String(currentCabinetDoorId.value) : ''
+
+  searchDocumentData()
+  resetOperationTimeout()
 })
 
 const columns: ColumnsType = [
@@ -129,12 +139,25 @@ const columns: ColumnsType = [
     key: 'doc_name'
   },
   {
+    title: '所属柜门',
+    dataIndex: 'view_name',
+    key: 'view_name',
+    customRender: ({ record }) => {
+      return cabinetDoorList.value.find(item => item.id === record.cabinet_door_id)?.view_name
+    }
+  },
+  {
+    title: '所属部门',
+    dataIndex: 'department',
+    key: 'department',
+    customRender: ({ record }) => {
+      return departmentList.value.find(item => item.id === record.binding_dept_id)?.dept_name
+    }
+  },
+  {
     title: '状态',
     dataIndex: 'doc_reissue_number',
-    key: 'doc_reissue_number',
-    customRender: ({ record }) => {
-      return record.doc_reissue_number === 0 ? '在位' : '借出'
-    }
+    key: 'doc_reissue_number'
   },
   {
     title: '最后操作时间',
@@ -147,6 +170,7 @@ const columns: ColumnsType = [
 ]
 
 const onClose = () => {
+  handleReset()
   resetOperationTimeout()
 }
 </script>
@@ -173,5 +197,8 @@ const onClose = () => {
 }
 .form-item + .form-item {
   @apply mt-[16px];
+}
+.ant-form-item {
+  @apply mb-0;
 }
 </style>

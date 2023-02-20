@@ -5,12 +5,12 @@ import useFinger from '@/hooks/useFinger'
 import useTime from '@/hooks/useTime'
 import useCabinet from '@/hooks/useCabinet'
 import useNetwork from '@/hooks/useNetwork'
-import useUser from './useUser'
+import useSys from './useSys'
 import useCheck from './useCheck'
 
 export default function () {
   useNetwork()
-  const { getDepartmentList } = useUser()
+  const { getDepartmentList } = useSys()
   const { getRfidConnectState } = useRfid()
   const {
     getLockControlConnectState,
@@ -22,7 +22,7 @@ export default function () {
   } = useLock()
   const { startGenerateCurrentTime, stopGenerateCurrentTime, startWatchLoginState } = useTime()
   const { pollingGetFingerStatus, stopPollingGetFingerStatus } = useFinger()
-  const { getMisPlaceDocuments } = useDocument()
+  const { getMisPlaceDocuments, getAllDocumentData } = useDocument()
   const { getCabinetInfo, getCabinetDoorInfo } = useCabinet()
   const { watchLockControlState } = useCheck()
 
@@ -52,6 +52,7 @@ export default function () {
     // 生成当前时间
     startGenerateCurrentTime()
     startWatchLoginState()
+    getAllDocumentData()
   })
 
   onBeforeUnmount(() => {
@@ -59,5 +60,7 @@ export default function () {
     stopPollingGetFingerStatus()
     stopPollingQueryAllLockState()
     stopGenerateCurrentTime()
+
+    console.log('close')
   })
 }

@@ -1,12 +1,10 @@
-import { app, BrowserWindow, shell, globalShortcut } from 'electron'
-import { join } from 'path'
-import { WINDOW_SIZE } from '@/config/window'
+import { app, BrowserWindow, globalShortcut } from 'electron'
 import { services, makeChannelName } from '@/services'
+import { createWindow } from '@/base/window'
 import { ipcMain } from 'electron'
-
-const url = 'http://localhost:4200/'
-const indexHtml = join(__dirname, '../../renderer/index.html')
-const preload = join(__dirname, './base/preload.js')
+import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
+import lockControlService from './services/lock-control-service'
+import { exec } from 'child_process'
 
 // Disable GPU Acceleration for Linux.
 app.disableHardwareAcceleration()
@@ -23,38 +21,10 @@ if (!app.requestSingleInstanceLock()) {
 
 let win: BrowserWindow | null = null
 
-async function createWindow() {
-  win = new BrowserWindow({
-    ...WINDOW_SIZE,
-    title: 'Main window',
-    // icon: join(process.env.PUBLIC, 'favicon.ico'),
-    frame: false,
-    webPreferences: {
-      preload,
-      nodeIntegration: false,
-      contextIsolation: true
-    }
-  })
-
-  if (app.isPackaged) {
-    win.loadFile(indexHtml)
-  } else {
-    win.loadURL(url)
-    win.webContents.openDevTools()
-  }
-
-  // Test actively push message to the Electron-Renderer
-  win.webContents.on('did-finish-load', () => {
-    win?.webContents.send('main-process-message', new Date().toLocaleString())
-  })
-
-  // Make all links open with the browser, not with the application
-  win.webContents.setWindowOpenHandler(({ url }) => {
-    if (url.startsWith('https:')) shell.openExternal(url)
-    return { action: 'deny' }
-  })
-}
-
+/**
+ * @description: 禁用快捷键
+ * @return {*}
+ */
 const disableShortcuts = () => {
   // 禁用 Control+Shift+I 打开开发者面板
   // 禁用 Control+R 刷新页面
@@ -64,6 +34,10 @@ const disableShortcuts = () => {
   })
 }
 
+/**
+ * @description: 注册服务
+ * @return {*}
+ */
 const installService = () => {
   services.forEach(service => {
     Object.entries(service.fns).forEach(([apiName, apiFn]) => {
@@ -72,11 +46,27 @@ const installService = () => {
   })
 }
 
+/**
+ * @description: 设置串口权限
+ * @return {*}
+ */
+const setSerialPortPermissions = () => {
+  exec('sudo chmod 777 /dev/ttyUSB0', error => {
+    if (error) console.log(error, 'error')
+  })
+}
+
 app.whenReady().then(async () => {
-  await createWindow()
+  win = await createWindow()
+  setSerialPortPermissions()
   installService()
   if (app.isPackaged) {
     disableShortcuts()
+  } else {
+    // const options = {
+    //   loadExtensionOptions: { allowFileAccess: true }
+    // }
+    // await installExtension([VUEJS3_DEVTOOLS], options)
   }
 })
 
@@ -97,9 +87,14 @@ app.on('second-instance', () => {
 
 app.on('activate', () => {
   const allWindows = BrowserWindow.getAllWindows()
+
   if (allWindows.length) {
     allWindows[0].focus()
   } else {
     createWindow()
   }
+})
+
+app.on('before-quit', () => {
+  lockControlService.fns.destroy()
 })

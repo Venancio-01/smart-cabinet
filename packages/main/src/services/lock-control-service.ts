@@ -1,4 +1,3 @@
-import { SERIALPORT_PATH } from '@/config/lock-control'
 import { convertDecimalToBinary, generateLockCommand } from '@/utils'
 import SerialPort from '@/utils/serial-port'
 import { SerialPort as SerialPortLib } from 'serialport'
@@ -10,13 +9,13 @@ let connected = false
 const lockControlService = {
   name: 'lockControl' as const,
   fns: {
-    async getConnectState() {
+    async getConnectState(path: string) {
       const list = await SerialPortLib.list()
-      connected = Boolean(list.find(item => item.path === SERIALPORT_PATH))
+      connected = Boolean(list.find(item => item.path === path))
       return connected
     },
 
-    async init() {
+    async init(path: string, baudRate: number) {
       if (instance) return
 
       if (!connected) {
@@ -24,9 +23,12 @@ const lockControlService = {
         return
       }
 
-      instance = new SerialPort({ path: SERIALPORT_PATH })
+      instance = new SerialPort({ path, baudRate })
+    },
 
-      console.log('锁控板初始化成功')
+    async destroy() {
+      if (!instance) return
+      instance.destroy()
     },
 
     /**
@@ -82,10 +84,8 @@ const lockControlService = {
       const commandHeaderIndex = data.indexOf(COMMAND_HEADER)
       const commandBody = data.slice(commandHeaderIndex + COMMAND_HEADER.length, commandHeaderIndex + COMMAND_HEADER.length + 10)
 
-      if (commandBody.length < 10) {
-        console.log('锁控板命令未接收完整')
-        return null
-      }
+      // 锁控板命令未接收完整
+      if (commandBody.length < 10) return null
 
       // 最多一次查询 24 个锁的状态，分三组，每组 8 个锁，转化为 2 进制后格式为 00000001 ，0 代表开启，1 代表关闭
       //17 - 24 锁控状态

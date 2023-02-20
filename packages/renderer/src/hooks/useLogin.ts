@@ -1,6 +1,6 @@
 import { useStore } from '@/store'
 import createAlert from '@/components/BaseAlert'
-import useUser from './useUser'
+import useSys from './useSys'
 import { password_KEY } from '@/config'
 
 export interface FormData {
@@ -11,7 +11,7 @@ export interface FormData {
 export default function () {
   const store = useStore()
   const { changeIsLoggedIn, changeLoginVisible, saveUserData, changeLoginModeIndex } = store
-  const { getUserData } = useUser()
+  const { getUserData } = useSys()
 
   const onLogin = (userData: any) => {
     changeIsLoggedIn(true)

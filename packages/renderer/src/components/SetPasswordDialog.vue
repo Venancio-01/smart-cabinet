@@ -34,7 +34,7 @@
 <script lang="ts" setup>
 import { useStore } from '@/store'
 import createAlert from '@/components/BaseAlert'
-import useUser from '@/hooks/useUser'
+import useSys from '@/hooks/useSys'
 
 interface Props {
   visible: boolean
@@ -50,7 +50,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits(['update:visible'])
 const store = useStore()
 const { resetOperationTimeout } = store
-const { updateUserPassword } = useUser()
+const { updateUserPassword } = useSys()
 const { user } = storeToRefs(store)
 const loginName = user.value?.login_name || ''
 
