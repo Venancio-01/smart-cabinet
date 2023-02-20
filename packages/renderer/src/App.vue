@@ -1,5 +1,6 @@
 <template>
-  <TheMain></TheMain>
+  <!-- <TheMain></TheMain> -->
+  <router-view></router-view>
 </template>
 
 <script setup lang="ts">
