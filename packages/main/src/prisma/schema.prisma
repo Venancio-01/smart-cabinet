@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://remote_user:lqs988910@192.168.112.73:3306/double_door?schema=public"
+  url      = "mysql://remote_user:lqs988910@192.168.112.73:3306/multi_door?schema=public"
 }
 
 model doc_document {
@@ -47,7 +47,7 @@ model doc_document {
   storage_location       String?   @db.VarChar(255)
   update_time            DateTime? @db.Timestamp(0)
   urgency                Int?
-  user_id                Int?
+  operation_user_id      Int?
   dept_duty              String?   @db.VarChar(255)
   deptid_duty            Int?
   personid_duty          Int?

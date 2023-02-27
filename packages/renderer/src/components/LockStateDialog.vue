@@ -5,7 +5,7 @@
       <div class="content">{{ lockControlIsOnline ? '连接成功' : '连接失败' }}</div>
     </div>
 
-    <div class="state-bar">
+    <div class="state-bar" v-if="!lockControlIsOnline">
       <div class="label">解决方案：</div>
       <div class="content">
         {{ lockControlIsOnline ? '锁控板连接正常' : '锁控板连线或供电是否正常，并尝试插拔后重新启动软件。' }}

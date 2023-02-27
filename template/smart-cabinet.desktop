@@ -1,0 +1,19 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Name=智能载体管控系统
+Comment=Code Editing. Redefined.
+GenericName=Text Editor
+Exec=gksu bash /home/liqingshan/Projects/smart-cabinet-repo/scripts/run.sh
+Icon=vscode
+Type=Application
+StartupNotify=false
+StartupWMClass=Code
+Categories=TextEditor;Development;IDE;
+MimeType=text/plain;inode/directory;application/x-code-workspace;
+Actions=new-empty-window;
+Keywords=vscode;
+
+[Desktop Action new-empty-window]
+Name=New Empty Window
+Exec=gksu bash /home/liqingshan/Projects/smart-cabinet-repo/scripts/run.sh
+Icon=vscode

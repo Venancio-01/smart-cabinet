@@ -5,7 +5,7 @@
       <div class="content">{{ rfidIsOnline ? '连接成功' : '连接失败' }}</div>
     </div>
 
-    <div class="state-bar">
+    <div class="state-bar" v-if="!rfidIsOnline">
       <div class="label">解决方案：</div>
       <div class="content">{{ rfidIsOnline ? 'RFID 正常连接' : '检查RFID线缆是否正常，并尝试插拔后重新启动软件。' }}</div>
     </div>

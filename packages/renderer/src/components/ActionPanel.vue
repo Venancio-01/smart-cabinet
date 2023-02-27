@@ -18,7 +18,7 @@
     </div>
     <div class="user-info">
       <div class="user-info-item">
-        <span class="label">登录名称：</span>
+        <span class="label">登录账号：</span>
         <span class="content">{{ user?.login_name }}</span>
       </div>
     </div>
@@ -39,19 +39,26 @@
     <BaseButton class="base-button" @click="openSetFingerDialog(2)"> 设置指纹二 </BaseButton>
     <BaseButton class="base-button" @click="openSetCardDialog"> 设置卡号 </BaseButton>
     <BaseButton class="base-button" @click="openViewDocumentDialog"> 查看文件 </BaseButton>
-    <BaseButton class="base-button !mt-[50px]" @click="onManualCheck"> 手动盘点 </BaseButton>
+    <BaseButton class="base-button !mt-[40px]" @click="onManualCheck"> 手动盘点 </BaseButton>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { useStore } from '@/store'
+import { useCheckStore } from '@/store/check'
 import useRfid from '@/hooks/useRfid'
+import useDocument from '@/hooks/useDocument'
 import createAlert from '@/components/BaseAlert'
+import useTime from '@/hooks/useTime'
 
 const store = useStore()
-const { resetOperationTimeout, changeCurrentCabinetDoorId, changeViewDocumentVisible } = store
-const { user, isChecking, rfidIsOnline, cabinetDoorList } = storeToRefs(store)
-const { startInventory } = useRfid()
+const { changeViewDocumentVisible,changeReviewDocumentCondition } = store
+const { user, rfidIsOnline, cabinetDoorList } = storeToRefs(store)
+const checkStore = useCheckStore()
+const { addLastOperationCabinetDoorRecords } = checkStore
+const { takeStock } = useRfid()
+const { recordDataWhenCheckStart } = useDocument()
+const { resetOperationTimeoutCountdown } = useTime()
 
 const setCardVisible = ref(false)
 const setPasswordVisible = ref(false)
@@ -85,7 +92,10 @@ const openSetCardDialog = () => {
 }
 
 const openViewDocumentDialog = () => {
-  changeCurrentCabinetDoorId(0)
+  changeReviewDocumentCondition({
+    state:null,
+    cabinetDoorId: null,
+  })
   changeViewDocumentVisible(true)
 }
 
@@ -94,23 +104,20 @@ const openViewDocumentDialog = () => {
  * @return {*}
  */
 const onManualCheck = () => {
+  resetOperationTimeoutCountdown()
+
   if (!rfidIsOnline.value) {
     createAlert('读取器连接失败')
     return
   }
 
-  if (isChecking.value) {
-    createAlert('正在盘点中，请勿重复点击')
-    return
-  }
+  // 记录盘点开始时的文件数据
+  recordDataWhenCheckStart()
 
-  cabinetDoorList.value.forEach(item => {
-    startInventory(item.id)
+  cabinetDoorList.value.forEach(door => {
+    addLastOperationCabinetDoorRecords(door)
+    takeStock(door.id)
   })
-
-  // startInventory(cabinetDoorList.value[0].id)
-
-  resetOperationTimeout()
 }
 </script>
 

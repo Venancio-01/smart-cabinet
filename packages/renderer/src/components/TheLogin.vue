@@ -23,7 +23,6 @@ import CardAuth from './CardAuth.vue'
 import FingerAuth from './FingerAuth.vue'
 import { password_KEY, FINGER_KEY, CARD_KEY } from '@/config'
 import { useStore } from '@/store'
-import useLock from '@/hooks/useLock'
 
 const store = useStore()
 const { changeLoginVisible, changeLoginModeIndex } = store

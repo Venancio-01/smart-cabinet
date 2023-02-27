@@ -1,0 +1,55 @@
+/**
+ * @see https://www.electron.build/configuration/configuration
+ */
+{
+  appId: 'YourAppID',
+  asar: true,
+  directories: {
+    output: 'release/${version}'
+  },
+  files: ['dist/packages/main', 'dist/packages/renderer'],
+  extraResources: [
+    {
+      from: 'packages/main/public/finger-lib',
+      to: 'public/finger-lib'
+    },
+    {
+      from: 'packages/main/public/crc-lib',
+      to: 'public/crc-lib'
+    },
+    {
+      from: 'packages/renderer/public/background',
+      to: 'public/background'
+    },
+    'node_modules/.prisma/**/*',
+    'node_modules/@prisma/client/**/*'
+  ],
+  mac: {
+    artifactName: '${productName}_${version}.${ext}',
+    target: ['dmg']
+  },
+  win: {
+    target: [
+      {
+        target: 'nsis',
+        arch: ['x64']
+      }
+    ],
+    artifactName: '${productName}_${version}.${ext}'
+  },
+  linux: {
+    target: [
+      {
+        target: 'deb',
+        arch: ['x64']
+      }
+    ],
+    artifactName: '${productName}_${version}.${ext}'
+  },
+  nsis: {
+    oneClick: false,
+    perMachine: false,
+    allowToChangeInstallationDirectory: true,
+    deleteAppDataOnUninstall: false
+  }
+}

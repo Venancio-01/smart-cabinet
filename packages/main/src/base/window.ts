@@ -9,12 +9,12 @@ const indexHtml = join(__dirname, '../../../renderer/index.html')
 export const createWindow = async () => {
   const win = new BrowserWindow({
     ...WINDOW_SIZE,
-    title: 'Main window',
+    title: '智能载体管控系统',
     // icon: join(process.env.PUBLIC, 'favicon.ico'),
     frame: false,
     webPreferences: {
       preload,
-      nodeIntegration: false,
+      nodeIntegration: true,
       contextIsolation: true
     }
   })
@@ -23,6 +23,7 @@ export const createWindow = async () => {
     win.loadFile(indexHtml)
   } else {
     win.loadURL(url)
+    // win.loadFile(indexHtml)
     win.webContents.openDevTools()
   }
 

@@ -12,6 +12,7 @@
 import useFinger from '@/hooks/useFinger'
 import { useStore } from '@/store'
 import createAlert from '@/components/BaseAlert'
+import useTime from '@/hooks/useTime'
 
 interface Props {
   visible: boolean
@@ -24,9 +25,9 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emits = defineEmits(['update:visible'])
 const store = useStore()
-const { resetOperationTimeout } = store
 const { fingerIsOnline, user } = storeToRefs(store)
 const { openFingerDevice, closeFingerDevice, startRegisterFinger, endRegisterFinger, registerResult } = useFinger()
+const { resetOperationTimeoutCountdown } = useTime()
 
 const show = computed({
   get: () => {
@@ -42,10 +43,6 @@ const title = computed(() => {
 })
 
 const message = ref('请按压同一手指3次')
-watch(fingerIsOnline, value => {
-  if (value) message.value = '请按压同一手指3次'
-  else message.value = '设备未连接'
-})
 
 watch(registerResult, value => {
   if (value) {
@@ -64,10 +61,16 @@ watch(registerResult, value => {
 })
 
 watch(show, async value => {
-  resetOperationTimeout()
+  resetOperationTimeoutCountdown()
+
   if (value) {
-    await openFingerDevice()
-    if (user.value?.id) startRegisterFinger(user.value?.id, props.order)
+    if (fingerIsOnline.value) {
+      message.value = '请按压同一手指3次'
+      await openFingerDevice()
+      if (user.value?.id) startRegisterFinger(user.value?.id, props.order)
+    } else {
+      message.value = '设备未连接'
+    }
   } else {
     await closeFingerDevice()
     endRegisterFinger()

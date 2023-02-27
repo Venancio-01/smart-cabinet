@@ -1,6 +1,6 @@
-import { resolve, join } from 'path'
+import { join } from 'path'
 
-const isDev = true
+const isDev = false
 
 // 设备最大连接数
 export const MAX_DEVICE_NUM = 16
@@ -13,15 +13,15 @@ export const VERIFY_SCORE_THRESHOLD = 50
 
 // 指纹设备 SDK 路径
 export const DEVICE_SDK_PATH = isDev
-  ? 'public/finger-lib/libzkfpcap.so'
+  ? 'packages/main/public/finger-lib/libzkfpcap.so'
   : join(process.resourcesPath, '/public/finger-lib/libzkfpcap.so')
 
 // 指纹算法 SDK 路径
 export const ALGORITHM_SDK_PATH = isDev
-  ? 'public/finger-lib/libzkfp.so'
+  ? 'packages/main/public/finger-lib/libzkfp.so'
   : join(process.resourcesPath, '/public/finger-lib/libzkfp.so')
 
 // CRC SDK 路径
 export const CRC_SDK_PATH = isDev
-  ? 'public/crc-lib/libCRC16_CCITT.so'
+  ? 'packages/main/public/crc-lib/libCRC16_CCITT.so'
   : join(process.resourcesPath, '/public/crc-lib/libCRC16_CCITT.so')

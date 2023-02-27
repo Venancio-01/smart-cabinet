@@ -19,14 +19,29 @@ const documentService = {
       return records
     },
 
-    async getDocumentData(condition: DocumentQueryProps) {
+    async getDocumentData(condition: DocumentQueryProps): Promise<{
+      data: doc_document[]
+      total: number
+    }> {
       const where = {
         cabinet_door_id: condition.cabinetId ? Number(condition.cabinetId) : undefined,
         doc_name: {
           contains: condition.title
         },
-        doc_reissue_number: condition.state !== '' ? Number(condition.state) : undefined,
+        doc_reissue_number: condition.state ?? undefined,
         binding_dept_id: condition.departmentId ? Number(condition.departmentId) : undefined
+      }
+
+      if (condition.state === 2) {
+        const misPlaceDocuments = await queryMisplacedDocument()
+        const rfids = misPlaceDocuments.map(item => item.operation_id)
+        where.doc_reissue_number = 1
+        where['doc_rfid'] = { in: rfids }
+      } else if (condition.state === 1) {
+        const misPlaceDocuments = await queryMisplacedDocument()
+        const rfids = misPlaceDocuments.map(item => item.operation_id)
+        where.doc_reissue_number = 1
+        where['doc_rfid'] = { notIn: rfids }
       }
 
       const records = await prisma.doc_document.findMany({
@@ -79,13 +94,9 @@ const documentService = {
      */
     async updateDocumentStateAfterCheck(cabinetDoor: CabinetDoorProps, userId?: number) {
       const TIDList = rfidService.fns.getReportData(cabinetDoor.antenna_address)
-
-      const arr = ['e280110c200073429a310a77', 'e280110c200072cae0e10973', 'e280110c2000734ae0e10973']
-      const result = arr.map(item => {
-        return TIDList.includes(item)
-      })
-      console.log(cabinetDoor.id, 'id')
-      console.log('🚀 ~ file: document-service.ts:87 ~ result ~ result:', result)
+      console.log(cabinetDoor.id,'柜门id')
+      console.log('🚀 ~ file: document-service.ts:94 ~ updateDocumentStateAfterCheck ~ TIDList:', TIDList)
+      console.log('🚀 ~ file: document-service.ts:94 ~ updateDocumentStateAfterCheck ~ TIDList.length:', TIDList.length)
 
       const documents = await documentService.fns.getAllDocumentData()
 
@@ -112,11 +123,11 @@ const documentService = {
 
           // 归还
           if (isDocumentDetected && doc.doc_reissue_number === 1) {
-            await updateDocStatusByID(doc.doc_id, 0)
+            await updateDocStatusByID(doc.doc_id, 0, userId)
           }
           // 借出
           else if (!isDocumentDetected && doc.doc_reissue_number === 0) {
-            await updateDocStatusByID(doc.doc_id, 1)
+            await updateDocStatusByID(doc.doc_id, 1, userId)
           }
         }
       }

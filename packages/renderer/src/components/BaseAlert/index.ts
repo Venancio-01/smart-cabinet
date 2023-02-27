@@ -1,7 +1,7 @@
-import { createVNode, render } from 'vue' //导入需要的vue函数
+import { App } from 'vue'
 import Alert from './index.vue'
 
-let instance: any = null
+let instance: App<Element> | null = null
 
 const createDialog = (text: string) => {
   if (instance) return
@@ -10,7 +10,7 @@ const createDialog = (text: string) => {
     visible: true,
     text,
     close: () => {
-      instance.unmount()
+      instance?.unmount()
       document.body.removeChild(mountNode)
       instance = null
     }

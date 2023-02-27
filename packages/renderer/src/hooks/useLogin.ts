@@ -2,6 +2,7 @@ import { useStore } from '@/store'
 import createAlert from '@/components/BaseAlert'
 import useSys from './useSys'
 import { password_KEY } from '@/config'
+import useTime from '@/hooks/useTime'
 
 export interface FormData {
   username: string
@@ -9,20 +10,35 @@ export interface FormData {
 }
 
 export default function () {
+  const router = useRouter()
   const store = useStore()
   const { changeIsLoggedIn, changeLoginVisible, saveUserData, changeLoginModeIndex } = store
   const { getUserData } = useSys()
+  const { openOperationTimeoutCountdown, closeOperationTimeoutCountdown } = useTime()
 
-  const onLogin = (userData: any) => {
+  /**
+   * @description: 登录
+   * @param {UserProps} userData
+   * @return {*}
+   */
+  const onLogin = (userData: UserProps) => {
     changeIsLoggedIn(true)
     changeLoginVisible(false)
     changeLoginModeIndex(password_KEY)
     saveUserData(userData)
+    openOperationTimeoutCountdown()
+    router.push('/main')
   }
 
+  /**
+   * @description: 登出
+   * @return {*}
+   */
   const onLogout = () => {
     changeIsLoggedIn(false)
     // saveUserData(null)
+    closeOperationTimeoutCountdown()
+    router.push('/')
   }
 
   const onPasswordLogin = async (formData: FormData) => {
@@ -49,6 +65,7 @@ export default function () {
       createAlert('刷卡登录失败')
       return
     }
+
     const result = await window.JSBridge.login.onCardLogin(cardNumber)
     if (result.success) {
       onLogin(result.data)

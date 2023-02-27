@@ -6,11 +6,10 @@ import useTime from '@/hooks/useTime'
 import useCabinet from '@/hooks/useCabinet'
 import useNetwork from '@/hooks/useNetwork'
 import useSys from './useSys'
-import useCheck from './useCheck'
 
 export default function () {
   useNetwork()
-  const { getDepartmentList } = useSys()
+  const { getDepartmentList, getUserList, getBackgroundImage } = useSys()
   const { getRfidConnectState } = useRfid()
   const {
     getLockControlConnectState,
@@ -18,19 +17,23 @@ export default function () {
     pollingQueryLockOpenStatus,
     stopPollingQueryLockOpenStatus,
     pollingQueryAllLockState,
-    stopPollingQueryAllLockState
+    stopPollingQueryAllLockState,
+    watchLockControlState
   } = useLock()
-  const { startGenerateCurrentTime, stopGenerateCurrentTime, startWatchLoginState } = useTime()
+  const { startGenerateCurrentTime, stopGenerateCurrentTime } = useTime()
   const { pollingGetFingerStatus, stopPollingGetFingerStatus } = useFinger()
   const { getMisPlaceDocuments, getAllDocumentData } = useDocument()
   const { getCabinetInfo, getCabinetDoorInfo } = useCabinet()
-  const { watchLockControlState } = useCheck()
 
   onMounted(async () => {
+    // 获取背景图片路径
+    getBackgroundImage()
     // 监听锁控板状态
     watchLockControlState()
     // 获取部门信息
     getDepartmentList()
+    // 获取用户列表
+    getUserList()
     // 获取柜体信息
     getCabinetInfo()
     // 获取柜门信息
@@ -51,7 +54,6 @@ export default function () {
     pollingQueryAllLockState()
     // 生成当前时间
     startGenerateCurrentTime()
-    startWatchLoginState()
     getAllDocumentData()
   })
 

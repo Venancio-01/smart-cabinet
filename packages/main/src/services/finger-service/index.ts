@@ -146,7 +146,7 @@ const fingerService = {
      * @description: 注册指纹
      * @return {*}
      */
-    async onRegister(templateData: any, userId: number, order: FingerOrder) {
+    async onRegister(templateData: unknown, userId: number, order: FingerOrder) {
       const resetRegisterData = () => {
         registerCurrentIndex = 0
         registerTemplates = []

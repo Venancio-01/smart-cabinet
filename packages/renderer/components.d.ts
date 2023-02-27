@@ -8,11 +8,11 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AButton: typeof import('ant-design-vue/es')['Button']
-    ACheckbox: typeof import('ant-design-vue/es')['Checkbox']
     ActionPanel: typeof import('./src/components/ActionPanel.vue')['default']
     AForm: typeof import('ant-design-vue/es')['Form']
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
     AInput: typeof import('ant-design-vue/es')['Input']
+    APopover: typeof import('ant-design-vue/es')['Popover']
     ASelect: typeof import('ant-design-vue/es')['Select']
     ASelectOption: typeof import('ant-design-vue/es')['SelectOption']
     ATable: typeof import('ant-design-vue/es')['Table']
@@ -22,9 +22,10 @@ declare module '@vue/runtime-core' {
     CardAuth: typeof import('./src/components/CardAuth.vue')['default']
     CheckPanel: typeof import('./src/components/CheckPanel.vue')['default']
     DeviceStatus: typeof import('./src/components/DeviceStatus.vue')['default']
-    DoorInfoPanel: typeof import('./src/components/DoorInfoPanel.vue')['default']
+    DocumentTable: typeof import('./src/components/DocumentTable.vue')['default']
     FingerAuth: typeof import('./src/components/FingerAuth.vue')['default']
     LockStateDialog: typeof import('./src/components/LockStateDialog.vue')['default']
+    MultiDoorPanel: typeof import('./src/components/MultiDoorPanel.vue')['default']
     NetworkStateDialog: typeof import('./src/components/NetworkStateDialog.vue')['default']
     PasswordAuth: typeof import('./src/components/PasswordAuth.vue')['default']
     RfidStateDialog: typeof import('./src/components/RfidStateDialog.vue')['default']
@@ -33,10 +34,9 @@ declare module '@vue/runtime-core' {
     SetCardDialog: typeof import('./src/components/SetCardDialog.vue')['default']
     SetFingerDialog: typeof import('./src/components/SetFingerDialog.vue')['default']
     SetPasswordDialog: typeof import('./src/components/SetPasswordDialog.vue')['default']
+    SingleDoorPanel: typeof import('./src/components/SingleDoorPanel.vue')['default']
     TheLogin: typeof import('./src/components/TheLogin.vue')['default']
-    TheMain: typeof import('./src/components/TheMain.vue')['default']
-    TheMainPanel: typeof import('./src/components/TheMainPanel.vue')['default']
-    ViewDocumentDialog: typeof import('./src/components/ViewDocumentDialog.vue')['default']
+    ViewDocumentsDialog: typeof import('./src/components/ViewDocumentsDialog.vue')['default']
     WarningDialog: typeof import('./src/components/WarningDialog.vue')['default']
   }
 }

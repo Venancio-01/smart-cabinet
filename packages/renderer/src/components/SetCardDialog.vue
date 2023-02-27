@@ -10,7 +10,7 @@
 <script lang="ts" setup>
 import useListenEnter from '@/hooks/useListenEnter'
 import useCard from '@/hooks/useCard'
-import { useStore } from '@/store'
+import useTime from '@/hooks/useTime'
 
 interface Props {
   visible: boolean
@@ -22,8 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits(['update:visible'])
 const { addListenEnter, removeListenEnter } = useListenEnter()
 const { updateCardNumber } = useCard()
-const store = useStore()
-const { resetOperationTimeout } = store
+const { resetOperationTimeoutCountdown } = useTime()
 
 const show = computed({
   get: () => {
@@ -42,7 +41,8 @@ const handleFocus = () => {
   cardNumberInput.value?.focus()
 }
 watch(show, value => {
-  resetOperationTimeout()
+  resetOperationTimeoutCountdown()
+
   if (value) {
     addListenEnter(async () => {
       const success = await updateCardNumber(cardNumber.value)
@@ -57,8 +57,9 @@ watch(show, value => {
 })
 
 const onClose = () => {
+  resetOperationTimeoutCountdown()
+
   cardNumber.value = ''
-  resetOperationTimeout()
 }
 </script>
 

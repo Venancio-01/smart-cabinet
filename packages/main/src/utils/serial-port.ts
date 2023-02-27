@@ -12,11 +12,24 @@ export default class SerialPort {
   private init({ path, baudRate = 9600 }: { path: string; baudRate?: number }) {
     if (this.portInstance) return
 
-    this.portInstance = new SerialPortLib({ path, baudRate }, err => {
-      if (err) {
-        console.log(`串口打开失败,${err}`)
-      }
+    this.portInstance = new SerialPortLib({ path, baudRate, autoOpen: false, dataBits: 8, stopBits: 1, parity: 'none' })
+  }
+
+  async open() {
+    return new Promise<void>((resolve, reject) => {
+      this.portInstance.open(error => {
+        if (error) reject(error)
+        else resolve()
+      })
     })
+  }
+
+  // 关闭串口
+  close() {
+    if (!this.portInstance) return
+
+    this.portInstance.close()
+    this.data = ''
   }
 
   // 写入数据
@@ -24,6 +37,15 @@ export default class SerialPort {
     if (!this.portInstance) return
 
     this.portInstance.write(data)
+  }
+
+  flush() {
+    if (!this.portInstance) return
+
+    this.portInstance.flush(error => {
+      if (error) console.log('flush error:', error)
+      else console.log('flush success:')
+    })
   }
 
   getData() {
@@ -44,6 +66,7 @@ export default class SerialPort {
 
     this.portInstance.on('open', () => {
       console.log('串口打开成功')
+      this.flush()
     })
 
     this.portInstance.on('close', () => {
@@ -57,14 +80,5 @@ export default class SerialPort {
     this.portInstance.on('data', data => {
       this.data += data.toString('hex')
     })
-  }
-
-  // 关闭串口
-  destroy() {
-    if (!this.portInstance) return
-
-    this.portInstance.close()
-    this.portInstance = null
-    this.data = ''
   }
 }

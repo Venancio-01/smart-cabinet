@@ -1,16 +1,6 @@
-import { ALGORITHM_SDK_PATH, CRC_SDK_PATH, VERIFY_SCORE_THRESHOLD } from '@/config/finger'
+import { ALGORITHM_SDK_PATH, VERIFY_SCORE_THRESHOLD } from '@/config/finger'
 import { HandleType, IntType, TemplateType, UcharType } from './types'
 import { Library } from 'ffi-napi';
-
-// const crcSDK = Library(CRC_SDK_PATH, {
-//   CRC16_CCITT: ['int', [UcharType, 'int']]
-// })
-// const buf = Buffer.from('0001021000080000000F01020006', 'hex')
-// const result = crcSDK.CRC16_CCITT(buf, buf.length)
-
-// console.log(buf.length, 'buf.length')
-// console.log(result, 'CRC16_CCITT result')
-// console.log(result.toString(16), 'CRC16_CCITT result')
 
 // 通过 ffi 解析 C++ SDK 方法
 export const algorithmSDK = Library(ALGORITHM_SDK_PATH, {
@@ -35,19 +25,19 @@ export const initAlgorithm = (width: number, height: number) => {
 
 /**
  * @description: 释放算法
- * @param {any} handle 算法句柄
+ * @param {unknown} handle 算法句柄
  * @return {*} 1 表⽰成功,其余表⽰失败
  */
-export const closeAlgorithm = (handle: any): number => {
+export const closeAlgorithm = (handle: unknown): number => {
   return algorithmSDK.BIOKEY_CLOSE(handle)
 }
 
 /**
  * @description: 生成注册的指纹模板
- * @param {any} handle 算法句柄
- * @param {any} templates 模板数组
+ * @param {unknown} handle 算法句柄
+ * @param {unknown} templates 模板数组
  * @param {number} num 数组个数
- * @param {any} gTemplate 返回最好的模板(建议分配2048字节)
+ * @param {unknown} gTemplate 返回最好的模板(建议分配2048字节)
  * @return {*} >0 表⽰成功，值为最好模板的实际数据⻓度
  */
 export const generateTemplate = (handle, templates, num, gTemplate) => {
@@ -76,32 +66,32 @@ export const verifyTemplate = (handle, template1, template2): boolean => {
 
 /**
  * @description: 指纹 1:N 比对
- * @param {any} handle 算法句柄
- * @param {any} templateDate 模版数据
- * @param {any} tid 返回识别成功的指纹ID
- * @param {any} score 返回识别成功的分数(推荐阈值70)
+ * @param {unknown} handle 算法句柄
+ * @param {unknown} templateDate 模版数据
+ * @param {unknown} tid 返回识别成功的指纹ID
+ * @param {unknown} score 返回识别成功的分数(推荐阈值70)
  * @return {number} 成功返回1
  */
-export const identifyTemplate = (handle: any, templateDate: any, tid: any, score: any): number => {
+export const identifyTemplate = (handle: unknown, templateDate: unknown, tid: unknown, score: unknown): number => {
   return algorithmSDK.BIOKEY_IDENTIFYTEMP(handle, templateDate, tid, score)
 }
 
 /**
  * @description: 提取模版
- * @param {any} handle 算法句柄
- * @param {any} imageBuffer sensorCapture 提取的图像数据
+ * @param {unknown} handle 算法句柄
+ * @param {unknown} imageBuffer sensorCapture 提取的图像数据
  * @param {number} width 图像宽度
  * @param {number} height 图像高度
- * @param {any} template 返回指纹模版数据（建议 2048 字节）
+ * @param {unknown} template 返回指纹模版数据（建议 2048 字节）
  * @param {number} len
  * @return {number} > 0 表⽰提取成功，返回模板数据实际⻓度
  */
 export const extractTemplate = (
-  handle: any,
-  imageBuffer: any,
+  handle: unknown,
+  imageBuffer: unknown,
   width: number,
   height: number,
-  template: any,
+  template: unknown,
   len: number
 ): number => {
   return algorithmSDK.BIOKEY_EXTRACT_GRAYSCALEDATA(handle, imageBuffer, width, height, template, len, 0)
@@ -109,13 +99,13 @@ export const extractTemplate = (
 
 /**
  * @description: 添加模板到1:N内存中
- * @param {any} handle 算法句柄
+ * @param {unknown} handle 算法句柄
  * @param {number} tid 指纹id
  * @param {number} templateLength 指纹模板数据长度
- * @param {any} templateData 指纹模板数据
+ * @param {unknown} templateData 指纹模板数据
  * @return {*} 返回添加结果和代码
  */
-export const addTemplateToDb = (handle: any, tid: number, templateLength: number, templateData: any) => {
+export const addTemplateToDb = (handle: unknown, tid: number, templateLength: number, templateData: unknown) => {
   const result = algorithmSDK.BIOKEY_DB_ADD(handle, tid, templateLength, templateData)
   const success = result === 1
   return { success, result }

@@ -36,6 +36,10 @@ export const queryRoleNameByRoleId = async (roleId: number) => {
   return record?.role_name
 }
 
+export const queryUsers = async () => {
+  return await prisma.sys_user.findMany()
+}
+
 export const queryUserByUserId = async (userId: number) => {
   const record = await prisma.sys_user.findUnique({
     where: {

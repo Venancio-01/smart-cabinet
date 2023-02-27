@@ -75,12 +75,13 @@ export const queryMisplacedDocumentCount = async (cabinetDoorId?: number, rfid?:
  * @param {number} state
  * @return {*}
  */
-export const updateDocStatusByID = async (id: number, state: number) => {
+export const updateDocStatusByID = async (id: number, state: number, userId: number) => {
   const result = await prisma.doc_document.updateMany({
     where: {
       doc_id: id
     },
     data: {
+      operation_user_id: userId,
       doc_reissue_number: state,
       doc_last_time: new Date()
     }

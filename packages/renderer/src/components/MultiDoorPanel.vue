@@ -9,19 +9,22 @@
     <!-- 柜门显示区域 -->
     <div class="grid h-[460px] w-[700px] grid-flow-col grid-rows-4 gap-[4px]">
       <div
-        v-for="(door, index) in cabinetDoorList"
+        v-for="(door, index) in doorList"
         :key="index"
         class="flex w-[180px] border-[1px] border-[#bebebe] bg-white"
         @click="onClickDoor(door)"
       >
         <div class="relative flex flex-1 items-center justify-center">
-          <div class="flex select-none flex-col items-center justify-center text-sm">
+          <div class=" absolute top-2 left-2">[{{ door.view_name }}]</div>
+
+          <div class="flex select-none mt-2 flex-col items-center justify-center text-sm">
             <p>{{ door.name }}</p>
-            <p class="mt-2 text-lg underline" @click.stop="handleOpenDocumentDialog(door.id)">
+            <p class="mt-1 text-lg underline" @click.stop="handleOpenDocumentDialog(door.id)">
               {{ door.inPlaceDocumentCount }} / {{ door.totalDocumentCount }}
             </p>
           </div>
         </div>
+
         <div class="w-[40px] border-l-[1px] border-[#bebebe]">
           <div class="m-auto mt-[20px] h-[20px] w-[20px] bg-[#bebebe]"></div>
         </div>
@@ -32,20 +35,26 @@
 
 <script lang="ts" setup>
 import { useStore } from '@/store'
+import { useCheckStore } from '@/store/check'
 import useLock from '@/hooks/useLock'
-import useLogin from '@/hooks/useLogin'
-import createAlert from '@/components/BaseAlert'
+import useTime from '@/hooks/useTime'
 
+const router = useRouter()
 const store = useStore()
-const { resetOperationTimeout, changeCabinetDoorData, changeCurrentCabinetDoorId, changeViewDocumentVisible } = store
-const { cabinetDoorList, lockControlIsOnline } = storeToRefs(store)
+const { changeCabinetDoorData, changeReviewDocumentCondition, changeViewDocumentVisible } = store
+const { cabinetDoorList, documentList } = storeToRefs(store)
+const checkStore = useCheckStore()
+const { addLastOperationCabinetDoorRecords } = checkStore
 const { openLock } = useLock()
-const { onLogout } = useLogin()
+const { resetOperationTimeoutCountdown } = useTime()
 
 const onClickDoor = (door: CabinetDoorProps) => {
-  resetOperationTimeout()
+  resetOperationTimeoutCountdown()
+
   openLock(door.kgbh)
-  onLogout()
+  addLastOperationCabinetDoorRecords(door)
+
+  router.push(`/open/${door.id}`)
 
   setTimeout(() => {
     changeCabinetDoorData({ ...door, isOpen: true })
@@ -53,20 +62,25 @@ const onClickDoor = (door: CabinetDoorProps) => {
 }
 
 const handleOpenDocumentDialog = (id: number) => {
-  changeCurrentCabinetDoorId(id)
+  changeReviewDocumentCondition({
+    state:null,
+    cabinetDoorId: id,
+  })
   changeViewDocumentVisible(true)
 }
 
-const message = ref('柜门状态正常')
-watch(
-  lockControlIsOnline,
-  value => {
-    if (!value) message.value = '柜门锁控异常'
-  },
-  {
-    immediate: true
-  }
-)
+const doorList = computed(() => {
+  return cabinetDoorList.value.map(door => {
+    const totalDocuments = documentList.value.filter(item => item.cabinet_door_id === door.id)
+    const inPlaceDocuments = totalDocuments.filter(item => item.doc_reissue_number === 0)
+
+    return {
+      ...door,
+      inPlaceDocumentCount: inPlaceDocuments.length,
+      totalDocumentCount: totalDocuments.length
+    }
+  })
+})
 </script>
 
 <style scoped>

@@ -1,15 +1,22 @@
 import { useStore } from '@/store'
-import createAlert from '@/components/BaseAlert'
-import { doc_document } from '@prisma/client'
+import { useCheckStore } from '@/store/check'
 
 export default function () {
   const store = useStore()
   const { saveMisPlaceDocumentData, saveDocumentList } = store
-  const { user } = storeToRefs(store)
+  const { user, documentList, misPlaceDocumentData } = storeToRefs(store)
+  const checkStore = useCheckStore()
+  const {
+    changeFirstDocumentRecord,
+    changeFirstMisPlaceDocumentRecord,
+    changeEndDocumentRecord,
+    changeEndMisPlaceDocumentRecord
+  } = checkStore
 
   const getAllDocumentData = async () => {
     const documents = await window.JSBridge.document.getAllDocumentData()
     saveDocumentList(documents)
+    return documents
   }
 
   const getDocumentData = async (condition: DocumentQueryProps) => {
@@ -39,9 +46,9 @@ export default function () {
    * @return {*}
    */
   const getMisPlaceDocuments = async () => {
-    const data = await window.JSBridge.document.getMisPlaceDocuments()
-    saveMisPlaceDocumentData(data)
-    return data
+    const records = await window.JSBridge.document.getMisPlaceDocuments()
+    saveMisPlaceDocumentData(records)
+    return records
   }
 
   /**
@@ -49,37 +56,28 @@ export default function () {
    * @return {*}
    */
   const updateDocumentStatus = async (door: CabinetDoorProps) => {
-    const user_id = user.value?.id
-    await window.JSBridge.document.updateDocumentStateAfterCheck({ ...door }, user_id)
+    const id = user.value?.id
+    await window.JSBridge.document.updateDocumentStateAfterCheck({ ...door }, id)
   }
 
-  const generateCheckResult = async ({
-    beforeDocuments,
-    afterDocuments,
-    beforeMisPlaceDocumentCount,
-    afterMisPlaceDocumentCount
-  }: {
-    beforeDocuments: doc_document[]
-    afterDocuments: doc_document[]
-    beforeMisPlaceDocumentCount: number
-    afterMisPlaceDocumentCount: number
-  }) => {
-    let lendCount = 0
-    let returnCount = 0
-    const misPlaceDocumentCount =
-      afterMisPlaceDocumentCount > beforeMisPlaceDocumentCount ? afterMisPlaceDocumentCount - beforeMisPlaceDocumentCount : 0
+  /**
+   * @description: 记录开始盘点时的文件数据
+   * @return {*}
+   */
+  const recordDataWhenCheckStart = async () => {
+    changeFirstDocumentRecord(documentList.value)
+    changeFirstMisPlaceDocumentRecord(misPlaceDocumentData.value)
+  }
 
-    beforeDocuments.forEach(item => {
-      afterDocuments.forEach(subItem => {
-        if (item.doc_id !== subItem.doc_id) return
-        if (item.doc_reissue_number === 0 && subItem.doc_reissue_number === 1) lendCount++
-        if (item.doc_reissue_number === 1 && subItem.doc_reissue_number === 0) returnCount++
-      })
-    })
-
-    if (lendCount === 0 && returnCount === 0 && misPlaceDocumentCount === 0) createAlert('盘点成功，柜内文件无变化')
-    else
-      createAlert(`盘点成功，本次借出文件数量：${lendCount},归还文件数量：${returnCount}，错位文件数量：${misPlaceDocumentCount}`)
+  /**
+   * @description: 记录结束盘点时的文件数据
+   * @return {*}
+   */
+  const recordDataWhenCheckEnd = async () => {
+    const documents = await getAllDocumentData()
+    const misPlaceDocuments = await getMisPlaceDocuments()
+    changeEndDocumentRecord(documents)
+    changeEndMisPlaceDocumentRecord(misPlaceDocuments)
   }
 
   return {
@@ -87,8 +85,9 @@ export default function () {
     getAllDocumentData,
     getMisPlaceDocuments,
     updateDocumentStatus,
-    generateCheckResult,
     getDocumentByCabinetId,
     getInPlaceDocumentCount,
+    recordDataWhenCheckStart,
+    recordDataWhenCheckEnd
   }
 }

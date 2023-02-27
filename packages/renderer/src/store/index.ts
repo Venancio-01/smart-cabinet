@@ -1,8 +1,8 @@
-import { CHECK_TIME, OPERATION_TIMEOUT } from '@/config'
-import { doc_document, rfid_cabinet, rfid_switch_record, sys_dept } from '@prisma/client'
+import { doc_document, rfid_cabinet, rfid_switch_record, sys_dept, sys_user } from '@prisma/client'
 import { defineStore } from 'pinia'
 
 interface State {
+  backgroundUrl: string
   lockControlIsOnline: boolean
   networkIsOnline: boolean
   fingerIsOnline: boolean
@@ -11,47 +11,64 @@ interface State {
   loginModeIndex: number
   isLoggedIn: boolean
   user: UserProps | null
+  userList: sys_user[]
   departmentList: sys_dept[]
   documentList: doc_document[]
   misPlaceDocumentData: rfid_switch_record[]
   cabinetData: rfid_cabinet | null
   cabinetDoorList: CabinetDoorProps[]
-  operationTimeout: number
   lockCommandInterval: number
   lockControlState: null | LockControlStateProps
   currentCabinetDoorId: number
   viewDocumentVisible: boolean
   checkStatusDialogVisible: boolean
-  currentCheckCabinetDoor: CabinetDoorProps | null
+  currentCheckCabinetDoorId: number | null
+  checkResultList: doc_document[]
+  reviewDocumentCondition: ReviewDocumentCondition
+}
+
+type ReviewDocumentCondition = {
+  cabinetDoorId: number | null
+  state: number | null
 }
 
 export const useStore = defineStore('main', {
   state: (): State => {
     return {
-      lockControlIsOnline: true,
-      networkIsOnline: true,
+      backgroundUrl: '',
+      lockControlIsOnline: false,
+      networkIsOnline: false,
       fingerIsOnline: false,
-      rfidIsOnline: true,
+      rfidIsOnline: false,
       loginVisible: false,
       loginModeIndex: 1,
       isLoggedIn: false,
       user: null,
+      userList: [],
       departmentList: [],
       documentList: [],
       cabinetData: null,
       cabinetDoorList: [],
       misPlaceDocumentData: [],
-      operationTimeout: OPERATION_TIMEOUT,
       lockCommandInterval: 10,
       lockControlState: null,
       currentCabinetDoorId: 0,
       viewDocumentVisible: false,
       checkStatusDialogVisible: false,
-      currentCheckCabinetDoor: null
+      currentCheckCabinetDoorId: null,
+      checkResultList: [],
+      reviewDocumentCondition: {
+        cabinetDoorId: null,
+        state: null
+      }
     }
   },
   getters: {
-    misPlaceDocumentCount(state) {
+    // 是单柜门
+    isSingleDoor(state) {
+      return state.cabinetDoorList.length === 1
+    },
+    misPlaceDocumentTotal(state) {
       return state.misPlaceDocumentData.length
     },
     documentTotal(state) {
@@ -64,10 +81,13 @@ export const useStore = defineStore('main', {
       }, 0)
     },
     isChecking(state) {
-      return state.cabinetDoorList.some(item => item.checkCountDown !== 10)
+      return state.cabinetDoorList.some(item => item.checkCountdown !== 10)
     }
   },
   actions: {
+    changeBackgroundUrl(url: string) {
+      this.backgroundUrl = url
+    },
     changeRfidIsConnected(state: boolean) {
       this.rfidIsOnline = state
     },
@@ -96,9 +116,12 @@ export const useStore = defineStore('main', {
       this.cabinetDoorList = list
     },
     changeCabinetDoorData(data: CabinetDoorProps) {
-      const id = data.id
-      const index = this.cabinetDoorList.findIndex(item => item.id === id)
-      this.cabinetDoorList[index] = data
+      this.cabinetDoorList = this.cabinetDoorList.reduce<CabinetDoorProps[]>((acc, cur) => {
+        if (cur.id === data.id) acc.push(data)
+        else acc.push(cur)
+
+        return acc
+      }, [])
     },
     saveMisPlaceDocumentData(data: rfid_switch_record[]) {
       this.misPlaceDocumentData = data
@@ -106,17 +129,14 @@ export const useStore = defineStore('main', {
     saveUserData(user: UserProps | null) {
       this.user = user
     },
+    changeUserList(list: sys_user[]) {
+      this.userList = list
+    },
     saveDepartmentList(list: sys_dept[]) {
       this.departmentList = list
     },
     saveDocumentList(list: doc_document[]) {
       this.documentList = list
-    },
-    changeOperationTimeout(time: number) {
-      this.operationTimeout = time
-    },
-    resetOperationTimeout() {
-      this.changeOperationTimeout(OPERATION_TIMEOUT)
     },
     changeLockCommandInterval(time: number) {
       this.lockCommandInterval = time
@@ -124,17 +144,20 @@ export const useStore = defineStore('main', {
     changeLockControlState(state: LockControlStateProps | null) {
       this.lockControlState = state
     },
-    changeCurrentCabinetDoorId(id: number) {
-      this.currentCabinetDoorId = id
-    },
     changeViewDocumentVisible(visible: boolean) {
       this.viewDocumentVisible = visible
     },
     changeCheckStatusDialogVisible(visible: boolean) {
       this.checkStatusDialogVisible = visible
     },
-    changeCurrentCheckCabinetDoor(cabinetDoor: CabinetDoorProps | null) {
-      this.currentCheckCabinetDoor = cabinetDoor
+    changeCurrentCheckCabinetDoorId(cabinetDoorId: number | null) {
+      this.currentCheckCabinetDoorId = cabinetDoorId
+    },
+    saveCheckResultList(result: doc_document[]) {
+      this.checkResultList = result
+    },
+    changeReviewDocumentCondition(condition: ReviewDocumentCondition) {
+      this.reviewDocumentCondition = condition
     }
   }
 })

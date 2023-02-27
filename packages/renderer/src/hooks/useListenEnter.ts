@@ -1,8 +1,8 @@
-let preFn: Function | null = null
-let curFn: Function | null = null
+let preFn: (() => void) | null
+let curFn: (() => void) | null
 
 export default function () {
-  const addListenEnter = (callback: Function) => {
+  const addListenEnter = (callback: () => void) => {
     if (curFn) preFn = curFn
 
     curFn = callback

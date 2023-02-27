@@ -1,10 +1,17 @@
 import { useStore } from '@/store'
+import { useCheckStore } from '@/store/check'
 import { QUERY_OPEN_STATE_INTERVAL, SEND_QUERY_COMMAND_INTERVAL } from '@/config'
+import useRfid from './useRfid'
+import useDocument from './useDocument'
 
 export default function () {
   const store = useStore()
-  const { changeLockControlIsOnline, changeLockControlState } = store
-  const { cabinetData } = storeToRefs(store)
+  const { changeLockControlIsOnline, changeLockControlState, changeCabinetDoorData } = store
+  const { cabinetData, cabinetDoorList, lockControlState } = storeToRefs(store)
+  const checkStore = useCheckStore()
+  const { addLastOperationCabinetDoorRecords } = checkStore
+  const { takeStock } = useRfid()
+  const { recordDataWhenCheckStart } = useDocument()
 
   // 查询锁孔开启状态的定时器
   const queryLockOpenStatusTimer = ref<number | null>(null)
@@ -72,6 +79,31 @@ export default function () {
     if (queryAllLockTimer.value) clearInterval(queryAllLockTimer.value)
   }
 
+  const watchLockControlState = () => {
+    watch(lockControlState, value => {
+      if (value === null) return
+
+      cabinetDoorList.value.forEach(door => {
+        const isOpen = value[door.kgbh]
+
+        if (door.isOpen && !isOpen && door.checkCountdown === 10) {
+          console.log(`${door.kgbh} - 门锁关闭`)
+
+          // 记录最后一次操作的柜门
+          addLastOperationCabinetDoorRecords(door)
+
+          // 记录盘点开始时的文件数据
+          recordDataWhenCheckStart()
+          takeStock(door.id)
+          changeCabinetDoorData({ ...door, isOpen: false })
+        } else if (isOpen) {
+          console.log(`${door.kgbh} - 门锁开启`)
+          changeCabinetDoorData({ ...door, isOpen: true })
+        }
+      })
+    })
+  }
+
   return {
     getLockControlConnectState,
     initLockControl,
@@ -79,6 +111,7 @@ export default function () {
     pollingQueryLockOpenStatus,
     stopPollingQueryLockOpenStatus,
     pollingQueryAllLockState,
-    stopPollingQueryAllLockState
+    stopPollingQueryAllLockState,
+    watchLockControlState
   }
 }

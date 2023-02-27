@@ -1,4 +1,4 @@
-import { rfid_cabinet_door, sys_user } from '@prisma/client'
+import { doc_document, rfid_cabinet_door, sys_user, rfid_switch_record } from '@prisma/client'
 export {}
 
 type ServiceType = typeof import('../packages/main/src/services').services
@@ -49,10 +49,8 @@ declare global {
   }
 
   interface CabinetDoorProps extends rfid_cabinet_door {
-    totalDocumentCount: number
-    inPlaceDocumentCount: number
     name: string | null | undefined
-    checkCountDown: number
+    checkCountdown: number
     isOpen: boolean
   }
 
@@ -61,12 +59,18 @@ declare global {
   }
 
   interface DocumentQueryProps {
-    page?: number
-    size?: number
+    page: number
+    size: number
     title?: string
-    cabinetId?: string
-    departmentId?: string
-    state?: string
+    cabinetId?: number | null
+    departmentId?: number | null
+    state?: number | null
+  }
+
+  type CheckResultType = CabinetDoorProps & {
+    borrowDocuments: doc_document[]
+    returnDocuments: doc_document[]
+    misPlaceDocumentRecords: rfid_switch_record[]
   }
 
   type FingerOrder = 1 | 2

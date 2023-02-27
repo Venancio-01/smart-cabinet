@@ -11,22 +11,22 @@ export const deviceSDK = Library(DEVICE_SDK_PATH, {
   sensorGetParameter: ['int', [HandleType, 'int']] // 获取指纹仪简单参数
 })
 
-export const getDeviceCount = (deviceList: any[], max: number) => {
+export const getDeviceCount = (deviceList: unknown[], max: number) => {
   return deviceSDK.sensorEnumDevices(deviceList, max)
 }
 
-export const openDeviceByHandle = (handle: any) => {
+export const openDeviceByHandle = (handle: unknown) => {
   return deviceSDK.sensorOpen(handle)
 }
 
-export const closeDeviceByHandle = (handle: any) => {
+export const closeDeviceByHandle = (handle: unknown) => {
   return deviceSDK.sensorClose(handle)
 }
 
-export const getParameterByHandle = (handle: any, type: 1 | 2) => {
+export const getParameterByHandle = (handle: unknown, type: 1 | 2) => {
   return deviceSDK.sensorGetParameter(handle, type)
 }
 
-export const captureFingerImage = (handle: any, imageBuffer: any, size: number) => {
+export const captureFingerImage = (handle: unknown, imageBuffer: unknown, size: number) => {
   return deviceSDK.sensorCapture(handle, imageBuffer, size)
 }

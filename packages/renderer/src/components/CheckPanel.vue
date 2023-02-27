@@ -1,10 +1,10 @@
 <template>
   <div class="fixed top-0 left-0 z-[9999] flex h-screen w-screen items-center justify-center">
     <div
-      class="flex h-[300px] w-[400px] flex-col items-center justify-center rounded-md bg-[url('@/assets/images/bj.png')] bg-cover text-xl text-white shadow-[0px_0px_16px] shadow-black"
-    >
+      class="flex h-[300px] w-[400px] select-none flex-col items-center justify-center rounded-md bg-cover text-xl text-white shadow-[0px_0px_16px] shadow-black"
+      :style="{backgroundImage:`url(${backgroundUrl})`}">
       <p>柜门盘点中</p>
-      <p>剩余时间： {{ currentCheckCabinetDoor?.checkCountDown }} 秒</p>
+      <p>剩余时间： {{ checkCountdown }} 秒</p>
     </div>
   </div>
 </template>
@@ -13,6 +13,16 @@
 import { useStore } from '@/store'
 
 const store = useStore()
-const { cabinetDoorList, isChecking,currentCheckCabinetDoor } = storeToRefs(store)
+const { changeCheckStatusDialogVisible } = store
+const { cabinetDoorList, currentCheckCabinetDoorId,backgroundUrl } = storeToRefs(store)
 
+const checkCountdown = computed(() => {
+  return cabinetDoorList.value.find(item => item.id === currentCheckCabinetDoorId.value)?.checkCountdown
+})
+
+watch(checkCountdown, value => {
+  if (value === 0) {
+    changeCheckStatusDialogVisible(false)
+  }
+})
 </script>

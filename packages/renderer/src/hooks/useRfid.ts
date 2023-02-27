@@ -1,15 +1,33 @@
 import { useStore } from '@/store'
+import { useCheckStore } from '@/store/check'
 import createAlert from '@/components/BaseAlert'
 import { CHECK_TIME } from '@/config'
 import useDocument from './useDocument'
-import useCabinet from './useCabinet'
+import useCheck from './useCheck'
+import useTime from '@/hooks/useTime'
 
 export default function () {
+  const router = useRouter()
   const store = useStore()
-  const { changeRfidIsConnected, changeCabinetDoorData, changeCheckStatusDialogVisible, changeCurrentCheckCabinetDoor } = store
-  const { cabinetDoorList, misPlaceDocumentCount, isChecking } = storeToRefs(store)
-  const { updateDocumentStatus, getAllDocumentData, getMisPlaceDocuments, generateCheckResult } = useDocument()
-  const { getCabinetDoorInfo } = useCabinet()
+  const {
+    changeRfidIsConnected,
+    changeCabinetDoorData,
+    changeCheckStatusDialogVisible,
+    changeCurrentCheckCabinetDoorId,
+    changeViewDocumentVisible
+  } = store
+  const { cabinetDoorList, isChecking } = storeToRefs(store)
+  const checkStore = useCheckStore()
+  const { clearLastOperationCabinetDoorRecords, changeLastOperationCabinetDoorList } = checkStore
+  const { lastOperationCabinetDoorRecords } = storeToRefs(checkStore)
+  const { updateDocumentStatus, recordDataWhenCheckEnd } = useDocument()
+  const { generateCheckResult } = useCheck()
+  const {
+    resetOperationTimeoutCountdown,
+    resetConfirmationTimeCountdown,
+    closeOperationTimeoutCountdown,
+    openConfirmationTimeCountdown
+  } = useTime()
 
   // 获取 RFID 连接状态
   const getRfidConnectState = async () => {
@@ -49,64 +67,13 @@ export default function () {
    * @description: 开启盘点
    * @return {*}
    */
-  // const startCheck = async () => {
-  //   const isConnected = await initRfid()
+  const takeStock = async (doorId: number) => {
+    resetOperationTimeoutCountdown()
+    resetConfirmationTimeCountdown()
 
-  //   if (!isConnected) {
-  //     createAlert('读取连接设备失败')
-  //     return
-  //   }
-
-  //   if (isChecking.value) {
-  //     createAlert('正在盘点中')
-  //     return
-  //   }
-
-  //   await sendCloseCommand()
-  //   await sendOpenCommand()
-
-  //   changeIsChecking(true)
-  //   const beforeDocuments = await getAllDocumentData()
-  //   const beforeMisPlaceDocumentCount = misPlaceDocumentCount.value
-  //   console.log('🚀 ~ file: useRfid.ts:62 ~ startCheck ~ beforeMisPlaceDocumentCount', beforeMisPlaceDocumentCount)
-
-  //   let timer = window.setInterval(async () => {
-  //     changeCheckTime(checkTime.value - 1)
-
-  //     if (checkTime.value === 0) {
-  //       clearInterval(timer)
-  //       // 发送关闭命令
-  //       await sendCloseCommand()
-  //       // 更新文件状态
-  //       await updateDocumentStatus()
-  //       // 销毁 socket 实例
-  //       await destroyRfid()
-
-  //       // 获取更新后的文件以及错位文件数量，生成盘点结果
-  //       const afterDocuments = await getAllDocumentData()
-  //       await getMisPlaceDocuments()
-  //       const afterMisPlaceDocumentCount = misPlaceDocumentCount.value
-  //       console.log('🚀 ~ file: useRfid.ts:80 ~ timer ~ afterMisPlaceDocumentCount', afterMisPlaceDocumentCount)
-  //       generateCheckResult({ beforeDocuments, afterDocuments, beforeMisPlaceDocumentCount, afterMisPlaceDocumentCount })
-
-  //       changeIsChecking(false)
-  //       nextTick(() => {
-  //         changeCheckTime(CHECK_TIME)
-  //       })
-  //     }
-  //   }, 1000)
-  // }
-
-  /**
-   * @description: 开启盘点
-   * @return {*}
-   */
-  const startInventory = async (doorId: number) => {
     const door = computed(() => {
       return cabinetDoorList.value.find(item => item.id === doorId)
     })
-
-    console.log('🚀 ~ file: useRfid.ts:108 ~ door ~ door:', door)
 
     if (door.value === undefined) return
 
@@ -119,13 +86,13 @@ export default function () {
       return false
     }
 
-    const isInventory = door.value.checkCountDown !== 10
+    const isInventory = door.value.checkCountdown !== 10
     if (isInventory) {
       createAlert('该柜门正在盘点中')
       return false
     }
 
-    changeCurrentCheckCabinetDoor(door.value)
+    changeCurrentCheckCabinetDoorId(door.value.id)
     // 开启盘点面板
     changeCheckStatusDialogVisible(true)
 
@@ -137,11 +104,10 @@ export default function () {
 
       changeCabinetDoorData({
         ...door.value,
-        checkCountDown: door.value.checkCountDown - 1
+        checkCountdown: door.value.checkCountdown - 1
       })
 
-      if (door.value.checkCountDown !== 0) return
-      console.log('盘点计时结束')
+      if (door.value.checkCountdown !== 0) return
 
       clearInterval(timer)
 
@@ -149,27 +115,47 @@ export default function () {
       await sendCloseCommand(address)
       // 更新文件状态
       await updateDocumentStatus(door.value)
-      // 重新获取柜门信息
-      getCabinetDoorInfo()
-      // 重新获取文件信息
-      getAllDocumentData()
-      // 重新获取错放文件数量
-      getMisPlaceDocuments()
 
       if (door.value === undefined) return
-      // 复原倒计时
-      changeCabinetDoorData({ ...door.value, checkCountDown: CHECK_TIME })
 
-      // 如果没有正在盘点的柜门，则销毁 socket 实例
+      // 复原倒计时
+      changeCabinetDoorData({ ...door.value, checkCountdown: CHECK_TIME })
+
+      // 销毁 socket 实例
+      await destroyRfid(address)
+
+      // 如果没有正在盘点的柜门
       if (!isChecking.value) {
-        await destroyRfid(address)
-        changeCheckStatusDialogVisible(false)
+        // 记录盘点结束时的文件数据
+        await recordDataWhenCheckEnd()
+
+        // 关闭查看文件弹出框
+        changeViewDocumentVisible(false)
+
+        console.log(lastOperationCabinetDoorRecords.value,'lastOperationCabinetDoorRecords.value')
+
+        // 记录本次盘点操作的的柜门
+        changeLastOperationCabinetDoorList(lastOperationCabinetDoorRecords.value)
+        // 清空这一次操作的柜门记录
+        clearLastOperationCabinetDoorRecords()
+        // 生成盘点结果
+        generateCheckResult()
+
+        // 关闭操作超时倒计时
+        closeOperationTimeoutCountdown()
+        // 重置确认倒计时
+        resetConfirmationTimeCountdown()
+        // 开启确认倒计时
+        openConfirmationTimeCountdown()
+
+        // 跳转盘点结果页面
+        router.push('/result')
       }
     }, 1000)
   }
 
   return {
     getRfidConnectState,
-    startInventory
+    takeStock
   }
 }

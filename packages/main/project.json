@@ -4,18 +4,33 @@
   "sourceRoot": "packages/main/src",
   "projectType": "application",
   "targets": {
-    "pull-db":{
-      "command": "cd packages/main/src/prisma && npx prisma db pull"
+    "pull-db": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd packages/main/src/prisma && npx prisma db pull"
+      }
     },
     "generate-db": {
-      "command": "cd packages/main/src/prisma && npx prisma generate"
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "cd packages/main/src/prisma && npx prisma generate"
+      }
+    },
+    "build:development": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "sudo bash scripts/env.development.sh && npx swc packages/main --out-dir dist/packages"
+      }
     },
     "build": {
-      "command": "npx swc packages/main --out-dir dist/packages"
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "sudo bash scripts/env.production.sh && npx swc packages/main --out-dir dist/packages"
+      }
     },
     "dev": {
       "dependsOn": [
-        "build"
+        "build:development"
       ],
       "command": "sudo node node_modules/.bin/electron dist/packages/main/src/index.js --no-sandbox"
     },

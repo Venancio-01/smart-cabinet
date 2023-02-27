@@ -2,8 +2,6 @@ import { app, BrowserWindow, globalShortcut } from 'electron'
 import { services, makeChannelName } from '@/services'
 import { createWindow } from '@/base/window'
 import { ipcMain } from 'electron'
-import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
-import lockControlService from './services/lock-control-service'
 import { exec } from 'child_process'
 
 // Disable GPU Acceleration for Linux.
@@ -29,7 +27,8 @@ const disableShortcuts = () => {
   // 禁用 Control+Shift+I 打开开发者面板
   // 禁用 Control+R 刷新页面
   // 禁用 F11 全屏
-  globalShortcut.registerAll(['CommandOrControl+Shift+I', 'CommandOrControl+R', 'F11'], () => {
+  // ['CommandOrControl+Shift+I', 'CommandOrControl+R', 'F11']
+  globalShortcut.registerAll(['CommandOrControl+R', 'F11'], () => {
     return false
   })
 }
@@ -62,11 +61,6 @@ app.whenReady().then(async () => {
   installService()
   if (app.isPackaged) {
     disableShortcuts()
-  } else {
-    // const options = {
-    //   loadExtensionOptions: { allowFileAccess: true }
-    // }
-    // await installExtension([VUEJS3_DEVTOOLS], options)
   }
 })
 
@@ -93,8 +87,4 @@ app.on('activate', () => {
   } else {
     createWindow()
   }
-})
-
-app.on('before-quit', () => {
-  lockControlService.fns.destroy()
 })

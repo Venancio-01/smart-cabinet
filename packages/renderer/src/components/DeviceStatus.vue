@@ -1,20 +1,25 @@
 <template>
-  <WarningDialog v-model:visible="warningVisible"></WarningDialog>
-  <RfidStateDialog v-model:visible="rfidVisible"></RfidStateDialog>
-  <LockStateDialog v-model:visible="rockVisible"></LockStateDialog>
-  <NetworkStateDialog v-model:visible="networkVisible"></NetworkStateDialog>
+  <div class="flex w-full items-center justify-between bg-black bg-opacity-30 px-4">
+    <WarningDialog v-model:visible="warningVisible"></WarningDialog>
+    <RfidStateDialog v-model:visible="rfidVisible"></RfidStateDialog>
+    <LockStateDialog v-model:visible="rockVisible"></LockStateDialog>
+    <NetworkStateDialog v-model:visible="networkVisible"></NetworkStateDialog>
 
-  <div class="absolute bottom-0 left-0 flex h-[50px] w-full items-center justify-between bg-black bg-opacity-30 px-4">
     <div class="flex h-full select-none items-center text-lg text-white">
       <span class="mr-4"
-        >在位文件：<span class="text-xl text-blue-400 underline" @click="handleOpenDocumentDialog"
-          >{{ inPlaceDocumentTotal }} / {{ documentTotal }}</span
-        ></span
-      >
-      <span>错放数：{{ misPlaceDocumentCount }}</span>
+        >在位文件 / 全部文件：
+        <span class="text-xl text-blue-400 underline" @click="handleOpenDocumentDialog">
+          {{ inPlaceDocumentTotal }} / {{ documentTotal }}</span>
+          </span>
+      <span>
+          错放文件：
+          <span class="text-xl text-blue-400 underline" @click="handleOpenDocumentDialogWithMisPlace">
+            {{ misPlaceDocumentTotal }}
+          </span>
+        </span>
     </div>
     <div class="state-display-area">
-      <img :src="misPlaceDocumentCount === 0 ? WarningNormalState : WarningFailState" alt="警告" @click="onShowWarning" />
+      <img :src="misPlaceDocumentTotal === 0 ? WarningNormalState : WarningFailState" alt="警告" @click="warningVisible = true" />
       <img :src="rfidIsOnline ? RfidNormalState : RfidFailState" alt="Rfid状态" @click="rfidVisible = true" />
       <img :src="lockControlIsOnline ? RockNormalState : RockFailState" alt="锁控板状态" @click="rockVisible = true" />
       <img :src="networkIsOnline ? NetworkNormalState : NetworkFailState" alt="网络连接状态" @click="networkVisible = true" />
@@ -28,7 +33,6 @@ import RfidStateDialog from './RfidStateDialog.vue'
 import LockStateDialog from './LockStateDialog.vue'
 import NetworkStateDialog from './NetworkStateDialog.vue'
 import { useStore } from '@/store'
-import createAlert from '@/components/BaseAlert'
 
 import NetworkNormalState from '@/assets/images/state_network.png'
 import NetworkFailState from '@/assets/images/state_network_bad.png'
@@ -41,8 +45,8 @@ import WarningFailState from '@/assets/images/state_warning_bad.png'
 import useDocument from '@/hooks/useDocument'
 
 const store = useStore()
-const { changeCurrentCabinetDoorId, changeViewDocumentVisible } = store
-const { rfidIsOnline, misPlaceDocumentCount, networkIsOnline, lockControlIsOnline, documentTotal, inPlaceDocumentTotal } =
+const { changeViewDocumentVisible,changeReviewDocumentCondition } = store
+const { rfidIsOnline, misPlaceDocumentTotal, networkIsOnline, lockControlIsOnline, documentTotal, inPlaceDocumentTotal } =
   storeToRefs(store)
 const {} = useDocument()
 
@@ -52,17 +56,22 @@ const networkVisible = ref(false)
 const warningVisible = ref(false)
 
 const handleOpenDocumentDialog = () => {
-  changeCurrentCabinetDoorId(0)
+  changeReviewDocumentCondition({
+    state:null,
+    cabinetDoorId: null,
+  })
   changeViewDocumentVisible(true)
 }
 
-const onShowWarning = () => {
-  if (misPlaceDocumentCount.value === 0) {
-    createAlert('无告警记录')
-    return
-  }
-  warningVisible.value = true
+const handleOpenDocumentDialogWithMisPlace = () =>{
+  changeReviewDocumentCondition({
+    state:2,
+    cabinetDoorId: null,
+  })
+
+  changeViewDocumentVisible(true)
 }
+
 </script>
 
 <style scoped>

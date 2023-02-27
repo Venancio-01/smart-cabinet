@@ -1,32 +1,77 @@
 import { useStore } from '@/store'
-import useRfid from './useRfid'
+import { useCheckStore } from '@/store/check'
+import { doc_document } from '@prisma/client'
 
 export default function () {
   const store = useStore()
-  const { changeCabinetDoorData } = store
-  const { cabinetDoorList, lockControlState } = storeToRefs(store)
-  const { startInventory } = useRfid()
+  const { cabinetDoorList } = storeToRefs(store)
+  const checkStore = useCheckStore()
+  const {
+    changeFirstDocumentRecord,
+    changeFirstMisPlaceDocumentRecord,
+    changeEndDocumentRecord,
+    changeEndMisPlaceDocumentRecord,
+    changeCheckResultList
+  } = checkStore
+  const { firstDocumentRecord, endDocumentRecord, endMisPlaceDocumentRecord } = storeToRefs(checkStore)
 
-  const watchLockControlState = () => {
-    watch(lockControlState, value => {
-      if (value === null) return
+  /**
+   * @description: 重置盘点记录
+   * @return {*}
+   */
+  const resetCheckRecord = () => {
+    changeFirstDocumentRecord([])
+    changeFirstMisPlaceDocumentRecord([])
+    changeEndDocumentRecord([])
+    changeEndMisPlaceDocumentRecord([])
+  }
 
-      cabinetDoorList.value.forEach(door => {
-        const isOpen = value[door.kgbh]
+  const resetCheckResult = () => {
+    changeCheckResultList([])
+  }
 
-        if (door.isOpen && !isOpen && door.checkCountDown === 10) {
-          console.log(`${door.kgbh} - 门锁关闭`)
-          startInventory(door.id)
-          changeCabinetDoorData({ ...door, isOpen: false })
-        } else if (isOpen) {
-          console.log(`${door.kgbh} - 门锁开启`)
-          changeCabinetDoorData({ ...door, isOpen: true })
-        }
-      })
+  /**
+   * @description: 生成盘点结果数据
+   * @return {*}
+   */
+  const generateCheckResult = () => {
+    const borrowDocuments = firstDocumentRecord.value.reduce<doc_document[]>((acc, cur, index) => {
+      if (cur.doc_reissue_number === 0 && endDocumentRecord.value[index].doc_reissue_number === 1) {
+        acc.push(endDocumentRecord.value[index])
+      }
+      return acc
+    }, [])
+
+    const returnDocuments = firstDocumentRecord.value.reduce<doc_document[]>((acc, cur, index) => {
+      if (cur.doc_reissue_number === 1 && endDocumentRecord.value[index].doc_reissue_number === 0) {
+        acc.push(endDocumentRecord.value[index])
+      }
+      return acc
+    }, [])
+
+    const misPlaceDocumentRecords = endMisPlaceDocumentRecord.value
+
+    const result: CheckResultType[] = cabinetDoorList.value.map(door => {
+      return {
+        ...door,
+        borrowDocuments: borrowDocuments.filter(item => item.cabinet_door_id === door.id),
+        returnDocuments: returnDocuments.filter(item => item.cabinet_door_id === door.id),
+        misPlaceDocumentRecords: misPlaceDocumentRecords.filter(item => item.cabinet_door_id === door.id)
+      }
     })
+
+    console.log('🚀 ~ file: useCheck.ts:56 ~ generateCheckResult ~ firstDocumentRecord:', firstDocumentRecord.value)
+    console.log('🚀 ~ file: useCheck.ts:56 ~ generateCheckResult ~ endDocumentRecord:', endDocumentRecord.value)
+    console.log('🚀 ~ file: useCheck.ts:56 ~ generateCheckResult ~ borrowDocuments:', borrowDocuments)
+    console.log('🚀 ~ file: useCheck.ts:56 ~ generateCheckResult ~ returnDocuments:', returnDocuments)
+    console.log('🚀 ~ file: useCheck.ts:56 ~ generateCheckResult ~ misPlaceDocumentRecords:', misPlaceDocumentRecords)
+
+    changeCheckResultList(result)
   }
 
   return {
-    watchLockControlState
+    generateCheckResult,
+    resetCheckRecord,
+    resetCheckResult
   }
 }

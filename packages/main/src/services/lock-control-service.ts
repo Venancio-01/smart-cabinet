@@ -24,11 +24,15 @@ const lockControlService = {
       }
 
       instance = new SerialPort({ path, baudRate })
+      await instance.open()
+      instance.close()
+      await instance.open()
     },
 
-    async destroy() {
+    async close() {
       if (!instance) return
-      instance.destroy()
+
+      instance.close()
     },
 
     /**

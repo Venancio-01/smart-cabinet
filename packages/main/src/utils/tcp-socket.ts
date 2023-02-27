@@ -31,7 +31,7 @@ export default class TcpSocket {
   }
 
   // 定义一个发送数据的方法
-  send(data: any) {
+  send(data: Buffer | string) {
     // 调用 socket 的 write 方法，发送数据
     this.socket.write(data);
   }

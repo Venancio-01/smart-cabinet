@@ -1,15 +1,28 @@
 import dayjs from 'dayjs'
 import { useStore } from '@/store'
+import useCheck from './useCheck'
+import { CONFIRM_TIMEOUT, OPERATION_TIMEOUT } from '@/config'
 
 const currentTime = ref<string | null>(null)
 const currentTimeTimer = ref<number | null>(null)
-const currentTimeVisible = ref(false)
+const operationTimeout = ref(OPERATION_TIMEOUT)
+const operationTimeoutTimer = ref<number | null>(null)
+const operationTimeoutVisible = ref(false)
+const confirmTimeout = ref(CONFIRM_TIMEOUT)
+const confirmTimeoutTimer = ref<number | null>(null)
+const confirmTimeoutVisible = ref(false)
 
 export default function () {
+  const router = useRouter()
   const store = useStore()
-  const { changeOperationTimeout, changeIsLoggedIn, resetOperationTimeout } = store
-  const { isLoggedIn, operationTimeout } = storeToRefs(store)
+  const { changeIsLoggedIn, changeViewDocumentVisible } = store
+  const { isLoggedIn } = storeToRefs(store)
+  const { resetCheckRecord, resetCheckResult } = useCheck()
 
+  /**
+   * @description: 生成当前时间
+   * @return {*}
+   */
   const startGenerateCurrentTime = () => {
     currentTimeTimer.value = window.setInterval(() => {
       currentTime.value = dayjs().format('HH:mm:ss')
@@ -20,38 +33,94 @@ export default function () {
     if (currentTime.value) clearTimeout(currentTime.value)
   }
 
-  const generateCurrentTime = () => {
-    return dayjs().format('HH:mm:ss')
+  /**
+   * @description: 开启操作超时倒计时
+   * @return {*}
+   */
+  const openOperationTimeoutCountdown = () => {
+    if (operationTimeoutTimer.value) return
+
+    operationTimeoutVisible.value = true
+    operationTimeoutTimer.value = window.setInterval(() => {
+      operationTimeout.value -= 1
+
+      if (operationTimeout.value !== 0) return
+
+      closeOperationTimeoutCountdown()
+      changeViewDocumentVisible(false)
+
+      changeIsLoggedIn(false)
+      router.push('/')
+    }, 1000)
   }
 
-  const startWatchLoginState = () => {
-    const timer = ref<null | number>(null)
-    watch(isLoggedIn, value => {
-      if (value) {
-        currentTimeVisible.value = true
-        timer.value = window.setInterval(() => {
-          changeOperationTimeout(operationTimeout.value - 1)
+  const closeOperationTimeoutCountdown = () => {
+    if (operationTimeoutTimer.value) {
+      clearInterval(operationTimeoutTimer.value)
+      operationTimeoutTimer.value = null
+    }
 
-          if (operationTimeout.value === 0) {
-            changeIsLoggedIn(false)
-          }
-        }, 1000)
+    operationTimeout.value = OPERATION_TIMEOUT
+    operationTimeoutVisible.value = false
+  }
+
+  const resetOperationTimeoutCountdown = (time = OPERATION_TIMEOUT) => {
+    operationTimeout.value = time
+  }
+
+  /**
+   * @description: 开启确认超时倒计时
+   * @return {*}
+   */
+  const openConfirmationTimeCountdown = () => {
+    if (confirmTimeoutTimer.value) return
+
+    confirmTimeoutVisible.value = true
+    confirmTimeoutTimer.value = window.setInterval(() => {
+      confirmTimeout.value -= 1
+
+      if (confirmTimeout.value !== 0) return
+
+      closeConfirmationTimeCountdown()
+
+      resetCheckRecord()
+      resetCheckResult()
+
+      if (isLoggedIn.value) {
+        openOperationTimeoutCountdown()
+        router.replace('/main')
       } else {
-        currentTimeVisible.value = false
-        resetOperationTimeout()
-        if (timer.value) {
-          clearInterval(timer.value)
-        }
+        router.replace('/')
       }
-    })
+    }, 1000)
+  }
+  const closeConfirmationTimeCountdown = () => {
+    if (confirmTimeoutTimer.value) {
+      clearInterval(confirmTimeoutTimer.value)
+      confirmTimeoutTimer.value = null
+    }
+
+    confirmTimeout.value = CONFIRM_TIMEOUT
+    confirmTimeoutVisible.value = false
+  }
+
+  const resetConfirmationTimeCountdown = (time = CONFIRM_TIMEOUT) => {
+    confirmTimeout.value = time
   }
 
   return {
     currentTime,
-    currentTimeVisible,
-    generateCurrentTime,
+    operationTimeout,
+    operationTimeoutVisible,
+    confirmTimeout,
+    confirmTimeoutVisible,
     startGenerateCurrentTime,
     stopGenerateCurrentTime,
-    startWatchLoginState
+    openOperationTimeoutCountdown,
+    closeOperationTimeoutCountdown,
+    resetOperationTimeoutCountdown,
+    openConfirmationTimeCountdown,
+    closeConfirmationTimeCountdown,
+    resetConfirmationTimeCountdown
   }
 }

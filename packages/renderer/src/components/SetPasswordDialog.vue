@@ -35,6 +35,7 @@
 import { useStore } from '@/store'
 import createAlert from '@/components/BaseAlert'
 import useSys from '@/hooks/useSys'
+import useTime from '@/hooks/useTime'
 
 interface Props {
   visible: boolean
@@ -49,9 +50,10 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emits = defineEmits(['update:visible'])
 const store = useStore()
-const { resetOperationTimeout } = store
 const { updateUserPassword } = useSys()
 const { user } = storeToRefs(store)
+const { resetOperationTimeoutCountdown } = useTime()
+
 const loginName = user.value?.login_name || ''
 
 const show = computed({
@@ -63,8 +65,8 @@ const show = computed({
   }
 })
 
-watch(show, async value => {
-  resetOperationTimeout()
+watch(show, () => {
+  resetOperationTimeoutCountdown()
 })
 
 const formState = reactive<FormState>({
