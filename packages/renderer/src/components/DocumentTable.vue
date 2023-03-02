@@ -14,16 +14,7 @@
           <span v-if="record['doc_reissue_number'] === 0" class="text-green-500">在位</span>
           <span v-else-if="record['doc_reissue_number'] === 1 && !judgeIsMisPlace(record)" class="text-yellow-500">借出</span>
           <template v-else-if="record['doc_reissue_number'] === 1 && judgeIsMisPlace(record)">
-            <a-popover trigger="click">
-              <template #content>
-                <div class="flex">
-                  <div>错放柜门：</div>
-                  <div>{{ record.misPlaceDoorName }}</div>
-                </div>
-              </template>
-
-              <span class="text-red-500 underline">错放</span>
-            </a-popover>
+            <span class="text-red-500">错放</span>
           </template>
         </template>
       </template>
@@ -55,7 +46,7 @@ const { userList,departmentList,cabinetDoorList,misPlaceDocumentData} = storeToR
 
 const columns: ColumnsType = [
   {
-    title: '文件名',
+    title: '载体名称',
     dataIndex: 'doc_name',
     key: 'doc_name'
   },
@@ -65,6 +56,14 @@ const columns: ColumnsType = [
     key: 'view_name',
     customRender: ({ record }) => {
       return cabinetDoorList.value.find(item => item.id === record.cabinet_door_id)?.view_name
+    }
+  },
+  {
+    title: '所在柜门',
+    dataIndex: 'view_name',
+    key: 'view_name',
+    customRender: ({ record }) => {
+      return judgeIsMisPlace(record) && record.misPlaceDoorName
     }
   },
   {

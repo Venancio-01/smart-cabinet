@@ -24,7 +24,7 @@ export default function () {
   }
 
   /**
-   * @description: 根据柜门 ID 获取文件数据
+   * @description: 根据柜门 ID 获取载体数据
    * @param {number} cabinetId 柜门 ID
    * @return {*}
    */
@@ -33,7 +33,7 @@ export default function () {
   }
 
   /**
-   * @description: 获取在位文件数量
+   * @description: 获取在位载体数量
    * @param {number} cabinetId 柜门 ID
    * @return {*}
    */
@@ -42,7 +42,7 @@ export default function () {
   }
 
   /**
-   * @description: 获取错放文件数据
+   * @description: 获取错放载体数据
    * @return {*}
    */
   const getMisPlaceDocuments = async () => {
@@ -52,7 +52,7 @@ export default function () {
   }
 
   /**
-   * @description: 根据 RFID 读取器读取到的数据更新文件状态
+   * @description: 根据 RFID 读取器读取到的数据更新载体状态
    * @return {*}
    */
   const updateDocumentStatus = async (door: CabinetDoorProps) => {
@@ -61,7 +61,7 @@ export default function () {
   }
 
   /**
-   * @description: 记录开始盘点时的文件数据
+   * @description: 记录开始盘点时的载体数据
    * @return {*}
    */
   const recordDataWhenCheckStart = async () => {
@@ -70,7 +70,7 @@ export default function () {
   }
 
   /**
-   * @description: 记录结束盘点时的文件数据
+   * @description: 记录结束盘点时的载体数据
    * @return {*}
    */
   const recordDataWhenCheckEnd = async () => {

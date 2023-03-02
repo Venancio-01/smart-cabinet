@@ -27,6 +27,13 @@ export default function () {
     return success
   }
 
+  const verifyPassword = async (password: string) => {
+    if (user.value === null) return false
+
+    const success = await window.JSBridge.sys.verifyPassword({...user.value}, password)
+    return success
+  }
+
   const getBackgroundImage = async () => {
     const path = import.meta.env.DEV ? 'public/background/index.png' : await window.JSBridge.sys.getProductionBgImagePath()
     changeBackgroundUrl(path)
@@ -37,6 +44,7 @@ export default function () {
     getUserList,
     getDepartmentList,
     updateUserPassword,
+    verifyPassword,
     getBackgroundImage
   }
 }

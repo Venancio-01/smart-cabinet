@@ -92,7 +92,7 @@ export default function () {
           // 记录最后一次操作的柜门
           addLastOperationCabinetDoorRecords(door)
 
-          // 记录盘点开始时的文件数据
+          // 记录盘点开始时的载体数据
           recordDataWhenCheckStart()
           takeStock(door.id)
           changeCabinetDoorData({ ...door, isOpen: false })

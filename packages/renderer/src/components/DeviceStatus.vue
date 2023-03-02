@@ -7,13 +7,13 @@
 
     <div class="flex h-full select-none items-center text-lg text-white">
       <span class="mr-4"
-        >在位文件 / 全部文件：
-        <span class="text-xl text-blue-400 underline" @click="handleOpenDocumentDialog">
+        >在位载体 / 总载体：
+        <span class="text-xl text-blue-400 underline" @click="goCarrierPage">
           {{ inPlaceDocumentTotal }} / {{ documentTotal }}</span>
           </span>
       <span>
-          错放文件：
-          <span class="text-xl text-blue-400 underline" @click="handleOpenDocumentDialogWithMisPlace">
+          错放载体：
+          <span class="text-xl text-blue-400 underline" @click="goCarrierPageWithMisPlace">
             {{ misPlaceDocumentTotal }}
           </span>
         </span>
@@ -44,8 +44,10 @@ import WarningNormalState from '@/assets/images/state_warning.png'
 import WarningFailState from '@/assets/images/state_warning_bad.png'
 import useDocument from '@/hooks/useDocument'
 
+const router = useRouter()
+const route = useRoute()
 const store = useStore()
-const { changeViewDocumentVisible,changeReviewDocumentCondition } = store
+const {changeReviewDocumentCondition } = store
 const { rfidIsOnline, misPlaceDocumentTotal, networkIsOnline, lockControlIsOnline, documentTotal, inPlaceDocumentTotal } =
   storeToRefs(store)
 const {} = useDocument()
@@ -55,21 +57,17 @@ const rockVisible = ref(false)
 const networkVisible = ref(false)
 const warningVisible = ref(false)
 
-const handleOpenDocumentDialog = () => {
-  changeReviewDocumentCondition({
-    state:null,
-    cabinetDoorId: null,
-  })
-  changeViewDocumentVisible(true)
+
+const goCarrierPage = () => {
+  const state = null
+
+  router.push(`/carrier/${state}`)
 }
 
-const handleOpenDocumentDialogWithMisPlace = () =>{
-  changeReviewDocumentCondition({
-    state:2,
-    cabinetDoorId: null,
-  })
+const goCarrierPageWithMisPlace = () =>{
+  const state = 2
 
-  changeViewDocumentVisible(true)
+  router.push(`/carrier/${state}`)
 }
 
 </script>

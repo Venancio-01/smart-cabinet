@@ -90,3 +90,4 @@ export const updatePasswordByUserId = async (userId: number, password: string) =
 
   return result
 }
+

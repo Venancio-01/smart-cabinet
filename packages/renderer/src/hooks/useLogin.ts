@@ -21,7 +21,7 @@ export default function () {
    * @param {UserProps} userData
    * @return {*}
    */
-  const onLogin = (userData: UserProps) => {
+  const handleLogin = (userData: UserProps) => {
     changeIsLoggedIn(true)
     changeLoginVisible(false)
     changeLoginModeIndex(password_KEY)
@@ -34,33 +34,33 @@ export default function () {
    * @description: 登出
    * @return {*}
    */
-  const onLogout = () => {
+  const handleLogout = () => {
     changeIsLoggedIn(false)
     // saveUserData(null)
     closeOperationTimeoutCountdown()
     router.push('/')
   }
 
-  const onPasswordLogin = async (formData: FormData) => {
+  const handlePasswordLogin = async (formData: FormData) => {
     if (formData.username === '' || formData.password === '') {
       createAlert('用户名或密码不可为空')
       return
     }
     const result = await window.JSBridge.login.onPasswordLogin({ ...formData })
     if (result.success) {
-      onLogin(result.data)
+      handleLogin(result.data)
     } else {
       createAlert(result.msg || '')
       return
     }
   }
 
-  const onFingerLogin = async (userId: number) => {
+  const handleFingerLogin = async (userId: number) => {
     const user = await getUserData(userId)
-    onLogin(user)
+    handleLogin(user)
   }
 
-  const onCardLogin = async (cardNumber: string) => {
+  const handleCardLogin = async (cardNumber: string) => {
     if (cardNumber === '') {
       createAlert('刷卡登录失败')
       return
@@ -68,7 +68,7 @@ export default function () {
 
     const result = await window.JSBridge.login.onCardLogin(cardNumber)
     if (result.success) {
-      onLogin(result.data)
+      handleLogin(result.data)
     } else {
       createAlert(result.msg || '')
       return
@@ -76,10 +76,10 @@ export default function () {
   }
 
   return {
-    onLogin,
-    onLogout,
-    onPasswordLogin,
-    onFingerLogin,
-    onCardLogin
+    handleLogin,
+    handleLogout,
+    handlePasswordLogin,
+    handleFingerLogin,
+    handleCardLogin
   }
 }

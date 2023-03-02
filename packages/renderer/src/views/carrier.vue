@@ -1,15 +1,25 @@
 <template>
-  <BaseDialog v-model:visible="show" title="查看文件" :width="700" :height="600" @close="onClose">
+  <div class="bg-primary-color mx-1 flex h-full flex-col">
+    <!-- 头部 -->
+    <div class="blue-gradient flex h-[50px] items-center justify-between">
+      <span>
+        <span v-if="isLoggedIn" class="ml-[20px] select-none text-lg text-white" @click="goCabinetDoorPage">柜门信息</span>
+        <span class="ml-[20px] select-none text-lg text-white underline">载体信息</span>
+      </span>
+      <span v-if="isLoggedIn" class="mr-[20px] cursor-pointer select-none text-lg text-white underline" @click="handleLogout">注销</span>
+      <span v-else class="mr-[20px] cursor-pointer select-none text-lg text-white underline" @click="goBack">返回</span>
+    </div>
+
     <a-form
       :model="condition"
       name="basic"
-      :label-col="{ span: 8 }"
-      :wrapper-col="{ span: 16 }"
-      class="gird-rows-2 grid grid-cols-[1fr_1fr_200px] gap-y-2 py-4"
+      :label-col="{ span: 10 }"
+      :wrapper-col="{ span: 14 }"
+      class="gird-rows-1 grid grid-cols-[1fr_1fr_1fr_1fr_200px] py-4"
       autocomplete="off"
       @finish="onFinish"
     >
-      <a-form-item label="文件名" name="title">
+      <a-form-item label="载体名称" name="title">
         <a-input v-model:value="condition.title" />
       </a-form-item>
 
@@ -19,13 +29,6 @@
           <a-select-option :value="1">借出</a-select-option>
           <a-select-option :value="2">错放</a-select-option>
         </a-select>
-      </a-form-item>
-
-      <a-form-item class="row-span-2" :wrapper-col="{ span: 24 }">
-        <div class="flex h-full w-full items-center justify-center">
-          <a-button html-type="submit" type="primary">搜索</a-button>
-          <a-button @click="handleReset" class="ml-4">重置</a-button>
-        </div>
       </a-form-item>
 
       <a-form-item v-show="currentCabinetDoorId === 0" label="所属柜门" name="title">
@@ -39,36 +42,41 @@
           <a-select-option v-for="item in departmentList" :key="item.id" :value="item.id">{{ item.dept_name }}</a-select-option>
         </a-select>
       </a-form-item>
+
+      <a-form-item class="row-span-2" :wrapper-col="{ span: 24 }">
+        <div class="flex h-full w-full items-center justify-center">
+          <a-button html-type="submit" type="primary">搜索</a-button>
+          <a-button @click="handleInit" class="ml-4">重置</a-button>
+        </div>
+      </a-form-item>
     </a-form>
 
-    <DocumentTable :total="total" :data="data" :condition="{page:condition.page,size:condition.size}" @on-page-change="onPageChange"/>
-  </BaseDialog>
+    <div class="px-4">
+      <DocumentTable :total="total" :data="data" :condition="{page:condition.page,size:condition.size}" @on-page-change="onPageChange"/>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
+
 import { useStore } from '@/store'
 import useTime from '@/hooks/useTime'
 import useViewDocuments from '@/hooks/useViewDocuments'
+import useLogin from '@/hooks/useLogin'
 
+const router = useRouter()
+const route = useRoute()
 const store = useStore()
-const { changeViewDocumentVisible } = store
-const { cabinetDoorList, viewDocumentVisible, departmentList, currentCabinetDoorId,reviewDocumentCondition } =
+const {  } = store
+const { isLoggedIn, cabinetDoorList, departmentList, currentCabinetDoorId } =
   storeToRefs(store)
 const { resetOperationTimeoutCountdown } = useTime()
 const {DocumentTable,getDocuments,data,total} = useViewDocuments()
-
-const show = computed({
-  get: () => {
-    return viewDocumentVisible.value
-  },
-  set: value => {
-    changeViewDocumentVisible(value)
-  }
-})
+const { handleLogout } = useLogin()
 
 const condition = reactive<DocumentQueryProps>({
   page: 1,
-  size: 5,
+  size: 8,
   title: '',
   cabinetId: null,
   departmentId: null,
@@ -81,63 +89,39 @@ const onPageChange = async (page: number) => {
   getDocuments(condition)
 }
 
-
 const onFinish = async () => {
   condition.page = 1
 
   getDocuments(condition)
 }
 
-const handleReset = () => {
+const handleInit = () => {
+  const state = route.params.state === 'null' ? null : Number(route.params.state)
+
   condition.page = 1
   condition.title = ''
-  condition.cabinetId = reviewDocumentCondition.value.cabinetDoorId
+  condition.cabinetId = null
   condition.departmentId = null
-  condition.state = reviewDocumentCondition.value.state
+  condition.state = state
   data.value = []
 
   getDocuments(condition)
 }
 
-watch(show, async value => {
+const goCabinetDoorPage = () =>{
   resetOperationTimeoutCountdown()
+  router.push('/main')
+}
 
-  if (!value) return
-  condition.cabinetId = reviewDocumentCondition.value.cabinetDoorId
-  condition.state = reviewDocumentCondition.value.state
+const goBack = () => {
+  router.replace('/')
+}
 
-  getDocuments(condition)
+onMounted(()=>{
+  handleInit()
+})
+watch(route,() => {
+  handleInit()
 })
 
-const onClose = () => {
-  handleReset()
-}
 </script>
-
-<style scoped>
-.form-item {
-  @apply flex items-center text-white;
-}
-.form-item .label {
-  @apply h-[30px] w-[120px] text-justify  text-sm leading-[30px];
-}
-.form-item .label::after {
-  content: '';
-  display: inline-block;
-  padding-left: 100%;
-  margin-left: 100%;
-}
-
-.form-item input {
-  @apply h-[30px] w-full text-black;
-}
-.form-item input[type='password'] {
-  @apply text-2xl;
-}
-.form-item + .form-item {
-  @apply mt-[16px];
-}
-.ant-form-item {
-  @apply mb-0;
-}
-</style>

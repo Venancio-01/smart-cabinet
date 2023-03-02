@@ -20,8 +20,8 @@ interface State {
   lockCommandInterval: number
   lockControlState: null | LockControlStateProps
   currentCabinetDoorId: number
-  viewDocumentVisible: boolean
   checkStatusDialogVisible: boolean
+  verifyIdentityDialogVisible: boolean
   currentCheckCabinetDoorId: number | null
   checkResultList: doc_document[]
   reviewDocumentCondition: ReviewDocumentCondition
@@ -53,8 +53,8 @@ export const useStore = defineStore('main', {
       lockCommandInterval: 10,
       lockControlState: null,
       currentCabinetDoorId: 0,
-      viewDocumentVisible: false,
       checkStatusDialogVisible: false,
+      verifyIdentityDialogVisible: false,
       currentCheckCabinetDoorId: null,
       checkResultList: [],
       reviewDocumentCondition: {
@@ -144,11 +144,11 @@ export const useStore = defineStore('main', {
     changeLockControlState(state: LockControlStateProps | null) {
       this.lockControlState = state
     },
-    changeViewDocumentVisible(visible: boolean) {
-      this.viewDocumentVisible = visible
-    },
     changeCheckStatusDialogVisible(visible: boolean) {
       this.checkStatusDialogVisible = visible
+    },
+    changeVerifyIdentityDialogVisible(visible: boolean) {
+      this.verifyIdentityDialogVisible = visible
     },
     changeCurrentCheckCabinetDoorId(cabinetDoorId: number | null) {
       this.currentCheckCabinetDoorId = cabinetDoorId

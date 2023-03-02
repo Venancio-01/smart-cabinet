@@ -28,7 +28,7 @@ import { password_KEY } from '@/config'
 
 const store = useStore()
 const { loginModeIndex } = storeToRefs(store)
-const { onPasswordLogin } = useLogin()
+const { handlePasswordLogin } = useLogin()
 const { addListenEnter, removeListenEnter } = useListenEnter()
 
 const formState = reactive<FormData>({
@@ -37,7 +37,7 @@ const formState = reactive<FormData>({
 })
 
 const handleLogin = () => {
-  onPasswordLogin(formState)
+  handlePasswordLogin(formState)
 }
 
 const isActive = computed(() => {

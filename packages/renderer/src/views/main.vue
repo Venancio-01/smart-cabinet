@@ -4,8 +4,9 @@
     <div class="blue-gradient flex h-[50px] items-center justify-between">
       <span>
         <span class="ml-[20px] select-none text-lg text-white underline">柜门信息</span>
+        <span class="ml-[20px] select-none text-lg text-white" @click="goCarrierPage">载体信息</span>
       </span>
-      <span class="mr-[20px] cursor-pointer select-none text-lg text-white underline" @click="onLogout">注销</span>
+      <span class="mr-[20px] cursor-pointer select-none text-lg text-white underline" @click="handleLogout">注销</span>
     </div>
 
     <div class="flex flex-1">
@@ -20,15 +21,21 @@
 </template>
 
 <script lang="ts" setup>
-import useLogin from '@/hooks/useLogin'
 import { useStore } from '@/store'
+import useLogin from '@/hooks/useLogin'
 import SingleDoorPanel from '@/components/SingleDoorPanel.vue'
 import MultiDoorPanel from '@/components/MultiDoorPanel.vue'
 import ActionPanel from '@/components/ActionPanel.vue'
+import useTime from '@/hooks/useTime'
 
+const router = useRouter()
 const store = useStore()
-const { isSingleDoor, user } = storeToRefs(store)
-const { onLogout } = useLogin()
+const { isSingleDoor } = storeToRefs(store)
+const { handleLogout } = useLogin()
+const {resetOperationTimeoutCountdown} = useTime()
 
-console.log(user, 'user')
+const goCarrierPage = () =>{
+  resetOperationTimeoutCountdown()
+  router.push('/carrier/null')
+}
 </script>

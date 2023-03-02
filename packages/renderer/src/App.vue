@@ -1,8 +1,8 @@
 <template>
-  <!-- 查看文件 -->
-  <ViewDocumentsDialog></ViewDocumentsDialog>
   <!-- 盘点倒计时 -->
-  <CheckPanel v-show="checkStatusDialogVisible"></CheckPanel>
+  <CheckPanel></CheckPanel>
+  <!-- 身份校验 -->
+  <VerifyIdentity></VerifyIdentity>
 
   <div class="relative h-full w-full items-center justify-center bg-cover" :style="{backgroundImage:`url(${backgroundUrl})`}">
     <div class="flex h-[40px] items-center justify-between">
@@ -29,21 +29,13 @@ import { useStore } from '@/store'
 import useTime from '@/hooks/useTime'
 import useOnAppOpen from '@/hooks/useOnAppOpen'
 import CheckPanel from '@/components/CheckPanel.vue'
+import VerifyIdentity from '@/components/VerifyIdentity.vue'
 import DeviceStatus from '@/components/DeviceStatus.vue'
-import ViewDocumentsDialog from '@/components/ViewDocumentsDialog.vue'
 
 const store = useStore()
 const {} = store
-const { checkStatusDialogVisible,backgroundUrl } = storeToRefs(store)
+const { backgroundUrl } = storeToRefs(store)
 const { currentTime, operationTimeout, operationTimeoutVisible, confirmTimeout, confirmTimeoutVisible } = useTime()
-
-watch(operationTimeoutVisible, value => {
-  console.log(value, 'operationTimeoutVisible')
-})
-
-watch(confirmTimeoutVisible, value => {
-  console.log(value, 'confirmTimeoutVisible')
-})
 
 useOnAppOpen()
 </script>

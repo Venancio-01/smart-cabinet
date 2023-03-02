@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import { useStore } from '@/store'
 import useCheck from './useCheck'
 import { CONFIRM_TIMEOUT, OPERATION_TIMEOUT } from '@/config'
+import useVerify from './useVerify'
 
 const currentTime = ref<string | null>(null)
 const currentTimeTimer = ref<number | null>(null)
@@ -15,9 +16,10 @@ const confirmTimeoutVisible = ref(false)
 export default function () {
   const router = useRouter()
   const store = useStore()
-  const { changeIsLoggedIn, changeViewDocumentVisible } = store
+  const { changeIsLoggedIn } = store
   const { isLoggedIn } = storeToRefs(store)
   const { resetCheckRecord, resetCheckResult } = useCheck()
+  const { closeVerifyIdentityDialog } = useVerify()
 
   /**
    * @description: 生成当前时间
@@ -47,8 +49,7 @@ export default function () {
       if (operationTimeout.value !== 0) return
 
       closeOperationTimeoutCountdown()
-      changeViewDocumentVisible(false)
-
+      closeVerifyIdentityDialog()
       changeIsLoggedIn(false)
       router.push('/')
     }, 1000)

@@ -2,13 +2,13 @@
   <BaseDialog
     v-model:visible="show"
     :title="misPlaceDocumentTotal === 0 ? '系统告警' : `系统告警（${active} / ${misPlaceDocumentTotal}）`"
-    @close="onClose"
+    @close="handleClose"
   >
     <div class="h-full">
       <div v-if="misPlaceDocumentTotal === 0" class="flex h-full items-center justify-center text-lg text-white">无告警记录</div>
 
       <div v-else>
-        <div class="flex h-[50px] items-center text-xl text-white">文件错放</div>
+        <div class="flex h-[50px] items-center text-xl text-white">载体错放</div>
 
         <div class="flex h-[100px] flex-col items-center justify-center text-xl text-white">
           <p>内容：{{ data.content }}</p>
@@ -57,7 +57,7 @@ const data = computed(() => {
   } else return {}
 })
 
-const onClose = () =>{
+const handleClose = () =>{
   active.value = 1
 }
 </script>

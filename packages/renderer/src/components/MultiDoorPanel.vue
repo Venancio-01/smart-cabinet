@@ -12,14 +12,14 @@
         v-for="(door, index) in doorList"
         :key="index"
         class="flex w-[180px] border-[1px] border-[#bebebe] bg-white"
-        @click="onClickDoor(door)"
+        @click="handleClickDoor(door)"
       >
         <div class="relative flex flex-1 items-center justify-center">
           <div class=" absolute top-2 left-2">[{{ door.view_name }}]</div>
 
           <div class="flex select-none mt-2 flex-col items-center justify-center text-sm">
             <p>{{ door.name }}</p>
-            <p class="mt-1 text-lg underline" @click.stop="handleOpenDocumentDialog(door.id)">
+            <p class="mt-1 text-lg underline">
               {{ door.inPlaceDocumentCount }} / {{ door.totalDocumentCount }}
             </p>
           </div>
@@ -41,14 +41,14 @@ import useTime from '@/hooks/useTime'
 
 const router = useRouter()
 const store = useStore()
-const { changeCabinetDoorData, changeReviewDocumentCondition, changeViewDocumentVisible } = store
+const { changeCabinetDoorData } = store
 const { cabinetDoorList, documentList } = storeToRefs(store)
 const checkStore = useCheckStore()
 const { addLastOperationCabinetDoorRecords } = checkStore
 const { openLock } = useLock()
 const { resetOperationTimeoutCountdown } = useTime()
 
-const onClickDoor = (door: CabinetDoorProps) => {
+const handleClickDoor = (door: CabinetDoorProps) => {
   resetOperationTimeoutCountdown()
 
   openLock(door.kgbh)
@@ -59,14 +59,6 @@ const onClickDoor = (door: CabinetDoorProps) => {
   setTimeout(() => {
     changeCabinetDoorData({ ...door, isOpen: true })
   }, 1000)
-}
-
-const handleOpenDocumentDialog = (id: number) => {
-  changeReviewDocumentCondition({
-    state:null,
-    cabinetDoorId: id,
-  })
-  changeViewDocumentVisible(true)
 }
 
 const doorList = computed(() => {

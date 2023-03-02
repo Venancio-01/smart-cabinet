@@ -24,8 +24,8 @@
 
     <template v-slot:footer>
       <div class="flex w-full items-center justify-center">
-        <BaseButton class="mr-[10px] h-[40px] flex-1 rounded" @click="onSave">保存</BaseButton>
-        <BaseButton class="ml-[10px] h-[40px] flex-1 rounded" @click="onClose">关闭</BaseButton>
+        <BaseButton class="mr-[10px] h-[40px] flex-1 rounded" @click="handleSave">保存</BaseButton>
+        <BaseButton class="ml-[10px] h-[40px] flex-1 rounded" @click="handleClose">关闭</BaseButton>
       </div>
     </template>
   </BaseDialog>
@@ -74,7 +74,7 @@ const formState = reactive<FormState>({
   repeatPassword: ''
 })
 
-const onSave = async () => {
+const handleSave = async () => {
   if (formState.password === '' || formState.repeatPassword === '') {
     createAlert('密码不可为空')
     return
@@ -89,10 +89,10 @@ const onSave = async () => {
   } else {
     createAlert('密码修改失败')
   }
-  onClose()
+  handleClose()
 }
 
-const onClose = () => {
+const handleClose = () => {
   formState.password = ''
   formState.repeatPassword = ''
   emits('update:visible', false)

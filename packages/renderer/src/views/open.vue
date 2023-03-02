@@ -12,7 +12,7 @@
       <div class="border-b-2 border-white mb-4"></div>
 
       <div class="px-4">
-        <DocumentTable :data="data" :total="total" :condition="{page:condition.page,size:condition.size}" @on-page-change="onPageChange"/>
+        <DocumentTable :data="data" :total="total" :condition="{page:condition.page,size:condition.size}" @on-page-change="handlePageChange"/>
       </div>
     </div>
   </div>
@@ -21,9 +21,6 @@
 <script lang="ts" setup>
 import { useStore } from '@/store'
 import { useCheckStore } from '@/store/check'
-import useRfid from '@/hooks/useRfid'
-import useCheck from '@/hooks/useCheck'
-import createAlert from '@/components/BaseAlert'
 import useTime from '@/hooks/useTime'
 import useViewDocuments from '@/hooks/useViewDocuments'
 
@@ -35,9 +32,9 @@ const props = defineProps<Props>()
 
 const router = useRouter()
 const store = useStore()
-const { rfidIsOnline, isLoggedIn } = storeToRefs(store)
+const { } = storeToRefs(store)
 const checkStore = useCheckStore()
-const { checkResultList, lastOperationCabinetDoorList } = storeToRefs(checkStore)
+const { } = storeToRefs(checkStore)
 const {DocumentTable,getDocuments,data,total} = useViewDocuments()
 const {resetOperationTimeoutCountdown} = useTime()
 
@@ -57,7 +54,7 @@ const condition = reactive<DocumentQueryProps>({
   state: null
 })
 
-const onPageChange = async (page: number) => {
+const handlePageChange = async (page: number) => {
   condition.page = page
 
   getDocuments(condition)

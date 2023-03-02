@@ -8,7 +8,7 @@
     <div class="flex flex-1">
       <div class="flex-1">
         <div v-if="isEmpty" class="flex h-full items-center justify-center text-xl text-white">
-            本次盘点柜内文件无变化
+            本次盘点柜内载体无变化
         </div>
 
 
@@ -18,7 +18,7 @@
               <div class="text-xl">柜门名称：{{ item.view_name }}</div>
 
               <div v-if="item.borrowDocuments.length !== 0">
-                <div class="my-4 text-lg">本次借出文件</div>
+                <div class="my-4 text-lg">本次借出载体</div>
                 <a-table
                   :dataSource="item.borrowDocuments"
                   :columns="documentColumns"
@@ -31,7 +31,7 @@
               </div>
 
               <div v-if="item.returnDocuments.length !== 0">
-                <div class="my-4 text-lg">本次归还文件</div>
+                <div class="my-4 text-lg">本次归还载体</div>
                 <a-table
                   :dataSource="item.returnDocuments"
                   :columns="documentColumns"
@@ -44,7 +44,7 @@
               </div>
 
               <div v-if="item.misPlaceDocumentRecords.length !== 0">
-                <div class="my-4 text-lg">本柜门存在的错放文件</div>
+                <div class="my-4 text-lg">本柜门存在的错放载体</div>
 
                 <a-table
                   :dataSource="item.misPlaceDocumentRecords"
@@ -67,9 +67,9 @@
         </div>
 
         <div class="statistics">
-          <div>共计借出文件数量：{{ statisticsData.borrow }}</div>
-          <div>共计归还文件数量：{{ statisticsData.return }}</div>
-          <div>共计错放文件数量：{{ statisticsData.misPlace }}</div>
+          <div>共计借出载体数量：{{ statisticsData.borrow }}</div>
+          <div>共计归还载体数量：{{ statisticsData.return }}</div>
+          <div>共计错放载体数量：{{ statisticsData.misPlace }}</div>
         </div>
       </div>
     </div>
@@ -169,7 +169,7 @@ const goBack = () => {
 
 const documentColumns:ColumnsType = [
   {
-    title: '文件名',
+    title: '载体名',
     dataIndex: 'doc_name',
     key: 'doc_name'
   },

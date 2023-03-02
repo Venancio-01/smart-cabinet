@@ -1,6 +1,6 @@
 import { join } from 'path'
 
-const isDev = false
+const isDev = true
 
 // 设备最大连接数
 export const MAX_DEVICE_NUM = 16

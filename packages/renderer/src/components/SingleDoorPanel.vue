@@ -5,7 +5,7 @@
       单击打开柜门
     </div>
 
-    <div class="bg-door-color flex h-[300px] w-[400px] border-[4px] border-[#bebebe]" @click="onClickDoor">
+    <div class="bg-door-color flex h-[300px] w-[400px] border-[4px] border-[#bebebe]" @click="handleClickDoor">
       <div class="flex h-full w-[200px] flex-col items-center justify-center border-r-[3px] border-[#bebebe]">
         <div class="door-info">
           <div class="label">柜门名称</div>
@@ -13,7 +13,7 @@
           <div class="content">{{ cabinetDoor.view_name }}</div>
         </div>
         <div class="door-info">
-          <div class="label">文件总数</div>
+          <div class="label">载体总数</div>
           ：
           <div class="content">{{ documentTotal }}</div>
         </div>
@@ -47,14 +47,14 @@ const { changeCabinetDoorData } = store
 const { cabinetDoorList, documentTotal, inPlaceDocumentTotal, misPlaceDocumentTotal, rfidIsOnline, lockControlIsOnline } =
   storeToRefs(store)
 const { openLock } = useLock()
-const { onLogout } = useLogin()
+const { handleLogout } = useLogin()
 const { resetOperationTimeoutCountdown } = useTime()
 
-const onClickDoor = () => {
+const handleClickDoor = () => {
   resetOperationTimeoutCountdown()
 
   openLock(cabinetDoor.value.kgbh)
-  onLogout()
+  handleLogout()
 
   setTimeout(() => {
     changeCabinetDoorData({ ...cabinetDoor.value, isOpen: true })

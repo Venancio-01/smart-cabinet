@@ -14,7 +14,6 @@ export default function () {
     changeCabinetDoorData,
     changeCheckStatusDialogVisible,
     changeCurrentCheckCabinetDoorId,
-    changeViewDocumentVisible
   } = store
   const { cabinetDoorList, isChecking } = storeToRefs(store)
   const checkStore = useCheckStore()
@@ -113,7 +112,7 @@ export default function () {
 
       // 发送关闭命令
       await sendCloseCommand(address)
-      // 更新文件状态
+      // 更新载体状态
       await updateDocumentStatus(door.value)
 
       if (door.value === undefined) return
@@ -126,11 +125,8 @@ export default function () {
 
       // 如果没有正在盘点的柜门
       if (!isChecking.value) {
-        // 记录盘点结束时的文件数据
+        // 记录盘点结束时的载体数据
         await recordDataWhenCheckEnd()
-
-        // 关闭查看文件弹出框
-        changeViewDocumentVisible(false)
 
         console.log(lastOperationCabinetDoorRecords.value,'lastOperationCabinetDoorRecords.value')
 

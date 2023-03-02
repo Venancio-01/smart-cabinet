@@ -38,8 +38,7 @@
     <BaseButton class="base-button" @click="openSetFingerDialog(1)"> 设置指纹一 </BaseButton>
     <BaseButton class="base-button" @click="openSetFingerDialog(2)"> 设置指纹二 </BaseButton>
     <BaseButton class="base-button" @click="openSetCardDialog"> 设置卡号 </BaseButton>
-    <BaseButton class="base-button" @click="openViewDocumentDialog"> 查看文件 </BaseButton>
-    <BaseButton class="base-button !mt-[40px]" @click="onManualCheck"> 手动盘点 </BaseButton>
+    <BaseButton class="base-button !mt-[40px]" @click="handleManualCheck"> 手动盘点 </BaseButton>
   </div>
 </template>
 
@@ -50,15 +49,17 @@ import useRfid from '@/hooks/useRfid'
 import useDocument from '@/hooks/useDocument'
 import createAlert from '@/components/BaseAlert'
 import useTime from '@/hooks/useTime'
+import useVerify from '@/hooks/useVerify'
 
 const store = useStore()
-const { changeViewDocumentVisible,changeReviewDocumentCondition } = store
+const {} = store
 const { user, rfidIsOnline, cabinetDoorList } = storeToRefs(store)
 const checkStore = useCheckStore()
 const { addLastOperationCabinetDoorRecords } = checkStore
 const { takeStock } = useRfid()
 const { recordDataWhenCheckStart } = useDocument()
 const { resetOperationTimeoutCountdown } = useTime()
+const { verifyIsExpired, openVerifyIdentityDialog, saveCallback } = useVerify()
 
 const setCardVisible = ref(false)
 const setPasswordVisible = ref(false)
@@ -70,7 +71,15 @@ const fingerOrder = ref<FingerOrder>(1)
  * @return {*}
  */
 const openSetPasswordDialog = () => {
-  setPasswordVisible.value = true
+  const isExpired = verifyIsExpired()
+  const cb = () => {
+    setPasswordVisible.value = true
+  }
+
+  if (isExpired) {
+    openVerifyIdentityDialog()
+    saveCallback(cb)
+  } else cb()
 }
 
 /**
@@ -79,8 +88,16 @@ const openSetPasswordDialog = () => {
  * @return {*}
  */
 const openSetFingerDialog = (order: FingerOrder) => {
-  fingerOrder.value = order
-  setFingerVisible.value = true
+  const isExpired = verifyIsExpired()
+  const cb = () => {
+    fingerOrder.value = order
+    setFingerVisible.value = true
+  }
+
+  if (isExpired) {
+    openVerifyIdentityDialog()
+    saveCallback(cb)
+  } else cb()
 }
 
 /**
@@ -88,22 +105,22 @@ const openSetFingerDialog = (order: FingerOrder) => {
  * @return {*}
  */
 const openSetCardDialog = () => {
-  setCardVisible.value = true
-}
+  const isExpired = verifyIsExpired()
+  const cb = () => {
+    setCardVisible.value = true
+  }
 
-const openViewDocumentDialog = () => {
-  changeReviewDocumentCondition({
-    state:null,
-    cabinetDoorId: null,
-  })
-  changeViewDocumentVisible(true)
+  if (isExpired) {
+    openVerifyIdentityDialog()
+    saveCallback(cb)
+  } else cb()
 }
 
 /**
  * @description: 手动盘点
  * @return {*}
  */
-const onManualCheck = () => {
+const handleManualCheck = () => {
   resetOperationTimeoutCountdown()
 
   if (!rfidIsOnline.value) {
@@ -111,7 +128,7 @@ const onManualCheck = () => {
     return
   }
 
-  // 记录盘点开始时的文件数据
+  // 记录盘点开始时的载体数据
   recordDataWhenCheckStart()
 
   cabinetDoorList.value.forEach(door => {
