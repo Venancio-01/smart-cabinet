@@ -1,0 +1,25 @@
+#app {
+  @apply h-screen text-base;
+}
+
+.blue-gradient {
+  @apply bg-[url("@/assets/images/tit.png")] bg-cover bg-no-repeat;
+}
+
+input {
+  @apply outline-[#26709e];
+}
+
+input[type='password'] {
+  @apply text-2xl;
+}
+
+/* 引入lcd字体 */
+@font-face {
+  font-family: 'LCDFont';
+  src: url('@/assets/fonts/ds-digi-webfont.eot'); /* IE9 Compat Modes */
+  src: url('@/assets/fonts/ds-digi-webfont.eot?#iefix') format('embedded-opentype'),
+    /*IE6-IE8 */ url('@/assets/fonts/ds-digi-webfont.woff') format('woff'),
+    /* Modern Browsers */ url('@/assets/fonts/ds-digi-webfont.ttf') format('truetype'),
+    /* Safari, Android, iOS */ url('@/assets/fonts/ds-digi-webfont.svg') format('svg'); /* Legacy iOS */
+}
