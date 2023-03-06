@@ -7,10 +7,10 @@ export default function () {
   const { user, documentList, misPlaceDocumentData } = storeToRefs(store)
   const checkStore = useCheckStore()
   const {
-    changeFirstDocumentRecord,
-    changeFirstMisPlaceDocumentRecord,
-    changeEndDocumentRecord,
-    changeEndMisPlaceDocumentRecord
+    setFirstDocumentRecord,
+    setFirstMisPlaceDocumentRecord,
+    setEndDocumentRecord,
+    setEndMisPlaceDocumentRecord
   } = checkStore
 
   const getAllDocumentData = async () => {
@@ -65,8 +65,8 @@ export default function () {
    * @return {*}
    */
   const recordDataWhenCheckStart = async () => {
-    changeFirstDocumentRecord(documentList.value)
-    changeFirstMisPlaceDocumentRecord(misPlaceDocumentData.value)
+    setFirstDocumentRecord(documentList.value)
+    setFirstMisPlaceDocumentRecord(misPlaceDocumentData.value)
   }
 
   /**
@@ -76,8 +76,8 @@ export default function () {
   const recordDataWhenCheckEnd = async () => {
     const documents = await getAllDocumentData()
     const misPlaceDocuments = await getMisPlaceDocuments()
-    changeEndDocumentRecord(documents)
-    changeEndMisPlaceDocumentRecord(misPlaceDocuments)
+    setEndDocumentRecord(documents)
+    setEndMisPlaceDocumentRecord(misPlaceDocuments)
   }
 
   return {

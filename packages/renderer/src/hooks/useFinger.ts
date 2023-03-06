@@ -3,7 +3,7 @@ import { useStore } from '@/store'
 
 export default function () {
   const store = useStore()
-  const { changeFingerIsOnline } = store
+  const { setFingerIsOnline } = store
   // 查询设备状态的定时器
   const queryTimer = ref<number | null>(null)
   // 注册指纹的定时器
@@ -18,7 +18,7 @@ export default function () {
   // 获取指纹仪连接状态
   const getFingerStatus = async () => {
     const isOnline = await window.JSBridge.finger.queryConnectState()
-    changeFingerIsOnline(isOnline)
+    setFingerIsOnline(isOnline)
   }
 
   // 轮询获取指纹仪连接状态

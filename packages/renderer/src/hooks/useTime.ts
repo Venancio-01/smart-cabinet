@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { useStore } from '@/store'
-import useCheck from './useCheck'
+import useCheckRecord from './useCheckRecord'
 import { CONFIRM_TIMEOUT, OPERATION_TIMEOUT } from '@/config'
 import useVerify from './useVerify'
 
@@ -16,9 +16,9 @@ const confirmTimeoutVisible = ref(false)
 export default function () {
   const router = useRouter()
   const store = useStore()
-  const { changeIsLoggedIn } = store
+  const { setIsLoggedIn } = store
   const { isLoggedIn } = storeToRefs(store)
-  const { resetCheckRecord, resetCheckResult } = useCheck()
+  const { resetCheckRecord, resetCheckResult } = useCheckRecord()
   const { closeVerifyIdentityDialog } = useVerify()
 
   /**
@@ -50,7 +50,7 @@ export default function () {
 
       closeOperationTimeoutCountdown()
       closeVerifyIdentityDialog()
-      changeIsLoggedIn(false)
+      setIsLoggedIn(false)
       router.push('/')
     }, 1000)
   }
@@ -65,6 +65,11 @@ export default function () {
     operationTimeoutVisible.value = false
   }
 
+  /**
+   * @description: 重置操作超时倒计时
+   * @param {*} time
+   * @return {*}
+   */
   const resetOperationTimeoutCountdown = (time = OPERATION_TIMEOUT) => {
     operationTimeout.value = time
   }
@@ -105,8 +110,22 @@ export default function () {
     confirmTimeoutVisible.value = false
   }
 
+  /**
+   * @description: 重置确认超时倒计时
+   * @param {*} time
+   * @return {*}
+   */
   const resetConfirmationTimeCountdown = (time = CONFIRM_TIMEOUT) => {
     confirmTimeout.value = time
+  }
+
+  /**
+   * @description: 重置所有倒计时
+   * @return {*}
+   */
+  const resetCountdowns = () => {
+    resetOperationTimeoutCountdown()
+    resetConfirmationTimeCountdown()
   }
 
   return {
@@ -122,6 +141,7 @@ export default function () {
     resetOperationTimeoutCountdown,
     openConfirmationTimeCountdown,
     closeConfirmationTimeCountdown,
-    resetConfirmationTimeCountdown
+    resetConfirmationTimeCountdown,
+    resetCountdowns
   }
 }

@@ -15,13 +15,11 @@
         @click="handleClickDoor(door)"
       >
         <div class="relative flex flex-1 items-center justify-center">
-          <div class=" absolute top-2 left-2">[{{ door.view_name }}]</div>
+          <div class="absolute top-2 left-2">[{{ door.view_name }}]</div>
 
-          <div class="flex select-none mt-2 flex-col items-center justify-center text-sm">
+          <div class="mt-2 flex select-none flex-col items-center justify-center text-sm">
             <p>{{ door.name }}</p>
-            <p class="mt-1 text-lg underline">
-              {{ door.inPlaceDocumentCount }} / {{ door.totalDocumentCount }}
-            </p>
+            <p class="mt-1 text-lg underline">{{ door.inPlaceDocumentCount }} / {{ door.totalDocumentCount }}</p>
           </div>
         </div>
 
@@ -41,8 +39,8 @@ import useTime from '@/hooks/useTime'
 
 const router = useRouter()
 const store = useStore()
-const { changeCabinetDoorData } = store
-const { cabinetDoorList, documentList } = storeToRefs(store)
+const { setCabinetDoor } = store
+const { cabinetDoorList, documentList, lockControlIsOnline } = storeToRefs(store)
 const checkStore = useCheckStore()
 const { addLastOperationCabinetDoorRecords } = checkStore
 const { openLock } = useLock()
@@ -51,14 +49,16 @@ const { resetOperationTimeoutCountdown } = useTime()
 const handleClickDoor = (door: CabinetDoorProps) => {
   resetOperationTimeoutCountdown()
 
-  openLock(door.kgbh)
-  addLastOperationCabinetDoorRecords(door)
+  if (lockControlIsOnline) {
+    openLock(door.kgbh)
+    addLastOperationCabinetDoorRecords(door)
+
+    setTimeout(() => {
+      setCabinetDoor({ ...door, isOpen: true })
+    }, 1000)
+  }
 
   router.push(`/open/${door.id}`)
-
-  setTimeout(() => {
-    changeCabinetDoorData({ ...door, isOpen: true })
-  }, 1000)
 }
 
 const doorList = computed(() => {

@@ -7,23 +7,21 @@
 
     <div class="flex flex-1">
       <div class="flex-1">
-        <div v-if="isEmpty" class="flex h-full items-center justify-center text-xl text-white">
-            本次盘点柜内载体无变化
-        </div>
-
+        <div v-if="isEmpty" class="flex h-full items-center justify-center text-xl text-white">本次盘点柜内载体无变化</div>
 
         <div v-else class="result-record">
           <PerfectScrollbar>
-            <div v-for="(item,index) in resultList" :key="item.id" class="border-b-2 border-white p-4 text-white" :class="[index +1 === resultList.length ? 'border-none' : '']">
+            <div
+              v-for="(item, index) in resultList"
+              :key="item.id"
+              class="border-b-2 border-white p-4 text-white"
+              :class="[index + 1 === resultList.length ? 'border-none' : '']"
+            >
               <div class="text-xl">柜门名称：{{ item.view_name }}</div>
 
               <div v-if="item.borrowDocuments.length !== 0">
                 <div class="my-4 text-lg">本次借出载体</div>
-                <a-table
-                  :dataSource="item.borrowDocuments"
-                  :columns="documentColumns"
-                  :pagination="false"
-                >
+                <a-table :dataSource="item.borrowDocuments" :columns="documentColumns" :pagination="false">
                   <template v-slot:emptyText>
                     <span>暂无数据</span>
                   </template>
@@ -32,11 +30,7 @@
 
               <div v-if="item.returnDocuments.length !== 0">
                 <div class="my-4 text-lg">本次归还载体</div>
-                <a-table
-                  :dataSource="item.returnDocuments"
-                  :columns="documentColumns"
-                  :pagination="false"
-                >
+                <a-table :dataSource="item.returnDocuments" :columns="documentColumns" :pagination="false">
                   <template v-slot:emptyText>
                     <span>暂无数据</span>
                   </template>
@@ -46,11 +40,7 @@
               <div v-if="item.misPlaceDocumentRecords.length !== 0">
                 <div class="my-4 text-lg">本柜门存在的错放载体</div>
 
-                <a-table
-                  :dataSource="item.misPlaceDocumentRecords"
-                  :columns="recordColumns"
-                  :pagination="false"
-                >
+                <a-table :dataSource="item.misPlaceDocumentRecords" :columns="recordColumns" :pagination="false">
                   <template v-slot:emptyText>
                     <span>暂无数据</span>
                   </template>
@@ -79,22 +69,22 @@
 <script lang="ts" setup>
 import { useStore } from '@/store'
 import { useCheckStore } from '@/store/check'
-import useRfid from '@/hooks/useRfid'
 import useCheck from '@/hooks/useCheck'
+import useCheckRecord from '@/hooks/useCheckRecord'
 import createAlert from '@/components/BaseAlert'
 import useTime from '@/hooks/useTime'
 import { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
-import {PerfectScrollbar} from 'vue3-perfect-scrollbar'
+import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 
 const router = useRouter()
 const store = useStore()
-const { rfidIsOnline, isLoggedIn,userList,cabinetDoorList,departmentList } = storeToRefs(store)
+const { rfidIsOnline, isLoggedIn, userList, cabinetDoorList, departmentList } = storeToRefs(store)
 const checkStore = useCheckStore()
-const {addLastOperationCabinetDoorRecords} = checkStore
+const { addLastOperationCabinetDoorRecords } = checkStore
 const { checkResultList, lastOperationCabinetDoorList } = storeToRefs(checkStore)
-const { takeStock } = useRfid()
-const { resetCheckRecord, resetCheckResult } = useCheck()
+const { handleCheck } = useCheck()
+const { resetCheckRecord, resetCheckResult } = useCheckRecord()
 const {
   resetOperationTimeoutCountdown,
   resetConfirmationTimeCountdown,
@@ -146,7 +136,7 @@ const handleRecheck = () => {
 
   lastOperationCabinetDoorList.value.forEach(item => {
     addLastOperationCabinetDoorRecords(item)
-    takeStock(item.id)
+    handleCheck(item.id)
   })
 }
 
@@ -164,10 +154,9 @@ const goBack = () => {
   } else {
     router.replace('/')
   }
-
 }
 
-const documentColumns:ColumnsType = [
+const documentColumns: ColumnsType = [
   {
     title: '载体名',
     dataIndex: 'doc_name',
@@ -206,7 +195,7 @@ const documentColumns:ColumnsType = [
     }
   }
 ]
-const recordColumns:ColumnsType = [
+const recordColumns: ColumnsType = [
   {
     title: '错放内容',
     dataIndex: 'content',
@@ -219,11 +208,11 @@ const recordColumns:ColumnsType = [
     customRender: ({ record }) => {
       return cabinetDoorList.value.find(item => item.id === record.cabinet_door_id)?.view_name
     }
-    },
+  }
 ]
 </script>
 
-<style src="vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css"/>
+<style src="vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css" />
 <style scoped>
 .statistics div {
   @apply my-4 px-2 text-lg text-white;

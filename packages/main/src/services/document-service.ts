@@ -94,7 +94,7 @@ const documentService = {
      */
     async updateDocumentStateAfterCheck(cabinetDoor: CabinetDoorProps, userId?: number) {
       const TIDList = rfidService.fns.getReportData(cabinetDoor.antenna_address)
-      console.log(cabinetDoor.id,'柜门id')
+      console.log(cabinetDoor.id, '柜门id')
       console.log('🚀 ~ file: document-service.ts:94 ~ updateDocumentStateAfterCheck ~ TIDList:', TIDList)
       console.log('🚀 ~ file: document-service.ts:94 ~ updateDocumentStateAfterCheck ~ TIDList.length:', TIDList.length)
 
@@ -146,3 +146,4 @@ const documentService = {
 }
 
 export default documentService
+

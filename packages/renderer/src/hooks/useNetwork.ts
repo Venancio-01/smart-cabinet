@@ -3,13 +3,13 @@ import { useStore } from '@/store'
 
 export default function () {
   const store = useStore()
-  const { changeNetworkIsOnline } = store
+  const { setNetworkIsOnline } = store
   const timer = ref<number | null>(null)
 
   // 通过 nodejs 获取网络状态
   const getNetworkStatus = async () => {
     const isConnected = await window.JSBridge.network.getConnectState()
-    changeNetworkIsOnline(isConnected)
+    setNetworkIsOnline(isConnected)
   }
 
   onMounted(() => {

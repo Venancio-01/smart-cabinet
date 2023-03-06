@@ -76,7 +76,10 @@ const rfidService = {
      * @return {*}
      */
     getReportData(address: string) {
-      if (!instanceMap[address]) return
+      if (!instanceMap[address]) {
+        console.log('socket 连接不存在')
+        return []
+      }
 
       const data = instanceMap[address].getData()
       const reportData = parseRFIDReportData(data)

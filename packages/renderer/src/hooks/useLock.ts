@@ -1,16 +1,16 @@
 import { useStore } from '@/store'
 import { useCheckStore } from '@/store/check'
 import { QUERY_OPEN_STATE_INTERVAL, SEND_QUERY_COMMAND_INTERVAL } from '@/config'
-import useRfid from './useRfid'
+import useCheck from './useCheck'
 import useDocument from './useDocument'
 
 export default function () {
   const store = useStore()
-  const { changeLockControlIsOnline, changeLockControlState, changeCabinetDoorData } = store
+  const { setLockControlIsOnline, setLockControlState, setCabinetDoor } = store
   const { cabinetData, cabinetDoorList, lockControlState } = storeToRefs(store)
   const checkStore = useCheckStore()
   const { addLastOperationCabinetDoorRecords } = checkStore
-  const { takeStock } = useRfid()
+  const { handleCheck } = useCheck()
   const { recordDataWhenCheckStart } = useDocument()
 
   // 查询锁孔开启状态的定时器
@@ -26,7 +26,7 @@ export default function () {
     if (opendoor === null) return
 
     const isConnected = await window.JSBridge.lockControl.getConnectState(opendoor)
-    changeLockControlIsOnline(isConnected)
+    setLockControlIsOnline(isConnected)
   }
 
   // 初始化锁控板连接
@@ -49,7 +49,7 @@ export default function () {
   // 门锁开启状态
   const queryLockOpenStatus = async () => {
     const result = await window.JSBridge.lockControl.getOpenStatus()
-    changeLockControlState(result)
+    setLockControlState(result)
   }
 
   const pollingQueryLockOpenStatus = () => {
@@ -94,11 +94,11 @@ export default function () {
 
           // 记录盘点开始时的载体数据
           recordDataWhenCheckStart()
-          takeStock(door.id)
-          changeCabinetDoorData({ ...door, isOpen: false })
+          handleCheck(door.id)
+          setCabinetDoor({ ...door, isOpen: false })
         } else if (isOpen) {
           console.log(`${door.kgbh} - 门锁开启`)
-          changeCabinetDoorData({ ...door, isOpen: true })
+          setCabinetDoor({ ...door, isOpen: true })
         }
       })
     })

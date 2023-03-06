@@ -13,7 +13,7 @@
 import { useStore } from '@/store'
 
 const store = useStore()
-const { changeCheckStatusDialogVisible } = store
+const { setCheckStatusDialogVisible } = store
 const { checkStatusDialogVisible,cabinetDoorList, currentCheckCabinetDoorId,backgroundUrl } = storeToRefs(store)
 
 const checkCountdown = computed(() => {
@@ -22,7 +22,7 @@ const checkCountdown = computed(() => {
 
 watch(checkCountdown, value => {
   if (value === 0) {
-    changeCheckStatusDialogVisible(false)
+    setCheckStatusDialogVisible(false)
   }
 })
 </script>

@@ -85,28 +85,28 @@ export const useStore = defineStore('main', {
     }
   },
   actions: {
-    changeBackgroundUrl(url: string) {
+    setBackgroundUrl(url: string) {
       this.backgroundUrl = url
     },
-    changeRfidIsConnected(state: boolean) {
+    setRfidIsConnected(state: boolean) {
       this.rfidIsOnline = state
     },
-    changeLockControlIsOnline(state: boolean) {
+    setLockControlIsOnline(state: boolean) {
       this.lockControlIsOnline = state
     },
-    changeFingerIsOnline(state: boolean) {
+    setFingerIsOnline(state: boolean) {
       this.fingerIsOnline = state
     },
-    changeNetworkIsOnline(state: boolean) {
+    setNetworkIsOnline(state: boolean) {
       this.networkIsOnline = state
     },
-    changeLoginVisible(visible: boolean) {
+    setLoginVisible(visible: boolean) {
       this.loginVisible = visible
     },
-    changeIsLoggedIn(visible: boolean) {
+    setIsLoggedIn(visible: boolean) {
       this.isLoggedIn = visible
     },
-    changeLoginModeIndex(index: number) {
+    setLoginModeIndex(index: number) {
       this.loginModeIndex = index
     },
     saveCabinetData(data: rfid_cabinet) {
@@ -115,7 +115,7 @@ export const useStore = defineStore('main', {
     saveCabinetDoorList(list: CabinetDoorProps[]) {
       this.cabinetDoorList = list
     },
-    changeCabinetDoorData(data: CabinetDoorProps) {
+    setCabinetDoor(data: CabinetDoorProps) {
       this.cabinetDoorList = this.cabinetDoorList.reduce<CabinetDoorProps[]>((acc, cur) => {
         if (cur.id === data.id) acc.push(data)
         else acc.push(cur)
@@ -129,7 +129,7 @@ export const useStore = defineStore('main', {
     saveUserData(user: UserProps | null) {
       this.user = user
     },
-    changeUserList(list: sys_user[]) {
+    setUserList(list: sys_user[]) {
       this.userList = list
     },
     saveDepartmentList(list: sys_dept[]) {
@@ -138,25 +138,25 @@ export const useStore = defineStore('main', {
     saveDocumentList(list: doc_document[]) {
       this.documentList = list
     },
-    changeLockCommandInterval(time: number) {
+    setLockCommandInterval(time: number) {
       this.lockCommandInterval = time
     },
-    changeLockControlState(state: LockControlStateProps | null) {
+    setLockControlState(state: LockControlStateProps | null) {
       this.lockControlState = state
     },
-    changeCheckStatusDialogVisible(visible: boolean) {
+    setCheckStatusDialogVisible(visible: boolean) {
       this.checkStatusDialogVisible = visible
     },
-    changeVerifyIdentityDialogVisible(visible: boolean) {
+    setVerifyIdentityDialogVisible(visible: boolean) {
       this.verifyIdentityDialogVisible = visible
     },
-    changeCurrentCheckCabinetDoorId(cabinetDoorId: number | null) {
+    setCurrentCheckCabinetDoorId(cabinetDoorId: number | null) {
       this.currentCheckCabinetDoorId = cabinetDoorId
     },
     saveCheckResultList(result: doc_document[]) {
       this.checkResultList = result
     },
-    changeReviewDocumentCondition(condition: ReviewDocumentCondition) {
+    setReviewDocumentCondition(condition: ReviewDocumentCondition) {
       this.reviewDocumentCondition = condition
     }
   }

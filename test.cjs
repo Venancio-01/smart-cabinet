@@ -1,42 +1,17 @@
-const { difference } = require('lodash')
+const arr = [1, 2, 3].map(item => item + 1)
 
-const arr1 = [
-  'e280110c2000728be1130973',
-  'e280110c200072cae0e10973',
-  'e280110c2000734be11e0973',
-  'e280110c200073429a310a77',
-  'e280110c20007b4be1110973',
-  'e280110c20007a4be11c0973',
-  'e280110c2000768ce1200973',
-  'e280110c2000718be1130973',
-  'e280110c20007acbe1110973',
-  'e280110c2000798be11c0973',
-  'e280110c2000734ae0e10973',
-  'e280110c200072cbe1080973',
-  'e280110c2000724ae0e10973',
-  'e280110c200074cbe10b0973',
-  'e280110c2000704be1080973',
-  'e280110c200074429a340a77'
-]
+const myMap = function (fn) {
+  const result = []
 
-const arr2 = [
-  'e280110c200074429a340a77',
-  'e280110c2000728ae0e10973',
-  'e280110c20007b4be1110973',
-  'e280110c200072cbe1080973',
-  'e280110c2000718be1130973',
-  'e280110c20007a4be11c0973',
-  'e280110c2000768ce1200973',
-  'e280110c2000724ae0e10973',
-  'e280110c200072cae0e10973',
-  'e280110c2000704be1080973',
-  'e280110c200074cbe10b0973',
-  'e280110c2000734be11e0973',
-  'e280110c2000734ae0e10973',
-  'e280110c2000728be1130973',
-  'e280110c20007acbe1110973',
-  'e280110c200073429a310a77',
-  'e280110c2000798be11c0973'
-]
+  for (let i = 0; i < this.length; i++) {
+    result.push(fn(this[i], i, this))
+  }
+  return result
+}
 
-console.log('🚀 ~ file: test.js:17 ~ returnDocuments:', difference(arr1, arr2))
+Array.prototype.myMap = myMap
+
+const arr2 = [1, 2, 3].myMap(item => item + 1)
+
+console.log(arr, 'arr')
+console.log(arr2, 'arr2')

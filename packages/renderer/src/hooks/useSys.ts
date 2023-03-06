@@ -2,7 +2,7 @@ import { useStore } from '@/store'
 
 export default function () {
   const store = useStore()
-  const { saveDepartmentList, changeUserList, changeBackgroundUrl } = store
+  const { saveDepartmentList, setUserList, setBackgroundUrl } = store
   const { user } = storeToRefs(store)
 
   const getUserData = async (userId: number) => {
@@ -12,7 +12,7 @@ export default function () {
 
   const getUserList = async () => {
     const list = await window.JSBridge.sys.getUserList()
-    changeUserList(list)
+    setUserList(list)
     return list
   }
 
@@ -36,7 +36,7 @@ export default function () {
 
   const getBackgroundImage = async () => {
     const path = import.meta.env.DEV ? 'public/background/index.png' : await window.JSBridge.sys.getProductionBgImagePath()
-    changeBackgroundUrl(path)
+    setBackgroundUrl(path)
   }
 
   return {

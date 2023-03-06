@@ -3,13 +3,13 @@ import prisma from '@/prisma'
 const cardService = {
   name: 'card',
   fns: {
-    async updateCardNumber(userId, cardNumber) {
+    async updateCardNumber(userId: number, cardNumber: string) {
       const result = await prisma.rfid_card_user.updateMany({
         where: {
           user_id: userId
         },
         data: {
-          carddata: cardNumber
+          card_data: cardNumber
         }
       })
       return result

@@ -21,10 +21,10 @@ import TheLogin from '@/components/TheLogin.vue'
 import { useStore } from '@/store'
 
 const store = useStore()
-const { changeLoginVisible } = store
+const { setLoginVisible } = store
 const { loginVisible, isLoggedIn } = storeToRefs(store)
 
 const openLogin = () => {
-  changeLoginVisible(true)
+  setLoginVisible(true)
 }
 </script>

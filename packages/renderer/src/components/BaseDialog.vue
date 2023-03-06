@@ -4,9 +4,11 @@
     class="fixed top-1/2 left-1/2 z-[99] flex h-screen w-screen -translate-x-1/2 -translate-y-1/2 items-center justify-center"
   >
     <div class="bg-primary-color shadow-[0px_0px_12px]" :style="{ width: `${width}px`, height: `${height}px` }">
-      <div class="flex h-[50px] select-none items-center justify-center border-b-[2px] border-white text-lg text-white">
+      <slot name="header">
+        <div class="flex h-[50px] select-none items-center justify-center border-b-[2px] border-white text-lg text-white">
         {{ title }}
       </div>
+      </slot>
       <div
         class="mx-auto select-none"
         :style="{

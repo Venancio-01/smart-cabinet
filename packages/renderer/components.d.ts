@@ -36,7 +36,7 @@ declare module '@vue/runtime-core' {
     SetPasswordDialog: typeof import('./src/components/SetPasswordDialog.vue')['default']
     SingleDoorPanel: typeof import('./src/components/SingleDoorPanel.vue')['default']
     TheLogin: typeof import('./src/components/TheLogin.vue')['default']
-    VerifyIdentity: typeof import('./src/components/VerifyIdentity.vue')['default']
+    VerifyIdentity: typeof import('./src/components/VerifyIdentity/index.vue')['default']
     ViewDocumentsDialog: typeof import('./src/components/ViewDocumentsDialog.vue')['default']
     WarningDialog: typeof import('./src/components/WarningDialog.vue')['default']
   }

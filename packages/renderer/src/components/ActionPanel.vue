@@ -45,7 +45,7 @@
 <script lang="ts" setup>
 import { useStore } from '@/store'
 import { useCheckStore } from '@/store/check'
-import useRfid from '@/hooks/useRfid'
+import useCheck from '@/hooks/useCheck'
 import useDocument from '@/hooks/useDocument'
 import createAlert from '@/components/BaseAlert'
 import useTime from '@/hooks/useTime'
@@ -56,7 +56,7 @@ const {} = store
 const { user, rfidIsOnline, cabinetDoorList } = storeToRefs(store)
 const checkStore = useCheckStore()
 const { addLastOperationCabinetDoorRecords } = checkStore
-const { takeStock } = useRfid()
+const { handleCheck } = useCheck()
 const { recordDataWhenCheckStart } = useDocument()
 const { resetOperationTimeoutCountdown } = useTime()
 const { verifyIsExpired, openVerifyIdentityDialog, saveCallback } = useVerify()
@@ -133,7 +133,7 @@ const handleManualCheck = () => {
 
   cabinetDoorList.value.forEach(door => {
     addLastOperationCabinetDoorRecords(door)
-    takeStock(door.id)
+    handleCheck(door.id)
   })
 }
 </script>

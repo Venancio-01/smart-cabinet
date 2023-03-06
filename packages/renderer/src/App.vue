@@ -29,7 +29,7 @@ import { useStore } from '@/store'
 import useTime from '@/hooks/useTime'
 import useOnAppOpen from '@/hooks/useOnAppOpen'
 import CheckPanel from '@/components/CheckPanel.vue'
-import VerifyIdentity from '@/components/VerifyIdentity.vue'
+import VerifyIdentity from '@/components/VerifyIdentity/index.vue'
 import DeviceStatus from '@/components/DeviceStatus.vue'
 
 const store = useStore()

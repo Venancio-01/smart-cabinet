@@ -6,7 +6,7 @@ const EXPIRATION_TIME = 1000 * 60 * 10 // 10分钟
 
 export default function () {
   const store = useStore()
-  const { changeVerifyIdentityDialogVisible } = store
+  const { setVerifyIdentityDialogVisible } = store
 
   /**
    * @description: 校验是否过期
@@ -21,11 +21,11 @@ export default function () {
   }
 
   const openVerifyIdentityDialog = () => {
-    changeVerifyIdentityDialogVisible(true)
+    setVerifyIdentityDialogVisible(true)
   }
 
   const closeVerifyIdentityDialog = () => {
-    changeVerifyIdentityDialogVisible(false)
+    setVerifyIdentityDialogVisible(false)
   }
 
   const saveCallback = (cb: () => void) => {

@@ -18,29 +18,9 @@ import FingerGIF from '@/assets/images/gif_finger.gif'
 import useLogin from '@/hooks/useLogin'
 
 const store = useStore()
-const { fingerIsOnline, loginVisible, loginModeIndex } = storeToRefs(store)
+const { fingerIsOnline } = storeToRefs(store)
 const { openFingerDevice, closeFingerDevice, startIdentifyFinger, endIdentifyFinger, identifyResult } = useFinger()
-const { onFingerLogin } = useLogin()
-
-const isActive = computed(() => {
-  return loginModeIndex.value === FINGER_KEY
-})
-
-watch(
-  isActive,
-  async value => {
-    if (value) {
-      await openFingerDevice()
-      startIdentifyFinger()
-    } else {
-      await closeFingerDevice()
-      endIdentifyFinger()
-    }
-  },
-  {
-    immediate: true
-  }
-)
+const { handleFingerLogin } = useLogin()
 
 const message = computed(() => {
   if (!fingerIsOnline.value) return '设备未连接'
@@ -56,14 +36,16 @@ watch(identifyResult, value => {
 
   if (success && data) {
     const userId = data as number
-    onFingerLogin(userId)
+    handleFingerLogin(userId)
   }
 })
 
-// 关闭登录窗口时，关闭指纹设备并结束指纹识别
-watch(loginVisible, async value => {
-  if (value) return
+onMounted(async () => {
+  await openFingerDevice()
+  startIdentifyFinger()
+})
 
+onUnmounted(async () => {
   await closeFingerDevice()
   endIdentifyFinger()
 })

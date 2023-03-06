@@ -1,7 +1,7 @@
 import { useStore } from '@/store'
 import createAlert from '@/components/BaseAlert'
 import useSys from './useSys'
-import { password_KEY } from '@/config'
+import { PASSWORD_KEY } from '@/config'
 import useTime from '@/hooks/useTime'
 
 export interface FormData {
@@ -12,7 +12,7 @@ export interface FormData {
 export default function () {
   const router = useRouter()
   const store = useStore()
-  const { changeIsLoggedIn, changeLoginVisible, saveUserData, changeLoginModeIndex } = store
+  const { setIsLoggedIn, setLoginVisible, saveUserData, setLoginModeIndex } = store
   const { getUserData } = useSys()
   const { openOperationTimeoutCountdown, closeOperationTimeoutCountdown } = useTime()
 
@@ -22,9 +22,9 @@ export default function () {
    * @return {*}
    */
   const handleLogin = (userData: UserProps) => {
-    changeIsLoggedIn(true)
-    changeLoginVisible(false)
-    changeLoginModeIndex(password_KEY)
+    setIsLoggedIn(true)
+    setLoginVisible(false)
+    setLoginModeIndex(PASSWORD_KEY)
     saveUserData(userData)
     openOperationTimeoutCountdown()
     router.push('/main')
@@ -35,7 +35,7 @@ export default function () {
    * @return {*}
    */
   const handleLogout = () => {
-    changeIsLoggedIn(false)
+    setIsLoggedIn(false)
     // saveUserData(null)
     closeOperationTimeoutCountdown()
     router.push('/')

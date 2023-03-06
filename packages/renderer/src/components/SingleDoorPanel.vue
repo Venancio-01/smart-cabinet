@@ -43,7 +43,7 @@ import useLogin from '@/hooks/useLogin'
 import useTime from '@/hooks/useTime'
 
 const store = useStore()
-const { changeCabinetDoorData } = store
+const { setCabinetDoor } = store
 const { cabinetDoorList, documentTotal, inPlaceDocumentTotal, misPlaceDocumentTotal, rfidIsOnline, lockControlIsOnline } =
   storeToRefs(store)
 const { openLock } = useLock()
@@ -57,7 +57,7 @@ const handleClickDoor = () => {
   handleLogout()
 
   setTimeout(() => {
-    changeCabinetDoorData({ ...cabinetDoor.value, isOpen: true })
+    setCabinetDoor({ ...cabinetDoor.value, isOpen: true })
   }, 1000)
 }
 

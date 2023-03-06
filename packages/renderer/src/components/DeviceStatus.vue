@@ -47,7 +47,7 @@ import useDocument from '@/hooks/useDocument'
 const router = useRouter()
 const route = useRoute()
 const store = useStore()
-const {changeReviewDocumentCondition } = store
+const {setReviewDocumentCondition } = store
 const { rfidIsOnline, misPlaceDocumentTotal, networkIsOnline, lockControlIsOnline, documentTotal, inPlaceDocumentTotal } =
   storeToRefs(store)
 const {} = useDocument()

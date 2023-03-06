@@ -1,10 +1,10 @@
 // 登录后操作超时时长,单位秒
 export const OPERATION_TIMEOUT = 90
 // 确认结果操作超时时长,单位秒
-export const CONFIRM_TIMEOUT = 20
+export const CONFIRM_TIMEOUT = 200000
 
 // 三种登录方式索引
-export const password_KEY = 1
+export const PASSWORD_KEY = 1
 export const FINGER_KEY = 2
 export const CARD_KEY = 3
 

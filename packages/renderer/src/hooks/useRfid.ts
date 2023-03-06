@@ -1,34 +1,14 @@
 import { useStore } from '@/store'
-import { useCheckStore } from '@/store/check'
-import createAlert from '@/components/BaseAlert'
-import { CHECK_TIME } from '@/config'
-import useDocument from './useDocument'
-import useCheck from './useCheck'
-import useTime from '@/hooks/useTime'
 
 export default function () {
-  const router = useRouter()
   const store = useStore()
-  const {
-    changeRfidIsConnected,
-    changeCabinetDoorData,
-    changeCheckStatusDialogVisible,
-    changeCurrentCheckCabinetDoorId,
-  } = store
-  const { cabinetDoorList, isChecking } = storeToRefs(store)
-  const checkStore = useCheckStore()
-  const { clearLastOperationCabinetDoorRecords, changeLastOperationCabinetDoorList } = checkStore
-  const { lastOperationCabinetDoorRecords } = storeToRefs(checkStore)
-  const { updateDocumentStatus, recordDataWhenCheckEnd } = useDocument()
-  const { generateCheckResult } = useCheck()
-  const {
-    resetOperationTimeoutCountdown,
-    resetConfirmationTimeCountdown,
-    closeOperationTimeoutCountdown,
-    openConfirmationTimeCountdown
-  } = useTime()
+  const { setRfidIsConnected } = store
+  const { cabinetDoorList } = storeToRefs(store)
 
-  // 获取 RFID 连接状态
+  /**
+   * @description: 获取读写器连接状态
+   * @return {*}
+   */
   const getRfidConnectState = async () => {
     const result = []
     for (let i = 0; i < cabinetDoorList.value.length; i++) {
@@ -39,20 +19,37 @@ export default function () {
     }
 
     const isConnected = result.every(Boolean)
-    changeRfidIsConnected(isConnected)
+    setRfidIsConnected(isConnected)
     return isConnected
   }
 
+  /**
+   * @description: 初始化读写器
+   * @param {string} address
+   * @param {number} port
+   * @return {*}
+   */
   const initRfid = async (address: string, port: number) => {
     const isConnected = await window.JSBridge.rfid.init(address, port)
-    changeRfidIsConnected(isConnected)
+    setRfidIsConnected(isConnected)
     return isConnected
   }
 
+  /**
+   * @description: 销毁读写器
+   * @param {string} address
+   * @return {*}
+   */
   const destroyRfid = async (address: string) => {
     return await window.JSBridge.rfid.destroy(address)
   }
 
+  /**
+   * @description:  发送开启命令
+   * @param {string} address
+   * @param {string} antennaIds
+   * @return {*}
+   */
   const sendOpenCommand = async (address: string, antennaIds: string) => {
     const antennaIdList = antennaIds.split(',').map(item => Number(item))
     return await window.JSBridge.rfid.sendOpenCommand(address, antennaIdList)
@@ -63,95 +60,31 @@ export default function () {
   }
 
   /**
-   * @description: 开启盘点
+   * @description: 打开读写器
+   * @param {string} address
+   * @param {string} antennaIds
    * @return {*}
    */
-  const takeStock = async (doorId: number) => {
-    resetOperationTimeoutCountdown()
-    resetConfirmationTimeCountdown()
-
-    const door = computed(() => {
-      return cabinetDoorList.value.find(item => item.id === doorId)
-    })
-
-    if (door.value === undefined) return
-
-    const { antenna_address: address, antenna_port: port, antenna_id: antennaId } = door.value
-    if (address === null || antennaId === null) return
-
-    const isConnected = await initRfid(address, port)
-    if (!isConnected) {
-      createAlert('读取连接设备失败')
-      return false
-    }
-
-    const isInventory = door.value.checkCountdown !== 10
-    if (isInventory) {
-      createAlert('该柜门正在盘点中')
-      return false
-    }
-
-    changeCurrentCheckCabinetDoorId(door.value.id)
-    // 开启盘点面板
-    changeCheckStatusDialogVisible(true)
-
+  const handleOpenRfid = async (address: string, antennaIds: string) => {
     await sendCloseCommand(address)
-    await sendOpenCommand(address, antennaId)
+    await sendOpenCommand(address, antennaIds)
+  }
 
-    const timer = window.setInterval(async () => {
-      if (door.value === undefined) return
-
-      changeCabinetDoorData({
-        ...door.value,
-        checkCountdown: door.value.checkCountdown - 1
-      })
-
-      if (door.value.checkCountdown !== 0) return
-
-      clearInterval(timer)
-
-      // 发送关闭命令
-      await sendCloseCommand(address)
-      // 更新载体状态
-      await updateDocumentStatus(door.value)
-
-      if (door.value === undefined) return
-
-      // 复原倒计时
-      changeCabinetDoorData({ ...door.value, checkCountdown: CHECK_TIME })
-
-      // 销毁 socket 实例
-      await destroyRfid(address)
-
-      // 如果没有正在盘点的柜门
-      if (!isChecking.value) {
-        // 记录盘点结束时的载体数据
-        await recordDataWhenCheckEnd()
-
-        console.log(lastOperationCabinetDoorRecords.value,'lastOperationCabinetDoorRecords.value')
-
-        // 记录本次盘点操作的的柜门
-        changeLastOperationCabinetDoorList(lastOperationCabinetDoorRecords.value)
-        // 清空这一次操作的柜门记录
-        clearLastOperationCabinetDoorRecords()
-        // 生成盘点结果
-        generateCheckResult()
-
-        // 关闭操作超时倒计时
-        closeOperationTimeoutCountdown()
-        // 重置确认倒计时
-        resetConfirmationTimeCountdown()
-        // 开启确认倒计时
-        openConfirmationTimeCountdown()
-
-        // 跳转盘点结果页面
-        router.push('/result')
-      }
-    }, 1000)
+  /**
+   * @description: 关闭读写器,并销毁读写器
+   * @param {string} address
+   * @return {*}
+   */
+  const handleCloseRfid = async (address: string) => {
+    await sendCloseCommand(address)
+    await destroyRfid(address)
   }
 
   return {
     getRfidConnectState,
-    takeStock
+    initRfid,
+    destroyRfid,
+    handleOpenRfid,
+    handleCloseRfid
   }
 }

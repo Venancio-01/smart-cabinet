@@ -25,19 +25,19 @@ export const useCheckStore = defineStore('check', {
   },
   getters: {},
   actions: {
-    changeFirstDocumentRecord(record: doc_document[]) {
+    setFirstDocumentRecord(record: doc_document[]) {
       this.firstDocumentRecord = record
     },
-    changeFirstMisPlaceDocumentRecord(record: rfid_switch_record[]) {
+    setFirstMisPlaceDocumentRecord(record: rfid_switch_record[]) {
       this.firstMisPlaceDocumentRecord = record
     },
-    changeEndDocumentRecord(record: doc_document[]) {
+    setEndDocumentRecord(record: doc_document[]) {
       this.endDocumentRecord = record
     },
-    changeEndMisPlaceDocumentRecord(record: rfid_switch_record[]) {
+    setEndMisPlaceDocumentRecord(record: rfid_switch_record[]) {
       this.endMisPlaceDocumentRecord = record
     },
-    changeCheckResultList(result: CheckResultType[]) {
+    setCheckResultList(result: CheckResultType[]) {
       this.checkResultList = result
     },
     addLastOperationCabinetDoorRecords(door: CabinetDoorProps) {

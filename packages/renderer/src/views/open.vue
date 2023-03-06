@@ -5,14 +5,20 @@
     </div>
 
     <div class="">
-      <div class="flex flex-col justify-center items-center text-2xl text-white h-[80px]">
-        <h3 class="text-white">柜门已打开</h3>
+      <div class="flex h-[80px] flex-col items-center justify-center text-2xl text-white">
+        <h3 v-if="lockControlIsOnline" class="text-white">柜门已打开</h3>
+        <h3 v-else class="text-red-500">锁控板连接异常</h3>
       </div>
 
-      <div class="border-b-2 border-white mb-4"></div>
+      <div class="mb-4 border-b-2 border-white"></div>
 
       <div class="px-4">
-        <DocumentTable :data="data" :total="total" :condition="{page:condition.page,size:condition.size}" @on-page-change="handlePageChange"/>
+        <DocumentTable
+          :data="data"
+          :total="total"
+          :condition="{ page: condition.page, size: condition.size }"
+          @on-page-change="handlePageChange"
+        />
       </div>
     </div>
   </div>
@@ -32,12 +38,11 @@ const props = defineProps<Props>()
 
 const router = useRouter()
 const store = useStore()
-const { } = storeToRefs(store)
+const { lockControlIsOnline } = storeToRefs(store)
 const checkStore = useCheckStore()
-const { } = storeToRefs(checkStore)
-const {DocumentTable,getDocuments,data,total} = useViewDocuments()
-const {resetOperationTimeoutCountdown} = useTime()
-
+const {} = storeToRefs(checkStore)
+const { DocumentTable, getDocuments, data, total } = useViewDocuments()
+const { resetOperationTimeoutCountdown } = useTime()
 
 const goBack = () => {
   resetOperationTimeoutCountdown()
@@ -60,8 +65,8 @@ const handlePageChange = async (page: number) => {
   getDocuments(condition)
 }
 
-onMounted( ()=>{
-   getDocuments(condition)
+onMounted(() => {
+  getDocuments(condition)
 })
 </script>
 
