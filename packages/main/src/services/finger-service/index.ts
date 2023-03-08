@@ -1,5 +1,13 @@
-import { captureFingerImage, closeDeviceByHandle, getDeviceCount, getParameterByHandle, openDeviceByHandle } from './device-func'
 import {
+  initDeviceSDK,
+  captureFingerImage,
+  closeDeviceByHandle,
+  getDeviceCount,
+  getParameterByHandle,
+  openDeviceByHandle
+} from './device-func'
+import {
+  initAlgorithmSDK,
   addTemplateToDb,
   closeAlgorithm,
   extractTemplate,
@@ -40,6 +48,10 @@ let userFingerData = []
 const fingerService = {
   name: 'finger',
   fns: {
+    initSDK() {
+      initDeviceSDK()
+      initAlgorithmSDK()
+    },
     /**
      * @description: 查询当前设备在线情况
      * @return {*}

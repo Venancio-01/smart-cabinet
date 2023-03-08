@@ -21,11 +21,12 @@ export default function () {
     watchLockControlState
   } = useLock()
   const { startGenerateCurrentTime, stopGenerateCurrentTime } = useTime()
-  const { pollingGetFingerStatus, stopPollingGetFingerStatus } = useFinger()
+  const { initSDK, pollingGetFingerConnectStatus, stopPollingGetFingerConnectStatus } = useFinger()
   const { getMisPlaceDocuments, getAllDocumentData } = useDocument()
   const { getCabinetInfo, getCabinetDoorInfo } = useCabinet()
 
   onMounted(async () => {
+    initSDK()
     // 获取背景图片路径
     getBackgroundImage()
     // 监听锁控板状态
@@ -49,7 +50,7 @@ export default function () {
     // 轮询发送锁控板查询状态的命令
     pollingQueryLockOpenStatus()
     // 查询指纹仪连接状态
-    pollingGetFingerStatus()
+    pollingGetFingerConnectStatus()
     // 轮询发送查询锁控状态的命令
     pollingQueryAllLockState()
     // 生成当前时间
@@ -59,7 +60,7 @@ export default function () {
 
   onBeforeUnmount(() => {
     stopPollingQueryLockOpenStatus()
-    stopPollingGetFingerStatus()
+    stopPollingGetFingerConnectStatus()
     stopPollingQueryAllLockState()
     stopGenerateCurrentTime()
 

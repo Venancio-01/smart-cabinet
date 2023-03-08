@@ -15,20 +15,24 @@ export default function () {
   // 注册指纹结果
   const registerResult = ref<null | ResponseProps>(null)
 
+  const initSDK = () => {
+    window.JSBridge.finger.initSDK()
+  }
+
   // 获取指纹仪连接状态
-  const getFingerStatus = async () => {
+  const getFingerConnectStatus = async () => {
     const isOnline = await window.JSBridge.finger.queryConnectState()
     setFingerIsOnline(isOnline)
   }
 
   // 轮询获取指纹仪连接状态
-  const pollingGetFingerStatus = () => {
-    getFingerStatus()
-    queryTimer.value = window.setInterval(getFingerStatus, QUERY_FINGER_INTERVAL)
+  const pollingGetFingerConnectStatus = () => {
+    getFingerConnectStatus()
+    queryTimer.value = window.setInterval(getFingerConnectStatus, QUERY_FINGER_INTERVAL)
   }
 
   // 停止轮询获取指纹仪连接状态
-  const stopPollingGetFingerStatus = () => {
+  const stopPollingGetFingerConnectStatus = () => {
     if (queryTimer.value) clearInterval(queryTimer.value)
   }
 
@@ -76,13 +80,14 @@ export default function () {
   return {
     identifyResult,
     registerResult,
-    pollingGetFingerStatus,
-    stopPollingGetFingerStatus,
+    pollingGetFingerConnectStatus,
+    stopPollingGetFingerConnectStatus,
     openFingerDevice,
     closeFingerDevice,
     startRegisterFinger,
     endRegisterFinger,
     startIdentifyFinger,
-    endIdentifyFinger
+    endIdentifyFinger,
+    initSDK
   }
 }

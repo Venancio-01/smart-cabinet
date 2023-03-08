@@ -32,7 +32,7 @@
       "dependsOn": [
         "build:development"
       ],
-      "command": "sudo node node_modules/.bin/electron dist/packages/main/src/index.js --no-sandbox"
+      "command": "electron ."
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",

@@ -1,15 +1,19 @@
 import { DEVICE_SDK_PATH } from '@/config/finger'
 import { DeviceArrayType, DeviceTypePointerType, HandleType, UcharType } from './types'
-import { Library } from 'ffi-napi';
+import { Library } from 'ffi-napi'
 
 // 通过 ffi 解析 C++ SDK 方法
-export const deviceSDK = Library(DEVICE_SDK_PATH, {
-  sensorEnumDevices: ['int', [DeviceArrayType, 'int']], // 枚举设备
-  sensorOpen: [HandleType, [DeviceTypePointerType]], // 打开设备
-  sensorClose: ['int', [HandleType]], // 关闭设备
-  sensorCapture: ['int', [HandleType, UcharType, 'int']], // 采集指纹
-  sensorGetParameter: ['int', [HandleType, 'int']] // 获取指纹仪简单参数
-})
+let deviceSDK = null
+
+export const initDeviceSDK = () => {
+  deviceSDK = Library(DEVICE_SDK_PATH, {
+    sensorEnumDevices: ['int', [DeviceArrayType, 'int']], // 枚举设备
+    sensorOpen: [HandleType, [DeviceTypePointerType]], // 打开设备
+    sensorClose: ['int', [HandleType]], // 关闭设备
+    sensorCapture: ['int', [HandleType, UcharType, 'int']], // 采集指纹
+    sensorGetParameter: ['int', [HandleType, 'int']] // 获取指纹仪简单参数
+  })
+}
 
 export const getDeviceCount = (deviceList: unknown[], max: number) => {
   return deviceSDK.sensorEnumDevices(deviceList, max)

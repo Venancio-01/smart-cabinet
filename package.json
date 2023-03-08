@@ -8,7 +8,8 @@
   "description": "智能载体管控系统",
   "nx": {},
   "scripts": {
-    "package": "nx run-many --target=build && electron-builder --linux"
+    "package": "nx run-many --target=build && electron-builder --linux",
+    "dev": "electron ."
   },
   "private": true,
   "devDependencies": {
@@ -49,7 +50,7 @@
     "autoprefixer": "^10.4.13",
     "axios": "^1.0.0",
     "cypress": "^12.2.0",
-    "electron": "^12.2.2",
+    "electron": "^18.2.2",
     "electron-builder": "^23.6.0",
     "electron-devtools-installer": "^3.2.0",
     "electron-simple-publisher": "^2.0.1",
@@ -106,6 +107,7 @@
     "ref-napi": "^3.0.3",
     "ref-struct-di": "^1.1.1",
     "serialport": "^10.5.0",
+    "sudo-prompt": "^9.2.1",
     "vue3-perfect-scrollbar": "^1.6.1"
   }
 }

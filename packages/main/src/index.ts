@@ -57,7 +57,7 @@ const setSerialPortPermissions = () => {
 
 app.whenReady().then(async () => {
   win = await createWindow()
-  setSerialPortPermissions()
+  // setSerialPortPermissions()
   installService()
   if (app.isPackaged) {
     disableShortcuts()

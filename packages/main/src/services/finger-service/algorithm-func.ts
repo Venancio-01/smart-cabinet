@@ -1,17 +1,20 @@
 import { ALGORITHM_SDK_PATH, VERIFY_SCORE_THRESHOLD } from '@/config/finger'
 import { HandleType, IntType, TemplateType, UcharType } from './types'
-import { Library } from 'ffi-napi';
+import { Library } from 'ffi-napi'
+let algorithmSDK = null
 
 // 通过 ffi 解析 C++ SDK 方法
-export const algorithmSDK = Library(ALGORITHM_SDK_PATH, {
-  BIOKEY_INIT_SIMPLE: [HandleType, ['int', 'int', 'int', 'int']], // 初始化算法
-  BIOKEY_CLOSE: ['int', [HandleType]], // 释放算法
-  BIOKEY_EXTRACT_GRAYSCALEDATA: ['int', [HandleType, UcharType, 'int', 'int', UcharType, 'int', 'int']], // 提取模版
-  BIOKEY_IDENTIFYTEMP: ['int', [HandleType, UcharType, IntType, IntType]], // 1:N 识别
-  BIOKEY_GENTEMPLATE: ['int', [HandleType, TemplateType, 'int', UcharType]], // ⽣成登记特征(多个模板之中取最好)
-  BIOKEY_VERIFY: ['int', [HandleType, UcharType, UcharType]], // 对比两个模板
-  BIOKEY_DB_ADD: ['int', [HandleType, 'int', 'int', UcharType]] // 添加模板到1:N内存中
-})
+export const initAlgorithmSDK = () => {
+  algorithmSDK = Library(ALGORITHM_SDK_PATH, {
+    BIOKEY_INIT_SIMPLE: [HandleType, ['int', 'int', 'int', 'int']], // 初始化算法
+    BIOKEY_CLOSE: ['int', [HandleType]], // 释放算法
+    BIOKEY_EXTRACT_GRAYSCALEDATA: ['int', [HandleType, UcharType, 'int', 'int', UcharType, 'int', 'int']], // 提取模版
+    BIOKEY_IDENTIFYTEMP: ['int', [HandleType, UcharType, IntType, IntType]], // 1:N 识别
+    BIOKEY_GENTEMPLATE: ['int', [HandleType, TemplateType, 'int', UcharType]], // ⽣成登记特征(多个模板之中取最好)
+    BIOKEY_VERIFY: ['int', [HandleType, UcharType, UcharType]], // 对比两个模板
+    BIOKEY_DB_ADD: ['int', [HandleType, 'int', 'int', UcharType]] // 添加模板到1:N内存中
+  })
+}
 
 /**
  * @description: 初始化算法
