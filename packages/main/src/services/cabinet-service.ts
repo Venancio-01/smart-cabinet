@@ -2,7 +2,7 @@ import prisma from '@/prisma'
 import { rfid_cabinet_door } from '@prisma/client'
 
 const cabinetService = {
-  name: 'cabinet',
+  name: 'cabinet' as const ,
   fns: {
     /**
      * @description: 获取柜体信息

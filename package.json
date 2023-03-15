@@ -1,6 +1,6 @@
 {
-  "name": "smart-cabinet-repo",
-  "version": "1.0.0",
+  "name": "smart-cabinet",
+  "version": "1.0.1",
   "license": "MIT",
   "main": "dist/packages/main/src/index.js",
   "author": "liqingshan <15054854614@163.com>",
@@ -50,7 +50,7 @@
     "autoprefixer": "^10.4.13",
     "axios": "^1.0.0",
     "cypress": "^12.2.0",
-    "electron": "^18.2.2",
+    "electron": "^12.2.2",
     "electron-builder": "^23.6.0",
     "electron-devtools-installer": "^3.2.0",
     "electron-simple-publisher": "^2.0.1",

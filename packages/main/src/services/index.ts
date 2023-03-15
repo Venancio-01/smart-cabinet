@@ -7,20 +7,11 @@ import cabinetService from './cabinet-service'
 import documentService from './document-service'
 import cardService from './card-service'
 import networkService from './network-status'
+import updateService from './update-service'
 
 export type LoginServiceType = typeof loginService.fns
 
-export const services: [
-  typeof loginService,
-  typeof lockControlService,
-  typeof rfidService,
-  typeof fingerService,
-  typeof sysService,
-  typeof cabinetService,
-  typeof documentService,
-  typeof cardService,
-  typeof networkService
-] = [
+export const services = [
   loginService,
   lockControlService,
   rfidService,
@@ -29,8 +20,11 @@ export const services: [
   cabinetService,
   documentService,
   cardService,
-  networkService
+  networkService,
+  updateService
 ]
+
+export type ServiceType = typeof services
 
 export function makeChannelName(name, fnName) {
   return `${name}.${fnName}`

@@ -1,14 +1,16 @@
 import { Socket } from 'net'
 
-export default class TcpSocket {
+export default class {
   private instance: Socket | null = null
   private data = ''
   private address = ''
   private port: number | null = null
+  private format: 'hex' | 'utf-8' = 'hex'
 
-  constructor(address: string, port: number) {
-    this.address = address
-    this.port = port
+  constructor(option: { address: string; port?: number; format?: 'hex' | 'utf-8' }) {
+    this.address = option.address
+    this.port = option?.port
+    this.format = option?.format || 'hex'
   }
 
   init() {
@@ -28,7 +30,7 @@ export default class TcpSocket {
 
       this.instance.on('close', () => {
         console.log('关闭 socket 连接')
-        reject()
+        reject(new Error('socket 连接关闭'))
       })
 
       this.instance.on('error', err => {
@@ -37,7 +39,7 @@ export default class TcpSocket {
       })
 
       this.instance.on('data', data => {
-        this.data += data.toString('hex')
+        this.data += data.toString(this.format)
       })
 
       const MAX_CONNECT_DURATION = 3000
@@ -45,28 +47,39 @@ export default class TcpSocket {
         this.instance.destroy()
       }, MAX_CONNECT_DURATION)
 
-      this.instance.connect(this.port, this.address)
+      this.connect()
     })
+  }
+
+  connect() {
+    if (!this.instance) return
+    if (this.port) {
+      this.instance.connect(this.port, this.address)
+    } else this.instance.connect(this.address)
   }
 
   destroy() {
     if (!this.instance) return
+
     this.instance.destroy()
   }
 
   write(data) {
     if (!this.instance) return
+
     console.log('写入数据', data)
     this.instance.write(data)
   }
 
   getData() {
     if (!this.instance) return
+
     return this.data
   }
 
   setData(source: string) {
     if (!this.instance) return
+
     this.data = source
     return this.data
   }

@@ -1,6 +1,6 @@
 import { useStore } from '@/store'
 import { useCheckStore } from '@/store/check'
-import { doc_document, rfid_switch_record } from '@prisma/client'
+import { doc_document } from '@prisma/client'
 import { CHECK_TIME } from '@/config'
 import useDocument from './useDocument'
 import useTime from '@/hooks/useTime'

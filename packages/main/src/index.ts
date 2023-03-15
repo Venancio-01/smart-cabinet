@@ -3,6 +3,7 @@ import { services, makeChannelName } from '@/services'
 import { createWindow } from '@/base/window'
 import { ipcMain } from 'electron'
 import { exec } from 'child_process'
+import updateService from './services/update-service'
 
 // Disable GPU Acceleration for Linux.
 app.disableHardwareAcceleration()
@@ -49,11 +50,11 @@ const installService = () => {
  * @description: 设置串口权限
  * @return {*}
  */
-const setSerialPortPermissions = () => {
-  exec('sudo chmod 777 /dev/ttyUSB0', error => {
-    if (error) console.log(error, 'error')
-  })
-}
+// const setSerialPortPermissions = () => {
+//   exec('sudo chmod 777 /dev/ttyUSB0', error => {
+//     if (error) console.log(error, 'error')
+//   })
+// }
 
 app.whenReady().then(async () => {
   win = await createWindow()
@@ -87,4 +88,8 @@ app.on('activate', () => {
   } else {
     createWindow()
   }
+})
+
+app.on('before-quit', () => {
+  updateService.fns.handleExitUpdateService()
 })

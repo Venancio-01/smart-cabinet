@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import { Library } from 'ffi-napi'
 import { UcharType } from '@/services/finger-service/types'
 import { CRC_SDK_PATH } from '@/config/finger'
+import pkg from '../../../../../package.json'
 
 /**
  * @description: 生成 ipc 通信的返回数据结构
@@ -96,17 +97,6 @@ export const convertDecimalToBinary = (number: number) => {
  * @param {number} numbers
  * @return {*}
  */
-// export const generateBinaryString = (numbers: number[]) => {
-//   const binaryArray = new Array(32).fill('0')
-
-//   for (const num of numbers) {
-//     binaryArray[num - 1] = '1'
-//   }
-
-//   const binaryString = binaryArray.reverse().join('')
-//   return binaryString
-// }
-
 export const generateBinaryString = (numbers: number[]) => {
   const binaryArray = Array.from({ length: 32 }, () => '0')
 
@@ -169,4 +159,12 @@ export const generateCRC16Code = (str: string) => {
 
   const buffer = Buffer.from(str, 'hex')
   return crcSDK.CRC16_CCITT(buffer, buffer.length).toString(16)
+}
+
+/**
+ * @description: 获取应用版本信息
+ * @return {*}
+ */
+export const getAppVersion = ():string => {
+  return pkg.version
 }

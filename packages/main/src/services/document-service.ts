@@ -12,7 +12,7 @@ import { doc_document, rfid_switch_record } from '@prisma/client'
 import rfidService from './rfid-service'
 
 const documentService = {
-  name: 'document',
+  name: 'document' as const ,
   fns: {
     async getAllDocumentData(): Promise<doc_document[]> {
       const records = await prisma.doc_document.findMany()
@@ -146,4 +146,3 @@ const documentService = {
 }
 
 export default documentService
-

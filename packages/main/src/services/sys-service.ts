@@ -5,7 +5,7 @@ import { sys_dept, sys_user } from '@prisma/client'
 import { join } from 'path'
 
 const sysService = {
-  name: 'sys',
+  name: 'sys' as const,
   fns: {
     async getUserData(userId: number) {
       const user = await queryUserByUserId(userId)

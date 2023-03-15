@@ -25,6 +25,7 @@ interface State {
   currentCheckCabinetDoorId: number | null
   checkResultList: doc_document[]
   reviewDocumentCondition: ReviewDocumentCondition
+  loading: boolean
 }
 
 type ReviewDocumentCondition = {
@@ -57,6 +58,7 @@ export const useStore = defineStore('main', {
       verifyIdentityDialogVisible: false,
       currentCheckCabinetDoorId: null,
       checkResultList: [],
+      loading:true,
       reviewDocumentCondition: {
         cabinetDoorId: null,
         state: null
@@ -158,6 +160,9 @@ export const useStore = defineStore('main', {
     },
     setReviewDocumentCondition(condition: ReviewDocumentCondition) {
       this.reviewDocumentCondition = condition
+    },
+    setLoading(loading:boolean){
+      this.loading = loading
     }
   }
 })

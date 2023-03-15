@@ -77,6 +77,14 @@ watch(show, async value => {
     message.value = '请按压同一手指3次'
   }
 })
+
+onMounted(() => {
+  console.log('onMounted')
+})
+
+onUnmounted(()=>{
+  console.log('onUnmounted')
+})
 </script>
 
 <style scoped>

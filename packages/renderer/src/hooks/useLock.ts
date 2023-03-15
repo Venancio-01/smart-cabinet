@@ -4,19 +4,19 @@ import { QUERY_OPEN_STATE_INTERVAL, SEND_QUERY_COMMAND_INTERVAL } from '@/config
 import useCheck from './useCheck'
 import useDocument from './useDocument'
 
+// 查询锁孔开启状态的定时器
+const queryLockOpenStatusTimer = ref<number | null>(null)
+// 查询所有锁控状态的定时器
+const queryAllLockTimer = ref<number | null>(null)
+
 export default function () {
   const store = useStore()
   const { setLockControlIsOnline, setLockControlState, setCabinetDoor } = store
-  const { cabinetData, cabinetDoorList, lockControlState } = storeToRefs(store)
+  const { cabinetData, cabinetDoorList, lockControlState, lockControlIsOnline } = storeToRefs(store)
   const checkStore = useCheckStore()
   const { addLastOperationCabinetDoorRecords } = checkStore
   const { handleCheck } = useCheck()
   const { recordDataWhenCheckStart } = useDocument()
-
-  // 查询锁孔开启状态的定时器
-  const queryLockOpenStatusTimer = ref<number | null>(null)
-  // 查询所有锁控状态的定时器
-  const queryAllLockTimer = ref<number | null>(null)
 
   // 获取锁控板连接状态
   const getLockControlConnectState = async () => {
@@ -104,14 +104,28 @@ export default function () {
     })
   }
 
+  const initLockControlService = async () => {
+    await getLockControlConnectState()
+    if (!lockControlIsOnline.value) return
+    // 连接锁控板
+    initLockControl()
+    // 轮询发送锁控板查询状态的命令
+    pollingQueryLockOpenStatus()
+    // 轮询发送查询锁控状态的命令
+    pollingQueryAllLockState()
+    watchLockControlState()
+    // 监听锁控板状态
+    watchLockControlState()
+  }
+
+  const destroyLockControlService = () => {
+    stopPollingQueryLockOpenStatus()
+    stopPollingQueryAllLockState()
+  }
+
   return {
-    getLockControlConnectState,
-    initLockControl,
     openLock,
-    pollingQueryLockOpenStatus,
-    stopPollingQueryLockOpenStatus,
-    pollingQueryAllLockState,
-    stopPollingQueryAllLockState,
-    watchLockControlState
+    initLockControlService,
+    destroyLockControlService
   }
 }

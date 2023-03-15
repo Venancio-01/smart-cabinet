@@ -15,6 +15,10 @@ export const initDeviceSDK = () => {
   })
 }
 
+export const destroyDeviceSDK = () => {
+  deviceSDK = null
+}
+
 export const getDeviceCount = (deviceList: unknown[], max: number) => {
   return deviceSDK.sensorEnumDevices(deviceList, max)
 }

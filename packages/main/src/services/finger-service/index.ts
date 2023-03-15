@@ -1,5 +1,6 @@
 import {
   initDeviceSDK,
+  destroyDeviceSDK,
   captureFingerImage,
   closeDeviceByHandle,
   getDeviceCount,
@@ -8,6 +9,7 @@ import {
 } from './device-func'
 import {
   initAlgorithmSDK,
+  destroyAlgorithmSDK,
   addTemplateToDb,
   closeAlgorithm,
   extractTemplate,
@@ -46,11 +48,15 @@ let registerCurrentIndex = 0
 let userFingerData = []
 
 const fingerService = {
-  name: 'finger',
+  name: 'finger' as const  ,
   fns: {
     initSDK() {
       initDeviceSDK()
       initAlgorithmSDK()
+    },
+    destroySDK(){
+      destroyDeviceSDK()
+      destroyAlgorithmSDK()
     },
     /**
      * @description: 查询当前设备在线情况
@@ -58,6 +64,7 @@ const fingerService = {
      */
     queryConnectState() {
       const count = getDeviceCount(deviceList, MAX_DEVICE_NUM)
+      console.log("🚀 ~ file: index.ts:61 ~ queryConnectState ~ count:", count)
       connected = count > 0
       return connected
     },

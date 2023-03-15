@@ -1,18 +1,14 @@
 import { doc_document, rfid_cabinet_door, sys_user, rfid_switch_record } from '@prisma/client'
 export {}
 
-type ServiceType = typeof import('../packages/main/src/services').services
+type ServiceType = import('../packages/main/src/services').ServiceType
 
 type JSBridgeType = {
-  login: ServiceType[0]['fns']
-  lockControl: ServiceType[1]['fns']
-  rfid: ServiceType[2]['fns']
-  finger: ServiceType[3]['fns']
-  sys: ServiceType[4]['fns']
-  cabinet: ServiceType[5]['fns']
-  document: ServiceType[6]['fns']
-  card: ServiceType[7]['fns']
-  network: ServiceType[8]['fns']
+  [name in ServiceType[number]['name']]: ServiceType[number] extends infer T
+    ? T extends { name: name; fns: infer F }
+      ? F
+      : never
+    : never
 }
 
 declare global {

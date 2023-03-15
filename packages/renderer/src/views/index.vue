@@ -1,5 +1,5 @@
 <template>
-  <div class="relative flex items-center justify-center h-full">
+  <div class="relative flex h-full items-center justify-center">
     <!-- 系统名 -->
     <h1 class="absolute top-[140px] left-1/2 z-10 -translate-x-1/2 select-none text-3xl text-white">智能载体管控系统</h1>
     <!-- 开始使用按钮 -->

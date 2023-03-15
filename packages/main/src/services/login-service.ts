@@ -3,7 +3,7 @@ import { queryUserByLoginName, queryUserByUserId } from '@/prisma/methods/user'
 import prisma from '@/prisma'
 
 const loginService = {
-  name: 'login',
+  name: 'login' as const,
   fns: {
     async onPasswordLogin({ username, password }: PasswordLoginProps) {
       const user = await queryUserByLoginName(username)
@@ -16,7 +16,7 @@ const loginService = {
     async onCardLogin(cardNumber: string) {
       const targetUser = await prisma.rfid_card_user.findFirst({
         where: {
-          carddata: cardNumber
+          card_data: cardNumber
         },
         select: {
           user_id: true

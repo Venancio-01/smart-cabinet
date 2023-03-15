@@ -12,7 +12,6 @@ declare module '@vue/runtime-core' {
     AForm: typeof import('ant-design-vue/es')['Form']
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
     AInput: typeof import('ant-design-vue/es')['Input']
-    APopover: typeof import('ant-design-vue/es')['Popover']
     ASelect: typeof import('ant-design-vue/es')['Select']
     ASelectOption: typeof import('ant-design-vue/es')['SelectOption']
     ATable: typeof import('ant-design-vue/es')['Table']
@@ -37,7 +36,6 @@ declare module '@vue/runtime-core' {
     SingleDoorPanel: typeof import('./src/components/SingleDoorPanel.vue')['default']
     TheLogin: typeof import('./src/components/TheLogin.vue')['default']
     VerifyIdentity: typeof import('./src/components/VerifyIdentity/index.vue')['default']
-    ViewDocumentsDialog: typeof import('./src/components/ViewDocumentsDialog.vue')['default']
     WarningDialog: typeof import('./src/components/WarningDialog.vue')['default']
   }
 }

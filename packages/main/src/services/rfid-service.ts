@@ -1,8 +1,8 @@
 import { binaryToHex, generateBinaryString, generateCRC16Code, getTIDByReportData, parseRFIDReportData } from '@/utils'
-import TcpSocket from '@/utils/socket'
+import Socket from '@/utils/socket'
 
 type InstanceMap = {
-  [k in string]: TcpSocket
+  [k in string]: Socket
 }
 
 const instanceMap: InstanceMap = {}
@@ -14,7 +14,7 @@ const generateAntennaCommand = (antennaIds: number[]) => {
 }
 
 const rfidService = {
-  name: 'rfid',
+  name: 'rfid' as const,
   fns: {
     /**
      * @description: 初始化 socket 连接
@@ -23,13 +23,13 @@ const rfidService = {
     async init(address: string, port: number) {
       if (instanceMap[address]) return true
 
-      instanceMap[address] = new TcpSocket(address, port)
+      instanceMap[address] = new Socket({ address, port })
 
       try {
         await instanceMap[address].init()
         return true
       } catch (e) {
-        console.log(e, 'socket 连接失败')
+        console.log(e, 'rfid socket 连接失败')
         return false
       }
     },

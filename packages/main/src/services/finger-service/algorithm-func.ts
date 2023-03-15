@@ -16,6 +16,10 @@ export const initAlgorithmSDK = () => {
   })
 }
 
+export const destroyAlgorithmSDK = () => {
+  algorithmSDK = null
+}
+
 /**
  * @description: 初始化算法
  * @param {number} width 设备宽度
@@ -113,3 +117,4 @@ export const addTemplateToDb = (handle: unknown, tid: number, templateLength: nu
   const success = result === 1
   return { success, result }
 }
+

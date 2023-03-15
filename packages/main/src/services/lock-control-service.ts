@@ -7,7 +7,7 @@ let instance: SerialPort | null = null
 let connected = false
 
 const lockControlService = {
-  name: 'lockControl' as const,
+  name: 'lockControl' as const ,
   fns: {
     async getConnectState(path: string) {
       const list = await SerialPortLib.list()
