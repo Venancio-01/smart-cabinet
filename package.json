@@ -98,6 +98,7 @@
     "core-js": "^3.6.5",
     "crypto-js": "^4.1.1",
     "dayjs": "^1.11.7",
+    "dotenv": "^16.0.3",
     "electron-log": "^5.0.0-beta.16",
     "ffi-napi": "^4.0.3",
     "lodash": "^4.17.21",

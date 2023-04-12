@@ -15,7 +15,7 @@ import useFinger from '@/hooks/useFinger'
 import FingerGIF from '@/assets/images/gif_finger.gif'
 import useLogin from '@/hooks/useLogin'
 
-const { getFingerConnectStatus, openFingerDevice, closeFingerDevice, startIdentifyFinger, endIdentifyFinger, identifyResult } =
+const { openFingerDevice, closeFingerDevice, startIdentifyFinger, endIdentifyFinger, identifyResult } =
   useFinger()
 const { handleFingerLogin } = useLogin()
 
@@ -37,7 +37,7 @@ watch(identifyResult, value => {
 
 const isConnected = ref(false)
 onMounted(async () => {
-  isConnected.value = await getFingerConnectStatus()
+  await openFingerDevice()
   if (isConnected.value) {
     await openFingerDevice()
     startIdentifyFinger()

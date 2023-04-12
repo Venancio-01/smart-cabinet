@@ -10,6 +10,10 @@
   files: ['dist/packages/main', 'dist/packages/renderer'],
   extraResources: [
     {
+      from: 'packages/main/src/prisma/.env',
+      to: '.env'
+    },
+    {
       from: 'packages/main/public/finger-lib',
       to: 'public/finger-lib'
     },

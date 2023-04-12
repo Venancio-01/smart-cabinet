@@ -19,7 +19,7 @@ const sysService = {
       const departments = await prisma.sys_dept.findMany()
       return departments
     },
-    async updatePassword(userId, password: string) {
+    async updatePassword(userId: number, password: string) {
       const user = await queryUserByUserId(userId)
       const encryptedPassword = genMd5EncryptedPassword(user.login_name, password, user.salt)
       const result = await updatePasswordByUserId(userId, encryptedPassword)
@@ -28,7 +28,8 @@ const sysService = {
     },
     async verifyPassword(user: sys_user, password: string) {
       const encryptedPassword = genMd5EncryptedPassword(user.login_name, password, user.salt)
-      const success = user.password === encryptedPassword
+      const success = user.password
+        === encryptedPassword
       return success
     },
     async getProductionBgImagePath() {

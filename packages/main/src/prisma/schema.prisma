@@ -4,57 +4,30 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://sa:js123456@localhost:3306/multi_door?schema=public"
+  url      = env("DATABASE_URL")
 }
 
 model doc_document {
-  doc_id                 Int       @id @default(autoincrement())
-  bind_user_id           Int?
-  binding_dept_id        Int?
-  binding_id             Int?
-  binding_type           Int?
-  bureau_depid           Int?
-  cabinet_door_id        Int?
-  cabinet_id             Int?
-  carrier_type           Int?
-  code                   String?   @db.VarChar(255)
-  confidentiality_period Int?
-  create_time            DateTime? @db.Timestamp(0)
-  device_brand           String?   @db.VarChar(255)
-  device_capacity        String?   @db.VarChar(255)
-  device_model           String?   @db.VarChar(255)
-  device_purpose         String?   @db.VarChar(255)
-  doc_last_time          DateTime? @db.Timestamp(0)
-  doc_name               String    @db.VarChar(255)
-  doc_p_status           Int?
-  doc_rfid               String?   @db.VarChar(255)
-  doc_secret_level       Int?
-  doc_type               Int?
-  end_time               DateTime? @db.Timestamp(0)
-  is_one                 String?   @db.VarChar(255)
-  network_type           Int?
-  page_number            Int?
-  particular_year        Int?
-  person_duty            String?   @db.VarChar(255)
-  remark                 String?   @db.VarChar(255)
-  remove_status          Int?
-  send_code              String?   @db.VarChar(255)
-  send_date              DateTime? @db.Timestamp(0)
-  send_dep_              String?   @db.VarChar(255)
-  serial_number          Int?
-  share_number           Int?
-  start_date             DateTime? @db.Timestamp(0)
-  storage_location       String?   @db.VarChar(255)
-  update_time            DateTime? @db.Timestamp(0)
-  urgency                Int?
-  operation_user_id      Int?
-  dept_duty              String?   @db.VarChar(255)
-  deptid_duty            Int?
-  personid_duty          Int?
-  doc_rfidkey            String?   @db.VarChar(255)
-  doc_reissue_number     Int
-  doc_reissue_date       DateTime? @db.Timestamp(0)
-  doc_reissue_rfid       Int
+  doc_id            Int       @id @default(autoincrement())
+  bind_user_id      Int?
+  binding_dept_id   Int?
+  binding_id        Int?
+  cabinet_door_id   Int?
+  cabinet_id        Int?
+  carrier_type      Int?
+  code              String?   @db.VarChar(255)
+  create_time       DateTime? @db.Timestamp(0)
+  doc_last_time     DateTime? @db.Timestamp(0)
+  doc_name          String?   @db.VarChar(255)
+  doc_p_status      Int?
+  doc_rfid          String?   @db.VarChar(255)
+  doc_secret_level  Int?
+  doc_type          Int?
+  remark            String?   @db.VarChar(255)
+  update_time       DateTime? @db.Timestamp(0)
+  operation_user_id Int?
+  loan_status       Int?
+  stock_status      Int?      @default(0)
 }
 
 model doc_user {
@@ -169,22 +142,23 @@ model rfid_switch_record {
 }
 
 model sys_dept {
-  id          Int       @id
-  ancestors   String?   @db.VarChar(255)
+  id          Int        @id
+  ancestors   String?    @db.VarChar(255)
   code        Int?
-  create_by   String?   @db.VarChar(255)
-  create_time DateTime? @db.Timestamp(0)
-  del_flag    String?   @db.VarChar(255)
-  dept_name   String?   @db.VarChar(255)
-  email       String?   @db.VarChar(255)
-  leader      String?   @db.VarChar(255)
+  create_by   String?    @db.VarChar(255)
+  create_time DateTime?  @db.Timestamp(0)
+  del_flag    String?    @db.VarChar(255)
+  dept_name   String?    @db.VarChar(255)
+  email       String?    @db.VarChar(255)
+  leader      String?    @db.VarChar(255)
   level       Int?
   order_num   Int?
   parent_id   Int?
-  phone       String?   @db.VarChar(255)
-  status      String?   @db.VarChar(255)
-  update_by   String?   @db.VarChar(255)
-  update_time DateTime? @db.Timestamp(0)
+  phone       String?    @db.VarChar(255)
+  status      String?    @db.VarChar(255)
+  update_by   String?    @db.VarChar(255)
+  update_time DateTime?  @db.Timestamp(0)
+  sys_user    sys_user[]
 }
 
 model sys_dict_data {
@@ -256,18 +230,20 @@ model sys_menu {
 }
 
 model sys_role {
-  id          Int       @id
-  create_by   String?   @db.VarChar(255)
-  create_time DateTime? @db.Timestamp(0)
-  data_scope  String?   @db.VarChar(255)
-  del_flag    String?   @db.VarChar(255)
-  remark      String?   @db.VarChar(255)
-  role_key    String    @db.VarChar(255)
-  role_name   String    @db.VarChar(255)
-  role_sort   Int
-  status      String    @db.VarChar(255)
-  update_by   String?   @db.VarChar(255)
-  update_time DateTime? @db.Timestamp(6)
+  id                  Int                   @id
+  create_by           String?               @db.VarChar(255)
+  create_time         DateTime?             @db.Timestamp(0)
+  data_scope          String?               @db.VarChar(255)
+  del_flag            String?               @db.VarChar(255)
+  remark              String?               @db.VarChar(255)
+  role_key            String                @db.VarChar(255)
+  role_name           String                @db.VarChar(255)
+  role_sort           Int
+  status              String                @db.VarChar(255)
+  update_by           String?               @db.VarChar(255)
+  update_time         DateTime?             @db.Timestamp(6)
+  sys_role_permission sys_role_permission[]
+  sys_user_role       sys_user_role[]
 }
 
 model sys_role_menu {
@@ -285,33 +261,66 @@ model sys_role_show {
 }
 
 model sys_user {
-  id           Int       @id
-  avatar       String?   @db.VarChar(255)
-  code         String?   @db.VarChar(255)
-  create_by    String?   @db.VarChar(255)
-  create_time  DateTime? @db.Timestamp(0)
-  del_flag     String?   @db.VarChar(255)
-  dept_id      Int?
-  email        String?   @db.VarChar(255)
-  login_date   DateTime? @db.Timestamp(0)
-  login_ip     String?   @db.VarChar(255)
-  login_name   String    @db.VarChar(255)
-  password     String?   @db.VarChar(255)
-  phone_number String?   @db.VarChar(255)
-  remark       String?   @db.VarChar(255)
-  salt         String    @db.VarChar(255)
-  sex          String?   @db.VarChar(255)
-  status       String?   @db.VarChar(255)
-  type         Int?
-  update_by    String?   @db.VarChar(255)
-  update_time  DateTime? @db.Timestamp(0)
-  user_name    String    @db.VarChar(255)
-  user_type    String?   @db.VarChar(255)
+  id            Int             @id
+  avatar        String?         @db.VarChar(255)
+  code          String?         @db.VarChar(255)
+  create_by     String?         @db.VarChar(255)
+  create_time   DateTime?       @db.Timestamp(0)
+  del_flag      String?         @db.VarChar(255)
+  dept_id       Int?
+  email         String?         @db.VarChar(255)
+  login_date    DateTime?       @db.Timestamp(0)
+  login_ip      String?         @db.VarChar(255)
+  login_name    String          @db.VarChar(255)
+  password      String?         @db.VarChar(255)
+  phone_number  String?         @db.VarChar(255)
+  remark        String?         @db.VarChar(255)
+  salt          String          @db.VarChar(255)
+  sex           String?         @db.VarChar(255)
+  status        String?         @db.VarChar(255)
+  type          Int?
+  update_by     String?         @db.VarChar(255)
+  update_time   DateTime?       @db.Timestamp(0)
+  user_name     String          @db.VarChar(255)
+  user_type     String?         @db.VarChar(255)
+  sys_dept      sys_dept?       @relation(fields: [dept_id], references: [id])
+  sys_user_role sys_user_role[]
+
+  @@index([dept_id], map: "sys_user_dept_id_fkey")
 }
 
 model sys_user_role {
-  role_id Int
-  user_id Int
+  role_id  Int
+  user_id  Int
+  sys_role sys_role @relation(fields: [role_id], references: [id])
+  sys_user sys_user @relation(fields: [user_id], references: [id])
 
   @@id([role_id, user_id])
+  @@index([user_id], map: "sys_user_role_user_id_fkey")
+}
+
+model sys_config {
+  id             Int     @id
+  name           String? @db.VarChar(255)
+  inventory_time Int?
+  operation_time Int?
+  confirm_time   Int?
+}
+
+model sys_permission {
+  id                  Int                   @id
+  type                String?               @db.VarChar(255)
+  name                String?               @db.VarChar(255)
+  value               String?               @db.VarChar(255)
+  sys_role_permission sys_role_permission[]
+}
+
+model sys_role_permission {
+  role_id        Int
+  permission_id  Int
+  sys_permission sys_permission @relation(fields: [permission_id], references: [id])
+  sys_role       sys_role       @relation(fields: [role_id], references: [id])
+
+  @@id([role_id, permission_id])
+  @@index([permission_id], map: "sys_role_permission_permission_id_fkey")
 }

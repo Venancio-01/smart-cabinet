@@ -17,7 +17,7 @@ export default function () {
   const { getMisPlaceDocuments, getAllDocumentData } = useDocument()
   const { getCabinetInfo, getCabinetDoorInfo } = useCabinet()
   const { initUpdateService, destroyUpdateService } = useUpdate()
-  const { initSDK, destroySDK } = useFinger()
+  const { initSDK } = useFinger()
 
   onMounted(async () => {
     initUpdateService()
@@ -43,7 +43,6 @@ export default function () {
   })
 
   onBeforeUnmount(() => {
-    destroySDK()
     destroyUpdateService()
     destroyLockControlService()
     stopGenerateCurrentTime()

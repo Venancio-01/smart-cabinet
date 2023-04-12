@@ -2,8 +2,14 @@ import { app, BrowserWindow, globalShortcut } from 'electron'
 import { services, makeChannelName } from '@/services'
 import { createWindow } from '@/base/window'
 import { ipcMain } from 'electron'
-import { exec } from 'child_process'
 import updateService from './services/update-service'
+import { EVN_FILE_PATH } from '@/config'
+import dotenv from 'dotenv'
+
+// 加载环境变量
+dotenv.config({
+  path: EVN_FILE_PATH
+})
 
 // Disable GPU Acceleration for Linux.
 app.disableHardwareAcceleration()
@@ -46,15 +52,6 @@ const installService = () => {
   })
 }
 
-/**
- * @description: 设置串口权限
- * @return {*}
- */
-// const setSerialPortPermissions = () => {
-//   exec('sudo chmod 777 /dev/ttyUSB0', error => {
-//     if (error) console.log(error, 'error')
-//   })
-// }
 
 app.whenReady().then(async () => {
   win = await createWindow()
