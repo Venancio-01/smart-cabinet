@@ -21,6 +21,11 @@ export const ALGORITHM_SDK_PATH = isDev
   ? 'packages/main/public/finger-lib/libzkfp.so'
   : join(process.resourcesPath, '/public/finger-lib/libzkfp.so')
 
+// 指纹 SDK 的 libzkfinger10 文件路径
+export const LIBZKFINGER10_PATH = isDev
+? 'packages/main/public/finger-lib/libzkfinger10.so'
+: join(process.resourcesPath, '/public/finger-lib/libzkfinger10.so')
+
 // CRC SDK 路径
 export const CRC_SDK_PATH = isDev
   ? 'packages/main/public/crc-lib/libCRC16_CCITT.so'
