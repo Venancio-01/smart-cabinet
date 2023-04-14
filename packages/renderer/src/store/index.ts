@@ -78,7 +78,7 @@ export const useStore = defineStore('main', {
     },
     inPlaceDocumentTotal(state) {
       return state.documentList.reduce((total, item) => {
-        if (item.doc_reissue_number === 0) total += 1
+        if (item.loan_status === 0) total += 1
         return total
       }, 0)
     },

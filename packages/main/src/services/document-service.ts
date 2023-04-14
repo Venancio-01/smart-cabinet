@@ -25,19 +25,19 @@ const getDocumentData = async (condition: DocumentQueryProps): Promise<{
     doc_name: {
       contains: condition.title
     },
-    doc_reissue_number: condition.state ?? undefined,
+    loan_status: condition.state ?? undefined,
     binding_dept_id: condition.departmentId ? Number(condition.departmentId) : undefined
   }
 
   if (condition.state === 2) {
     const misPlaceDocuments = await queryMisplacedDocument()
     const rfids = misPlaceDocuments.map(item => item.operation_id)
-    where.doc_reissue_number = 1
+    where.loan_status = 1
     where['doc_rfid'] = { in: rfids }
   } else if (condition.state === 1) {
     const misPlaceDocuments = await queryMisplacedDocument()
     const rfids = misPlaceDocuments.map(item => item.operation_id)
-    where.doc_reissue_number = 1
+    where.loan_status = 1
     where['doc_rfid'] = { notIn: rfids }
   }
 
@@ -102,21 +102,24 @@ const updateDocumentStateAfterCheck = async (cabinetDoor: CabinetDoorProps, user
       }
       await addMisPlacedDocument(data)
     } else {
-      const data: Partial<doc_document> = {
-        doc_in_place_number: await getInPlaceDocumentCount(cabinetDoor.id),
-        doc_status: 1
+      const isDocumentDetected = TIDList.includes(doc.doc_rfid)
+
+      // 归还
+      if (isDocumentDetected && doc.loan_status === 1) {
+        await updateDocStatusByID(doc.doc_id, 0, userId)
       }
-      await updateDocStatusByID(doc.id, data)
+      // 借出
+      else if (!isDocumentDetected && doc.loan_status === 0) {
+        await updateDocStatusByID(doc.doc_id, 1, userId)
+      }
     }
   }
 
   const misPlaceDocuments = await getMisPlaceDocuments()
   for (let i = 0; i < misPlaceDocuments.length; i++) {
-    const item = misPlaceDocuments[i]
-    if (TIDList.includes(item.operation_id)) {
-      await updateMisPlaceDocument(item.id, {
-        type: '2'
-      })
+    const doc = misPlaceDocuments[i]
+    if (!TIDList.includes(doc.operation_id)) {
+      await updateMisPlaceDocument(doc.operation_id)
     }
   }
 }

@@ -1,30 +1,26 @@
 import { ALGORITHM_SDK_PATH, LIBZKFINGER10_PATH, VERIFY_SCORE_THRESHOLD } from '@/config/finger'
 import { HandleType, IntType, TemplateType, UcharType } from './types'
 import { Library } from 'ffi-napi'
-import path from 'path'
 import fs from 'fs'
 import { execSync } from 'child_process'
 
 let algorithmSDK = null
 const zkfingerLibPath = '/usr/lib/libzkfinger10.so';
 
-// 检查文件是否存在，如果不存在则复制文件
+// 检查 libzkfinger10.so 文件是否存在，如果不存在则复制文件
 export const checkFileExist = () => {
   if (!fs.existsSync(zkfingerLibPath)) {
     // 文件不存在，复制文件
     try {
       execSync(`sudo cp ${LIBZKFINGER10_PATH} ${zkfingerLibPath}`);
-      console.log('文件复制成功');
+      console.log('libzkfinger10.so 文件复制成功');
     } catch (err) {
       console.error(err);
     }
   } else {
-    console.log('文件已存在');
+    console.log('libzkfinger10.so 文件已存在');
   }
 }
-
-
-
 
 // 通过 ffi 解析 C++ SDK 方法
 export const initAlgorithmSDK = () => {
@@ -38,7 +34,6 @@ export const initAlgorithmSDK = () => {
     BIOKEY_DB_ADD: ['int', [HandleType, 'int', 'int', UcharType]] // 添加模板到1:N内存中
   })
 }
-
 
 export const destroyAlgorithmSDK = () => {
   algorithmSDK = null

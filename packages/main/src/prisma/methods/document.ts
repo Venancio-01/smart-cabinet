@@ -22,7 +22,7 @@ export const queryDocumentCountByCabinetId = async (cabinetId = 1) => {
  */
 export const queryInPlaceDocumentCount = async (cabinetId?: number) => {
   const where = {
-    doc_reissue_number: 0
+    loan_status: 0
   }
 
   if (cabinetId) {
@@ -82,7 +82,7 @@ export const updateDocStatusByID = async (id: number, state: number, userId: num
     },
     data: {
       operation_user_id: userId,
-      doc_reissue_number: state,
+      loan_status: state,
       doc_last_time: new Date()
     }
   })

@@ -20,7 +20,7 @@ export default function () {
   const { initSDK } = useFinger()
 
   onMounted(async () => {
-    initUpdateService()
+    // initUpdateService()
     initSDK()
     // 获取背景图片路径
     getBackgroundImage()
@@ -43,7 +43,7 @@ export default function () {
   })
 
   onBeforeUnmount(() => {
-    destroyUpdateService()
+    // destroyUpdateService()
     destroyLockControlService()
     stopGenerateCurrentTime()
   })

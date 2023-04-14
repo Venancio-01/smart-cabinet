@@ -10,10 +10,10 @@
       }"
     >
       <template #bodyCell="{ column, record }">
-        <template v-if="column.dataIndex === 'doc_reissue_number'">
-          <span v-if="record['doc_reissue_number'] === 0" class="text-green-500">在位</span>
-          <span v-else-if="record['doc_reissue_number'] === 1 && !judgeIsMisPlace(record)" class="text-yellow-500">借出</span>
-          <template v-else-if="record['doc_reissue_number'] === 1 && judgeIsMisPlace(record)">
+        <template v-if="column.dataIndex === 'loan_status'">
+          <span v-if="record['loan_status'] === 0" class="text-green-500">在位</span>
+          <span v-else-if="record['loan_status'] === 1 && !judgeIsMisPlace(record)" class="text-yellow-500">借出</span>
+          <template v-else-if="record['loan_status'] === 1 && judgeIsMisPlace(record)">
             <span class="text-red-500">错放</span>
           </template>
         </template>
@@ -76,8 +76,8 @@ const columns: ColumnsType = [
   },
   {
     title: '状态',
-    dataIndex: 'doc_reissue_number',
-    key: 'doc_reissue_number'
+    dataIndex: 'loan_status',
+    key: 'loan_status'
   },
   {
     title: '最后操作用户',

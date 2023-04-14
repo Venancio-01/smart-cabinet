@@ -34,7 +34,7 @@ export default function () {
   const generateCheckResult = () => {
     // 生成借出文件数据
     const borrowDocuments = firstDocumentRecord.value.reduce<doc_document[]>((acc, cur, index) => {
-      if (cur.doc_reissue_number === 0 && endDocumentRecord.value[index].doc_reissue_number === 1) {
+      if (cur.loan_status === 0 && endDocumentRecord.value[index].loan_status === 1) {
         acc.push(endDocumentRecord.value[index])
       }
       return acc
@@ -42,7 +42,7 @@ export default function () {
 
     // 生成归还文件数据
     const returnDocuments = firstDocumentRecord.value.reduce<doc_document[]>((acc, cur, index) => {
-      if (cur.doc_reissue_number === 1 && endDocumentRecord.value[index].doc_reissue_number === 0) {
+      if (cur.loan_status === 1 && endDocumentRecord.value[index].loan_status === 0) {
         acc.push(endDocumentRecord.value[index])
       }
       return acc

@@ -1,5 +1,6 @@
 import { convertDecimalToBinary, generateLockCommand } from '@/utils'
 import SerialPort from '@/utils/serial-port'
+import { execSync } from 'child_process'
 import { SerialPort as SerialPortLib } from 'serialport'
 
 // 串口实例
@@ -12,8 +13,20 @@ const getConnectState = async (path: string) => {
   return connected
 }
 
+// 设置串口权限
+const setPermissions = async () => {
+  try {
+    await execSync('sudo chmod 777 /dev/ttyUSB0')
+    console.log('设置串口权限成功')
+  } catch (error) {
+    console.log('设置串口权限失败')
+  }
+}
+
 const init = async (path: string, baudRate: number) => {
   if (instance) return
+
+  await setPermissions()
 
   if (!connected) {
     console.log('未连接锁控板，初始化失败')
@@ -22,7 +35,7 @@ const init = async (path: string, baudRate: number) => {
 
   instance = new SerialPort({ path, baudRate })
   await instance.open()
-  instance.close()
+  await instance.close()
   await instance.open()
 }
 

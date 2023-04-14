@@ -64,7 +64,7 @@ const handleClickDoor = (door: CabinetDoorProps) => {
 const doorList = computed(() => {
   return cabinetDoorList.value.map(door => {
     const totalDocuments = documentList.value.filter(item => item.cabinet_door_id === door.id)
-    const inPlaceDocuments = totalDocuments.filter(item => item.doc_reissue_number === 0)
+    const inPlaceDocuments = totalDocuments.filter(item => item.loan_status === 0)
 
     return {
       ...door,
