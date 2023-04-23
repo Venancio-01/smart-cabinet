@@ -1,12 +1,21 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Index from '@/views/index.vue'
 import Main from '@/views/main.vue'
+import Login from '@/views/login.vue'
 import Open from '@/views/open.vue'
 import Result from '@/views/result.vue'
 import Carrier from '@/views/carrier.vue'
 
 const routes: RouteRecordRaw[] = [
-  { path: '/', component: Index },
+  { path: '/', redirect: '/index' },
+  {
+    path: '/index',
+    component: Index
+  },
+  {
+    path: '/login',
+    component: Login
+  },
   { path: '/main', component: Main },
   { path: '/open/:id', component: Open, props: true },
   { path: '/result', component: Result },

@@ -1,0 +1,57 @@
+<template>
+  <div class="statistics-wrap">
+    <div class="statistics-count" @click="goCarrierPage">
+      <span class="content">{{ documentTotal }}</span>
+      <span class="title">工具总数</span>
+    </div>
+
+    <div class="statistics-count" @click="goCarrierPage">
+      <span class="content">{{ inPlaceDocumentTotal }}</span>
+      <span class="title">在位工具</span>
+    </div>
+
+    <div class="statistics-count" @click="goCarrierPageWithMisPlace">
+      <span class="content" :class="misPlaceDocumentTotal === 0 ? 'text-primary-color' : '!text-error-color'">
+        {{ misPlaceDocumentTotal }}
+      </span>
+      <span class="title">错放工具</span>
+    </div>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { useStore } from '@/store'
+
+const router = useRouter()
+const store = useStore()
+const { misPlaceDocumentTotal, documentTotal, inPlaceDocumentTotal } = storeToRefs(store)
+
+const goCarrierPage = () => {
+  const state = null
+
+  router.push(`/main/carrier/${state}`)
+}
+
+const goCarrierPageWithMisPlace = () => {
+  const state = 2
+
+  router.push(`/main/carrier/${state}`)
+}
+</script>
+
+<style scoped>
+.statistics-wrap {
+  @apply flex items-center gap-16;
+}
+.statistics-count {
+  @apply flex flex-1 flex-col items-center justify-center;
+}
+
+.statistics-count span:nth-child(1) {
+  @apply text-gray-2 font-['Barlow'] text-2xl;
+}
+
+.statistics-count span:nth-child(2) {
+  @apply text-light pt-4 tracking-[2px];
+}
+</style>

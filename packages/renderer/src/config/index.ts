@@ -1,3 +1,5 @@
+export const SYSTEM_NAME = '智能载体管控系统'
+
 // 登录后操作超时时长,单位秒
 export const OPERATION_TIMEOUT = 90
 // 确认结果操作超时时长,单位秒

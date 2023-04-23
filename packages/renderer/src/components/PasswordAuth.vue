@@ -1,21 +1,11 @@
 <template>
-  <div class="flex h-full flex-col">
-    <div class="flex flex-1 items-center">
-      <div class="w-full">
-        <div class="form-item">
-          <div class="label">账号：</div>
-          <input v-model="formState.username" type="text" />
-        </div>
+  <div class="">
+    <AnimationInput v-model="formState.username" class="w-full my-8" label="请输入账号：" type="text" />
 
-        <div class="form-item">
-          <div class="label">密码：</div>
-          <input v-model="formState.password" type="password" />
-        </div>
-      </div>
-    </div>
+    <AnimationInput v-model="formState.password" class="w-full my-8" label="请输入密码：" type="password" />
 
-    <div class="flex h-[40px] items-center justify-center">
-      <BaseButton class="h-[35px] w-[375px] text-lg" @click="handleLogin">登录</BaseButton>
+    <div class="flex h-[40px] mt-4 items-center justify-center">
+      <a-button type="primary" class="h-[35px] w-[375px] text-lg" @click="handleLogin">登录</a-button>
     </div>
   </div>
 </template>

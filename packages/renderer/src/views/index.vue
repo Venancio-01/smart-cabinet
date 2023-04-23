@@ -1,30 +1,47 @@
 <template>
-  <div class="relative flex h-full items-center justify-center">
-    <!-- 系统名 -->
-    <h1 class="absolute top-[140px] left-1/2 z-10 -translate-x-1/2 select-none text-3xl text-white">智能载体管控系统</h1>
-    <!-- 开始使用按钮 -->
-    <div
-      v-if="!loginVisible && !isLoggedIn"
-      class="flex h-[95px] w-[135px] cursor-pointer select-none items-center justify-center bg-[url('@/assets/images/btn.png')] bg-cover bg-center bg-no-repeat text-xl text-white"
-      @click="openLogin"
-    >
-      开始使用
-    </div>
 
-    <!-- 登录组件 -->
-    <TheLogin v-if="loginVisible && !isLoggedIn" />
+<div class="relative flex h-full items-center justify-center">
+    <div class="w-full h-full flex flex-col">
+      <!-- 系统名 -->
+      <div class="text-center select-none text-[48px] leading-[48px] pt-[40px] font-thin tracking-[10px] text-white">
+        {{ SYSTEM_NAME }}
+      </div>
+
+      <!-- 开始使用按钮 -->
+      <div class="flex-1 flex justify-center items-center">
+        <StartButton @click="goLoginPage"></StartButton>
+      </div>
+
+      <div class="flex justify-center items-center">
+        <CarrierCountStatistics class="w-[500px]"></CarrierCountStatistics>
+      </div>
+
+      <div class="fixed bottom-[40px] right-[40px]">
+        <DeviceStatus></DeviceStatus>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import TheLogin from '@/components/TheLogin.vue'
-import { useStore } from '@/store'
+import { SYSTEM_NAME } from '@/config'
+import StartButton from '@/components/StartButton.vue'
+import CarrierCountStatistics from '@/components/CarrierCountStatistics.vue'
+import DeviceStatus from '@/components/DeviceStatus.vue'
 
-const store = useStore()
-const { setLoginVisible } = store
-const { loginVisible, isLoggedIn } = storeToRefs(store)
+const router = useRouter()
 
-const openLogin = () => {
-  setLoginVisible(true)
+const goLoginPage = ()=>{
+  router.push('/login')
 }
+
 </script>
+
+<style scoped>
+.card {
+  padding: 24px;
+  border-radius: 30px;
+  background: rgba(250, 250, 250, 0.2);
+  box-shadow: 15px 15px 24px #bebebe;
+}
+</style>

@@ -1,7 +1,11 @@
 <template>
   <div class="h-full">
-    <img src="@/assets/images/login_card.png" alt="" class="h-[170px] w-full" />
-    <input ref="cardNumberInput" v-model="cardNumber" type="password" class="h-[40px] w-full" />
+    <div class="flex justify-center">
+      <BaseIcon icon="card" class="icon-large text-white"></BaseIcon>
+    </div>
+    <div class="flex-center-center">
+      <AnimationInput ref="inputRef" v-model:value="cardNumber" class="w-[500px] mt-[10px]" label="请刷卡登录"></AnimationInput>
+    </div>
   </div>
 </template>
 
@@ -13,7 +17,7 @@ import { useStore } from '@/store'
 
 const store = useStore()
 const { loginModeIndex } = storeToRefs(store)
-const { onCardLogin } = useLogin()
+const { handleCardLogin:onCardLogin } = useLogin()
 const { addListenEnter, removeListenEnter } = useListenEnter()
 
 const isActive = computed(() => {

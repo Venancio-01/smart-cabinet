@@ -1,10 +1,10 @@
 <template>
-  <div class="flex h-full">
+  <div class="flex">
     <div class="flex h-full items-center">
-      <img class="h-[188px] w-[122px]" :src="FingerGIF" alt="finger" />
+      <BaseIcon icon="zhiwen" class="text-[160px] text-white"></BaseIcon>
     </div>
-    <div class="relative m-4 flex flex-1 select-none items-center justify-center rounded-lg border-[2px] border-white text-white">
-      <div class="bg-primary-color absolute top-[-10px] left-[5px] w-[35px] select-none text-center text-white">提示</div>
+    <div class="relative m-4 flex flex-1 select-none items-center justify-center rounded-lg text-white">
+      <!-- <div class="bg-primary-color absolute top-[-10px] left-[5px] w-[35px] select-none text-center text-white">提示</div> -->
       {{ message }}
     </div>
   </div>
@@ -12,7 +12,6 @@
 
 <script lang="ts" setup>
 import useFinger from '@/hooks/useFinger'
-import FingerGIF from '@/assets/images/gif_finger.gif'
 import useLogin from '@/hooks/useLogin'
 
 const { openFingerDevice, closeFingerDevice, startIdentifyFinger, endIdentifyFinger, identifyResult } =

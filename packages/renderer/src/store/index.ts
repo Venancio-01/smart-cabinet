@@ -84,6 +84,17 @@ export const useStore = defineStore('main', {
     },
     isChecking(state) {
       return state.cabinetDoorList.some(item => item.checkCountdown !== 10)
+    },
+    currentUserPermissionList(state) {
+      if (!state.user) return []
+      else {
+        return state.user.sys_user_role.reduce<sys_permission[]>((acc, cur) => {
+          const { sys_role } = cur
+          const { sys_role_permission } = sys_role
+          const permissionList = sys_role_permission.map(item => item.sys_permission)
+          return [...acc, ...permissionList]
+        }, [])
+      }
     }
   },
   actions: {

@@ -1,80 +1,61 @@
 <template>
-  <div class="flex w-full items-center justify-between bg-black bg-opacity-30 px-4">
-    <WarningDialog v-model:visible="warningVisible"></WarningDialog>
+  <div>
+    <WarningDialog v-model:visible="warnVisible"></WarningDialog>
     <RfidStateDialog v-model:visible="rfidVisible"></RfidStateDialog>
-    <LockStateDialog v-model:visible="rockVisible"></LockStateDialog>
+    <LockStateDialog v-model:visible="lockVisible"></LockStateDialog>
     <NetworkStateDialog v-model:visible="networkVisible"></NetworkStateDialog>
 
-    <div class="flex h-full select-none items-center text-lg text-white">
-      <span class="mr-4"
-        >在位载体 / 总载体：
-        <span class="text-xl text-blue-400 underline" @click="goCarrierPage">
-          {{ inPlaceDocumentTotal }} / {{ documentTotal }}</span>
-          </span>
-      <span>
-          错放载体：
-          <span class="text-xl text-blue-400 underline" @click="goCarrierPageWithMisPlace">
-            {{ misPlaceDocumentTotal }}
-          </span>
-        </span>
-    </div>
-    <div class="state-display-area">
-      <img :src="misPlaceDocumentTotal === 0 ? WarningNormalState : WarningFailState" alt="警告" @click="warningVisible = true" />
-      <img :src="rfidIsOnline ? RfidNormalState : RfidFailState" alt="Rfid状态" @click="rfidVisible = true" />
-      <img :src="lockControlIsOnline ? RockNormalState : RockFailState" alt="锁控板状态" @click="rockVisible = true" />
-      <img :src="networkIsOnline ? NetworkNormalState : NetworkFailState" alt="网络连接状态" @click="networkVisible = true" />
+    <div class="flex h-[50px] items-center justify-end gap-4">
+      <div v-show="misPlaceDocumentTotal !== 0" class="flex items-center justify-center">
+        <BaseIcon
+          icon="warn"
+          class="text-4xl"
+          :class="misPlaceDocumentTotal === 0 ? 'text-light' : 'text-error-color'"
+          @click="warnVisible = true"
+        />
+      </div>
+
+      <div v-show="!rfidIsOnline" class="flex items-center justify-center">
+        <BaseIcon icon="RFID" class="text-4xl text-error" @click="rfidVisible = true" />
+      </div>
+
+      <div v-show="!lockControlIsOnline" class="flex items-center justify-center">
+        <BaseIcon icon="lock" class="text-4xl text-error" @click="lockVisible = true" />
+      </div>
+
+      <div v-show="!networkIsOnline" class="flex items-center justify-center">
+        <BaseIcon icon="network" class="text-4xl text-error" @click="networkVisible = true" />
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { useStore } from '@/store'
+import BaseIcon from '@/components/BaseIcon.vue'
 import WarningDialog from './WarningDialog.vue'
 import RfidStateDialog from './RfidStateDialog.vue'
 import LockStateDialog from './LockStateDialog.vue'
 import NetworkStateDialog from './NetworkStateDialog.vue'
-import { useStore } from '@/store'
 
-import NetworkNormalState from '@/assets/images/state_network.png'
-import NetworkFailState from '@/assets/images/state_network_bad.png'
-import RfidNormalState from '@/assets/images/state_rfid.png'
-import RfidFailState from '@/assets/images/state_rfid_bad.png'
-import RockNormalState from '@/assets/images/state_rock.png'
-import RockFailState from '@/assets/images/state_rock_bad.png'
-import WarningNormalState from '@/assets/images/state_warning.png'
-import WarningFailState from '@/assets/images/state_warning_bad.png'
-import useDocument from '@/hooks/useDocument'
-
-const router = useRouter()
-const route = useRoute()
 const store = useStore()
-const {setReviewDocumentCondition } = store
-const { rfidIsOnline, misPlaceDocumentTotal, networkIsOnline, lockControlIsOnline, documentTotal, inPlaceDocumentTotal } =
-  storeToRefs(store)
-const {} = useDocument()
+const { rfidIsOnline, misPlaceDocumentTotal, networkIsOnline, lockControlIsOnline } = storeToRefs(store)
 
 const rfidVisible = ref(false)
-const rockVisible = ref(false)
+const lockVisible = ref(false)
 const networkVisible = ref(false)
-const warningVisible = ref(false)
-
-
-const goCarrierPage = () => {
-  const state = null
-
-  router.push(`/carrier/${state}`)
-}
-
-const goCarrierPageWithMisPlace = () =>{
-  const state = 2
-
-  router.push(`/carrier/${state}`)
-}
-
+const warnVisible = ref(false)
 </script>
 
 <style scoped>
-.state-display-area img {
-  @apply mx-2 h-[40px] w-[40px] select-none;
+.state-display-area svg {
+  @apply mx-2 select-none;
   -webkit-user-drag: none;
+}
+
+.card {
+  border-radius: 30px;
+  background: rgba(250, 250, 250, 0.5);
+  box-shadow: 15px 15px 30px #bebebe, -15px -15px 30px #ffffff;
 }
 </style>

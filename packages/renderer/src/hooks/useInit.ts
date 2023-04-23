@@ -7,8 +7,11 @@ import useNetwork from '@/hooks/useNetwork'
 import useSys from './useSys'
 import useUpdate from './useUpdate'
 import useFinger from './useFinger'
+import { setAntdConfig } from '@/design/antd'
 
 export default function () {
+  // 配置 Antd 主题
+  setAntdConfig()
   useNetwork()
   const { getDepartmentList, getUserList, getBackgroundImage } = useSys()
   const { getRfidConnectState } = useRfid()
