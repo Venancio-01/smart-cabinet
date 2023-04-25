@@ -1,10 +1,9 @@
 <template>
-  <div class="flex">
-    <div class="flex h-full items-center">
-      <BaseIcon icon="zhiwen" class="text-[160px] text-white"></BaseIcon>
+  <div class="h-full">
+    <div class="flex justify-center">
+      <BaseIcon icon="zhiwen" class="text-[140px] text-white"></BaseIcon>
     </div>
-    <div class="relative m-4 flex flex-1 select-none items-center justify-center rounded-lg text-white">
-      <!-- <div class="bg-primary-color absolute top-[-10px] left-[5px] w-[35px] select-none text-center text-white">提示</div> -->
+    <div class="flex justify-center items-center mt-12 text-xl">
       {{ message }}
     </div>
   </div>
@@ -12,35 +11,37 @@
 
 <script lang="ts" setup>
 import useFinger from '@/hooks/useFinger'
-import useLogin from '@/hooks/useLogin'
 
-const { openFingerDevice, closeFingerDevice, startIdentifyFinger, endIdentifyFinger, identifyResult } =
+const emits = defineEmits(['complete'])
+const { getConnectStatus,openFingerDevice, closeFingerDevice, startIdentifyFinger, endIdentifyFinger, identifyResult } =
   useFinger()
-const { handleFingerLogin } = useLogin()
 
-const message = computed(() => {
-  if (!isConnected.value) return '设备未连接'
-  if (identifyResult.value?.msg) return identifyResult.value.msg
-  else return '请录入指纹'
-})
+const message = ref('请录入指纹')
 
 watch(identifyResult, value => {
   if (!value) return
-  const { success, data } = value
+  const { success, msg,data } = value
+
+  if(msg) {
+    message.value = msg
+  }
 
   if (success && data) {
     const userId = data as number
-    handleFingerLogin(userId)
+    emits('complete',userId)
   }
 })
 
 const isConnected = ref(false)
 onMounted(async () => {
+  isConnected.value = await getConnectStatus()
+
+  if(!isConnected.value) {
+    message.value = '设备未连接'
+    return
+  }  
   await openFingerDevice()
-  if (isConnected.value) {
-    await openFingerDevice()
-    startIdentifyFinger()
-  }
+  startIdentifyFinger()
 })
 
 onUnmounted(async () => {

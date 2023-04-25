@@ -6,11 +6,11 @@
     <NetworkStateDialog v-model:visible="networkVisible"></NetworkStateDialog>
 
     <div class="flex h-[50px] items-center justify-end gap-4">
-      <div v-show="misPlaceDocumentTotal !== 0" class="flex items-center justify-center">
+      <div v-show="misPlaceCarrierTotal !== 0" class="flex items-center justify-center">
         <BaseIcon
           icon="warn"
           class="text-4xl"
-          :class="misPlaceDocumentTotal === 0 ? 'text-light' : 'text-error-color'"
+          :class="misPlaceCarrierTotal === 0 ? 'text-light' : 'text-error-color'"
           @click="warnVisible = true"
         />
       </div>
@@ -39,7 +39,7 @@ import LockStateDialog from './LockStateDialog.vue'
 import NetworkStateDialog from './NetworkStateDialog.vue'
 
 const store = useStore()
-const { rfidIsOnline, misPlaceDocumentTotal, networkIsOnline, lockControlIsOnline } = storeToRefs(store)
+const { rfidIsOnline, misPlaceCarrierTotal, networkIsOnline, lockControlIsOnline } = storeToRefs(store)
 
 const rfidVisible = ref(false)
 const lockVisible = ref(false)

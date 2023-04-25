@@ -21,7 +21,7 @@ export default function () {
   //  */
   // const handleLogout = () => {
   //   setIsLoggedIn(false)
-  //   // saveUserData(null)
+  //   // setUserData(null)
   //   closeOperationTimeoutCountdown()
   //   router.push('/')
   // }

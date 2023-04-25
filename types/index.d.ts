@@ -1,14 +1,19 @@
-import { doc_document, rfid_cabinet_door, sys_user, rfid_switch_record } from '@prisma/client'
-export {}
-
-type ServiceType = import('../packages/main/src/services').ServiceType
+import {
+  doc_document,
+  rfid_cabinet_door,
+  sys_user,
+  rfid_switch_record,
+  sys_role,
+  sys_user_role,
+  sys_dept,
+  sys_role_permission,
+  sys_permission
+} from '@prisma/client'
+import type { ServiceType } from '../packages/main/src/services/index'
+export { }
 
 type JSBridgeType = {
-  [name in ServiceType[number]['name']]: ServiceType[number] extends infer T
-    ? T extends { name: name; fns: infer F }
-      ? F
-      : never
-    : never
+  [name in ServiceType[number]['name']]: ServiceType[number] extends infer T ? (T extends { name: name; fns: infer F } ? F : never) : never
 }
 
 declare global {
@@ -16,58 +21,83 @@ declare global {
     JSBridge: JSBridgeType
   }
 
-  type JSBridge = JSBridgeType
-
-  interface ResponseProps<T = unknown> {
+  type ResponseProps<T = unknown> = {
     success: boolean
     msg?: string
     data?: T
   }
 
-  interface UserProps extends sys_user {
-    roleName: string
-    deptName: string
+  type UserProps = sys_user & {
+    sys_dept: sys_dept | null
+    sys_user_role: (sys_user_role & {
+      sys_role: sys_role & {
+        sys_role_permission: sys_role_permission & {
+          sys_permission: sys_permission
+        }
+      }
+    })[]
   }
 
-  interface PasswordLoginProps {
+  type PasswordLoginProps = {
     username: string
     password: string
   }
 
-  interface DocumentQuantityProps {
+  type CarrierQuantityProps = {
     count: number
     inPlaceCount: number
   }
 
-  interface UpdateCardProps {
+  type UpdateCardProps = {
     userId: number
     cardNumber: string
   }
 
-  interface CabinetDoorProps extends rfid_cabinet_door {
-    name: string | null | undefined
+  type CabinetDoorProps = rfid_cabinet_door & {
+    departmentName: string | null | undefined
     checkCountdown: number
     isOpen: boolean
   }
 
-  interface LockControlStateProps {
+  type LockControlStateProps = {
     [x: number]: boolean
   }
 
-  interface DocumentQueryProps {
+  type CarrierQueryProps = {
     page: number
     size: number
     title?: string
-    cabinetId?: number | null
-    departmentId?: number | null
-    state?: number | null
+    cabinetId?: number
+    departmentId?: number
+    state?: number
+  }
+
+  type UserQueryProps = {
+    page: number
+    size: number
+    userName?: string
+    departmentId?: number
+    roleId?: number
+  }
+
+  type DepartmentQueryProps = {
+    page: number
+    size: number
+    departmentName?: string
   }
 
   type CheckResultType = CabinetDoorProps & {
-    borrowDocuments: doc_document[]
-    returnDocuments: doc_document[]
-    misPlaceDocumentRecords: rfid_switch_record[]
+    borrowCarriers: doc_document[]
+    returnCarriers: doc_document[]
+    misPlaceCarrierRecords: rfid_switch_record[]
   }
 
-  type FingerOrder = 1 | 2
+  type UserWithRoleProps = sys_user & {
+    role: sys_role | null
+  }
+
+  type RFIDParseType = {
+    TID: string
+    EPC: string
+  }
 }

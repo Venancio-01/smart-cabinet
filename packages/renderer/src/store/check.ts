@@ -2,10 +2,10 @@ import { doc_document, rfid_switch_record } from '@prisma/client'
 import { defineStore } from 'pinia'
 
 interface State {
-  firstDocumentRecord: doc_document[]
-  firstMisPlaceDocumentRecord: rfid_switch_record[]
-  endDocumentRecord: doc_document[]
-  endMisPlaceDocumentRecord: rfid_switch_record[]
+  firstCarrierRecord: doc_document[]
+  firstMisPlaceCarrierRecord: rfid_switch_record[]
+  endCarrierRecord: doc_document[]
+  endMisPlaceCarrierRecord: rfid_switch_record[]
   checkResultList: CheckResultType[]
   lastOperationCabinetDoorRecords: CabinetDoorProps[]
   lastOperationCabinetDoorList: CabinetDoorProps[]
@@ -14,10 +14,10 @@ interface State {
 export const useCheckStore = defineStore('check', {
   state: (): State => {
     return {
-      firstDocumentRecord: [],
-      firstMisPlaceDocumentRecord: [],
-      endDocumentRecord: [],
-      endMisPlaceDocumentRecord: [],
+      firstCarrierRecord: [],
+      firstMisPlaceCarrierRecord: [],
+      endCarrierRecord: [],
+      endMisPlaceCarrierRecord: [],
       checkResultList: [],
       lastOperationCabinetDoorRecords: [],
       lastOperationCabinetDoorList: []
@@ -25,17 +25,17 @@ export const useCheckStore = defineStore('check', {
   },
   getters: {},
   actions: {
-    setFirstDocumentRecord(record: doc_document[]) {
-      this.firstDocumentRecord = record
+    setFirstCarrierRecord(record: doc_document[]) {
+      this.firstCarrierRecord = record
     },
-    setFirstMisPlaceDocumentRecord(record: rfid_switch_record[]) {
-      this.firstMisPlaceDocumentRecord = record
+    setFirstMisPlaceCarrierRecord(record: rfid_switch_record[]) {
+      this.firstMisPlaceCarrierRecord = record
     },
-    setEndDocumentRecord(record: doc_document[]) {
-      this.endDocumentRecord = record
+    setEndCarrierRecord(record: doc_document[]) {
+      this.endCarrierRecord = record
     },
-    setEndMisPlaceDocumentRecord(record: rfid_switch_record[]) {
-      this.endMisPlaceDocumentRecord = record
+    setEndMisPlaceCarrierRecord(record: rfid_switch_record[]) {
+      this.endMisPlaceCarrierRecord = record
     },
     setCheckResultList(result: CheckResultType[]) {
       this.checkResultList = result

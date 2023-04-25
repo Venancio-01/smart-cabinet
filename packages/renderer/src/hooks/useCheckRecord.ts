@@ -3,10 +3,10 @@ import { useCheckStore } from '@/store/check'
 export default function () {
   const checkStore = useCheckStore()
   const {
-    setFirstDocumentRecord,
-    setFirstMisPlaceDocumentRecord,
-    setEndDocumentRecord,
-    setEndMisPlaceDocumentRecord,
+    setFirstCarrierRecord,
+    setFirstMisPlaceCarrierRecord,
+    setEndCarrierRecord,
+    setEndMisPlaceCarrierRecord,
     setCheckResultList
   } = checkStore
 
@@ -15,10 +15,10 @@ export default function () {
    * @return {*}
    */
   const resetCheckRecord = () => {
-    setFirstDocumentRecord([])
-    setFirstMisPlaceDocumentRecord([])
-    setEndDocumentRecord([])
-    setEndMisPlaceDocumentRecord([])
+    setFirstCarrierRecord([])
+    setFirstMisPlaceCarrierRecord([])
+    setEndCarrierRecord([])
+    setEndMisPlaceCarrierRecord([])
   }
 
   /**

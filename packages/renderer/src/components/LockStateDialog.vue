@@ -2,15 +2,21 @@
   <BaseDialog v-model:visible="show" title="锁控状态">
     <div class="state-bar pt-[20px]">
       <div class="label">当前状态：</div>
-      <div class="content">{{ lockControlIsOnline ? '连接成功' : '连接失败' }}</div>
+      <div class="content">
+        {{ lockControlIsOnline ? '连接成功' : '连接失败' }}
+      </div>
     </div>
 
-    <div class="state-bar" v-if="!lockControlIsOnline">
+    <div v-if="!lockControlIsOnline" class="state-bar">
       <div class="label">解决方案：</div>
       <div class="content">
         {{ lockControlIsOnline ? '锁控板连接正常' : '锁控板连线或供电是否正常，并尝试插拔后重新启动软件。' }}
       </div>
     </div>
+
+    <template #footer>
+      <a-button type="primary" @click="show = false">确 定</a-button>
+    </template>
   </BaseDialog>
 </template>
 
@@ -18,7 +24,7 @@
 import BaseDialog from './BaseDialog.vue'
 import { useStore } from '@/store'
 
-interface Props {
+type Props = {
   visible: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
@@ -40,7 +46,7 @@ const show = computed({
 
 <style scoped>
 .state-bar {
-  @apply mb-[16px] flex text-sm;
+  @apply mb-[16px] flex;
 }
 .state-bar .label {
   @apply w-[70px];

@@ -1,12 +1,18 @@
 <template>
-  <div v-show="checkStatusDialogVisible" class="fixed top-0 left-0 z-[9999] flex h-screen w-screen items-center justify-center">
+  <transition mode="out-in">
     <div
-      class="flex h-[300px] w-[400px] select-none flex-col items-center justify-center rounded-md bg-cover text-xl text-white shadow-[0px_0px_16px] shadow-black"
-      :style="{backgroundImage:`url(${backgroundUrl})`}">
-      <p>柜门盘点中</p>
-      <p>剩余时间： {{ checkCountdown }} 秒</p>
+      v-show="checkCountdownDialogVisible"
+      class="fixed top-0 left-0 z-[9999] flex h-screen w-screen items-center justify-center ant-modal-mask"
+    >
+      <div
+        class="flex relative bg-gray-8 bg-opacity-30 backdrop-filter backdrop-blur-[10px] h-[300px] w-[400px] select-none flex-col items-center rounded-lg text-white shadow-[0px_0px_16px] shadow-black"
+      >
+        <p class="tracking-wider mt-[30px]">柜门盘点中...</p>
+        <span class="absolute top-1/2 left-1/2 -translate-x-1/2 font-['Barlow'] text-[90px] mr-4">{{ checkCountdown || 10 }}</span>
+        <span class="absolute top-1/2 left-1/2 -translate-x-1/2 ml-[60px] mt-[30px]">秒</span>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script lang="ts" setup>
@@ -14,7 +20,7 @@ import { useStore } from '@/store'
 
 const store = useStore()
 const { setCheckStatusDialogVisible } = store
-const { checkStatusDialogVisible,cabinetDoorList, currentCheckCabinetDoorId,backgroundUrl } = storeToRefs(store)
+const { checkCountdownDialogVisible, cabinetDoorList, currentCheckCabinetDoorId } = storeToRefs(store)
 
 const checkCountdown = computed(() => {
   return cabinetDoorList.value.find(item => item.id === currentCheckCabinetDoorId.value)?.checkCountdown

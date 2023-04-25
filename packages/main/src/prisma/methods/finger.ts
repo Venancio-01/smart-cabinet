@@ -2,14 +2,13 @@ import { generateCurrentTime } from '@/utils'
 import prisma from '@/prisma'
 
 export const queryFingerByUserIdAndOrder = async (userId: number, order: FingerOrder) => {
-  const record = await prisma.rfid_finger_user.findFirst({
+  const result = await prisma.rfid_finger_user.findFirst({
     where: {
       user_id: userId,
       order: order
     }
   })
-
-  return record
+  return result
 }
 
 export const updateFingerByUserIdAndOrder = async (userId: number, order: FingerOrder, data: string) => {

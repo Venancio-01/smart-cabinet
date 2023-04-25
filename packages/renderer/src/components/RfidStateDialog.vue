@@ -5,10 +5,16 @@
       <div class="content">{{ rfidIsOnline ? '连接成功' : '连接失败' }}</div>
     </div>
 
-    <div class="state-bar" v-if="!rfidIsOnline">
+    <div v-if="!rfidIsOnline" class="state-bar">
       <div class="label">解决方案：</div>
-      <div class="content">{{ rfidIsOnline ? 'RFID 正常连接' : '检查RFID线缆是否正常，并尝试插拔后重新启动软件。' }}</div>
+      <div class="content">
+        {{ rfidIsOnline ? 'RFID 正常连接' : '检查RFID线缆是否正常，并尝试插拔后重新启动软件。' }}
+      </div>
     </div>
+
+    <template #footer>
+      <a-button type="primary" @click="show = false">确 定</a-button>
+    </template>
   </BaseDialog>
 </template>
 
@@ -16,7 +22,7 @@
 import BaseDialog from './BaseDialog.vue'
 import { useStore } from '@/store'
 
-interface Props {
+type Props = {
   visible: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
@@ -38,7 +44,7 @@ const show = computed({
 
 <style scoped>
 .state-bar {
-  @apply mb-[16px] flex text-sm;
+  @apply mb-[16px] flex;
 }
 .state-bar .label {
   @apply w-[70px];

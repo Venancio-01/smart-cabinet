@@ -4,7 +4,7 @@ import useSys from './useSys'
 import { PASSWORD_KEY } from '@/config'
 import useTime from '@/hooks/useTime'
 
-export interface FormData {
+export type PasswordLoginType = {
   username: string
   password: string
 }
@@ -12,7 +12,7 @@ export interface FormData {
 export default function () {
   const router = useRouter()
   const store = useStore()
-  const { setIsLoggedIn, setLoginVisible, saveUserData, setLoginModeIndex } = store
+  const { setIsLoggedIn, setUserData, setLoginModeIndex } = store
   const { getUserData } = useSys()
   const { openOperationTimeoutCountdown, closeOperationTimeoutCountdown } = useTime()
 
@@ -23,9 +23,8 @@ export default function () {
    */
   const handleLogin = (userData: UserProps) => {
     setIsLoggedIn(true)
-    setLoginVisible(false)
     setLoginModeIndex(PASSWORD_KEY)
-    saveUserData(userData)
+    setUserData(userData)
     openOperationTimeoutCountdown()
     router.push('/main')
   }
@@ -36,12 +35,11 @@ export default function () {
    */
   const handleLogout = () => {
     setIsLoggedIn(false)
-    // saveUserData(null)
     closeOperationTimeoutCountdown()
     router.push('/')
   }
 
-  const handlePasswordLogin = async (formData: FormData) => {
+  const handlePasswordLogin = async (formData: PasswordLoginType) => {
     if (formData.username === '' || formData.password === '') {
       createAlert('用户名或密码不可为空')
       return

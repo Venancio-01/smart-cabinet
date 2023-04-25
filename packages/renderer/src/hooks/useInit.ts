@@ -1,11 +1,11 @@
-import useDocument from '@/hooks/useDocument'
+import useCarrier from '@/hooks/useCarrier'
 import useRfid from '@/hooks/useRfid'
 import useLock from '@/hooks/useLock'
 import useTime from '@/hooks/useTime'
 import useCabinet from '@/hooks/useCabinet'
 import useNetwork from '@/hooks/useNetwork'
 import useSys from './useSys'
-import useUpdate from './useUpdate'
+// import useUpdate from './useUpdate'
 import useFinger from './useFinger'
 import { setAntdConfig } from '@/design/antd'
 
@@ -13,40 +13,30 @@ export default function () {
   // 配置 Antd 主题
   setAntdConfig()
   useNetwork()
-  const { getDepartmentList, getUserList, getBackgroundImage } = useSys()
+  const { init:initSys, getBackgroundImage } = useSys()
   const { getRfidConnectState } = useRfid()
   const { initLockControlService, destroyLockControlService } = useLock()
   const { startGenerateCurrentTime, stopGenerateCurrentTime } = useTime()
-  const { getMisPlaceDocuments, getAllDocumentData } = useDocument()
-  const { getCabinetInfo, getCabinetDoorInfo } = useCabinet()
-  const { initUpdateService, destroyUpdateService } = useUpdate()
-  const { initSDK } = useFinger()
+  const { getMisPlaceCarriers, getAllCarrierData } = useCarrier()
+  const { initCabinetData } = useCabinet()
+  const { init:initFinger } = useFinger()
 
   onMounted(async () => {
-    // initUpdateService()
-    initSDK()
+    initFinger()
     // 获取背景图片路径
     getBackgroundImage()
-    // 获取部门信息
-    getDepartmentList()
-    // 获取用户列表
-    getUserList()
-    // 获取柜体信息
-    getCabinetInfo()
-    // 获取柜门信息
-    await getCabinetDoorInfo()
+    await Promise.all([initSys(), initCabinetData()])
     initLockControlService()
     // 获取 rfid 读取器连接状态
     getRfidConnectState()
     // 查询错放文档
-    getMisPlaceDocuments()
+    getMisPlaceCarriers()
     // 生成当前时间
     startGenerateCurrentTime()
-    getAllDocumentData()
+    getAllCarrierData()
   })
 
   onBeforeUnmount(() => {
-    // destroyUpdateService()
     destroyLockControlService()
     stopGenerateCurrentTime()
   })

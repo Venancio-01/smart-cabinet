@@ -1,63 +1,70 @@
 <template>
-  <div class="bg-primary-color relative mx-1 flex h-full flex-col">
-    <div class="blue-gradient flex h-[50px] items-center justify-end">
-      <span class="mr-[20px] cursor-pointer select-none text-lg text-white underline" @click="handleRecheck">重新盘点</span>
-      <span class="mr-[20px] cursor-pointer select-none text-lg text-white underline" @click="goBack">返回</span>
+  <div class="">
+    <div class="flex h-[50px] items-center justify-between">
+      <BackButton :on-back="goBack"></BackButton>
+
+      <div class="flex items-center">
+        <div class="text-light mr-12">
+          <span class="font-large mr-2 font-['Barlow']">{{ confirmTimeout }}</span>
+          秒后自动退出
+        </div>
+        <a-button type="primary" @click="handleRecheck">重新盘点</a-button>
+      </div>
     </div>
 
-    <div class="flex flex-1">
+    <div class="flex flex-1 gap-x-6">
       <div class="flex-1">
-        <div v-if="isEmpty" class="flex h-full items-center justify-center text-xl text-white">本次盘点柜内载体无变化</div>
-
-        <div v-else class="result-record">
+        <div class="result-record">
           <PerfectScrollbar>
             <div
-              v-for="(item, index) in resultList"
+              v-for="(item, index) in checkResultList"
               :key="item.id"
-              class="border-b-2 border-white p-4 text-white"
-              :class="[index + 1 === resultList.length ? 'border-none' : '']"
+              class="border-b-2 border-white text-white mt-4"
+              :class="[index + 1 === checkResultList.length ? 'border-none' : '']"
             >
-              <div class="text-xl">柜门名称：{{ item.view_name }}</div>
+              <div class="font-large">柜门名称：{{ item.view_name }}</div>
 
-              <div v-if="item.borrowDocuments.length !== 0">
-                <div class="my-4 text-lg">本次借出载体</div>
-                <a-table :dataSource="item.borrowDocuments" :columns="documentColumns" :pagination="false">
-                  <template v-slot:emptyText>
-                    <span>暂无数据</span>
-                  </template>
-                </a-table>
+              <div v-if="isCabinetDoorChanged(item.id)">
+                <div v-if="item.borrowCarriers.length !== 0">
+                  <div class="my-4">本次借出载体</div>
+                  <a-table :data-source="item.borrowCarriers" :columns="documentColumns" :pagination="false">
+                    <template #emptyText>
+                      <span>暂无数据</span>
+                    </template>
+                  </a-table>
+                </div>
+
+                <div v-if="item.returnCarriers.length !== 0">
+                  <div class="my-4">本次归还载体</div>
+                  <a-table :data-source="item.returnCarriers" :columns="documentColumns" :pagination="false">
+                    <template #emptyText>
+                      <span>暂无数据</span>
+                    </template>
+                  </a-table>
+                </div>
+
+                <div v-if="item.misPlaceCarrierRecords.length !== 0">
+                  <div class="my-4">本柜门存在的错放载体</div>
+
+                  <a-table :data-source="item.misPlaceCarrierRecords" :columns="recordColumns" :pagination="false">
+                    <template #emptyText>
+                      <span>暂无数据</span>
+                    </template>
+                  </a-table>
+                </div>
               </div>
 
-              <div v-if="item.returnDocuments.length !== 0">
-                <div class="my-4 text-lg">本次归还载体</div>
-                <a-table :dataSource="item.returnDocuments" :columns="documentColumns" :pagination="false">
-                  <template v-slot:emptyText>
-                    <span>暂无数据</span>
-                  </template>
-                </a-table>
-              </div>
-
-              <div v-if="item.misPlaceDocumentRecords.length !== 0">
-                <div class="my-4 text-lg">本柜门存在的错放载体</div>
-
-                <a-table :dataSource="item.misPlaceDocumentRecords" :columns="recordColumns" :pagination="false">
-                  <template v-slot:emptyText>
-                    <span>暂无数据</span>
-                  </template>
-                </a-table>
-              </div>
+              <div v-else class="flex-center-center h-[150px] text-gray-600 bg-white my-4">本次盘点该柜门工具无变化</div>
             </div>
           </PerfectScrollbar>
         </div>
       </div>
 
-      <div class="h-full w-[200px] border-l-[2px] border-white">
-        <div class="flex h-[50px] w-full select-none items-center justify-center border-b-[2px] border-white text-lg text-white">
-          统计信息
-        </div>
+      <div class="h-full w-[200px] py-4">
+        <div class="flex font-large w-full select-none items-center justify-center text-white">统计信息</div>
 
-        <div class="statistics">
-          <div>共计借出载体数量：{{ statisticsData.borrow }}</div>
+        <div class="statistics mt-4">
+          <div class="!mt-0">共计借出载体数量：{{ statisticsData.borrow }}</div>
           <div>共计归还载体数量：{{ statisticsData.return }}</div>
           <div>共计错放载体数量：{{ statisticsData.misPlace }}</div>
         </div>
@@ -76,6 +83,7 @@ import useTime from '@/hooks/useTime'
 import { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
+import BackButton from '@/components/BackButton.vue'
 
 const router = useRouter()
 const store = useStore()
@@ -89,22 +97,17 @@ const {
   resetOperationTimeoutCountdown,
   resetConfirmationTimeCountdown,
   openOperationTimeoutCountdown,
-  closeConfirmationTimeCountdown
+  closeConfirmationTimeCountdown,
+  confirmTimeout
 } = useTime()
-
-const resultList = computed(() => {
-  return checkResultList.value.filter(
-    item => item.borrowDocuments.length > 0 || item.returnDocuments.length > 0 || item.misPlaceDocumentRecords.length > 0
-  )
-})
 
 // 统计信息
 const statisticsData = computed(() => {
   const data = checkResultList.value.reduce(
     (acc, cur) => {
-      acc.borrow += cur.borrowDocuments.length
-      acc.return += cur.returnDocuments.length
-      acc.misPlace += cur.misPlaceDocumentRecords.length
+      acc.borrow += cur.borrowCarriers.length
+      acc.return += cur.returnCarriers.length
+      acc.misPlace += cur.misPlaceCarrierRecords.length
 
       return acc
     },
@@ -114,11 +117,18 @@ const statisticsData = computed(() => {
   return data
 })
 
-const isEmpty = computed(() => {
-  return checkResultList.value.every(
-    item => item.borrowDocuments.length === 0 && item.returnDocuments.length === 0 && item.misPlaceDocumentRecords.length === 0
-  )
-})
+// 判断该柜门内载体是否有变化
+const isCabinetDoorChanged = (id: number) => {
+  const cabinetDoor = checkResultList.value.find(item => item.id === id)
+
+  if (!cabinetDoor) {
+    return false
+  }
+
+  const { borrowCarriers, returnCarriers, misPlaceCarrierRecords } = cabinetDoor
+
+  return borrowCarriers.length > 0 || returnCarriers.length > 0 || misPlaceCarrierRecords.length > 0
+}
 
 /**
  * @description: 重新盘点
@@ -131,8 +141,6 @@ const handleRecheck = () => {
     createAlert('读取器连接失败')
     return
   }
-
-  console.log(lastOperationCabinetDoorList.value, 'lastOperationCabinetDoorList')
 
   lastOperationCabinetDoorList.value.forEach(item => {
     addLastOperationCabinetDoorRecords(item)
@@ -150,7 +158,7 @@ const goBack = () => {
     resetOperationTimeoutCountdown()
     openOperationTimeoutCountdown()
 
-    router.replace('/main')
+    router.replace('/main/cabinet-door')
   } else {
     router.replace('/')
   }
@@ -215,13 +223,12 @@ const recordColumns: ColumnsType = [
 <style src="vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css" />
 <style scoped>
 .statistics div {
-  @apply my-4 px-2 text-lg text-white;
+  @apply my-4 px-2 text-white;
 }
 
 .result-record h3 {
   @apply text-white;
 }
-
 .ps {
   height: calc(100vh - 150px);
 }

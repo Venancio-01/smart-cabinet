@@ -41,7 +41,7 @@ export const queryInPlaceDocumentCount = async (cabinetId?: number) => {
  * @return {*}
  */
 export const queryMisplacedDocument = async (cabinetDoorID?: number) => {
-  const records = await prisma.rfid_switch_record.findMany({
+  const result = await prisma.rfid_switch_record.findMany({
     where: {
       operation_id: {
         not: '0'
@@ -50,7 +50,7 @@ export const queryMisplacedDocument = async (cabinetDoorID?: number) => {
     }
   })
 
-  return records
+  return result
 }
 
 /**
@@ -122,11 +122,11 @@ export const updateMisPlaceDocument = async (id: string) => {
 }
 
 export const queryMisplacedDocumentCountByOperationId = async (id: string) => {
-  const records = await prisma.rfid_switch_record.findMany({
+  const result = await prisma.rfid_switch_record.findMany({
     where: {
       operation_id: id
     }
   })
 
-  return records?.length
+  return result?.length
 }

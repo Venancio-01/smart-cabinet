@@ -2,13 +2,13 @@ import prisma from '@/prisma'
 import { rfid_cabinet_door } from '@prisma/client'
 
 const getCabinetData = async () => {
-  const data = await prisma.rfid_cabinet.findFirst()
-  return data
+  const result = await prisma.rfid_cabinet.findFirst()
+  return result
 }
 
 const getCabinetDoorList = async (): Promise<rfid_cabinet_door[]> => {
-  const data = await prisma.rfid_cabinet_door.findMany()
-  return data
+  const result = await prisma.rfid_cabinet_door.findMany()
+  return result
 }
 
 const cabinetService = {

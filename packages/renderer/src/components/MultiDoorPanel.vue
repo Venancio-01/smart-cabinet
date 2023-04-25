@@ -19,7 +19,7 @@
 
           <div class="mt-2 flex select-none flex-col items-center justify-center text-sm">
             <p>{{ door.name }}</p>
-            <p class="mt-1 text-lg underline">{{ door.inPlaceDocumentCount }} / {{ door.totalDocumentCount }}</p>
+            <p class="mt-1 text-lg underline">{{ door.inPlaceCarrierCount }} / {{ door.totalCarrierCount }}</p>
           </div>
         </div>
 
@@ -40,7 +40,7 @@ import useTime from '@/hooks/useTime'
 const router = useRouter()
 const store = useStore()
 const { setCabinetDoor } = store
-const { cabinetDoorList, documentList, lockControlIsOnline } = storeToRefs(store)
+const { cabinetDoorList, carrierList, lockControlIsOnline } = storeToRefs(store)
 const checkStore = useCheckStore()
 const { addLastOperationCabinetDoorRecords } = checkStore
 const { openLock } = useLock()
@@ -63,13 +63,13 @@ const handleClickDoor = (door: CabinetDoorProps) => {
 
 const doorList = computed(() => {
   return cabinetDoorList.value.map(door => {
-    const totalDocuments = documentList.value.filter(item => item.cabinet_door_id === door.id)
-    const inPlaceDocuments = totalDocuments.filter(item => item.loan_status === 0)
+    const totalCarriers = carrierList.value.filter(item => item.cabinet_door_id === door.id)
+    const inPlaceCarriers = totalCarriers.filter(item => item.loan_status === 0)
 
     return {
       ...door,
-      inPlaceDocumentCount: inPlaceDocuments.length,
-      totalDocumentCount: totalDocuments.length
+      inPlaceCarrierCount: inPlaceCarriers.length,
+      totalCarrierCount: totalCarriers.length
     }
   })
 })

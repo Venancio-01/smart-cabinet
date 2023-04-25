@@ -1,11 +1,11 @@
 <template>
   <div class="">
-    <AnimationInput v-model="formState.username" class="w-full my-8" label="请输入账号：" type="text" />
+    <AnimationInput v-if="!isVerify" v-model:value="formState.username" class="w-full my-8" label="请输入账号：" type="text" />
 
-    <AnimationInput v-model="formState.password" class="w-full my-8" label="请输入密码：" type="password" />
+    <AnimationInput v-model:value="formState.password" class="w-full my-8" label="请输入密码：" type="password" />
 
-    <div class="flex h-[40px] mt-4 items-center justify-center">
-      <a-button type="primary" class="h-[35px] w-[375px] text-lg" @click="handleLogin">登录</a-button>
+    <div v-if="!isVerify" class="flex mt-4 items-center justify-center">
+      <a-button type="primary" size="large" class="w-full" @click="handleComplete">登录</a-button>
     </div>
   </div>
 </template>
@@ -13,22 +13,33 @@
 <script lang="ts" setup>
 import { useStore } from '@/store'
 import useListenEnter from '@/hooks/useListenEnter'
-import useLogin, { FormData } from '@/hooks/useLogin'
+import { PasswordLoginType } from '@/hooks/useLogin'
 import { PASSWORD_KEY } from '@/config'
 
+type Props = {
+  isVerify:boolean
+}
+
+withDefaults(defineProps<Props>(), {
+  isVerify: false
+})
+const emits = defineEmits(['complete'])
 const store = useStore()
 const { loginModeIndex } = storeToRefs(store)
-const { handlePasswordLogin } = useLogin()
 const { addListenEnter, removeListenEnter } = useListenEnter()
 
-const formState = reactive<FormData>({
+const formState = reactive<PasswordLoginType>({
   username: 'admin',
   password: '123456'
 })
 
-const handleLogin = () => {
-  handlePasswordLogin(formState)
+const handleComplete = () => {
+  emits('complete',formState)
+  return formState
 }
+defineExpose({
+  handleComplete
+})
 
 const isActive = computed(() => {
   return loginModeIndex.value === PASSWORD_KEY
@@ -39,7 +50,7 @@ watch(
   isActive,
   value => {
     if (value) {
-      addListenEnter(handleLogin)
+      addListenEnter(handleComplete)
     } else {
       removeListenEnter(true)
     }
@@ -50,7 +61,7 @@ watch(
 )
 
 onMounted(() => {
-  addListenEnter(handleLogin)
+  addListenEnter(handleComplete)
 })
 </script>
 

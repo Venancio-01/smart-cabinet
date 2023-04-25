@@ -1,4 +1,4 @@
-import { doc_document, rfid_cabinet, rfid_switch_record, sys_dept, sys_user } from '@prisma/client'
+import { doc_document, rfid_cabinet, rfid_switch_record, sys_dept, sys_permission, sys_role, sys_user } from '@prisma/client'
 import { defineStore } from 'pinia'
 
 interface State {
@@ -7,28 +7,30 @@ interface State {
   networkIsOnline: boolean
   fingerIsOnline: boolean
   rfidIsOnline: boolean
-  loginVisible: boolean
   loginModeIndex: number
   isLoggedIn: boolean
   user: UserProps | null
   userList: sys_user[]
   departmentList: sys_dept[]
-  documentList: doc_document[]
-  misPlaceDocumentData: rfid_switch_record[]
+  roleList: sys_role[]
+  permissionList: sys_permission[]
+  carrierList: doc_document[]
+  misPlaceCarrierData: rfid_switch_record[]
   cabinetData: rfid_cabinet | null
   cabinetDoorList: CabinetDoorProps[]
   lockCommandInterval: number
   lockControlState: null | LockControlStateProps
   currentCabinetDoorId: number
-  checkStatusDialogVisible: boolean
+  checkCountdownDialogVisible: boolean
   verifyIdentityDialogVisible: boolean
   currentCheckCabinetDoorId: number | null
   checkResultList: doc_document[]
-  reviewDocumentCondition: ReviewDocumentCondition
+  reviewCarrierCondition: ReviewCarrierCondition
   loading: boolean
+  activationCode: string
 }
 
-type ReviewDocumentCondition = {
+type ReviewCarrierCondition = {
   cabinetDoorId: number | null
   state: number | null
 }
@@ -41,28 +43,30 @@ export const useStore = defineStore('main', {
       networkIsOnline: false,
       fingerIsOnline: false,
       rfidIsOnline: false,
-      loginVisible: false,
       loginModeIndex: 1,
       isLoggedIn: false,
       user: null,
       userList: [],
       departmentList: [],
-      documentList: [],
+      roleList:[],
+      permissionList: [],
+      carrierList: [],
       cabinetData: null,
       cabinetDoorList: [],
-      misPlaceDocumentData: [],
+      misPlaceCarrierData: [],
       lockCommandInterval: 10,
       lockControlState: null,
       currentCabinetDoorId: 0,
-      checkStatusDialogVisible: false,
+      checkCountdownDialogVisible: false,
       verifyIdentityDialogVisible: false,
       currentCheckCabinetDoorId: null,
       checkResultList: [],
       loading:true,
-      reviewDocumentCondition: {
+      reviewCarrierCondition: {
         cabinetDoorId: null,
         state: null
-      }
+      },
+      activationCode: ''
     }
   },
   getters: {
@@ -70,14 +74,14 @@ export const useStore = defineStore('main', {
     isSingleDoor(state) {
       return state.cabinetDoorList.length === 1
     },
-    misPlaceDocumentTotal(state) {
-      return state.misPlaceDocumentData.length
+    misPlaceCarrierTotal(state) {
+      return state.misPlaceCarrierData.length
     },
-    documentTotal(state) {
-      return state.documentList.length
+    carrierTotal(state) {
+      return state.carrierList.length
     },
-    inPlaceDocumentTotal(state) {
-      return state.documentList.reduce((total, item) => {
+    inPlaceCarrierTotal(state) {
+      return state.carrierList.reduce((total, item) => {
         if (item.loan_status === 0) total += 1
         return total
       }, 0)
@@ -113,19 +117,16 @@ export const useStore = defineStore('main', {
     setNetworkIsOnline(state: boolean) {
       this.networkIsOnline = state
     },
-    setLoginVisible(visible: boolean) {
-      this.loginVisible = visible
-    },
     setIsLoggedIn(visible: boolean) {
       this.isLoggedIn = visible
     },
     setLoginModeIndex(index: number) {
       this.loginModeIndex = index
     },
-    saveCabinetData(data: rfid_cabinet) {
+    setCabinetData(data: rfid_cabinet) {
       this.cabinetData = data
     },
-    saveCabinetDoorList(list: CabinetDoorProps[]) {
+    setCabinetDoorList (list: CabinetDoorProps[]) {
       this.cabinetDoorList = list
     },
     setCabinetDoor(data: CabinetDoorProps) {
@@ -136,20 +137,26 @@ export const useStore = defineStore('main', {
         return acc
       }, [])
     },
-    saveMisPlaceDocumentData(data: rfid_switch_record[]) {
-      this.misPlaceDocumentData = data
+    setMisPlaceCarrierData(data: rfid_switch_record[]) {
+      this.misPlaceCarrierData = data
     },
-    saveUserData(user: UserProps | null) {
+    setUserData(user: UserProps | null) {
       this.user = user
     },
     setUserList(list: sys_user[]) {
       this.userList = list
     },
-    saveDepartmentList(list: sys_dept[]) {
+    setDepartmentList(list: sys_dept[]) {
       this.departmentList = list
     },
-    saveDocumentList(list: doc_document[]) {
-      this.documentList = list
+    setRoleList(list: sys_role[]) {
+      this.roleList = list
+    },
+    setPermissionList(list: sys_permission[]) {
+      this.permissionList = list
+    },
+    setCarrierList(list: doc_document[]) {
+      this.carrierList = list
     },
     setLockCommandInterval(time: number) {
       this.lockCommandInterval = time
@@ -158,7 +165,7 @@ export const useStore = defineStore('main', {
       this.lockControlState = state
     },
     setCheckStatusDialogVisible(visible: boolean) {
-      this.checkStatusDialogVisible = visible
+      this.checkCountdownDialogVisible = visible
     },
     setVerifyIdentityDialogVisible(visible: boolean) {
       this.verifyIdentityDialogVisible = visible
@@ -166,11 +173,11 @@ export const useStore = defineStore('main', {
     setCurrentCheckCabinetDoorId(cabinetDoorId: number | null) {
       this.currentCheckCabinetDoorId = cabinetDoorId
     },
-    saveCheckResultList(result: doc_document[]) {
+    setCheckResultList(result: doc_document[]) {
       this.checkResultList = result
     },
-    setReviewDocumentCondition(condition: ReviewDocumentCondition) {
-      this.reviewDocumentCondition = condition
+    setReviewCarrierCondition(condition: ReviewCarrierCondition) {
+      this.reviewCarrierCondition = condition
     },
     setLoading(loading:boolean){
       this.loading = loading

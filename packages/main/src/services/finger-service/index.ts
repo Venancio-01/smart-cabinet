@@ -64,8 +64,9 @@ const destroySDK = () => {
  * @description: 查询当前设备在线情况
  * @return {*}
  */
-const queryConnectState = () => {
+const queryConnectState = (): boolean => {
   const count = getDeviceCount(deviceList, MAX_DEVICE_NUM)
+  console.log("指纹仪连接数量：", count)
   connected = count > 0
   return connected
 }

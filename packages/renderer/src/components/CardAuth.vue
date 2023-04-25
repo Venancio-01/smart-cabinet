@@ -3,7 +3,7 @@
     <div class="flex justify-center">
       <BaseIcon icon="card" class="icon-large text-white"></BaseIcon>
     </div>
-    <div class="flex-center-center">
+    <div class="flex justify-center items-center">
       <AnimationInput ref="inputRef" v-model:value="cardNumber" class="w-[500px] mt-[10px]" label="请刷卡登录"></AnimationInput>
     </div>
   </div>
@@ -12,12 +12,11 @@
 <script lang="ts" setup>
 import { CARD_KEY } from '@/config'
 import useListenEnter from '@/hooks/useListenEnter'
-import useLogin from '@/hooks/useLogin'
 import { useStore } from '@/store'
 
+const emits = defineEmits(['complete'])
 const store = useStore()
 const { loginModeIndex } = storeToRefs(store)
-const { handleCardLogin:onCardLogin } = useLogin()
 const { addListenEnter, removeListenEnter } = useListenEnter()
 
 const isActive = computed(() => {
@@ -25,7 +24,7 @@ const isActive = computed(() => {
 })
 
 const handleCardLogin = async () => {
-  await onCardLogin(cardNumber.value)
+  emits('complete', cardNumber.value)
 }
 
 // 监听当前登录方式的变化

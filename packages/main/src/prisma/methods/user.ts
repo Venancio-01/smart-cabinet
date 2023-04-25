@@ -1,7 +1,7 @@
 import prisma from '@/prisma'
 
 export const queryDepartNameByDeptId = async (deptId: number) => {
-  const record = await prisma.sys_dept.findFirst({
+  const result = await prisma.sys_dept.findFirst({
     where: {
       id: deptId
     },
@@ -9,11 +9,11 @@ export const queryDepartNameByDeptId = async (deptId: number) => {
       dept_name: true
     }
   })
-  return record?.dept_name
+  return result?.dept_name
 }
 
 export const queryRoleIdByUserId = async (userId: number) => {
-  const record = await prisma.sys_user_role.findFirst({
+  const result = await prisma.sys_user_role.findFirst({
     where: {
       user_id: userId
     },
@@ -21,11 +21,11 @@ export const queryRoleIdByUserId = async (userId: number) => {
       role_id: true
     }
   })
-  return record?.role_id
+  return result?.role_id
 }
 
 export const queryRoleNameByRoleId = async (roleId: number) => {
-  const record = await prisma.sys_role.findFirst({
+  const result = await prisma.sys_role.findFirst({
     where: {
       id: roleId
     },
@@ -33,7 +33,7 @@ export const queryRoleNameByRoleId = async (roleId: number) => {
       role_name: true
     }
   })
-  return record?.role_name
+  return result?.role_name
 }
 
 export const queryUsers = async () => {
@@ -41,41 +41,55 @@ export const queryUsers = async () => {
 }
 
 export const queryUserByUserId = async (userId: number) => {
-  const record = await prisma.sys_user.findUnique({
+  const result = await prisma.sys_user.findUnique({
     where: {
       id: userId
+    },
+    include: {
+      sys_dept: true,
+      sys_user_role: {
+        include: {
+          sys_role: {
+            include: {
+              sys_role_permission: {
+                include: {
+                  sys_permission: true
+                }
+              }
+            }
+          }
+        }
+      }
     }
   })
 
-  if (record) {
-    const roleId = await queryRoleIdByUserId(record.id)
-    const roleName = await queryRoleNameByRoleId(roleId)
-    const deptName = await queryDepartNameByDeptId(record.dept_id)
-    return {
-      ...record,
-      roleName,
-      deptName
-    }
-  } else return null
+  return result
 }
 
 export const queryUserByLoginName = async (loginName: string) => {
-  const record = await prisma.sys_user.findFirst({
+  const result = await prisma.sys_user.findFirst({
     where: {
       login_name: loginName
+    },
+    include: {
+      sys_dept: true,
+      sys_user_role: {
+        include: {
+          sys_role: {
+            include: {
+              sys_role_permission: {
+                include: {
+                  sys_permission: true
+                }
+              }
+            }
+          }
+        }
+      }
     }
   })
-
-  if (record) {
-    const roleId = await queryRoleIdByUserId(record.id)
-    const roleName = await queryRoleNameByRoleId(roleId)
-    const deptName = await queryDepartNameByDeptId(record.dept_id)
-    return {
-      ...record,
-      roleName,
-      deptName
-    }
-  } else return null
+  
+  return result
 }
 
 export const updatePasswordByUserId = async (userId: number, password: string) => {

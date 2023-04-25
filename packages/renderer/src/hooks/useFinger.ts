@@ -1,11 +1,6 @@
-import { FINGER_POLLING_INTERVAL, QUERY_FINGER_INTERVAL } from '@/config'
-import { useStore } from '@/store'
+import { FINGER_POLLING_INTERVAL } from '@/config'
 
 export default function () {
-  const store = useStore()
-  const { setFingerIsOnline } = store
-  // 查询设备状态的定时器
-  const queryTimer = ref<number | null>(null)
   // 注册指纹的定时器
   const registerTimer = ref<number | null>(null)
   // 识别指纹的定时器
@@ -15,25 +10,14 @@ export default function () {
   // 注册指纹结果
   const registerResult = ref<null | ResponseProps>(null)
 
-  const initSDK = () => {
-    window.JSBridge.finger.initSDK()
+  const init = async () => {
+    await window.JSBridge.finger.initSDK()
   }
 
   // 获取指纹仪连接状态
-  const getFingerConnectStatus = async () => {
+  const getConnectStatus = async () => {
     const isOnline = await window.JSBridge.finger.queryConnectState()
-    setFingerIsOnline(isOnline)
-  }
-
-  // 轮询获取指纹仪连接状态
-  const pollingGetFingerConnectStatus = () => {
-    getFingerConnectStatus()
-    queryTimer.value = window.setInterval(getFingerConnectStatus, QUERY_FINGER_INTERVAL)
-  }
-
-  // 停止轮询获取指纹仪连接状态
-  const stopPollingGetFingerConnectStatus = () => {
-    if (queryTimer.value) clearInterval(queryTimer.value)
+    return isOnline
   }
 
   // 打开指纹仪设备
@@ -49,7 +33,7 @@ export default function () {
   }
 
   // 开始注册指纹
-  const startRegisterFinger = (userId: number, order: FingerOrder) => {
+  const startRegisterFinger = (userId: number, order: 1 | 2) => {
     const registerFingerFn = async () => {
       const result = await window.JSBridge.finger.handleRegister(userId, order)
       registerResult.value = result
@@ -57,6 +41,7 @@ export default function () {
     registerFingerFn()
     registerTimer.value = window.setInterval(registerFingerFn, FINGER_POLLING_INTERVAL)
   }
+
   // 结束注册指纹
   const endRegisterFinger = () => {
     if (registerTimer.value) clearInterval(registerTimer.value)
@@ -78,16 +63,15 @@ export default function () {
   }
 
   return {
-    identifyResult,
-    registerResult,
-    pollingGetFingerConnectStatus,
-    stopPollingGetFingerConnectStatus,
+    init,
+    getConnectStatus,
     openFingerDevice,
     closeFingerDevice,
     startRegisterFinger,
     endRegisterFinger,
     startIdentifyFinger,
     endIdentifyFinger,
-    initSDK
+    identifyResult,
+    registerResult,
   }
 }

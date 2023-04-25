@@ -1,7 +1,10 @@
 <template>
-  <BaseDialog v-model:visible="show" :title="title">
-    <div class="h-full pt-[10px]">
-      <div class="flex h-full items-center justify-center bg-[#89caeb] text-xl text-white">
+  <BaseDialog v-model:visible="show" :title="title" :footer="null">
+    <div class="flex">
+      <div class="flex h-full items-center">
+        <BaseIcon icon="zhiwen" class="icon-large text-white"></BaseIcon>
+      </div>
+      <div class="relative m-4 flex flex-1 select-none items-center justify-center rounded-lg text-white text-xl">
         {{ message }}
       </div>
     </div>
@@ -25,8 +28,8 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emits = defineEmits(['update:visible'])
 const store = useStore()
-const { fingerIsOnline, user } = storeToRefs(store)
-const { openFingerDevice, closeFingerDevice, startRegisterFinger, endRegisterFinger, registerResult } = useFinger()
+const { user } = storeToRefs(store)
+const { getConnectStatus,openFingerDevice, closeFingerDevice, startRegisterFinger, endRegisterFinger, registerResult } = useFinger()
 const { resetOperationTimeoutCountdown } = useTime()
 
 const show = computed({
@@ -60,30 +63,26 @@ watch(registerResult, value => {
   }
 })
 
+
+const isConnected = ref(false)
 watch(show, async value => {
   resetOperationTimeoutCountdown()
 
   if (value) {
-    if (fingerIsOnline.value) {
-      message.value = '请按压同一手指3次'
-      await openFingerDevice()
-      if (user.value?.id) startRegisterFinger(user.value?.id, props.order)
-    } else {
+    isConnected.value = await getConnectStatus()
+    if (!isConnected.value) {
       message.value = '设备未连接'
-    }
+      return
+    } 
+    
+    message.value = '请按压同一手指3次'
+    await openFingerDevice()
+    if (user.value?.id) startRegisterFinger(user.value?.id, props.order)
   } else {
     await closeFingerDevice()
     endRegisterFinger()
     message.value = '请按压同一手指3次'
   }
-})
-
-onMounted(() => {
-  console.log('onMounted')
-})
-
-onUnmounted(()=>{
-  console.log('onUnmounted')
 })
 </script>
 

@@ -11,7 +11,7 @@ const onPasswordLogin = async ({ username, password }: PasswordLoginProps) => {
 }
 
 const onCardLogin = async (cardNumber: string) => {
-  const targetUser = await prisma.rfid_card_user.findFirst({
+  const result = await prisma.rfid_card_user.findFirst({
     where: {
       card_data: cardNumber
     },
@@ -19,9 +19,9 @@ const onCardLogin = async (cardNumber: string) => {
       user_id: true
     }
   })
-  if (targetUser === null) return genResponseData(false, '用户ID查找失败')
+  if (result === null) return genResponseData(false, '用户ID查找失败')
 
-  const userId = targetUser?.user_id
+  const userId = result?.user_id
   const user = await queryUserByUserId(userId)
   if (user === null) return genResponseData(false, '用户查找失败')
 

@@ -1,10 +1,11 @@
-import { app, BrowserWindow, globalShortcut } from 'electron'
+import { app, BrowserWindow, globalShortcut, ipcMain, session } from 'electron'
 import { services, makeChannelName } from '@/services'
 import { createWindow } from '@/base/window'
-import { ipcMain } from 'electron'
 import updateService from './services/update-service'
 import { EVN_FILE_PATH } from '@/config'
 import dotenv from 'dotenv'
+import { resolve } from 'path'
+
 
 // 加载环境变量
 dotenv.config({
@@ -55,7 +56,6 @@ const installService = () => {
 
 app.whenReady().then(async () => {
   win = await createWindow()
-  // setSerialPortPermissions()
   installService()
   if (app.isPackaged) {
     disableShortcuts()

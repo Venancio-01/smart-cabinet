@@ -21,7 +21,7 @@ export const CHECK_TIME = 10
 // 查询指纹仪连接间隔
 export const QUERY_FINGER_INTERVAL = 3000
 // 指纹仪登记、注册方法轮询间隔
-export const FINGER_POLLING_INTERVAL = 500
+export const FINGER_POLLING_INTERVAL = 200
 
 // 查询锁控板间隔
 export const QUERY_LOCK_INTERVAL = 3000

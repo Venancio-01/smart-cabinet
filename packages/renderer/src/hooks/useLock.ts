@@ -2,7 +2,7 @@ import { useStore } from '@/store'
 import { useCheckStore } from '@/store/check'
 import { QUERY_OPEN_STATE_INTERVAL, SEND_QUERY_COMMAND_INTERVAL } from '@/config'
 import useCheck from './useCheck'
-import useDocument from './useDocument'
+import useCarrier from './useCarrier'
 
 // 查询锁孔开启状态的定时器
 const queryLockOpenStatusTimer = ref<number | null>(null)
@@ -16,7 +16,7 @@ export default function () {
   const checkStore = useCheckStore()
   const { addLastOperationCabinetDoorRecords } = checkStore
   const { handleCheck } = useCheck()
-  const { recordDataWhenCheckStart } = useDocument()
+  const { recordDataWhenCheckStart } = useCarrier()
 
   // 获取锁控板连接状态
   const getLockControlConnectState = async () => {

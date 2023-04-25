@@ -1,9 +1,13 @@
 <template>
-  <BaseDialog v-model:visible="show" title="设置卡号" @close="onClose">
-    <div class="h-full pt-[10px]">
-      <img src="@/assets/images/login_card.png" alt="" class="h-[140px] w-full" />
-      <input ref="cardNumberInput" v-model="cardNumber" type="password" class="h-[40px] w-full" />
+  <BaseDialog v-model:visible="show" title="设置卡号" :footer="null" @close="onClose" >
+  <div class="h-full">
+    <div class="flex justify-center">
+      <BaseIcon icon="card" class="icon-large text-white"></BaseIcon>
     </div>
+    <div class="flex justify-center items-center">
+      <AnimationInput ref="inputRef" v-model:value="cardNumber" class="w-[500px] mt-[10px]" label="请刷卡设置卡号"></AnimationInput>
+    </div>
+  </div>
   </BaseDialog>
 </template>
 
@@ -11,8 +15,9 @@
 import useListenEnter from '@/hooks/useListenEnter'
 import useCard from '@/hooks/useCard'
 import useTime from '@/hooks/useTime'
+import AnimationInput from '@/components/AnimationInput.vue'
 
-interface Props {
+type Props = {
   visible: boolean
 }
 
@@ -36,9 +41,9 @@ const show = computed({
 const cardNumber = ref('')
 
 // 使输入框聚焦
-const cardNumberInput = ref<null | HTMLInputElement>(null)
+const inputRef = ref<InstanceType<typeof AnimationInput>>()
 const handleFocus = () => {
-  cardNumberInput.value?.focus()
+  inputRef.value?.focus()
 }
 watch(show, value => {
   resetOperationTimeoutCountdown()
@@ -50,9 +55,12 @@ watch(show, value => {
         emits('update:visible', false)
       }
     })
-    nextTick(handleFocus)
+    nextTick(() => {
+      handleFocus()
+    })
   } else {
     removeListenEnter(true)
+    cardNumber.value = ''
   }
 })
 
@@ -62,28 +70,3 @@ const onClose = () => {
   cardNumber.value = ''
 }
 </script>
-
-<style scoped>
-.form-item {
-  @apply flex items-center text-white;
-}
-.form-item .label {
-  @apply h-[30px] w-[120px] text-justify  text-sm leading-[30px];
-}
-.form-item .label::after {
-  content: '';
-  display: inline-block;
-  padding-left: 100%;
-  margin-left: 100%;
-}
-
-.form-item input {
-  @apply h-[30px] w-full text-black;
-}
-.form-item input[type='password'] {
-  @apply text-2xl;
-}
-.form-item + .form-item {
-  @apply mt-[16px];
-}
-</style>

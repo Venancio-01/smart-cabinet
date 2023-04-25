@@ -1,18 +1,18 @@
 <template>
   <div class="statistics-wrap">
     <div class="statistics-count" @click="goCarrierPage">
-      <span class="content">{{ documentTotal }}</span>
+      <span class="content">{{ carrierTotal }}</span>
       <span class="title">工具总数</span>
     </div>
 
-    <div class="statistics-count" @click="goCarrierPage">
-      <span class="content">{{ inPlaceDocumentTotal }}</span>
+    <div class="statistics-count" @click="goCarrierPageWithInPlace">
+      <span class="content">{{ inPlaceCarrierTotal }}</span>
       <span class="title">在位工具</span>
     </div>
 
     <div class="statistics-count" @click="goCarrierPageWithMisPlace">
-      <span class="content" :class="misPlaceDocumentTotal === 0 ? 'text-primary-color' : '!text-error-color'">
-        {{ misPlaceDocumentTotal }}
+      <span class="content" :class="misPlaceCarrierTotal === 0 ? 'text-primary-color' : '!text-error-color'">
+        {{ misPlaceCarrierTotal }}
       </span>
       <span class="title">错放工具</span>
     </div>
@@ -24,10 +24,16 @@ import { useStore } from '@/store'
 
 const router = useRouter()
 const store = useStore()
-const { misPlaceDocumentTotal, documentTotal, inPlaceDocumentTotal } = storeToRefs(store)
+const { misPlaceCarrierTotal, carrierTotal, inPlaceCarrierTotal } = storeToRefs(store)
 
 const goCarrierPage = () => {
   const state = null
+
+  router.push(`/main/carrier/${state}`)
+}
+
+const goCarrierPageWithInPlace = () =>{
+  const state = 0
 
   router.push(`/main/carrier/${state}`)
 }

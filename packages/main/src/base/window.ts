@@ -1,6 +1,7 @@
-import { app, BrowserWindow, shell } from 'electron'
-import { join } from 'path'
+import { app, BrowserWindow, session, shell } from 'electron'
+import { join, resolve } from 'path'
 import { WINDOW_SIZE } from '@/config/window'
+import { DEVTOOLS_PATH } from '@/config'
 
 const preload = join(__dirname, './preload.js')
 const url = 'http://localhost:4200/'
@@ -23,7 +24,7 @@ export const createWindow = async () => {
     win.loadFile(indexHtml)
   } else {
     win.loadURL(url)
-    // win.loadFile(indexHtml)
+    session.defaultSession.loadExtension(DEVTOOLS_PATH)
     win.webContents.openDevTools()
   }
 

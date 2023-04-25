@@ -4,10 +4,13 @@ import rfidService from './rfid-service'
 import fingerService from './finger-service'
 import sysService from './sys-service'
 import cabinetService from './cabinet-service'
-import documentService from './document-service'
+import carrierService from './carrier-service'
 import cardService from './card-service'
 import networkService from './network-status'
 import updateService from './update-service'
+import storeService from './store-service'
+import encryptionService from './encryption-service'
+import logService from './log-service'
 
 export type LoginServiceType = typeof loginService.fns
 
@@ -18,10 +21,13 @@ export const services = [
   fingerService,
   sysService,
   cabinetService,
-  documentService,
+  carrierService,
   cardService,
   networkService,
-  updateService
+  updateService,
+  storeService,
+  encryptionService,
+  logService
 ]
 
 export type ServiceType = typeof services

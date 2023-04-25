@@ -7,8 +7,14 @@
 
     <div class="state-bar">
       <div class="label">解决方案：</div>
-      <div class="content">{{ networkIsOnline ? '网络正常连接' : '请检查数据库链接配置是否正常，并重新启动软件。' }}</div>
+      <div class="content">
+        {{ networkIsOnline ? '网络正常连接' : '请检查数据库链接配置是否正常，并重新启动软件。' }}
+      </div>
     </div>
+
+    <template #footer>
+      <a-button type="primary" @click="show = false">确 定</a-button>
+    </template>
   </BaseDialog>
 </template>
 
@@ -16,7 +22,7 @@
 import BaseDialog from './BaseDialog.vue'
 import { useStore } from '@/store'
 
-interface Props {
+type Props = {
   visible: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
@@ -38,7 +44,7 @@ const show = computed({
 
 <style scoped>
 .state-bar {
-  @apply mb-[16px] flex text-sm;
+  @apply mb-[16px] flex;
 }
 .state-bar .label {
   @apply w-[70px];

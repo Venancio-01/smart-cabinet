@@ -1,33 +1,37 @@
 <template>
   <BaseDialog
     v-model:visible="show"
-    :title="misPlaceDocumentTotal === 0 ? '系统告警' : `系统告警（${active} / ${misPlaceDocumentTotal}）`"
+    :title="misPlaceCarrierTotal === 0 ? '系统告警' : `系统告警（${active} / ${misPlaceCarrierTotal}）`"
     @close="handleClose"
   >
     <div class="h-full">
-      <div v-if="misPlaceDocumentTotal === 0" class="flex h-full items-center justify-center text-lg text-white">无告警记录</div>
+      <div v-if="misPlaceCarrierTotal === 0" class="flex h-full items-center justify-center text-lg">无告警记录</div>
 
       <div v-else>
-        <div class="flex h-[50px] items-center text-xl text-white">载体错放</div>
+        <div class="flex h-[50px] items-center text-xl">工具错放</div>
 
-        <div class="flex h-[100px] flex-col items-center justify-center text-xl text-white">
+        <div class="flex h-[100px] flex-col items-center justify-center text-xl">
           <p>内容：{{ data.content }}</p>
           <p>时间：{{ data.time }}</p>
         </div>
 
         <div class="flex justify-around">
-          <a-button type="text" :disabled="active === 1" @click="active -= 1">上一个</a-button>
-          <a-button type="text" :disabled="active === misPlaceDocumentTotal" @click="active += 1">下一个</a-button>
+          <a-button type="text" class="!text-light" :disabled="active === 1" @click="active -= 1">上一个</a-button>
+          <a-button type="text" class="!text-light" :disabled="active === misPlaceCarrierTotal" @click="active += 1">下一个</a-button>
         </div>
       </div>
     </div>
+
+    <template #footer>
+      <a-button type="primary" @click="show = false">确 定</a-button>
+    </template>
   </BaseDialog>
 </template>
 
 <script lang="ts" setup>
 import { useStore } from '@/store'
 
-interface Props {
+type Props = {
   visible: boolean
 }
 
@@ -36,7 +40,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emits = defineEmits(['update:visible'])
 const store = useStore()
-const { misPlaceDocumentData, misPlaceDocumentTotal } = storeToRefs(store)
+const { misPlaceCarrierData,misPlaceCarrierTotal } = storeToRefs(store)
 const show = computed({
   get: () => {
     return props.visible
@@ -49,15 +53,15 @@ const show = computed({
 const active = ref(1)
 
 const data = computed(() => {
-  if (misPlaceDocumentData.value[active.value - 1]) {
+  if (misPlaceCarrierData.value[active.value - 1]) {
     return {
-      content: misPlaceDocumentData.value[active.value - 1].content,
-      time: misPlaceDocumentData.value[active.value - 1].datetime
+      content: misPlaceCarrierData.value[active.value - 1].content,
+      time: misPlaceCarrierData.value[active.value - 1].datetime
     }
   } else return {}
 })
 
-const handleClose = () =>{
+const handleClose = () => {
   active.value = 1
 }
 </script>

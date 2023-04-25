@@ -1,10 +1,9 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Index from '@/views/index.vue'
-import Main from '@/views/main.vue'
 import Login from '@/views/login.vue'
-import Open from '@/views/open.vue'
-import Result from '@/views/result.vue'
-import Carrier from '@/views/carrier.vue'
+import Main from '@/views/main.vue'
+import CabinetDoor from '@/views/cabinet-door.vue'
+import ViewCarrier from '@/views/view-carrier.vue'
 
 const routes: RouteRecordRaw[] = [
   { path: '/', redirect: '/index' },
@@ -16,16 +15,51 @@ const routes: RouteRecordRaw[] = [
     path: '/login',
     component: Login
   },
-  { path: '/main', component: Main },
-  { path: '/open/:id', component: Open, props: true },
-  { path: '/result', component: Result },
-  { path: '/carrier/:state', component: Carrier, props: true }
+  {
+    path: '/main', 
+    component: Main,
+    redirect: '/main/cabinet-door',
+    children: [
+      {
+        path: 'cabinet-door',
+        name: 'cabinetDoor',
+        component: CabinetDoor,
+      },
+      {
+        path: 'carrier/:state',
+        component: () => import('@/views/carrier.vue'),
+        props: true,
+        name: 'carrier'
+      },
+      {
+        path: 'user',
+        component: () => import('@/views/user.vue'),
+        name: 'user'
+      },
+      {
+        path: 'department',
+        component: () => import('@/views/department.vue'),
+        name: 'department'
+      },
+      {
+        path: 'permission',
+        component: () => import('@/views/permission.vue'),
+        name: 'permission'
+      }
+    ]
+  },
+  {
+    path: '/view-carrier/:state',
+    component: ViewCarrier,
+    props: true,
+  },
+  { path: '/open/:id', component: () => import('@/views/open.vue'), props: true },
+  { path: '/result', component: () => import('@/views/result.vue') }
 ]
 
 const router = createRouter({
-  // 内部提供了 history 模式的实现。为了简单起见，在这里使用 hash 模式。
   history: createWebHashHistory(),
-  routes //
+  routes
 })
 
 export default router

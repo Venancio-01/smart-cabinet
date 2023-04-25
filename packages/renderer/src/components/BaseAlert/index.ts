@@ -1,23 +1,10 @@
-import { App } from 'vue'
-import Alert from './index.vue'
-
-let instance: App<Element> | null = null
+import { Modal } from 'ant-design-vue'
 
 const createDialog = (text: string) => {
-  if (instance) return
-  const mountNode = document.createElement('div')
-  instance = createApp(Alert, {
-    visible: true,
-    text,
-    close: () => {
-      instance?.unmount()
-      document.body.removeChild(mountNode)
-      instance = null
-    }
+  Modal.info({
+    content: text,
+    okText: '确定'
   })
-
-  document.body.appendChild(mountNode)
-  instance.mount(mountNode)
 }
 
 export default createDialog

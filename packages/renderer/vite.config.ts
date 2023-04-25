@@ -5,6 +5,7 @@ import path from 'path'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 
@@ -27,13 +28,20 @@ export default defineConfig({
     viteTsConfigPaths({
       root: '../../'
     }),
+    vueJsx(),
     vue(),
     AutoImport({
       imports: ['vue', 'vue-router', 'pinia'],
-      dts: false
+      dts: true,
+      eslintrc: {
+        enabled: true,
+        filepath: './.eslintrc-auto-import.json'
+      }
     }),
     Components({
-      resolvers: [AntDesignVueResolver()]
+      resolvers: [AntDesignVueResolver({
+        importStyle: false
+      })]
     })
   ],
 
