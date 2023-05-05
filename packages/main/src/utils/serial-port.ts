@@ -4,12 +4,12 @@ export default class SerialPort {
   private portInstance: null | SerialPortLib = null
   private data = ''
 
-  constructor({ path, baudRate = 9600 }: { path: string; baudRate?: number }) {
+  constructor({ path, baudRate = 115200 }: { path: string; baudRate?: number }) {
     this.init({ path, baudRate })
     this.addDataListener()
   }
 
-  private init({ path, baudRate = 9600 }: { path: string; baudRate?: number }) {
+  private init({ path, baudRate = 115200 }: { path: string; baudRate?: number }) {
     if (this.portInstance) return
 
     this.portInstance = new SerialPortLib({ path, baudRate, autoOpen: false, dataBits: 8, stopBits: 1, parity: 'none' })
@@ -39,15 +39,6 @@ export default class SerialPort {
     this.portInstance.write(data)
   }
 
-  flush() {
-    if (!this.portInstance) return
-
-    this.portInstance.flush(error => {
-      if (error) console.log('flush error:', error)
-      else console.log('flush success:')
-    })
-  }
-
   getData() {
     if (!this.portInstance) return
 
@@ -66,7 +57,6 @@ export default class SerialPort {
 
     this.portInstance.on('open', () => {
       console.log('串口打开成功')
-      this.flush()
     })
 
     this.portInstance.on('close', () => {

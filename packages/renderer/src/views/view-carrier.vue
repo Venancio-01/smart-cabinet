@@ -12,7 +12,7 @@
         class="flex-1 grid grid-rows-2 grid-cols-2 gap-x-6"
         autocomplete="off"
       >
-        <a-form-item label="工具名称" name="title">
+        <a-form-item label="载体名称" name="title">
           <a-input v-model:value="condition.title" />
         </a-form-item>
 

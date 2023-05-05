@@ -6,7 +6,7 @@
     <div v-if="isLoggedIn" class="flex items-center justify-between mb-4">
       <a-tabs :active-key="activeKey" @change="handleTabChange">
         <a-tab-pane v-if="hasPermission('borrow_return')" key="1" tab="柜门信息"></a-tab-pane>
-        <a-tab-pane v-if="hasPermission('view_carrier')" key="2" tab="工具管理"></a-tab-pane>
+        <a-tab-pane v-if="hasPermission('view_carrier')" key="2" tab="载体管理"></a-tab-pane>
         <a-tab-pane v-if="hasPermission('view_user')" key="3" tab="用户管理"></a-tab-pane>
         <a-tab-pane v-if="hasPermission('view_dept')" key="4" tab="部门管理"></a-tab-pane>
       </a-tabs>

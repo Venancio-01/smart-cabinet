@@ -2,19 +2,19 @@
   <div class="statistics-wrap">
     <div class="statistics-count" @click="goCarrierPage">
       <span class="content">{{ carrierTotal }}</span>
-      <span class="title">工具总数</span>
+      <span class="title">载体总数</span>
     </div>
 
     <div class="statistics-count" @click="goCarrierPageWithInPlace">
       <span class="content">{{ inPlaceCarrierTotal }}</span>
-      <span class="title">在位工具</span>
+      <span class="title">在位载体</span>
     </div>
 
     <div class="statistics-count" @click="goCarrierPageWithMisPlace">
       <span class="content" :class="misPlaceCarrierTotal === 0 ? 'text-primary-color' : '!text-error-color'">
         {{ misPlaceCarrierTotal }}
       </span>
-      <span class="title">错放工具</span>
+      <span class="title">错放载体</span>
     </div>
   </div>
 </template>

@@ -83,14 +83,14 @@ const openDevice = () => {
   deviceHandle = openDeviceByHandle(deviceList[0].ref())
 
   // 获取设备参数
-  fingerService.fns.getParameter()
+  getParameter()
   // 初始化算法
   algorithmHandler = initAlgorithm(deviceWidth, deviceHeight)
 
   const success = deviceHandle.deref() !== null && algorithmHandler.deref() !== null
   isOpen = success
 
-  fingerService.fns.loadAllTemplate()
+  loadAllTemplate()
 
   return success
 }
@@ -155,10 +155,10 @@ const startFingerCapture = () => {
 
 const handleRegister = async (userId, order) => {
   let result = null
-  const templateData = fingerService.fns.startFingerCapture()
+  const templateData = startFingerCapture()
 
   if (templateData) {
-    result = await fingerService.fns.onRegister(templateData, userId, order)
+    result = await onRegister(templateData, userId, order)
   }
   return result
 }
@@ -173,7 +173,7 @@ const onRegister = async (templateData, userId, order) => {
     registerTemplates = []
   }
 
-  const { success: isRegistered } = fingerService.fns.onIdentify(templateData)
+  const { success: isRegistered } = onIdentify(templateData)
   if (isRegistered) {
     resetRegisterData()
     return genResponseData(false, '登记失败，当前手指已登记', { alert: true })
@@ -196,52 +196,51 @@ const onRegister = async (templateData, userId, order) => {
   registerTemplates[registerCurrentIndex] = templateData
   registerCurrentIndex++
 
-  if (registerCurrentIndex === MAX_REGISTRATION_COUNT) {
-    const regTemplates = new TemplateType(registerTemplates)
-    const registerTemplateData = new UcharType(TEMPLATE_BYTE_LENGTH)
-    const { success: genTempSuccess, result: genTempResult } = generateTemplate(
-      algorithmHandler,
-      regTemplates,
-      MAX_REGISTRATION_COUNT,
-      registerTemplateData
-    )
+  if (registerCurrentIndex !== MAX_REGISTRATION_COUNT) {
+    return genResponseData(true, `您还需要按压${MAX_REGISTRATION_COUNT - registerCurrentIndex}次手指`)
+  }
 
-    if (genTempSuccess) {
-      const { success: addDbSuccess, result } = addTemplateToDb(algorithmHandler, 9999, genTempResult, registerTemplateData)
+  const regTemplates = new TemplateType(registerTemplates)
+  const registerTemplateData = new UcharType(TEMPLATE_BYTE_LENGTH)
+  const { success: genTempSuccess, result: genTempResult } = generateTemplate(
+    algorithmHandler,
+    regTemplates,
+    MAX_REGISTRATION_COUNT,
+    registerTemplateData
+  )
 
-      if (addDbSuccess) {
-        const fingerData = await queryFingerByUserIdAndOrder(userId, order)
-        const data = registerTemplateData.buffer.toString('base64')
-        const orderText = order === 1 ? '一' : '二'
-        if (fingerData !== null) {
-          try {
-            await updateFingerByUserIdAndOrder(userId, order, data)
-            resetRegisterData()
-            return genResponseData(true, `指纹${orderText}更新成功`, { registerSuccess: true, alert: true })
-          } catch (e) {
-            resetRegisterData()
-            return genResponseData(false, `指纹${orderText}更新失败`, { alert: true })
-          }
-        } else {
-          try {
-            await addFinger(userId, order, data)
-            resetRegisterData()
-            return genResponseData(true, `指纹${orderText}添加成功`, { registerSuccess: true, alert: true })
-          } catch (e) {
-            resetRegisterData()
-            return genResponseData(false, `指纹${orderText}添加失败`, { alert: true })
-          }
-        }
-      } else {
-        resetRegisterData()
-        return genResponseData(true, `添加指纹失败，错误代码 = ${result}`, { alert: true })
-      }
-    } else {
+  if (!genTempSuccess) {
+    resetRegisterData()
+    return genResponseData(false, `生成登记模板失败，错误代码 = ${genTempResult}`, { alert: true })
+  }
+  const { success: addDbSuccess, result } = addTemplateToDb(algorithmHandler, 9999, genTempResult, registerTemplateData)
+
+  if (!addDbSuccess) {
+    resetRegisterData()
+    return genResponseData(true, `添加指纹失败，错误代码 = ${result}`, { alert: true })
+  }
+
+  const fingerData = await queryFingerByUserIdAndOrder(userId, order)
+  const data = registerTemplateData.buffer.toString('base64')
+  const orderText = order === 1 ? '一' : '二'
+  if (fingerData !== null) {
+    try {
+      await updateFingerByUserIdAndOrder(userId, order, data)
       resetRegisterData()
-      return genResponseData(false, `生成登记模板失败，错误代码 = ${genTempResult}`, { alert: true })
+      return genResponseData(true, `指纹${orderText}更新成功`, { registerSuccess: true, alert: true })
+    } catch (e) {
+      resetRegisterData()
+      return genResponseData(false, `指纹${orderText}更新失败`, { alert: true })
     }
   } else {
-    return genResponseData(true, `您还需要按压${MAX_REGISTRATION_COUNT - registerCurrentIndex}次手指`)
+    try {
+      await addFinger(userId, order, data)
+      resetRegisterData()
+      return genResponseData(true, `指纹${orderText}添加成功`, { registerSuccess: true, alert: true })
+    } catch (e) {
+      resetRegisterData()
+      return genResponseData(false, `指纹${orderText}添加失败`, { alert: true })
+    }
   }
 }
 
@@ -262,10 +261,10 @@ const onIdentify = (templateData) => {
 
 const handleIdentify = () => {
   let result = null
-  const templateData = fingerService.fns.startFingerCapture()
+  const templateData = startFingerCapture()
 
   if (templateData) {
-    result = fingerService.fns.onIdentify(templateData)
+    result = onIdentify(templateData)
   }
 
   return result

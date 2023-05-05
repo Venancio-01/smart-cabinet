@@ -54,7 +54,7 @@
                 </div>
               </div>
 
-              <div v-else class="flex-center-center h-[150px] text-gray-600 bg-white my-4">本次盘点该柜门工具无变化</div>
+              <div v-else class="flex-center-center h-[150px] text-gray-600 bg-white my-4">本次盘点该柜门载体无变化</div>
             </div>
           </PerfectScrollbar>
         </div>

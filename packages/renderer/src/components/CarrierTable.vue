@@ -68,7 +68,7 @@ watch(
 )
 const columns = ref<ColumnsType>([
   {
-    title: '工具名称',
+    title: '载体名称',
     dataIndex: 'doc_name',
     key: 'doc_name'
   },
@@ -178,7 +178,7 @@ onMounted(() => {
   //               trigger="click"
   //               content={
   //                 <>
-  //                   <p class="w-[200px]">出库后工具将从管理软件中移除，确定将工具出库吗？</p>
+  //                   <p class="w-[200px]">出库后载体将从管理软件中移除，确定将载体出库吗？</p>
   //                   <div class="flex justify-end">
   //                     <a-button type="link" class="mr-2" onClick={() => handleOutbound(record)}>
   //                       确定

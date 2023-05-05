@@ -25,6 +25,18 @@
       from: 'packages/renderer/public/background',
       to: 'public/background'
     },
+    {
+      from: 'scripts/install.sh',
+      to: '../../install/install.sh'
+    },
+    {
+      from: 'scripts/run.sh',
+      to: '../../install/run.sh'
+    },
+    {
+      from: 'template/smart-cabinet.desktop',
+      to: '../../install/smart-cabinet.desktop'
+    },
     'node_modules/.prisma/**/*',
     'node_modules/@prisma/client/**/*'
   ],

@@ -1,6 +1,6 @@
 import { join } from 'path'
 
-const isDev = true
+const isDev = false
 
 export const RFID_ADDRESS = '192.168.1.181'
 export const RFID_PORT = 8899

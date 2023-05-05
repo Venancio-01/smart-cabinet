@@ -1,1 +1,3 @@
-sudo /opt/smart-cabinet-repo/smart-cabinet-repo --no-sandbox
+#!/bin/bash
+
+echo 'js123456' | sudo /opt/smart-cabinet/smart-cabinet --no-sandbox

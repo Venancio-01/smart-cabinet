@@ -8,7 +8,7 @@
       <div v-if="misPlaceCarrierTotal === 0" class="flex h-full items-center justify-center text-lg">无告警记录</div>
 
       <div v-else>
-        <div class="flex h-[50px] items-center text-xl">工具错放</div>
+        <div class="flex h-[50px] items-center text-xl">载体错放</div>
 
         <div class="flex h-[100px] flex-col items-center justify-center text-xl">
           <p>内容：{{ data.content }}</p>
