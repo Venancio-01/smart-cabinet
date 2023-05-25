@@ -1,0 +1,26 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "vite.coinfig.ts",
+    "src/main/*",
+    "src/main/**/*",
+    "types/*.ts",
+    "types/*.d.ts",
+    "package.json"
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": ".",
+    "types": [
+      "vite/client"
+    ],
+    "paths": {
+      "@/*": [
+        "electron/*"
+      ],
+      "pkg": [
+        "./package.json"
+      ]
+    }
+  }
+}

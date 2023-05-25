@@ -9,7 +9,7 @@ import {
   sys_role_permission,
   sys_permission
 } from '@prisma/client'
-import type { ServiceType } from '../packages/main/src/services/index'
+import type { ServiceType } from '../src/main/services/index'
 export { }
 
 type JSBridgeType = {

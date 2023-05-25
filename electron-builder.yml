@@ -1,0 +1,48 @@
+appId: "YourAppID"
+asar: true
+directories:
+  output: "release/${version}"
+files:
+  - "dist/src/main"
+  - "dist/packages/renderer"
+extraResources:
+  - from: "src/main/prisma/.env"
+    to: ".env"
+  - from: "src/main/public/finger-lib"
+    to: "public/finger-lib"
+  - from: "src/main/public/crc-lib"
+    to: "public/crc-lib"
+  - from: "packages/renderer/public/background"
+    to: "public/background"
+  - from: "scripts/install.sh"
+    to: "../../install/install.sh"
+  - from: "scripts/run.sh"
+    to: "../../install/run.sh"
+  - from: "template/smart-cabinet.desktop"
+    to: "../../install/smart-cabinet.desktop"
+  - "node_modules/.prisma/**/*"
+  - "node_modules/@prisma/client/**/*"
+mac:
+  artifactName: "${productName}_${version}.${ext}"
+  target:
+    - "dmg"
+win:
+  artifactName: "${productName}_${version}.${ext}"
+  target:
+    - target: "nsis"
+      arch:
+        - "x64"
+linux:
+  artifactName: "${productName}_${version}.${ext}"
+  target:
+    - target: "deb"
+     arch:
+        - "x64"
+    - target: "AppImage"
+      arch:
+        - "x64"
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  deleteAppDataOnUninstall: false
