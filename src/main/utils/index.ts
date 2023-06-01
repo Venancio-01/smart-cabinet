@@ -1,0 +1,168 @@
+import { MD5 } from 'crypto-js'
+import dayjs from 'dayjs'
+import { Library } from 'ffi-napi'
+import pkg from '../../package.json'
+import { UcharType } from '@/services/finger-service/types'
+import { CRC_SDK_PATH } from '@/config'
+
+/**
+ * @description: 生成 ipc 通信的返回数据结构
+ * @param {*} T
+ * @return {*}
+ */
+export function genResponseData<T>(success: boolean, msg?: string, data?: T) {
+  return {
+    success,
+    msg,
+    data,
+  }
+}
+
+/**
+ * @description: 生成 md5 加密后的密码
+ * @param {string} username
+ * @param {string} password
+ * @param {string} salt
+ * @return {*}
+ */
+export function genMd5EncryptedPassword(username: string, password: string, salt: string) {
+  return MD5(username + password + salt).toString()
+}
+
+export function parseRFIDReportData(data: string): string[] {
+  const PREFIX = '5a00011200'
+  const arr = data.split(PREFIX)
+
+  const parseArr = arr.reduce((acc, cur) => {
+    if (cur.startsWith('00')) {
+      const length = parseInt(`0x${cur.substring(0, 4)}`, 16) * 2
+      acc.push(`${PREFIX}${cur.substring(0, 4 + length)}`)
+    }
+
+    return acc
+  }, [])
+
+  return parseArr
+}
+
+/**
+ * @description: 从 RFID 读取器上报命令中获取 EPC 和 TID
+ * @param {string} command
+ * @return {*}
+ */
+export function getTIDByReportData(data: string) {
+  let str = data
+  const PREFIX = '5a00011200'
+  const TIDLengthCommandLength = 4
+  const MidCommandLength = 16
+
+  str = str.replace(PREFIX, '')
+
+  const EPCLength = parseInt(`0x${str.substring(4, 8)}`, 16) * 2
+  const TIDLength
+    = parseInt(
+      `0x${str.substring(8 + EPCLength + MidCommandLength, 8 + EPCLength + MidCommandLength + TIDLengthCommandLength)}`,
+      16,
+    ) * 2
+
+  const TID = str.substring(
+    8 + EPCLength + MidCommandLength + TIDLengthCommandLength,
+    8 + EPCLength + MidCommandLength + TIDLengthCommandLength + TIDLength,
+  )
+
+  return TID
+}
+
+export function generateCurrentTime() {
+  return dayjs().format('YYYY-MM-DD HH:mm:ss')
+}
+
+/**
+ * @description: 十进制转二进制并补全 8 位，再颠倒顺序
+ * @param {number} number
+ * @return {*}
+ */
+export function convertDecimalToBinary(number: number) {
+  const binary = number.toString(2)
+  const binaryLength = binary.length
+  const MAX_LENGTH = 8
+  const binaryString = new Array(MAX_LENGTH - binaryLength).fill('0').join('') + binary
+  const result = binaryString.split('').reverse().join('')
+
+  return result
+}
+
+/**
+ * @description: 根据数组数组生成对应索引为 1 的二进制字符串
+ * @param {number} numbers
+ * @return {*}
+ */
+export function generateBinaryString(numbers: number[]) {
+  const binaryArray = Array.from({ length: 32 }, () => '0')
+
+  for (const num of numbers)
+    binaryArray[num - 1] = '1'
+
+  return binaryArray.reverse().join('')
+}
+
+/**
+ * @description: 二进制字符串转十六进制字符串，长度为8，补0
+ * @param {string} binary
+ * @return {*}
+ */
+export function binaryToHex(binary: string): string {
+  const hex = parseInt(binary, 2).toString(16).toUpperCase()
+  return hex.padStart(8, '0')
+}
+
+/**
+ * @description: 生成锁控板命令
+ * @param {string} source 锁控板命令
+ * @return {*}
+ */
+export function generateLockCommand(source: string) {
+  const arr = []
+  for (let index = 0; index < source.length; index++) {
+    if (index % 2 === 0)
+      arr.push(`0x${source.slice(index, index + 2)}`)
+  }
+
+  const result = arr.reduce((acc, cur, index) => {
+    if (index === 0)
+      acc = cur
+    else
+      acc = `0x${(acc ^ cur).toString(16)}`
+
+    return acc
+  }, '')
+
+  const command = [...arr, result]
+    .map(item => item.slice(2, 4))
+    .join('')
+    .toLocaleUpperCase()
+
+  return Buffer.from(command, 'hex')
+}
+
+/**
+ * @description: 生成 CRC16 校验码
+ * @param {string} str
+ * @return {*}
+ */
+export function generateCRC16Code(str: string) {
+  const crcSDK = Library(CRC_SDK_PATH, {
+    CRC16_CCITT: ['int', [UcharType, 'int']],
+  })
+
+  const buffer = Buffer.from(str, 'hex')
+  return crcSDK.CRC16_CCITT(buffer, buffer.length).toString(16)
+}
+
+/**
+ * @description: 获取应用版本信息
+ * @return {*}
+ */
+export function getAppVersion(): string {
+  return pkg.version
+}

@@ -9,14 +9,13 @@
     "package.json"
   ],
   "compilerOptions": {
-    "composite": true,
     "baseUrl": ".",
     "types": [
       "vite/client"
     ],
     "paths": {
       "@/*": [
-        "electron/*"
+        "main/*"
       ],
       "pkg": [
         "./package.json"

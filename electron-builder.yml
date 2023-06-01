@@ -1,48 +1,49 @@
-appId: "YourAppID"
-asar: true
+appId: com.electron.app
 directories:
-  output: "release/${version}"
+  buildResources: build
+  output: 'release/${version}'
+asar: true
 files:
-  - "dist/src/main"
-  - "dist/packages/renderer"
+  - '!**/.vscode/*'
+  - main-dist
+  - '!vite.config.{js,ts,mjs,cjs}'
+  - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
+  - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
+  - dist
 extraResources:
-  - from: "src/main/prisma/.env"
-    to: ".env"
-  - from: "src/main/public/finger-lib"
-    to: "public/finger-lib"
-  - from: "src/main/public/crc-lib"
-    to: "public/crc-lib"
-  - from: "packages/renderer/public/background"
-    to: "public/background"
-  - from: "scripts/install.sh"
-    to: "../../install/install.sh"
-  - from: "scripts/run.sh"
-    to: "../../install/run.sh"
-  - from: "template/smart-cabinet.desktop"
-    to: "../../install/smart-cabinet.desktop"
-  - "node_modules/.prisma/**/*"
-  - "node_modules/@prisma/client/**/*"
-mac:
-  artifactName: "${productName}_${version}.${ext}"
-  target:
-    - "dmg"
+  - from: src/main/database/.env
+    to: .env
+  - from: src/main/public/finger-lib
+    to: public/finger-lib
+  - from: src/main/public/crc-lib
+    to: public/crc-lib
+  - from: src/public/background
+    to: public/background
+  - from: scripts/install.sh
+    to: ../../install/install.sh
+  - from: scripts/run.sh
+    to: ../../install/run.sh
+  - from: template/smart-cabinet.desktop
+    to: ../../install/smart-cabinet.desktop
+  - 'node_modules/.prisma/**/*'
+  - 'node_modules/@prisma/client/**/*'
+asarUnpack:
+  - '**/*.{node,dll}'
 win:
-  artifactName: "${productName}_${version}.${ext}"
+  artifactName: '${productName}_${version}.${ext}'
   target:
-    - target: "nsis"
-      arch:
-        - "x64"
+    - target: nsis
+      arch: x64
 linux:
-  artifactName: "${productName}_${version}.${ext}"
+  artifactName: '${productName}_${version}.${ext}'
   target:
-    - target: "deb"
-     arch:
-        - "x64"
-    - target: "AppImage"
-      arch:
-        - "x64"
+    - target: deb
+      arch: x64
+    - target: AppImage
+      arch: x64
 nsis:
   oneClick: false
   perMachine: false
   allowToChangeInstallationDirectory: true
   deleteAppDataOnUninstall: false
+npmRebuild: false

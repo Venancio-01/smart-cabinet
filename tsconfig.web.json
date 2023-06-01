@@ -1,16 +1,15 @@
 {
   "extends": "./tsconfig.json",
   "include": [
-    "src/env.d.ts",
-    "src/**/*",
-    "src/**/*.vue",
-    "src/**/*.json",
-    "src/*.d.ts",
+    "src/renderer/env.d.ts",
+    "src/renderer/**/*",
+    "src/renderer/**/*.vue",
+    "src/renderer/**/*.json",
+    "src/renderer/*.d.ts",
     "types/*.ts",
     "types/*.d.ts"
   ],
   "compilerOptions": {
-    "composite": true,
     "baseUrl": ".",
     "jsx": "preserve",
     "paths": {

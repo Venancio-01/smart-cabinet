@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Script
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/home/js/Project/smart-cabinet/scripts/run.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

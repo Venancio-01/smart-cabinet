@@ -1,41 +1,48 @@
 /// <reference types="vitest" />
+import path from 'node:path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import path from 'path'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 import vueJsx from '@vitejs/plugin-vue-jsx'
+import Unocss from 'unocss/vite'
 
 export default defineConfig({
-  base: "./",
+  base: './',
+
+  build: {
+    rollupOptions: {
+      input: './src/renderer/index.html',
+    },
+  },
 
   plugins: [
     vueJsx(),
     vue(),
     AutoImport({
       imports: ['vue', 'vue-router', 'pinia'],
-      dts: "src/renderer"
+      dts: './src/renderer/auto-imports.d.ts',
     }),
     Components({
       resolvers: [
         AntDesignVueResolver({
-          importStyle: false
-        })
+          importStyle: false,
+        }),
       ],
-      dts: "src/renderer"
-    })
+      dts: './src/renderer/components.d.ts',
+    }),
+    Unocss(),
   ],
 
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src/renderer'),
-      'public': path.resolve(__dirname, './public')
-    }
+      'public': path.resolve(__dirname, './public'),
+    },
   },
 
   server: {
     port: 4200,
-    host: 'localhost'
   },
 })
