@@ -3,10 +3,6 @@ import type { doc_document } from '@prisma/client'
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
 import { useStore } from '@/store'
-import usePermission from '@/hooks/usePermission'
-import useCarrier from '@/hooks/useCarrier'
-import useMessage from '@/hooks/useMessage'
-import useTime from '@/hooks/useTime'
 
 interface Props {
   operable: boolean
@@ -26,10 +22,6 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits(['onPageChange', 'onDataChange'])
 const store = useStore()
 const { userList, departmentList, cabinetDoorList, misPlaceCarrierData } = storeToRefs(store)
-const { hasPermission } = usePermission()
-const { updateCarrier } = useCarrier()
-const { createMessage } = useMessage()
-const { resetOperationTimeoutCountdown } = useTime()
 
 const selfData = ref<CustomCarrierType[]>([])
 
@@ -113,47 +105,6 @@ onMounted(() => {
     align: 'center',
     ellipsis: true,
   }))
-  // const hasOperationColumn = props.operable && (hasPermission('remove_carrier') || hasPermission('mange_carrier'))
-  // if (hasOperationColumn) {
-  //   columns.value.push({
-  //     width: '100px',
-  //     title: '操作',
-  //     align: 'center',
-  //     dataIndex: 'operation',
-  //     key: 'operation',
-  //     customRender: ({ record }) => {
-  //       return (
-  //         <span>
-  //           {hasPermission('remove_carrier') ? (
-  //             <a-popover
-  //               v-model={[record.visible, 'visible']}
-  //               title="提示"
-  //               trigger="click"
-  //               content={
-  //                 <>
-  //                   <p class="w-[200px]">出库后载体将从管理软件中移除，确定将载体出库吗？</p>
-  //                   <div class="flex justify-end">
-  //                     <a-button type="link" class="mr-2" onClick={() => handleOutbound(record)}>
-  //                       确定
-  //                     </a-button>
-  //                     <a-button type="text" onClick={() => hide(record)}>
-  //                       取消
-  //                     </a-button>
-  //                   </div>
-  //                 </>
-  //               }
-  //             >
-  //               <a-button type="link" class="mr-2">
-  //                 出库
-  //               </a-button>
-  //             </a-popover>
-  //           ) : null}
-  //           {/* {hasPermission('manage_carrier') ? <a-button type="link">编辑</a-button> : null} */}
-  //         </span>
-  //       )
-  //     }
-  //   })
-  // }
 })
 </script>
 
@@ -167,7 +118,7 @@ onMounted(() => {
       total,
       onChange: onPageChange,
     }"
-    @resizeColumn="handleResizeColumn"
+    @resize-column="handleResizeColumn"
   >
     <template #bodyCell="{ column, record }">
       <template v-if="column.dataIndex === 'loan_status'">

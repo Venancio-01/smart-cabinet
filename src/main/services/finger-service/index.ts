@@ -24,7 +24,7 @@ import { DeviceArrayType, IntType, TemplateType, UcharType } from './types'
 import { MAX_DEVICE_NUM, MAX_REGISTRATION_COUNT, TEMPLATE_BYTE_LENGTH } from '@/config'
 import { genResponseData } from '@/utils'
 import { addFinger, queryFingerByUserIdAndOrder, updateFingerByUserIdAndOrder } from '@/database/methods/finger'
-import prisma from '@/database'
+import { prisma } from '@/database'
 
 // 指纹仪设备数组
 const deviceList = new DeviceArrayType(MAX_DEVICE_NUM)

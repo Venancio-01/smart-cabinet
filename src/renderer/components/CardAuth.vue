@@ -12,6 +12,7 @@ const isActive = computed(() => {
   return loginModeIndex.value === CARD_KEY
 })
 
+const cardNumber = ref('')
 async function handleCardLogin() {
   emits('complete', cardNumber.value)
 }
@@ -35,7 +36,6 @@ watch(
   },
 )
 
-const cardNumber = ref('')
 // 使输入框聚焦
 const cardNumberInput = ref<null | HTMLInputElement>(null)
 function handleFocus() {
@@ -49,7 +49,7 @@ function handleFocus() {
       <BaseIcon icon="card" class="icon-large text-white" />
     </div>
     <div class="flex justify-center items-center">
-      <AnimationInput ref="inputRef" v-model:value="cardNumber" class="w-[500px] mt-[10px]" label="请刷卡登录" />
+      <AnimationInput v-model:value="cardNumber" class="w-[500px] mt-[10px]" label="请刷卡登录" />
     </div>
   </div>
 </template>

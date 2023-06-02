@@ -30,22 +30,6 @@ model doc_document {
   stock_status      Int?      @default(0)
 }
 
-model doc_user {
-  id               Int       @id
-  user_id          Int
-  doc_id           Int
-  task_is          Int
-  take_time_start  DateTime? @db.Timestamp(0)
-  take_time_end    DateTime? @db.Timestamp(0)
-  still_is         Int
-  still_time_start DateTime? @db.Timestamp(0)
-  still_time_end   DateTime? @db.Timestamp(0)
-  person_duty      String?   @db.VarChar(255)
-  create_by        String?   @db.VarChar(255)
-  create_byid      Int
-  create_time      DateTime? @db.Timestamp(0)
-}
-
 model rfid_cabinet {
   id                Int     @id
   cabinet_address   String? @db.VarChar(255)
@@ -61,23 +45,6 @@ model rfid_cabinet {
   classification    String? @db.VarChar(255)
   state             String? @db.VarChar(255)
   typeclass         String? @db.VarChar(255)
-}
-
-model rfid_cabinet_door {
-  id              Int     @id
-  binding_type    Int?
-  cabinet_id      Int
-  folder_path     String? @db.VarChar(255)
-  kgbh            Int
-  kgzt            Int
-  name            Int?
-  order_index     String? @db.VarChar(255)
-  state           String? @db.VarChar(255)
-  antenna_address String? @db.VarChar(255)
-  antenna_port    Int
-  antenna_id      String? @db.VarChar(255)
-  view_name       String? @db.VarChar(255)
-  binding_id      String? @db.VarChar(50)
 }
 
 model rfid_card_user {
@@ -191,27 +158,6 @@ model sys_dict_type {
   update_time DateTime? @db.Timestamp(0)
 }
 
-model sys_loginfo {
-  loginfo_id           Int       @id
-  loginfo_type         Int
-  loginfo_modular_name String?   @db.VarChar(255)
-  loginfo_modular_type Int
-  loginfo_user_id      Int
-  loginfo_user_name    String?   @db.VarChar(255)
-  loginfo_role_id      Int
-  loginfo_role_name    String?   @db.VarChar(255)
-  loginfo_cabinet      Int
-  loginfo_cabinetname  String?   @db.VarChar(255)
-  loginfo_door         Int
-  loginfo_doorname     String?   @db.VarChar(255)
-  loginfo_doc          Int
-  loginfo_docname      String?   @db.VarChar(255)
-  loginfo_message      String?   @db.VarChar(255)
-  loginfo_result       Int
-  loginfo_alarmresult  Int
-  loginfo_create_time  DateTime? @db.Timestamp(0)
-}
-
 model sys_menu {
   id          Int       @id
   create_by   String?   @db.VarChar(255)
@@ -251,13 +197,6 @@ model sys_role_menu {
   role_id Int
 
   @@id([menu_id, role_id])
-}
-
-model sys_role_show {
-  role_id     Int
-  showrole_id Int
-
-  @@id([role_id, showrole_id])
 }
 
 model sys_user {
@@ -307,6 +246,60 @@ model sys_config {
   confirm_time   Int?
 }
 
+model doc_user {
+  id               Int       @id
+  user_id          Int
+  doc_id           Int
+  task_is          Int
+  take_time_start  DateTime? @db.Timestamp(0)
+  take_time_end    DateTime? @db.Timestamp(0)
+  still_is         Int
+  still_time_start DateTime? @db.Timestamp(0)
+  still_time_end   DateTime? @db.Timestamp(0)
+  person_duty      String?   @db.VarChar(255)
+  create_by        String?   @db.VarChar(255)
+  create_byid      Int
+  create_time      DateTime? @db.Timestamp(0)
+}
+
+model rfid_cabinet_door {
+  id              Int     @id
+  binding_type    Int?
+  cabinet_id      Int
+  folder_path     String? @db.VarChar(255)
+  kgbh            Int
+  kgzt            Int
+  name            Int?
+  order_index     String? @db.VarChar(255)
+  state           String? @db.VarChar(255)
+  antenna_address String? @db.VarChar(255)
+  antenna_port    Int
+  antenna_id      String? @db.VarChar(255)
+  view_name       String? @db.VarChar(255)
+  binding_id      String? @db.VarChar(50)
+}
+
+model sys_loginfo {
+  loginfo_id           Int       @id
+  loginfo_type         Int
+  loginfo_modular_name String?   @db.VarChar(255)
+  loginfo_modular_type Int
+  loginfo_user_id      Int
+  loginfo_user_name    String?   @db.VarChar(255)
+  loginfo_role_id      Int
+  loginfo_role_name    String?   @db.VarChar(255)
+  loginfo_cabinet      Int
+  loginfo_cabinetname  String?   @db.VarChar(255)
+  loginfo_door         Int
+  loginfo_doorname     String?   @db.VarChar(255)
+  loginfo_doc          Int
+  loginfo_docname      String?   @db.VarChar(255)
+  loginfo_message      String?   @db.VarChar(255)
+  loginfo_result       Int
+  loginfo_alarmresult  Int
+  loginfo_create_time  DateTime? @db.Timestamp(0)
+}
+
 model sys_permission {
   id                  Int                   @id
   type                String?               @db.VarChar(255)
@@ -323,4 +316,11 @@ model sys_role_permission {
 
   @@id([role_id, permission_id])
   @@index([permission_id], map: "sys_role_permission_permission_id_fkey")
+}
+
+model sys_role_show {
+  role_id     Int
+  showrole_id Int
+
+  @@id([role_id, showrole_id])
 }

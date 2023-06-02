@@ -3,19 +3,11 @@ import { useStore } from '@/store'
 import useCabinet from '@/hooks/useCabinet'
 
 const store = useStore()
-const { cabinetDoorList, carrierList, misPlaceCarrierData } = storeToRefs(store)
+const { cabinetDoorList, misPlaceCarrierData } = storeToRefs(store)
 const { openCabinetDoor } = useCabinet()
 
 const cabinetDoor = computed(() => {
   return cabinetDoorList.value[0]
-})
-
-const totalCarriers = computed(() => {
-  return carrierList.value.filter(item => item.cabinet_door_id === cabinetDoor.value.id)
-})
-
-const inPlaceCarriers = computed(() => {
-  return totalCarriers.value.filter(item => item.loan_status === 0)
 })
 
 const misPlaceCarriers = computed(() => {

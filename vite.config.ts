@@ -31,6 +31,7 @@ export default defineConfig({
           importStyle: false,
         }),
       ],
+      dirs: './src/renderer/components',
       dts: './src/renderer/components.d.ts',
     }),
     Unocss(),

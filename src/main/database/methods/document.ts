@@ -1,5 +1,5 @@
 import type { rfid_switch_record } from '@prisma/client'
-import prisma from '@/database'
+import { prisma } from '@/database'
 
 /**
  * @description: 根据柜门 id 获取柜内文件总数

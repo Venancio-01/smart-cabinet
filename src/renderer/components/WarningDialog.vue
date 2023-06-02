@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import BaseDialog from './BaseDialog.vue'
 import { useStore } from '@/store'
 
 interface Props {

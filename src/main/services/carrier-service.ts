@@ -8,7 +8,7 @@ import {
   updateDocStatusByID,
   updateMisPlaceDocument,
 } from '@/database/methods/document'
-import prisma from '@/database'
+import { prisma } from '@/database'
 import { generateCurrentTime } from '@/utils'
 
 async function getAllCarrierData(): Promise<doc_document[]> {

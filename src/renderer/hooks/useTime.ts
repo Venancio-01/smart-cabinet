@@ -58,7 +58,7 @@ export default function () {
     }, 1000)
   }
 
-  const closeOperationTimeoutCountdown = () => {
+  function closeOperationTimeoutCountdown() {
     if (operationTimeoutTimer.value) {
       clearInterval(operationTimeoutTimer.value)
       operationTimeoutTimer.value = null
@@ -107,7 +107,7 @@ export default function () {
     }, 1000)
   }
 
-  const closeConfirmationTimeCountdown = () => {
+  function closeConfirmationTimeCountdown() {
     if (confirmTimeoutTimer.value) {
       clearInterval(confirmTimeoutTimer.value)
       confirmTimeoutTimer.value = null

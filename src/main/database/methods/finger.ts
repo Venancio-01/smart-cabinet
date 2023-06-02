@@ -1,5 +1,5 @@
 import { generateCurrentTime } from '@/utils'
-import prisma from '@/database'
+import { prisma } from '@/database'
 
 export async function queryFingerByUserIdAndOrder(userId: number, order: FingerOrder) {
   const result = await prisma.rfid_finger_user.findFirst({

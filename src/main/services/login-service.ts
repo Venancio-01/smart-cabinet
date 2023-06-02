@@ -1,6 +1,6 @@
 import { genMd5EncryptedPassword, genResponseData } from '@/utils'
 import { queryUserByLoginName, queryUserByUserId } from '@/database/methods/user'
-import prisma from '@/database'
+import { prisma } from '@/database'
 
 async function onPasswordLogin({ username, password }: PasswordLoginProps) {
   const user = await queryUserByLoginName(username)

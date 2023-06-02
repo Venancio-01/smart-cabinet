@@ -1,7 +1,7 @@
 import { join } from 'path'
 import type { sys_dept, sys_user } from '@prisma/client'
 import { queryUserByUserId, updatePasswordByUserId } from '@/database/methods/user'
-import prisma from '@/database'
+import { prisma } from '@/database'
 import { genMd5EncryptedPassword } from '@/utils'
 
 async function getUserData(userId: number) {

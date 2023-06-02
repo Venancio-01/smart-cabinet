@@ -17,7 +17,7 @@ extraResources:
     to: public/finger-lib
   - from: src/main/public/crc-lib
     to: public/crc-lib
-  - from: src/public/background
+  - from: src/renderer/public/background
     to: public/background
   - from: scripts/install.sh
     to: ../../install/install.sh

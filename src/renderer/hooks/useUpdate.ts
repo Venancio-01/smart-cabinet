@@ -85,5 +85,6 @@ export default function () {
   return {
     initUpdateService,
     destroyUpdateService,
+    exitService,
   }
 }

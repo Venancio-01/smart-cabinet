@@ -1,4 +1,4 @@
-import prisma from '@/database'
+import { prisma } from '@/database'
 
 export async function queryDepartNameByDeptId(deptId: number) {
   const result = await prisma.sys_dept.findFirst({

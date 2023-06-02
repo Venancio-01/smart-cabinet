@@ -1,5 +1,5 @@
 import type { rfid_cabinet_door } from '@prisma/client'
-import prisma from '@/database'
+import { prisma } from '@/database'
 
 async function getCabinetData() {
   const result = await prisma.rfid_cabinet.findFirst()

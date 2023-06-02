@@ -16,12 +16,12 @@ useInit()
 
   <div class="relative h-full w-full items-center justify-center bg-cover" :style="{ backgroundImage: `url(${backgroundUrl})` }">
     <div class="w-full h-full mask wrap-padding">
-      <router-view v-slot="{ Component }">
+      <!-- <router-view v-slot="{ Component }">
         <transition mode="out-in">
           <component :is="Component" />
         </transition>
-      </router-view>
-      <!-- <router-view /> -->
+      </router-view> -->
+      <router-view />
     </div>
   </div>
 </template>
