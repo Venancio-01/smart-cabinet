@@ -88,7 +88,7 @@ onMounted(() => {
         </a-form-item>
 
         <a-form-item v-show="currentCabinetDoorId === 0" label="所属部门">
-          <a-select ref="select" v-model:value="condition.departmentId" allow-clear>
+          <a-select v-model:value="condition.departmentId" allow-clear>
             <a-select-option v-for="item in departmentList" :key="item.id" :value="item.id">
               {{ item.dept_name }}
             </a-select-option>
@@ -96,7 +96,7 @@ onMounted(() => {
         </a-form-item>
 
         <a-form-item label="用户角色">
-          <a-select ref="select" v-model:value="condition.roleId" allow-clear>
+          <a-select v-model:value="condition.roleId" allow-clear>
             <a-select-option v-for="item in roleList" :key="item.id" :value="item.id">
               {{ item.role_name }}
             </a-select-option>

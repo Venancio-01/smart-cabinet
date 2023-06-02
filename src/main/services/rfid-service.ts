@@ -1,3 +1,4 @@
+import { Buffer } from 'buffer'
 import { binaryToHex, generateBinaryString, generateCRC16Code, getTIDByReportData, parseRFIDReportData } from '@/utils'
 import Socket from '@/utils/socket'
 

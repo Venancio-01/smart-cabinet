@@ -1,4 +1,4 @@
-import { Socket } from 'node:net'
+import { Socket } from 'net'
 
 export default class {
   private instance: Socket | null = null
@@ -6,6 +6,7 @@ export default class {
   private address = ''
   private port: number | null = null
   private format: 'hex' | 'utf-8' = 'hex'
+  private timer = null
 
   constructor(option: { address: string; port?: number; format?: 'hex' | 'utf-8' }) {
     this.address = option.address
@@ -26,7 +27,7 @@ export default class {
       this.instance.on('connect', () => {
         console.log('socket 连接成功')
         resolve()
-        clearTimeout(timer)
+        clearTimeout(this.timer)
       })
 
       this.instance.on('close', () => {
@@ -44,7 +45,7 @@ export default class {
       })
 
       const MAX_CONNECT_DURATION = 3000
-      const timer = setTimeout(() => {
+      this.timer = setTimeout(() => {
         this.instance.destroy()
       }, MAX_CONNECT_DURATION)
 

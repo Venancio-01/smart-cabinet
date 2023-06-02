@@ -40,62 +40,57 @@ _export(exports, {
         return addTemplateToDb;
     }
 });
-const _config = require("../../config");
-const _types = require("./types");
-const _ffinapi = require("ffi-napi");
-const _fs = /*#__PURE__*/ _interop_require_default(require("fs"));
-const _child_process = require("child_process");
-function _interop_require_default(obj) {
-    return obj && obj.__esModule ? obj : {
-        default: obj
-    };
-}
-let algorithmSDK = null;
-const zkfingerLibPath = '/usr/lib/libzkfinger10.so';
-const checkFileExist = ()=>{
-    if (!_fs.default.existsSync(zkfingerLibPath)) {
+var _fs = require("fs");
+var _child_process = require("child_process");
+var _ffinapi = require("ffi-napi");
+var _types = require("./types");
+var _config = require("../../config");
+var algorithmSDK = null;
+var zkfingerLibPath = "/usr/lib/libzkfinger10.so";
+function checkFileExist() {
+    if (!(0, _fs.existsSync)(zkfingerLibPath)) {
         // 文件不存在，复制文件
         try {
-            (0, _child_process.execSync)(`sudo cp ${_config.LIBZKFINGER10_PATH} ${zkfingerLibPath}`);
-            console.log('libzkfinger10.so 文件复制成功');
+            (0, _child_process.execSync)("sudo cp ".concat(_config.LIBZKFINGER10_PATH, " ").concat(zkfingerLibPath));
+            console.log("libzkfinger10.so 文件复制成功");
         } catch (err) {
             console.error(err);
         }
     } else {
-        console.log('libzkfinger10.so 文件已存在');
+        console.log("libzkfinger10.so 文件已存在");
     }
-};
-const initAlgorithmSDK = ()=>{
+}
+function initAlgorithmSDK() {
     algorithmSDK = (0, _ffinapi.Library)(_config.ALGORITHM_SDK_PATH, {
         BIOKEY_INIT_SIMPLE: [
             _types.HandleType,
             [
-                'int',
-                'int',
-                'int',
-                'int'
+                "int",
+                "int",
+                "int",
+                "int"
             ]
         ],
         BIOKEY_CLOSE: [
-            'int',
+            "int",
             [
                 _types.HandleType
             ]
         ],
         BIOKEY_EXTRACT_GRAYSCALEDATA: [
-            'int',
+            "int",
             [
                 _types.HandleType,
                 _types.UcharType,
-                'int',
-                'int',
+                "int",
+                "int",
                 _types.UcharType,
-                'int',
-                'int'
+                "int",
+                "int"
             ]
         ],
         BIOKEY_IDENTIFYTEMP: [
-            'int',
+            "int",
             [
                 _types.HandleType,
                 _types.UcharType,
@@ -104,16 +99,16 @@ const initAlgorithmSDK = ()=>{
             ]
         ],
         BIOKEY_GENTEMPLATE: [
-            'int',
+            "int",
             [
                 _types.HandleType,
                 _types.TemplateType,
-                'int',
+                "int",
                 _types.UcharType
             ]
         ],
         BIOKEY_VERIFY: [
-            'int',
+            "int",
             [
                 _types.HandleType,
                 _types.UcharType,
@@ -121,52 +116,52 @@ const initAlgorithmSDK = ()=>{
             ]
         ],
         BIOKEY_DB_ADD: [
-            'int',
+            "int",
             [
                 _types.HandleType,
-                'int',
-                'int',
+                "int",
+                "int",
                 _types.UcharType
             ]
-        ] // 添加模板到1:N内存中
+        ]
     });
-};
-const destroyAlgorithmSDK = ()=>{
+}
+function destroyAlgorithmSDK() {
     algorithmSDK = null;
-};
-const initAlgorithm = (width, height)=>{
+}
+function initAlgorithm(width, height) {
     return algorithmSDK.BIOKEY_INIT_SIMPLE(0, width, height, 0);
-};
-const closeAlgorithm = (handle)=>{
+}
+function closeAlgorithm(handle) {
     return algorithmSDK.BIOKEY_CLOSE(handle);
-};
-const generateTemplate = (handle, templates, num, gTemplate)=>{
-    const result = algorithmSDK.BIOKEY_GENTEMPLATE(handle, templates, num, gTemplate);
-    const success = result > 0;
+}
+function generateTemplate(handle, templates, num, gTemplate) {
+    var result = algorithmSDK.BIOKEY_GENTEMPLATE(handle, templates, num, gTemplate);
+    var success = result > 0;
     return {
-        success,
-        result
+        success: success,
+        result: result
     };
-};
-const verifyTemplate = (handle, template1, template2)=>{
+}
+function verifyTemplate(handle, template1, template2) {
     // 返回分数(0~1000), 推荐阈值50
-    const result = algorithmSDK.BIOKEY_VERIFY(handle, template1, template2);
-    const success = result >= _config.VERIFY_SCORE_THRESHOLD;
+    var result = algorithmSDK.BIOKEY_VERIFY(handle, template1, template2);
+    var success = result >= _config.VERIFY_SCORE_THRESHOLD;
     return success;
-};
-const identifyTemplate = (handle, templateDate, tid, score)=>{
+}
+function identifyTemplate(handle, templateDate, tid, score) {
     return algorithmSDK.BIOKEY_IDENTIFYTEMP(handle, templateDate, tid, score);
-};
-const extractTemplate = (handle, imageBuffer, width, height, template, len)=>{
+}
+function extractTemplate(handle, imageBuffer, width, height, template, len) {
     return algorithmSDK.BIOKEY_EXTRACT_GRAYSCALEDATA(handle, imageBuffer, width, height, template, len, 0);
-};
-const addTemplateToDb = (handle, tid, templateLength, templateData)=>{
-    const result = algorithmSDK.BIOKEY_DB_ADD(handle, tid, templateLength, templateData);
-    const success = result === 1;
+}
+function addTemplateToDb(handle, tid, templateLength, templateData) {
+    var result = algorithmSDK.BIOKEY_DB_ADD(handle, tid, templateLength, templateData);
+    var success = result === 1;
     return {
-        success,
-        result
+        success: success,
+        result: result
     };
-};
+}
 
 //# sourceMappingURL=algorithm-func.js.map

@@ -1,10 +1,10 @@
-import { join } from 'node:path'
+import { join } from 'path'
 import { BrowserWindow, app, session, shell } from 'electron'
 import { DEVTOOLS_PATH, WINDOW_SIZE } from '@/config'
 
 const preload = join(__dirname, './preload.js')
 const url = 'http://localhost:4200/'
-const indexHtml = join(__dirname, '../../dist/index.html')
+const indexHtml = join(__dirname, '../../renderer/index.html')
 
 export async function createWindow() {
   const win = new BrowserWindow({

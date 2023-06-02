@@ -1,5 +1,5 @@
-/// <reference types="vitest" />
-import path from 'node:path'
+/// <reference types="vite" />
+import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -12,9 +12,10 @@ export default defineConfig({
   base: './',
 
   build: {
-    rollupOptions: {
-      input: './src/renderer/index.html',
-    },
+    outDir: 'dist/renderer',
+    // rollupOptions: {
+    //   input: './src/renderer/index.html',
+    // },
   },
 
   plugins: [
@@ -37,8 +38,8 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src/renderer'),
-      'public': path.resolve(__dirname, './public'),
+      '@': resolve(__dirname, './src/renderer'),
+      'public': resolve(__dirname, './public'),
     },
   },
 

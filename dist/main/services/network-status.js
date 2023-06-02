@@ -8,16 +8,16 @@ Object.defineProperty(exports, "default", {
         return _default;
     }
 });
-const _database = require("../database");
-const getConnectState = ()=>{
+var _database = require("../database");
+function getConnectState() {
     return _database.connected;
-};
-const networkService = {
-    name: 'network',
+}
+var networkService = {
+    name: "network",
     fns: {
-        getConnectState
+        getConnectState: getConnectState
     }
 };
-const _default = networkService;
+var _default = networkService;
 
 //# sourceMappingURL=network-status.js.map

@@ -41,7 +41,7 @@ export default function () {
    * @param {string} address
    * @return {*}
    */
-  const destroyRfid = async (address: string) => {
+  async function destroyRfid(address: string) {
     return await window.JSBridge.rfid.destroy(address)
   }
 

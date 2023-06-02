@@ -31,18 +31,18 @@ _export(exports, {
         return captureFingerImage;
     }
 });
-const _config = require("../../config");
-const _types = require("./types");
-const _ffinapi = require("ffi-napi");
+var _ffinapi = require("ffi-napi");
+var _types = require("./types");
+var _config = require("../../config");
 // 通过 ffi 解析 C++ SDK 方法
-let deviceSDK = null;
-const initDeviceSDK = ()=>{
+var deviceSDK = null;
+function initDeviceSDK() {
     deviceSDK = (0, _ffinapi.Library)(_config.DEVICE_SDK_PATH, {
         sensorEnumDevices: [
-            'int',
+            "int",
             [
                 _types.DeviceArrayType,
-                'int'
+                "int"
             ]
         ],
         sensorOpen: [
@@ -52,45 +52,45 @@ const initDeviceSDK = ()=>{
             ]
         ],
         sensorClose: [
-            'int',
+            "int",
             [
                 _types.HandleType
             ]
         ],
         sensorCapture: [
-            'int',
+            "int",
             [
                 _types.HandleType,
                 _types.UcharType,
-                'int'
+                "int"
             ]
         ],
         sensorGetParameter: [
-            'int',
+            "int",
             [
                 _types.HandleType,
-                'int'
+                "int"
             ]
-        ] // 获取指纹仪简单参数
+        ]
     });
-};
-const destroyDeviceSDK = ()=>{
+}
+function destroyDeviceSDK() {
     deviceSDK = null;
-};
-const getDeviceCount = (deviceList, max)=>{
+}
+function getDeviceCount(deviceList, max) {
     return deviceSDK.sensorEnumDevices(deviceList, max);
-};
-const openDeviceByHandle = (handle)=>{
+}
+function openDeviceByHandle(handle) {
     return deviceSDK.sensorOpen(handle);
-};
-const closeDeviceByHandle = (handle)=>{
+}
+function closeDeviceByHandle(handle) {
     return deviceSDK.sensorClose(handle);
-};
-const getParameterByHandle = (handle, type)=>{
+}
+function getParameterByHandle(handle, type) {
     return deviceSDK.sensorGetParameter(handle, type);
-};
-const captureFingerImage = (handle, imageBuffer, size)=>{
+}
+function captureFingerImage(handle, imageBuffer, size) {
     return deviceSDK.sensorCapture(handle, imageBuffer, size);
-};
+}
 
 //# sourceMappingURL=device-func.js.map

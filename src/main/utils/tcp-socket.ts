@@ -1,15 +1,16 @@
 // 导入 net 模块
-import net from 'node:net'
+import { Socket } from 'net'
+import type { Buffer } from 'buffer'
 
 // 定义 tcpSocket 类
 export default class TcpSocket {
-  // 声明一个私有的 net.Socket 属性
-  private socket: net.Socket
+  // 声明一个私有的 Socket 属性
+  private socket: Socket
 
   // 定义构造函数，传入 address 和 port 参数
   constructor(address: string, port: number) {
-    // 创建一个新的 net.Socket 实例
-    this.socket = new net.Socket()
+    // 创建一个新的 Socket 实例
+    this.socket = new Socket()
 
     // 连接到指定的地址和端口
     this.socket.connect(port, address, () => {

@@ -40,17 +40,17 @@ _export(exports, {
         return TemplateType;
     }
 });
-const _refnapi = /*#__PURE__*/ _interop_require_default(require("ref-napi"));
-const _refarraydi = /*#__PURE__*/ _interop_require_default(require("ref-array-di"));
-const _refstructdi = /*#__PURE__*/ _interop_require_default(require("ref-struct-di"));
+var _refnapi = /*#__PURE__*/ _interop_require_default(require("ref-napi"));
+var _refarraydi = /*#__PURE__*/ _interop_require_default(require("ref-array-di"));
+var _refstructdi = /*#__PURE__*/ _interop_require_default(require("ref-struct-di"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
     };
 }
-const CArray = (0, _refarraydi.default)(_refnapi.default);
-const CStruct = (0, _refstructdi.default)(_refnapi.default);
-const DeviceType = CStruct({
+var CArray = (0, _refarraydi.default)(_refnapi.default);
+var CStruct = (0, _refstructdi.default)(_refnapi.default);
+var DeviceType = CStruct({
     vid: _refnapi.default.types.ushort,
     pid: _refnapi.default.types.ushort,
     szSerialNumber: CArray(_refnapi.default.types.uchar, 64),
@@ -58,12 +58,12 @@ const DeviceType = CStruct({
     device_address: _refnapi.default.types.uint32,
     extraPtr: _refnapi.default.types.uint
 });
-const HandleType = _refnapi.default.refType(_refnapi.default.types.uint);
-const UcharType = CArray(_refnapi.default.types.uchar);
-const IntType = CArray(_refnapi.default.types.int);
-const DeviceArrayType = CArray(DeviceType);
-const DeviceTypePointerType = _refnapi.default.refType(DeviceType);
-const UcharArrayType = CArray(CArray(_refnapi.default.types.uchar));
-const TemplateType = CArray(UcharType);
+var HandleType = _refnapi.default.refType(_refnapi.default.types.uint);
+var UcharType = CArray(_refnapi.default.types.uchar);
+var IntType = CArray(_refnapi.default.types.int);
+var DeviceArrayType = CArray(DeviceType);
+var DeviceTypePointerType = _refnapi.default.refType(DeviceType);
+var UcharArrayType = CArray(CArray(_refnapi.default.types.uchar));
+var TemplateType = CArray(UcharType);
 
 //# sourceMappingURL=types.js.map

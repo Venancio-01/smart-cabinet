@@ -16,25 +16,25 @@ _export(exports, {
         return makeChannelName;
     }
 });
-const _loginservice = /*#__PURE__*/ _interop_require_default(require("./login-service"));
-const _lockcontrolservice = /*#__PURE__*/ _interop_require_default(require("./lock-control-service"));
-const _rfidservice = /*#__PURE__*/ _interop_require_default(require("./rfid-service"));
-const _fingerservice = /*#__PURE__*/ _interop_require_default(require("./finger-service/index"));
-const _sysservice = /*#__PURE__*/ _interop_require_default(require("./sys-service"));
-const _cabinetservice = /*#__PURE__*/ _interop_require_default(require("./cabinet-service"));
-const _carrierservice = /*#__PURE__*/ _interop_require_default(require("./carrier-service"));
-const _cardservice = /*#__PURE__*/ _interop_require_default(require("./card-service"));
-const _networkstatus = /*#__PURE__*/ _interop_require_default(require("./network-status"));
-const _updateservice = /*#__PURE__*/ _interop_require_default(require("./update-service"));
-const _storeservice = /*#__PURE__*/ _interop_require_default(require("./store-service"));
-const _encryptionservice = /*#__PURE__*/ _interop_require_default(require("./encryption-service"));
-const _logservice = /*#__PURE__*/ _interop_require_default(require("./log-service"));
+var _loginservice = /*#__PURE__*/ _interop_require_default(require("./login-service"));
+var _lockcontrolservice = /*#__PURE__*/ _interop_require_default(require("./lock-control-service"));
+var _rfidservice = /*#__PURE__*/ _interop_require_default(require("./rfid-service"));
+var _fingerservice = /*#__PURE__*/ _interop_require_default(require("./finger-service/index"));
+var _sysservice = /*#__PURE__*/ _interop_require_default(require("./sys-service"));
+var _cabinetservice = /*#__PURE__*/ _interop_require_default(require("./cabinet-service"));
+var _carrierservice = /*#__PURE__*/ _interop_require_default(require("./carrier-service"));
+var _cardservice = /*#__PURE__*/ _interop_require_default(require("./card-service"));
+var _networkstatus = /*#__PURE__*/ _interop_require_default(require("./network-status"));
+var _updateservice = /*#__PURE__*/ _interop_require_default(require("./update-service"));
+var _storeservice = /*#__PURE__*/ _interop_require_default(require("./store-service"));
+var _encryptionservice = /*#__PURE__*/ _interop_require_default(require("./encryption-service"));
+var _logservice = /*#__PURE__*/ _interop_require_default(require("./log-service"));
 function _interop_require_default(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
     };
 }
-const services = [
+var services = [
     _loginservice.default,
     _lockcontrolservice.default,
     _rfidservice.default,
@@ -50,7 +50,7 @@ const services = [
     _logservice.default
 ];
 function makeChannelName(name, fnName) {
-    return `${name}.${fnName}`;
+    return "".concat(name, ".").concat(fnName);
 }
 
 //# sourceMappingURL=index.js.map

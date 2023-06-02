@@ -107,26 +107,6 @@ function handleResizeColumn(width, column) {
   column.width = width
 }
 
-// 出库
-async function handleOutbound(carrier: CustomCarrierType) {
-  await updateCarrier(carrier.doc_id, {
-    stock_status: 0,
-    doc_last_time: new Date(),
-  })
-  carrier.visible = false
-  getInboundCarrierData()
-  emits('onDataChange')
-  createMessage.success({
-    content: '出库成功',
-  })
-  resetOperationTimeoutCountdown()
-}
-
-function hide(selfData: CustomCarrierType) {
-  selfData.visible = false
-  resetOperationTimeoutCountdown()
-}
-
 onMounted(() => {
   columns.value = columns.value.map(item => ({
     ...item,

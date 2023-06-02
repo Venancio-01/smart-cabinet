@@ -1,5 +1,5 @@
-import fs from 'node:fs'
-import { execSync } from 'node:child_process'
+import { existsSync } from 'fs'
+import { execSync } from 'child_process'
 import { Library } from 'ffi-napi'
 import { HandleType, IntType, TemplateType, UcharType } from './types'
 import { ALGORITHM_SDK_PATH, LIBZKFINGER10_PATH, VERIFY_SCORE_THRESHOLD } from '@/config'
@@ -9,7 +9,7 @@ const zkfingerLibPath = '/usr/lib/libzkfinger10.so'
 
 // 检查 libzkfinger10.so 文件是否存在，如果不存在则复制文件
 export function checkFileExist() {
-  if (!fs.existsSync(zkfingerLibPath)) {
+  if (!existsSync(zkfingerLibPath)) {
     // 文件不存在，复制文件
     try {
       execSync(`sudo cp ${LIBZKFINGER10_PATH} ${zkfingerLibPath}`)

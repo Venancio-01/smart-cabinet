@@ -39,7 +39,7 @@ export default function () {
     }
   }
 
-  const handleReceiveData = async (data: ReceiveData) => {
+  async function handleReceiveData(data: ReceiveData) {
     const map = {
       version: () => {
         Modal.confirm({

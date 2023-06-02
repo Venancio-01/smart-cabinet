@@ -1,4 +1,4 @@
-import { join } from 'node:path'
+import { join } from 'path'
 import type { sys_dept, sys_user } from '@prisma/client'
 import { queryUserByUserId, updatePasswordByUserId } from '@/database/methods/user'
 import prisma from '@/database'

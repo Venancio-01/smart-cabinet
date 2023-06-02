@@ -83,5 +83,5 @@ app.on('activate', () => {
 })
 
 app.on('before-quit', () => {
-  handleExitUpdateService
+  handleExitUpdateService()
 })

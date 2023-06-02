@@ -4,8 +4,8 @@
     "vite.coinfig.ts",
     "src/main/*",
     "src/main/**/*",
-    "types/*.ts",
-    "types/*.d.ts",
+    "src/types/*.ts",
+    "src/types/*.d.ts",
     "package.json"
   ],
   "compilerOptions": {
@@ -13,9 +13,10 @@
     "types": [
       "vite/client"
     ],
+    "resolveJsonModule": true,
     "paths": {
       "@/*": [
-        "main/*"
+        "src/main/*"
       ],
       "pkg": [
         "./package.json"

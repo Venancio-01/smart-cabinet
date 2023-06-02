@@ -1,7 +1,8 @@
+import { Buffer } from 'buffer'
 import { MD5 } from 'crypto-js'
 import dayjs from 'dayjs'
 import { Library } from 'ffi-napi'
-import pkg from '../../package.json'
+import pkg from '../../../package.json'
 import { UcharType } from '@/services/finger-service/types'
 import { CRC_SDK_PATH } from '@/config'
 
