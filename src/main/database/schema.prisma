@@ -8,7 +8,7 @@ datasource db {
 }
 
 model doc_document {
-  doc_id            Int       @id
+  doc_id            Int       @id @default(autoincrement())
   bind_user_id      Int?
   binding_dept_id   Int?
   binding_id        Int?
@@ -16,7 +16,7 @@ model doc_document {
   cabinet_id        Int?
   carrier_type      Int?
   code              String?   @db.VarChar(255)
-  create_time       DateTime  @default(now()) @db.Timestamp(0)
+  create_time       DateTime? @db.Timestamp(0)
   doc_last_time     DateTime? @db.Timestamp(0)
   doc_name          String?   @db.VarChar(255)
   doc_p_status      Int?
@@ -66,15 +66,15 @@ model rfid_cabinet {
 model rfid_cabinet_door {
   id              Int     @id
   binding_type    Int?
-  cabinet_id      Int?
+  cabinet_id      Int
   folder_path     String? @db.VarChar(255)
-  kgbh            Int?
-  kgzt            Int?
+  kgbh            Int
+  kgzt            Int
   name            Int?
   order_index     String? @db.VarChar(255)
   state           String? @db.VarChar(255)
   antenna_address String? @db.VarChar(255)
-  antenna_port    Int?
+  antenna_port    Int
   antenna_id      String? @db.VarChar(255)
   view_name       String? @db.VarChar(255)
   binding_id      String? @db.VarChar(50)
@@ -88,15 +88,15 @@ model rfid_card_user {
 }
 
 model rfid_door_dept {
-  id      Int  @id
-  dept_id Int?
-  door_id Int?
+  id      Int @id
+  dept_id Int
+  door_id Int
 }
 
 model rfid_door_user {
-  id      Int  @id
-  door_id Int?
-  user_id Int?
+  id      Int @id
+  door_id Int
+  user_id Int
 }
 
 model rfid_finger_user {
@@ -323,141 +323,4 @@ model sys_role_permission {
 
   @@id([role_id, permission_id])
   @@index([permission_id], map: "sys_role_permission_permission_id_fkey")
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model door_access_records {
-  access_id             Int       @id @default(autoincrement())
-  access_direction      Int?
-  direction_create_time DateTime? @db.DateTime(0)
-  carrier_count         Int?
-  has_alarm             Int?
-  equipment_id          Int?
-  equipment_name        String?   @db.VarChar(100)
-  remark                String?   @db.VarChar(100)
-  is_viewed             Int?
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model door_alarm_record {
-  alarm_id         Int       @id @default(autoincrement())
-  access_id        String?   @db.VarChar(100)
-  equipment_id     String?   @db.VarChar(100)
-  equipment_name   String?   @db.VarChar(100)
-  carrier_id       String?   @db.VarChar(100)
-  carrier_rfid     String?   @db.VarChar(100)
-  carrier_name     String?   @db.VarChar(100)
-  carrier_deptid   String?   @db.VarChar(100)
-  carrier_deptname String?   @db.VarChar(100)
-  carrier_type     String?   @db.VarChar(255)
-  is_operation     String?   @db.VarChar(10)
-  remark           String?   @db.VarChar(100)
-  create_time      DateTime? @db.DateTime(0)
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model door_equipment {
-  equipment_id     Int       @id @default(autoincrement())
-  equipment_name   String?   @db.VarChar(100)
-  address_ip       String?   @db.VarChar(100)
-  type             Int?
-  fid              Int?
-  status           String?   @db.VarChar(100)
-  equipment_addr   String?   @db.VarChar(100)
-  equipment_port   String?   @db.VarChar(100)
-  equipment_txid   String?   @db.VarChar(100)
-  remark           String?   @db.VarChar(100)
-  mac_address      String?   @db.VarChar(100)
-  mac_ip           String?   @db.VarChar(100)
-  alarm_switch     Int?
-  create_time      DateTime? @db.DateTime(0)
-  equipment_in     Int?
-  equipment_in_ip  String?   @db.VarChar(100)
-  equipment_out    Int?
-  equipment_out_ip String?   @db.VarChar(100)
-  equipment_type   Int?
-  device_user_name String?   @db.VarChar(100)
-  device_user_pwd  String?   @db.VarChar(100)
-  device_port      String?   @db.VarChar(100)
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model door_read_record {
-  read_id          Int       @id @default(autoincrement())
-  read_create_time DateTime? @db.DateTime(0)
-  read_rfid        String?   @db.VarChar(100)
-  equipment_id     Int?
-  equipment_name   String?   @db.VarChar(100)
-  remark           String?   @db.VarChar(100)
-}
-
-model door_rfid_borrow {
-  borrow_id         String  @id @db.VarChar(255)
-  carrier_id        String? @db.VarChar(255)
-  carrier_deptid_id String? @db.VarChar(255)
-  borrow_unit       String? @db.VarChar(255)
-  borrow_user       String? @db.VarChar(255)
-  borrow_address    String? @db.VarChar(255)
-  borrow_reason     String? @db.VarChar(255)
-  approval_user     String? @db.VarChar(255)
-  start_time        String? @db.VarChar(255)
-  end_time          String? @db.VarChar(255)
-  create_userid     String? @db.VarChar(255)
-  reamrk            String? @db.VarChar(255)
-  doc_rfid          String? @db.VarChar(100)
-}
-
-model door_rfid_claim {
-  claim_id          String  @id @db.VarChar(255)
-  carrier_id        String? @db.VarChar(255)
-  carrier_deptid_id String? @db.VarChar(255)
-  start_time        String? @db.VarChar(255)
-  end_time          String? @db.VarChar(255)
-  reamrk            String? @db.VarChar(255)
-  create_userid     String? @db.VarChar(255)
-  claim_unit        String? @db.VarChar(255)
-  claim_user        String? @db.VarChar(255)
-  claim_address     String? @db.VarChar(255)
-  claim_reason      String? @db.VarChar(255)
-  approval_user     String? @db.VarChar(255)
-  doc_rfid          String? @db.VarChar(100)
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model door_rfid_record {
-  record_id        Int       @id @default(autoincrement())
-  access_id        String?   @db.VarChar(100)
-  equipment_id     String?   @db.VarChar(100)
-  equipment_name   String?   @db.VarChar(100)
-  carrier_id       String?   @db.VarChar(100)
-  carrier_name     String?   @db.VarChar(100)
-  carrier_rfid     String?   @db.VarChar(100)
-  carrier_deptid   String?   @db.VarChar(100)
-  carrier_deptname String?   @db.VarChar(100)
-  carrier_type     String?   @db.VarChar(255)
-  equipment_type   String?   @db.VarChar(100)
-  type             String?   @db.VarChar(100)
-  is_alarm         String?   @db.VarChar(100)
-  alarm_id         String?   @db.VarChar(100)
-  create_time      DateTime? @db.DateTime(0)
-  is_register      String?   @db.VarChar(255)
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model door_rfid_register {
-  register_id       Int       @id @default(autoincrement())
-  carrier_id        String?   @db.VarChar(100)
-  carrier_deptid_id String?   @db.VarChar(50)
-  start_time        String?   @db.VarChar(100)
-  end_time          String?   @db.VarChar(100)
-  reamrk            String?   @db.VarChar(100)
-  create_userid     String?   @db.VarChar(100)
-  create_time       DateTime? @db.DateTime(0)
-  delete_time       DateTime? @db.DateTime(0)
-  apply_user        String?   @db.VarChar(50)
-  approval_user     String?   @db.VarChar(255)
-  out_address       String?   @db.VarChar(255)
-  apply_unit        String?   @db.VarChar(255)
-  out_reason        String?   @db.VarChar(255)
-  doc_rfid          String?   @db.VarChar(100)
 }
