@@ -8,7 +8,7 @@ export default function () {
   const router = useRouter()
   const store = useStore()
   const { setCurrentCabinet, setCabinetDoorList, setCabinetDoor } = store
-  const { lockControlIsOnline, currentCabinet } = storeToRefs(store)
+  const { isLockControlConnected, currentCabinet } = storeToRefs(store)
   const checkStore = useCheckStore()
   const { addLastOperationCabinetDoorRecords } = checkStore
   const { openLock } = useLock()
@@ -46,7 +46,7 @@ export default function () {
   const openCabinetDoor = async (door: CabinetDoorProps) => {
     resetOperationTimeoutCountdown()
 
-    if (lockControlIsOnline) {
+    if (isLockControlConnected) {
       openLock(Number(door.Kgbh))
       addLastOperationCabinetDoorRecords(door)
 

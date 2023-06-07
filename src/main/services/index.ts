@@ -3,13 +3,12 @@ import lockControlService from './lock-control'
 import rfidService from './rfid'
 import fingerService from './finger'
 import sysService from './system'
-import cabinetService from './cabinet-service'
-import carrierService from './carrier-service'
-import cardService from './card-service'
-import networkService from './network-status'
-import updateService from './update-service'
-import storeService from './store-service'
-import encryptionService from './encryption-service'
+import cabinetService from './cabinet'
+import carrierService from './carrier'
+import networkService from './network'
+import updateService from './update'
+import storeService from './store'
+import encryptionService from './encryption'
 import logService from './logger'
 
 export const services = [
@@ -19,7 +18,6 @@ export const services = [
   sysService,
   cabinetService,
   carrierService,
-  cardService,
   networkService,
   updateService,
   storeService,

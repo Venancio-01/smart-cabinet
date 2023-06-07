@@ -1,6 +1,6 @@
 import { BrowserWindow, app, globalShortcut } from 'electron'
 import dotenv from 'dotenv'
-import { handleExitUpdateService } from './services/update-service'
+import { handleExitUpdateService } from './services/update'
 import { installService } from '@/services'
 import { createWindow } from '@/base/window'
 import { EVN_FILE_PATH } from '@/config'

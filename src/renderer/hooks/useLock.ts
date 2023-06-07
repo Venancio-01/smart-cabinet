@@ -11,8 +11,8 @@ const queryAllLockTimer = ref<number | null>(null)
 
 export default function () {
   const store = useStore()
-  const { setLockControlIsOnline, setLockControlState, setCabinetDoor } = store
-  const { currentCabinet, cabinetDoorList, lockControlState, lockControlIsOnline } = storeToRefs(store)
+  const { setLockControlConnectionStatus, setLockControlState, setCabinetDoor } = store
+  const { currentCabinet, cabinetDoorList, lockControlState, isLockControlConnected } = storeToRefs(store)
   const checkStore = useCheckStore()
   const { addLastOperationCabinetDoorRecords } = checkStore
   const { handleCheck } = useCheck()
@@ -28,7 +28,7 @@ export default function () {
       return
 
     const isConnected = await window.JSBridge.lockControl.getConnectState(openDoor)
-    setLockControlIsOnline(isConnected)
+    setLockControlConnectionStatus(isConnected)
   }
 
   // 初始化锁控板连接
@@ -114,7 +114,7 @@ export default function () {
 
   const initLockControlService = async () => {
     await getLockControlConnectState()
-    if (!lockControlIsOnline.value)
+    if (!isLockControlConnected.value)
       return
     // 连接锁控板
     initLockControl()

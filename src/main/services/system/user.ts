@@ -111,11 +111,9 @@ export async function updatePassword(userId: number, password: string) {
  * @param {string} password
  * @return {*}
  */
-export function verifyPassword(userString: string, password: string) {
-  const user = JSON.parse(userString) as sys_user
-
-  const encryptedPassword = genMd5EncryptedPassword(user.login_name, password, user.salt)
-  const success = user.password === encryptedPassword
+export function verifyPassword({ loginName, salt, password, newPassword }: { loginName: string; salt: string; password: string; newPassword: string }) {
+  const encryptedPassword = genMd5EncryptedPassword(loginName, newPassword, salt)
+  const success = password === encryptedPassword
   return success
 }
 
@@ -140,4 +138,21 @@ export async function verifyCard(userString: string, cardNumber: string) {
 
   const success = result.CardData === cardNumber
   return success
+}
+
+/**
+ * @description: 更新卡号
+ * @param {number} userId
+ * @param {string} cardNumber
+ * @return {*}
+ */
+export function updateCardNumber(userId: number, cardNumber: string) {
+  return prisma.rfid_card_user.updateMany({
+    where: {
+      Userid: userId,
+    },
+    data: {
+      CardData: cardNumber,
+    },
+  })
 }

@@ -10,7 +10,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const store = useStore()
-const { lockControlIsOnline } = storeToRefs(store)
+const { isLockControlConnected } = storeToRefs(store)
 const { CarrierTable, getCarriers, data, total } = useViewCarriers()
 
 const condition = reactive<CarrierQueryProps>({
@@ -36,7 +36,7 @@ onMounted(() => {
     <BackButton />
 
     <div class="h-[200px] font-2xl flex-center-center">
-      <div v-if="lockControlIsOnline" class="text-light font-400 h-full flex-center-center">
+      <div v-if="isLockControlConnected" class="text-light font-400 h-full flex-center-center">
         <BaseIcon icon="chenggong" class="mr-4" />
         <span>柜门已打开</span>
       </div>

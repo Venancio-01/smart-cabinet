@@ -10,7 +10,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emits = defineEmits(['update:visible'])
 const store = useStore()
-const { lockControlIsOnline } = storeToRefs(store)
+const { isLockControlConnected } = storeToRefs(store)
 
 const show = computed({
   get: () => {
@@ -29,16 +29,16 @@ const show = computed({
         当前状态：
       </div>
       <div class="content">
-        {{ lockControlIsOnline ? '连接成功' : '连接失败' }}
+        {{ isLockControlConnected ? '连接成功' : '连接失败' }}
       </div>
     </div>
 
-    <div v-if="!lockControlIsOnline" class="state-bar">
+    <div v-if="!isLockControlConnected" class="state-bar">
       <div class="label">
         解决方案：
       </div>
       <div class="content">
-        {{ lockControlIsOnline ? '锁控板连接正常' : '锁控板连线或供电是否正常，并尝试插拔后重新启动软件。' }}
+        {{ isLockControlConnected ? '锁控板连接正常' : '锁控板连线或供电是否正常，并尝试插拔后重新启动软件。' }}
       </div>
     </div>
 

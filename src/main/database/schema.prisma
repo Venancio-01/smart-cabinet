@@ -18,7 +18,7 @@ model doc_document {
   user_id          BigInt?
   dept_id          BigInt?
   cabinet_id       Int?      @default(0)
-  CabinetDoorId  Int?
+  cabinet_door_id  Int?
   update_time      DateTime? @db.DateTime(0)
   create_time      DateTime  @db.DateTime(0)
   IS_one           String?   @default("0") @db.VarChar(255)
@@ -258,7 +258,7 @@ model doc_carrier {
   Carrier_ID       Int       @id @default(autoincrement())
   carrier_rfid     String?   @db.VarChar(128)
   cabinet_id       String?   @db.VarChar(20)
-  CabinetDoorId  Int?
+  cabinet_door_id  Int?
   carrier_p_status Int?      @default(1)
   user_id          BigInt?
   add_user         BigInt?
@@ -351,7 +351,7 @@ model document_info {
   user_id          BigInt?
   dept_id          BigInt?
   cabinet_id       Int?      @default(0)
-  CabinetDoorId  Int?
+  cabinet_door_id  Int?
   update_time      DateTime? @db.DateTime(0)
   create_time      DateTime  @db.DateTime(0)
   IS_one           String?   @default("0") @db.VarChar(255)
@@ -682,7 +682,7 @@ model rfid_remove_carrier {
   Carrier_ID       Int       @id @default(autoincrement())
   carrier_rfid     String?   @db.VarChar(128)
   cabinet_id       String?   @db.VarChar(20)
-  CabinetDoorId  String?   @db.VarChar(20)
+  cabinet_door_id  String?   @db.VarChar(20)
   carrier_p_status String?   @db.VarChar(255)
   user_id          BigInt?
   add_user         BigInt?
@@ -705,7 +705,7 @@ model rfid_remove_document {
   user_id          BigInt?
   dept_id          BigInt
   cabinet_id       String?   @db.VarChar(20)
-  CabinetDoorId  String?   @db.VarChar(20)
+  cabinet_door_id  String?   @db.VarChar(20)
   update_time      DateTime? @db.DateTime(0)
   create_time      DateTime  @db.DateTime(0)
   IS_one           String?   @default("0") @db.VarChar(255)

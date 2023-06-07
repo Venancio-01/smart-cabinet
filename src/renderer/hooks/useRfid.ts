@@ -2,27 +2,35 @@ import { useStore } from '@/store'
 
 export default function () {
   const store = useStore()
-  const { setRfidIsConnected, setRfidConnectionStatus } = store
+  const { setCabinetDoorList } = store
   const { cabinetDoorList } = storeToRefs(store)
 
   /**
    * @description: 获取读写器连接状态
    * @return {*}
    */
-  const getRfidConnectState = async () => {
+  const getConnectState = async () => {
+    console.log(111)
     const list: CabinetDoorProps[] = []
 
     for (let i = 0; i < cabinetDoorList.value.length; i++) {
       const cabinetDoor = cabinetDoorList.value[i]
       if (cabinetDoor.txAddr === null)
         continue
+
+      const connectStatus = await window.JSBridge.rfid.init(cabinetDoor.txAddr, 8899)
+      console.log('🚀 ~ file: useRfid.ts:21 ~ getConnectState ~ connectStatus:', connectStatus)
+      await window.JSBridge.rfid.destroy(cabinetDoor.txAddr)
+
       const item = {
         ...cabinetDoor,
-        rfidIsConnected: await window.JSBridge.rfid.init(cabinetDoor.txAddr, 8899),
+        rfidIsConnected: connectStatus,
       }
 
       list.push(item)
     }
+
+    setCabinetDoorList(list)
   }
 
   /**
@@ -37,54 +45,31 @@ export default function () {
   }
 
   /**
-   * @description: 销毁读写器
-   * @param {string} address
-   * @return {*}
-   */
-  async function destroyRfid(address: string) {
-    return await window.JSBridge.rfid.destroy(address)
-  }
-
-  /**
-   * @description:  发送开启命令
-   * @param {string} address
-   * @param {string} antennaIds
-   * @return {*}
-   */
-  const sendOpenCommand = async (address: string, antennaIds: string) => {
-    const antennaIdList = antennaIds.split(',').map(item => Number(item))
-    return await window.JSBridge.rfid.sendOpenCommand(address, antennaIdList)
-  }
-
-  const sendCloseCommand = async (address: string) => {
-    return await window.JSBridge.rfid.sendCloseCommand(address)
-  }
-
-  /**
    * @description: 打开读写器
    * @param {string} address
    * @param {string} antennaIds
    * @return {*}
    */
   const handleOpenRfid = async (address: string, antennaIds: string) => {
-    await sendCloseCommand(address)
-    await sendOpenCommand(address, antennaIds)
+    window.JSBridge.rfid.sendCloseCommand(address)
+
+    const antennaIdList = antennaIds.split(',').map(item => Number(item))
+    window.JSBridge.rfid.sendOpenCommand(address, antennaIdList)
   }
 
   /**
-   * @description: 关闭读写器,并销毁读写器
+   * @description: 关闭读写器,并销毁 socket
    * @param {string} address
    * @return {*}
    */
   const handleCloseRfid = async (address: string) => {
-    await sendCloseCommand(address)
-    await destroyRfid(address)
+    window.JSBridge.rfid.sendCloseCommand(address)
+    window.JSBridge.rfid.destroy(address)
   }
 
   return {
-    getRfidConnectState,
+    getConnectState,
     initRfid,
-    destroyRfid,
     handleOpenRfid,
     handleCloseRfid,
   }

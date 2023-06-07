@@ -7,7 +7,7 @@ import useTime from '@/hooks/useTime'
 const router = useRouter()
 const store = useStore()
 const { setCabinetDoor } = store
-const { cabinetDoorList, carrierList, lockControlIsOnline } = storeToRefs(store)
+const { cabinetDoorList, carrierList, isLockControlConnected } = storeToRefs(store)
 const checkStore = useCheckStore()
 const { addLastOperationCabinetDoorRecords } = checkStore
 const { openLock } = useLock()
@@ -16,7 +16,7 @@ const { resetOperationTimeoutCountdown } = useTime()
 function handleClickDoor(door: CabinetDoorProps) {
   resetOperationTimeoutCountdown()
 
-  if (lockControlIsOnline) {
+  if (isLockControlConnected) {
     openLock(door.kgbh)
     addLastOperationCabinetDoorRecords(door)
 

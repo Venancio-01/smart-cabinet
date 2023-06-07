@@ -3,9 +3,9 @@ import { defineStore } from 'pinia'
 
 interface State {
   backgroundUrl: string
-  lockControlIsOnline: boolean
-  networkIsOnline: boolean
-  fingerIsOnline: boolean
+  isLockControlConnected: boolean
+  isNetworkConnected: boolean
+  isFingerConnected: boolean
   rfidIsOnline: boolean
   rfidConnectionStatus: boolean[]
   isLoggedIn: boolean
@@ -39,9 +39,9 @@ export const useStore = defineStore('main', {
   state: (): State => {
     return {
       backgroundUrl: '',
-      lockControlIsOnline: false,
-      networkIsOnline: false,
-      fingerIsOnline: false,
+      isLockControlConnected: false,
+      isNetworkConnected: false,
+      isFingerConnected: false,
       rfidIsOnline: false,
       rfidConnectionStatus: [],
       isLoggedIn: false,
@@ -104,14 +104,14 @@ export const useStore = defineStore('main', {
     setRfidConnectionStatus(status: boolean[]) {
       this.rfidConnectionStatus = status
     },
-    setLockControlIsOnline(state: boolean) {
-      this.lockControlIsOnline = state
+    setLockControlConnectionStatus(state: boolean) {
+      this.isLockControlConnected = state
     },
-    setFingerIsOnline(state: boolean) {
-      this.fingerIsOnline = state
+    setFingerConnectionStatus(state: boolean) {
+      this.isFingerConnected = state
     },
-    setNetworkIsOnline(state: boolean) {
-      this.networkIsOnline = state
+    setNetworkConnectionStatus(state: boolean) {
+      this.isNetworkConnected = state
     },
     setIsLoggedIn(visible: boolean) {
       this.isLoggedIn = visible

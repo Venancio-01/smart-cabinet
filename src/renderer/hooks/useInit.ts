@@ -15,18 +15,19 @@ export default function () {
   setAntdConfig()
   useNetwork()
   const { init: initSys, getBackgroundImage } = useSys()
-  const { getRfidConnectState } = useRfid()
+  const { getConnectState: getRfidConnectState } = useRfid()
   const { initLockControlService, destroyLockControlService } = useLock()
   const { startGenerateCurrentTime, stopGenerateCurrentTime } = useTime()
   const { getMisPlaceCarriers, getCarriers } = useCarrier()
   const { initCabinetData } = useCabinet()
-  const { init: initFinger } = useFinger()
+  const { init: initFinger, getConnectStatus: getFingerConnectStatus } = useFinger()
 
   onMounted(async () => {
-    initFinger()
     // 获取背景图片路径
     getBackgroundImage()
     await Promise.all([initSys(), initCabinetData()])
+    initFinger()
+    getFingerConnectStatus()
     initLockControlService()
     // 获取 rfid 读取器连接状态
     getRfidConnectState()

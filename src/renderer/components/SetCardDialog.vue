@@ -42,7 +42,7 @@ async function handleUpdateCardNumber(cardNumber: string) {
   }
 
   // @ts-expect-error bigint
-  const success = await window.JSBridge.card.updateCardNumber(user.value.user_id, cardNumber)
+  const success = await window.JSBridge.sys.updateCardNumber(user.value.user_id, cardNumber)
   const tips = success ? '卡号设置成功' : '卡号设置失败'
   createAlert(tips)
 

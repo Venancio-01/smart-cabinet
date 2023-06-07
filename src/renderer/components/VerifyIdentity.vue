@@ -28,7 +28,14 @@ const passwordAuthRef = ref()
 
 async function handlePasswordComplete() {
   const result = passwordAuthRef.value?.handleComplete()
-  const success = await await window.JSBridge.sys.verifyPassword(JSON.stringify(user.value), result.password)
+  const { login_name, salt, password } = user.value
+  const params = {
+    loginName: login_name,
+    salt,
+    password,
+    newPassword: result.password,
+  }
+  const success = await window.JSBridge.sys.verifyPassword(params)
   if (success) {
     createAlert('身份验证成功')
     handleVerificationSuccessful()

@@ -1,6 +1,7 @@
 import { existsSync } from 'fs'
 import { execSync } from 'child_process'
 import { Library } from 'ffi-napi'
+import { info } from '../logger'
 import { HandleType, IntType, TemplateType, UcharType } from './types'
 import { ALGORITHM_SDK_PATH, LIBZKFINGER10_PATH, VERIFY_SCORE_THRESHOLD } from '@/config'
 
@@ -13,14 +14,14 @@ export function checkFileExist() {
     // 文件不存在，复制文件
     try {
       execSync(`sudo cp ${LIBZKFINGER10_PATH} ${zkfingerLibPath}`)
-      console.log('libzkfinger10.so 文件复制成功')
+      info('SDK 文件复制成功')
     }
     catch (err) {
       console.error(err)
     }
   }
   else {
-    console.log('libzkfinger10.so 文件已存在')
+    info('SDK 文件已存在目标文件夹内，跳过复制')
   }
 }
 

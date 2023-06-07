@@ -4,16 +4,14 @@ let prisma: PrismaClient | null = null
 let connected = false
 
 async function connectToDatabase() {
-  if (!prisma) {
-    try {
-      prisma = new PrismaClient()
-      await prisma.$connect()
-      connected = true
-    }
-    catch (e) {
-      console.log(e, '数据库连接失败')
-      connected = false
-    }
+  try {
+    prisma = new PrismaClient()
+    await prisma.$connect()
+    connected = true
+  }
+  catch (e) {
+    console.log(e, '数据库连接失败')
+    connected = false
   }
 }
 

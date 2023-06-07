@@ -3,9 +3,11 @@
     "BIOKEY",
     "CCITT",
     "kgbh",
+    "libzkfinger",
     "libzkfp",
     "libzkfpcap",
     "rfid",
+    "zkfinger",
     "ZKFPM"
   ],
   "css.validate": false,

@@ -177,7 +177,7 @@ export default function () {
     setCheckStatusDialogVisible(true)
 
     // 开启读取器
-    await handleOpenRfid(address, antennaId)
+    handleOpenRfid(address, antennaId)
 
     const stopCheckCountdown = await startCheckCountdown(selectedDoor.id, async () => {
       stopCheckCountdown()

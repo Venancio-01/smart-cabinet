@@ -10,7 +10,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emits = defineEmits(['update:visible'])
 const store = useStore()
-const { rfidIsOnline } = storeToRefs(store)
+const { rfidIsOnline, cabinetDoorList } = storeToRefs(store)
 
 const show = computed({
   get: () => {
@@ -29,7 +29,9 @@ const show = computed({
         当前状态：
       </div>
       <div class="content">
-        {{ rfidIsOnline ? '连接成功' : '连接失败' }}
+        <div v-for="(item, index) in cabinetDoorList" :key="index">
+          柜门 - {{ item.Name }} ，RFID 连接{{ item.rfidIsConnected ? '成功' : '失败' }}
+        </div>
       </div>
     </div>
 
@@ -54,6 +56,7 @@ const show = computed({
 .state-bar {
   @apply mb-[16px] flex;
 }
+
 .state-bar .label {
   @apply w-[70px];
 }

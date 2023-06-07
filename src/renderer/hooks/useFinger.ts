@@ -1,6 +1,10 @@
 import { FINGER_POLLING_INTERVAL } from '@/config'
+import { useStore } from '@/store'
 
 export default function () {
+  const store = useStore()
+  const { setFingerConnectionStatus } = store
+
   // 注册指纹的定时器
   const registerTimer = ref<number | null>(null)
   // 识别指纹的定时器
@@ -10,14 +14,15 @@ export default function () {
   // 注册指纹结果
   const registerResult = ref<null | ResponseProps>(null)
 
-  const init = async () => {
-    await window.JSBridge.finger.initSDK()
+  const init = () => {
+    window.JSBridge.finger.initSDK()
   }
 
   // 获取指纹仪连接状态
   const getConnectStatus = async () => {
     const isOnline = await window.JSBridge.finger.queryConnectState()
-    return isOnline
+
+    setFingerConnectionStatus(isOnline)
   }
 
   // 打开指纹仪设备
@@ -59,7 +64,7 @@ export default function () {
   }
 
   // 结束识别指纹
-  const endIdentifyFinger = () => {
+  const stopIdentifyFinger = () => {
     if (identifyTimer.value)
       clearInterval(identifyTimer.value)
   }
@@ -72,7 +77,7 @@ export default function () {
     startRegisterFinger,
     endRegisterFinger,
     startIdentifyFinger,
-    endIdentifyFinger,
+    stopIdentifyFinger,
     identifyResult,
     registerResult,
   }
