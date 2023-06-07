@@ -11,7 +11,7 @@ const cabinetDoor = computed(() => {
 })
 
 const misPlaceCarriers = computed(() => {
-  return misPlaceCarrierData.value.filter(item => item.cabinet_door_id === cabinetDoor.value.id)
+  return misPlaceCarrierData.value.filter(item => item.CabinetDoorId === cabinetDoor.value.id)
 })
 
 const hasMisPlace = computed(() => {
@@ -25,7 +25,7 @@ const hasMisPlace = computed(() => {
     <div class="flex-1 h- flex flex-col justify-center items-center">
       <div class="-mt-[40px]">
         <div class="font-xl text-center">
-          {{ cabinetDoor.view_name }}
+          {{ cabinetDoor.viewName }}
         </div>
         <div class="font-xl text-center mt-12">
           点击开启柜门

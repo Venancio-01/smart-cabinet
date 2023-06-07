@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import useListenEnter from '@/hooks/useListenEnter'
-import useCard from '@/hooks/useCard'
 import useTime from '@/hooks/useTime'
 import AnimationInput from '@/components/AnimationInput.vue'
+import createAlert from '@/components/BaseAlert'
+import { useStore } from '@/store'
 
 interface Props {
   visible: boolean
@@ -12,8 +13,9 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false,
 })
 const emits = defineEmits(['update:visible'])
+const store = useStore()
+const { user } = storeToRefs(store)
 const { addListenEnter, removeListenEnter } = useListenEnter()
-const { updateCardNumber } = useCard()
 const { resetOperationTimeoutCountdown } = useTime()
 
 const show = computed({
@@ -32,14 +34,28 @@ const inputRef = ref<InstanceType<typeof AnimationInput>>()
 function handleFocus() {
   inputRef.value?.focus()
 }
+
+async function handleUpdateCardNumber(cardNumber: string) {
+  if (cardNumber === '') {
+    createAlert('请输入卡号')
+    return false
+  }
+
+  // @ts-expect-error bigint
+  const success = await window.JSBridge.card.updateCardNumber(user.value.user_id, cardNumber)
+  const tips = success ? '卡号设置成功' : '卡号设置失败'
+  createAlert(tips)
+
+  if (success)
+    emits('update:visible', false)
+}
+
 watch(show, (value) => {
   resetOperationTimeoutCountdown()
 
   if (value) {
-    addListenEnter(async () => {
-      const success = await updateCardNumber(cardNumber.value)
-      if (success)
-        emits('update:visible', false)
+    addListenEnter(() => {
+      handleUpdateCardNumber(cardNumber.value)
     })
     nextTick(() => {
       handleFocus()

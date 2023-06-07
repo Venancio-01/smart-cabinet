@@ -10,9 +10,6 @@ export const PASSWORD_KEY = 1
 export const FINGER_KEY = 2
 export const CARD_KEY = 3
 
-// 查询数据库连接间隔
-export const QUERY_NETWORK_INTERVAL = 3000
-
 // 查询 RFID 连接间隔
 export const QUERY_RFID_INTERVAL = 3000
 // 盘点时长,单位秒

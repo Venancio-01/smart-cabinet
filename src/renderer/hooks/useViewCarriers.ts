@@ -6,20 +6,20 @@ import { useStore } from '@/store'
 export default function () {
   const store = useStore()
   const { cabinetDoorList, misPlaceCarrierData } = storeToRefs(store)
-  const { getCarrierDataByCondition } = useCarrier()
+  const { getCarriersByCondition } = useCarrier()
 
   const data = ref<doc_document[]>([])
   const total = ref(0)
 
   const getCarriers = async (condition: CarrierQueryProps) => {
-    const result = await getCarrierDataByCondition(condition)
+    const result = await getCarriersByCondition(condition)
 
     data.value = result.data.map((item) => {
       const misPlaceDoorId = misPlaceCarrierData.value.reduce<null | number>(
-        (acc, cur) => (cur.operation_id === item.doc_rfid ? cur.cabinet_door_id : acc),
+        (acc, cur) => (cur.operationID === item.doc_rfid ? cur.CabinetDoorId : acc),
         null,
       )
-      const misPlaceDoorName = cabinetDoorList.value.find(item => item.id === misPlaceDoorId)?.view_name || ''
+      const misPlaceDoorName = cabinetDoorList.value.find(item => item.id === misPlaceDoorId)?.viewName || ''
       return {
         ...item,
         misPlaceDoorName,

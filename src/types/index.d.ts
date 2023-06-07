@@ -1,6 +1,6 @@
 import {
   doc_document,
-  rfid_cabinet_door,
+  rfid_cabinetdoor,
   sys_user,
   rfid_switch_record,
   sys_role,
@@ -53,36 +53,35 @@ declare global {
     cardNumber: string
   }
 
-  type CabinetDoorProps = rfid_cabinet_door & {
-    departmentName: string | null | undefined
-    checkCountdown: number
+  type CabinetDoorProps = rfid_cabinetdoor & {
     isOpen: boolean
+    rfidIsConnected:boolean
+    checkCountdown: number
   }
 
   type LockControlStateProps = {
     [x: number]: boolean
   }
 
-  type CarrierQueryProps = {
+  type PaginationType = {
     page: number
     size: number
+  }
+
+  type CarrierQueryProps = PaginationType & {
     title?: string
     cabinetId?: number
     departmentId?: number
     state?: number
   }
 
-  type UserQueryProps = {
-    page: number
-    size: number
+  type UserQueryProps = PaginationType & {
     userName?: string
     departmentId?: number
     roleId?: number
   }
 
-  type DepartmentQueryProps = {
-    page: number
-    size: number
+  type DepartmentQueryProps = PaginationType & {
     departmentName?: string
   }
 
@@ -100,4 +99,6 @@ declare global {
     TID: string
     EPC: string
   }
+
+  type FingerOrder = 1 | 2
 }

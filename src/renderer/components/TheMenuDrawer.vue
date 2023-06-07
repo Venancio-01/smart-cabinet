@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emit = defineEmits(['update:visible'])
 const store = useStore()
-const { user } = storeToRefs(store)
+const { user, departmentList, roleList, userRoleList } = storeToRefs(store)
 const { handleLogout } = useLogin()
 const { verifyIsExpired, openVerifyIdentityDialog, saveCallback } = useVerify()
 const { handleManualCheck } = useCheck()
@@ -70,6 +70,17 @@ function handleSetCard() {
   }
   else { cb() }
 }
+
+const departmentName = computed(() => {
+  return departmentList.value.find(department => user.value.dept_id === department.dept_id)?.dept_name
+})
+const roleName = computed(() => {
+  const roleId = userRoleList.value.find(userRole => user.value.user_id === userRole.user_id)?.role_id
+  if (!roleId)
+    return ''
+
+  return roleList.value.find(role => role.role_id === roleId)?.role_name
+})
 </script>
 
 <template>
@@ -90,10 +101,10 @@ function handleSetCard() {
           {{ user?.user_name }}
         </div>
         <div class="font-small">
-          {{ user?.sys_dept?.dept_name }}
+          {{ departmentName }}
         </div>
         <div class="font-small mb-[8px]">
-          {{ user?.sys_user_role[0].sys_role.role_name }}
+          {{ roleName }}
         </div>
       </div>
     </div>
@@ -126,6 +137,7 @@ function handleSetCard() {
   @apply bg-gray-8 bg-opacity-30;
   backdrop-filter: blur(8px);
 }
+
 .menu-drawer .ant-drawer-body {
   padding: 0;
 }
@@ -135,6 +147,6 @@ function handleSetCard() {
 }
 
 .menu .item {
-  @apply flex pl-8 items-center h-[60px]  select-none;
+  @apply flex pl-8 items-center h-[60px] select-none;
 }
 </style>

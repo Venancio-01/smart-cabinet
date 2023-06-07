@@ -18,7 +18,7 @@ export default function () {
   const { getRfidConnectState } = useRfid()
   const { initLockControlService, destroyLockControlService } = useLock()
   const { startGenerateCurrentTime, stopGenerateCurrentTime } = useTime()
-  const { getMisPlaceCarriers, getAllCarrierData } = useCarrier()
+  const { getMisPlaceCarriers, getCarriers } = useCarrier()
   const { initCabinetData } = useCabinet()
   const { init: initFinger } = useFinger()
 
@@ -34,7 +34,7 @@ export default function () {
     getMisPlaceCarriers()
     // 生成当前时间
     startGenerateCurrentTime()
-    getAllCarrierData()
+    getCarriers()
   })
 
   onBeforeUnmount(() => {

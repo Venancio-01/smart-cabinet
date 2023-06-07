@@ -2,7 +2,7 @@ import { useStore } from '@/store'
 
 export default function () {
   const store = useStore()
-  const { setRfidIsConnected } = store
+  const { setRfidIsConnected, setRfidConnectionStatus } = store
   const { cabinetDoorList } = storeToRefs(store)
 
   /**
@@ -10,18 +10,19 @@ export default function () {
    * @return {*}
    */
   const getRfidConnectState = async () => {
-    const result = []
-    for (let i = 0; i < cabinetDoorList.value.length; i++) {
-      const { antenna_address, antenna_port } = cabinetDoorList.value[i]
-      if (antenna_address === null)
-        continue
-      result.push(await window.JSBridge.rfid.init(antenna_address, antenna_port))
-      await destroyRfid(antenna_address)
-    }
+    const list: CabinetDoorProps[] = []
 
-    const isConnected = result.every(Boolean)
-    setRfidIsConnected(isConnected)
-    return isConnected
+    for (let i = 0; i < cabinetDoorList.value.length; i++) {
+      const cabinetDoor = cabinetDoorList.value[i]
+      if (cabinetDoor.txAddr === null)
+        continue
+      const item = {
+        ...cabinetDoor,
+        rfidIsConnected: await window.JSBridge.rfid.init(cabinetDoor.txAddr, 8899),
+      }
+
+      list.push(item)
+    }
   }
 
   /**
@@ -32,7 +33,6 @@ export default function () {
    */
   const initRfid = async (address: string, port: number) => {
     const isConnected = await window.JSBridge.rfid.init(address, port)
-    setRfidIsConnected(isConnected)
     return isConnected
   }
 

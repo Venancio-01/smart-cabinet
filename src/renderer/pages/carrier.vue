@@ -9,7 +9,7 @@ const { CarrierTable, getCarriers, data, total } = useViewCarriers()
 
 const condition = reactive<CarrierQueryProps>({
   page: 1,
-  size: 8,
+  size: 7,
   title: '',
   cabinetId: undefined,
   departmentId: undefined,
@@ -22,7 +22,7 @@ async function onPageChange(page: number) {
   getCarriers(condition)
 }
 
-async function handleSubmit() {
+async function handleSearch() {
   condition.page = 1
 
   getCarriers(condition)
@@ -62,7 +62,7 @@ onMounted(() => {
         </a-form-item>
 
         <a-form-item label="状态" name="title">
-          <a-select v-model:value="condition.state" allow-clear>
+          <a-select v-model:value="condition.state" allow-clear @change="handleSearch">
             <a-select-option :value="0">
               在位
             </a-select-option>
@@ -76,23 +76,23 @@ onMounted(() => {
         </a-form-item>
 
         <a-form-item v-show="currentCabinetDoorId === 0" label="所属柜门" name="title">
-          <a-select v-model:value="condition.cabinetId" allow-clear>
-            <a-select-option v-for="item in cabinetDoorList" :key="item.id" :value="item.id">
-              {{ item.view_name }}
+          <a-select v-model:value="condition.cabinetId" allow-clear @change="handleSearch">
+            <a-select-option v-for="item in cabinetDoorList" :key="item.CabinetId" :value="item.CabinetId">
+              {{ item.viewName }}
             </a-select-option>
           </a-select>
         </a-form-item>
 
         <a-form-item v-show="currentCabinetDoorId === 0" label="所属部门" name="title">
-          <a-select v-model:value="condition.departmentId" allow-clear>
-            <a-select-option v-for="item in departmentList" :key="item.id" :value="item.id">
+          <a-select v-model:value="condition.departmentId" allow-clear @change="handleSearch">
+            <a-select-option v-for="item in departmentList" :key="item.dept_id" :value="item.dept_id">
               {{ item.dept_name }}
             </a-select-option>
           </a-select>
         </a-form-item>
       </a-form>
       <div class="w-[180px] flex justify-end">
-        <a-button type="primary" @click="handleSubmit">
+        <a-button type="primary" @click="handleSearch">
           搜索
         </a-button>
         <a-button class="ml-4" @click="handleInit">

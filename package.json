@@ -14,7 +14,7 @@
     "generate-db": "cd src/main/database && npx prisma generate",
     "init-db": "npm run pull-db && npm run generate-db",
     "dev:web": "vite",
-    "dev:main": "bash scripts/env.development.sh && npx swc src/main/ --out-dir dist/ && sudo /run/user/1000/fnm_multishells/3646_1685612183447/bin/node node_modules/.bin/electron dist/main/index.js --no-sandbox",
+    "dev:main": "bash scripts/env.development.sh && npx swc src/main/ --out-dir dist/ && sudo /home/liqingshan/.nvm/versions/node/v17.9.0/bin/node node_modules/.bin/electron dist/main/index.js --no-sandbox",
     "build:web": "vite build",
     "build:main": "bash scripts/env.production.sh && npx swc src/main/ --out-dir dist/",
     "build:electron": "electron-builder --linux",

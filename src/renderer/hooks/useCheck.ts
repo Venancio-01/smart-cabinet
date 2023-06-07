@@ -52,13 +52,13 @@ export default function () {
     const misPlaceCarrierRecords = endMisPlaceCarrierRecord.value
 
     const result: CheckResultType[] = cabinetDoorList.value.map((door) => {
-      const currentDoorBorrowCarriers = borrowCarriers.filter(item => item.cabinet_door_id === door.id)
-      const currentDoorReturnCarriers = returnCarriers.filter(item => item.cabinet_door_id === door.id)
+      const currentDoorBorrowCarriers = borrowCarriers.filter(item => item.cabinet_door_id === door.Id)
+      const currentDoorReturnCarriers = returnCarriers.filter(item => item.cabinet_door_id === door.Id)
 
       // 如果是本次操作的柜门，则显示错放文件数据
-      const isOperationCabinetDoor = lastOperationCabinetDoorList.value.find(item => item.id === door.id)
+      const isOperationCabinetDoor = lastOperationCabinetDoorList.value.find(item => item.Id === door.Id)
       const currentDoorMisPlaceCarrierRecords = isOperationCabinetDoor
-        ? misPlaceCarrierRecords.filter(item => item.cabinet_door_id === door.id)
+        ? misPlaceCarrierRecords.filter(item => Number(item.CabinetDoorId) === door.Id)
         : []
 
       return {
@@ -80,7 +80,7 @@ export default function () {
    */
   const startCheckCountdown = (doorId: number, callback: () => void) => {
     const timer = window.setInterval(async () => {
-      const door = cabinetDoorList.value.find(item => item.id === doorId)
+      const door = cabinetDoorList.value.find(item => item.Id === doorId)
       if (door === undefined)
         return
 
@@ -104,14 +104,14 @@ export default function () {
    * @return {*}
    */
   const onCheckCountdownEnd = async (doorId: number) => {
-    const door = cabinetDoorList.value.find(item => item.id === doorId)
-    if (door === undefined || door.antenna_address === null)
+    const door = cabinetDoorList.value.find(item => item.Id === doorId)
+    if (door === undefined || door.txAddr === null)
       return
 
     // 更新载体状态
     await updateCarrier(door)
     // 关闭读取器
-    await handleCloseRfid(door.antenna_address)
+    await handleCloseRfid(door.txAddr)
 
     // 复原倒计时
     setCabinetDoor({ ...door, checkCountdown: CHECK_TIME })
@@ -150,11 +150,11 @@ export default function () {
   const handleCheck = async (doorId: number) => {
     resetCountdowns()
 
-    const selectedDoor = cabinetDoorList.value.find(item => item.id === doorId)
+    const selectedDoor = cabinetDoorList.value.find(item => item.Id === doorId)
     if (selectedDoor === undefined)
       return
 
-    const { antenna_address: address, antenna_port: port, antenna_id: antennaId } = selectedDoor
+    const { txAddr: address, antenna_port: port, txId: antennaId } = selectedDoor
     if (address === null || antennaId === null)
       return
 

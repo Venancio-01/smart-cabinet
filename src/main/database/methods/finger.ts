@@ -1,37 +1,34 @@
 import { generateCurrentTime } from '@/utils'
 import { prisma } from '@/database'
 
-export async function queryFingerByUserIdAndOrder(userId: number, order: FingerOrder) {
-  const result = await prisma.rfid_finger_user.findFirst({
+export function queryFingerByUserIdAndOrder(userId: number, order: FingerOrder) {
+  return prisma.rfid_finger_user.findFirst({
     where: {
-      user_id: userId,
+      Userid: userId,
       order,
     },
   })
-  return result
 }
 
-export async function updateFingerByUserIdAndOrder(userId: number, order: FingerOrder, data: string) {
-  const result = await prisma.rfid_finger_user.updateMany({
+export function updateFingerByUserIdAndOrder(userId: number, order: FingerOrder, data: string) {
+  return prisma.rfid_finger_user.updateMany({
     where: {
-      user_id: userId,
+      Userid: userId,
       order,
     },
     data: {
-      data,
+      FingerData: data,
     },
   })
-  return result
 }
 
-export async function addFinger(userId: number, order: FingerOrder, data: string) {
-  const result = await prisma.rfid_finger_user.create({
+export function addFinger(userId: number, order: FingerOrder, data: string) {
+  return prisma.rfid_finger_user.create({
     data: {
-      data,
+      FingerData: data,
       order,
-      user_id: userId,
-      createdate: generateCurrentTime(),
+      Userid: userId,
+      CreateDate: generateCurrentTime(),
     },
   })
-  return result
 }

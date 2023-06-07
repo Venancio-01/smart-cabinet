@@ -64,8 +64,8 @@ watch(show, async (value) => {
 
     message.value = '请按压同一手指3次'
     await openFingerDevice()
-    if (user.value?.id)
-      startRegisterFinger(user.value?.id, props.order)
+    if (user.value?.user_id)
+      startRegisterFinger(user.value?.user_id, props.order)
   }
   else {
     await closeFingerDevice()

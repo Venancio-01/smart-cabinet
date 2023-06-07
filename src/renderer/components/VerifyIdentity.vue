@@ -1,15 +1,13 @@
 <script lang="ts" setup>
 import { useStore } from '@/store'
 import useTime from '@/hooks/useTime'
-import useSys from '@/hooks/useSys'
 import useVerify from '@/hooks/useVerify'
 import createAlert from '@/components/BaseAlert'
 
 const store = useStore()
 const { setVerifyIdentityDialogVisible } = store
-const { verifyIdentityDialogVisible } = storeToRefs(store)
+const { verifyIdentityDialogVisible, user } = storeToRefs(store)
 const { resetOperationTimeoutCountdown } = useTime()
-const { verifyPassword, verifyFinger, verifyCard } = useSys()
 const { closeVerifyIdentityDialog, handleVerificationSuccessful } = useVerify()
 const activeKey = ref('1')
 
@@ -30,7 +28,7 @@ const passwordAuthRef = ref()
 
 async function handlePasswordComplete() {
   const result = passwordAuthRef.value?.handleComplete()
-  const success = await verifyPassword(result.password)
+  const success = await await window.JSBridge.sys.verifyPassword(JSON.stringify(user.value), result.password)
   if (success) {
     createAlert('身份验证成功')
     handleVerificationSuccessful()
@@ -44,13 +42,13 @@ function handleClose() {
   closeVerifyIdentityDialog()
 }
 
-function handleFingerComplete(userId: number) {
-  const result = verifyFinger(userId)
+function handleFingerComplete(userId: bigint) {
+  const result = user.value.user_id === userId
   console.log('🚀 ~ file: VerifyIdentity.vue:71 ~ handleFingerComplete ~ result:', result)
 }
 
 function handleCardComplete(cardNumber: string) {
-  const result = verifyCard(cardNumber)
+  const result = window.JSBridge.sys.verifyCard(JSON.stringify(user.value), cardNumber)
   console.log('🚀 ~ file: VerifyIdentity.vue:76 ~ handleCardComplete ~ result:', result)
 }
 </script>
@@ -86,6 +84,7 @@ function handleCardComplete(cardNumber: string) {
 .tab-bar {
   @apply flex h-[40px];
 }
+
 .tab-item {
   @apply flex h-[40px] flex-1 cursor-pointer select-none items-center justify-center text-white;
 }

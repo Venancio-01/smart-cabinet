@@ -2,12 +2,14 @@
 import type { ColumnsType } from 'ant-design-vue/es/table'
 import type { sys_dept } from '.prisma/client'
 import useSys from '@/hooks/useSys'
+import useTime from '@/hooks/useTime'
 
 const { getDepartmentsByCondition } = useSys()
+const { resetOperationTimeoutCountdown } = useTime()
 
 const condition = reactive<DepartmentQueryProps>({
   page: 1,
-  size: 8,
+  size: 7,
   departmentName: '',
 })
 
@@ -27,7 +29,7 @@ async function onPageChange(page: number) {
   getUserList()
 }
 
-async function handleSubmit() {
+async function handleSearch() {
   condition.page = 1
 
   getUserList()
@@ -42,6 +44,7 @@ function handleInit() {
 }
 
 async function getUserList() {
+  resetOperationTimeoutCountdown()
   data.value = await getDepartmentsByCondition(condition)
 }
 
@@ -67,7 +70,7 @@ onMounted(() => {
       </a-form>
 
       <div class="w-[180px] flex justify-end">
-        <a-button type="primary" @click="handleSubmit">
+        <a-button type="primary" @click="handleSearch">
           搜索
         </a-button>
         <a-button class="ml-4" @click="handleInit">

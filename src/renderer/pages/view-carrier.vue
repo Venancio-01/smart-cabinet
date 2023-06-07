@@ -9,7 +9,7 @@ const { CarrierTable, getCarriers, data, total } = useViewCarriers()
 
 const condition = reactive<CarrierQueryProps>({
   page: 1,
-  size: 8,
+  size: 7,
   title: '',
   cabinetId: undefined,
   departmentId: undefined,
@@ -22,7 +22,7 @@ async function onPageChange(page: number) {
   getCarriers(condition)
 }
 
-async function handleSubmit() {
+async function handleSearch() {
   condition.page = 1
 
   getCarriers(condition)
@@ -81,7 +81,7 @@ onMounted(() => {
         <a-form-item v-show="currentCabinetDoorId === 0" label="所属柜门" name="title">
           <a-select v-model:value="condition.cabinetId" allow-clear>
             <a-select-option v-for="item in cabinetDoorList" :key="item.id" :value="item.id">
-              {{ item.view_name }}
+              {{ item.viewName }}
             </a-select-option>
           </a-select>
         </a-form-item>
@@ -95,7 +95,7 @@ onMounted(() => {
         </a-form-item>
       </a-form>
       <div class="w-[180px] flex justify-end">
-        <a-button type="primary" @click="handleSubmit">
+        <a-button type="primary" @click="handleSearch">
           搜索
         </a-button>
         <a-button class="ml-4" @click="handleInit">

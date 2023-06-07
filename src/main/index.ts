@@ -1,7 +1,7 @@
-import { BrowserWindow, app, globalShortcut, ipcMain } from 'electron'
+import { BrowserWindow, app, globalShortcut } from 'electron'
 import dotenv from 'dotenv'
 import { handleExitUpdateService } from './services/update-service'
-import { makeChannelName, services } from '@/services'
+import { installService } from '@/services'
 import { createWindow } from '@/base/window'
 import { EVN_FILE_PATH } from '@/config'
 
@@ -10,18 +10,13 @@ dotenv.config({
   path: EVN_FILE_PATH,
 })
 
-// Disable GPU Acceleration for Linux.
+// Linux 系统禁用 GPU 加速
 app.disableHardwareAcceleration()
 
 if (!app.requestSingleInstanceLock()) {
   app.quit()
   process.exit(0)
 }
-
-// Remove electron security warnings
-// This warning only shows in development mode
-// Read more on https://www.electronjs.org/docs/latest/tutorial/security
-// process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
 let win: BrowserWindow | null = null
 
@@ -32,22 +27,9 @@ let win: BrowserWindow | null = null
 function disableShortcuts() {
   // 禁用 Control+Shift+I 打开开发者面板
   // 禁用 Control+R 刷新页面
-  // 禁用 F11 全屏
   // ['CommandOrControl+Shift+I', 'CommandOrControl+R', 'F11']
-  globalShortcut.registerAll(['CommandOrControl+R', 'F11'], () => {
+  globalShortcut.registerAll(['CommandOrControl+R'], () => {
     return false
-  })
-}
-
-/**
- * @description: 注册服务
- * @return {*}
- */
-function installService() {
-  services.forEach((service) => {
-    Object.entries(service.fns).forEach(([apiName, apiFn]) => {
-      ipcMain.handle(makeChannelName(service.name, apiName), (ev, ...args) => apiFn(...args))
-    })
   })
 }
 
@@ -66,7 +48,6 @@ app.on('window-all-closed', () => {
 
 app.on('second-instance', () => {
   if (win) {
-    // Focus on the main window if the user tried to open another
     if (win.isMinimized())
       win.restore()
     win.focus()

@@ -1,27 +1,22 @@
-import { execSync } from 'child_process'
 import { SerialPort as SerialPortLib } from 'serialport'
-import { convertDecimalToBinary, generateLockCommand } from '@/utils'
-import SerialPort from '@/utils/serial-port'
+import { info } from '../logger'
+import { convertDecimalToBinary, generateLockCommand, setPermissions } from './utils'
+import SerialPort from './serial-port'
 
 // 串口实例
 let instance: SerialPort | null = null
 let connected = false
 
+/**
+ * @description: 获取串口连接状态
+ * @param {string} path
+ * @return {*}
+ */
 async function getConnectState(path: string) {
   const list = await SerialPortLib.list()
-  connected = Boolean(list.find(item => item.path === path))
-  return connected
-}
+  connected = !!list.find(item => item.path === path)
 
-// 设置串口权限
-async function setPermissions() {
-  try {
-    await execSync('sudo chmod 777 /dev/ttyUSB0')
-    console.log('设置串口权限成功')
-  }
-  catch (error) {
-    console.log('设置串口权限失败')
-  }
+  return connected
 }
 
 async function init(path: string, baudRate: number) {
@@ -31,14 +26,11 @@ async function init(path: string, baudRate: number) {
   await setPermissions()
 
   if (!connected) {
-    console.log('未连接锁控板，初始化失败')
+    info('未连接锁控板')
     return
   }
 
   instance = new SerialPort({ path, baudRate })
-  await instance.open()
-  await instance.close()
-  await instance.open()
 }
 
 async function close() {
@@ -75,24 +67,12 @@ function open(boardAddress = '01', lockAddress = '01') {
 }
 
 /**
- * @description: 开启全部锁
- * @return {*}
- */
-function openAll() {
-  if (!instance)
-    return false
-
-  const command = generateLockCommand('8a010011')
-  instance.write(command)
-}
-
-/**
  * @description: 获取门锁开启状态
  * @return {*}
  */
 function getOpenStatus(): null | LockControlStateProps {
   if (!instance) {
-    console.log('实例未初始化')
+    info('实例未初始化')
     return null
   }
 
@@ -137,7 +117,6 @@ const lockControlService = {
     close,
     queryAllState,
     open,
-    openAll,
     getOpenStatus,
   },
 }

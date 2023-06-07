@@ -30,7 +30,7 @@ function handleClickDoor(door: CabinetDoorProps) {
 
 const doorList = computed(() => {
   return cabinetDoorList.value.map((door) => {
-    const totalCarriers = carrierList.value.filter(item => item.cabinet_door_id === door.id)
+    const totalCarriers = carrierList.value.filter(item => item.CabinetDoorId === door.id)
     const inPlaceCarriers = totalCarriers.filter(item => item.loan_status === 0)
 
     return {
@@ -60,7 +60,7 @@ const doorList = computed(() => {
       >
         <div class="relative flex flex-1 items-center justify-center">
           <div class="absolute top-2 left-2">
-            [{{ door.view_name }}]
+            [{{ door.viewName }}]
           </div>
 
           <div class="mt-2 flex select-none flex-col items-center justify-center text-sm">

@@ -39,16 +39,16 @@ const columns = ref<ColumnsType>([
   },
   {
     title: '所属柜门',
-    dataIndex: 'view_name',
-    key: 'view_name',
+    dataIndex: 'viewName',
+    key: 'viewName',
     customRender: ({ record }) => {
-      return cabinetDoorList.value.find(item => item.id === record.cabinet_door_id)?.view_name
+      return cabinetDoorList.value.find(item => item.Id === record.CabinetDoorId)?.viewName
     },
   },
   {
     title: '所在柜门',
-    dataIndex: 'view_name',
-    key: 'view_name',
+    dataIndex: 'viewName',
+    key: 'viewName',
     customRender: ({ record }) => {
       return judgeIsMisPlace(record) && record.misPlaceDoorName
     },
@@ -58,7 +58,7 @@ const columns = ref<ColumnsType>([
     dataIndex: 'department',
     key: 'department',
     customRender: ({ record }) => {
-      return departmentList.value.find(item => item.id === record.binding_dept_id)?.dept_name
+      return departmentList.value.find(item => item.dept_id === record.dept_id)?.dept_name
     },
   },
   {
@@ -72,7 +72,7 @@ const columns = ref<ColumnsType>([
     dataIndex: 'operation_user_id',
     key: 'operation_user_id',
     customRender: ({ record }) => {
-      return userList.value.find(item => item.id === record.operation_user_id)?.user_name
+      return userList.value.find(item => item.user_id === record.operation_user_id)?.user_name
     },
   },
   {
@@ -81,13 +81,13 @@ const columns = ref<ColumnsType>([
     key: 'doc_last_time',
     width: '170px',
     customRender: ({ record }) => {
-      return dayjs(record.doc_last_time).format('YYYY-MM-DD HH:mm:ss')
+      return record.doc_last_time && dayjs(record.doc_last_time).format('YYYY-MM-DD HH:mm:ss')
     },
   },
 ])
 
 function judgeIsMisPlace(doc: doc_document) {
-  const misPlace = misPlaceCarrierData.value.find(item => item.operation_id === doc.doc_rfid)
+  const misPlace = misPlaceCarrierData.value.find(item => item.operationID === doc.doc_rfid)
   return misPlace
 }
 

@@ -1,21 +1,24 @@
 <script lang="ts" setup>
 import type { ColumnsType } from 'ant-design-vue/es/table'
+import type { sys_user } from '@prisma/client'
 import { useStore } from '@/store'
 import useSys from '@/hooks/useSys'
+import useTime from '@/hooks/useTime'
 
 const store = useStore()
-const { roleList, departmentList, currentCabinetDoorId } = storeToRefs(store)
+const { roleList, departmentList, userRoleList, currentCabinetDoorId } = storeToRefs(store)
 const { getUsersByCondition } = useSys()
+const { resetOperationTimeoutCountdown } = useTime()
 
 const condition = reactive<UserQueryProps>({
   page: 1,
-  size: 8,
+  size: 7,
   userName: '',
   roleId: undefined,
   departmentId: undefined,
 })
 
-const data = ref<UserWithRoleProps[]>([])
+const data = ref<sys_user[]>([])
 const total = ref(0)
 const columns: ColumnsType = [
   {
@@ -28,7 +31,7 @@ const columns: ColumnsType = [
     dataIndex: 'dept_id',
     key: 'dept_id',
     customRender: ({ record }) => {
-      return departmentList.value.find(item => item.id === record.dept_id)?.dept_name
+      return departmentList.value.find(item => item.dept_id === record.dept_id)?.dept_name
     },
   },
   {
@@ -36,7 +39,11 @@ const columns: ColumnsType = [
     dataIndex: 'role_id',
     key: 'role_id',
     customRender: ({ record }) => {
-      return record.role?.role_name
+      const roleId = userRoleList.value.find(userRole => userRole.user_id === record.user_id)?.role_id
+      if (!roleId)
+        return ''
+
+      return roleList.value.find(role => role.role_id === roleId)?.role_name
     },
   },
 ]
@@ -47,7 +54,7 @@ async function onPageChange(page: number) {
   getUserList()
 }
 
-async function handleSubmit() {
+async function handleSearch() {
   condition.page = 1
 
   getUserList()
@@ -64,6 +71,7 @@ function handleInit() {
 }
 
 async function getUserList() {
+  resetOperationTimeoutCountdown()
   data.value = await getUsersByCondition(condition)
 }
 
@@ -76,28 +84,24 @@ onMounted(() => {
   <div class="w-full h-full">
     <div class="flex">
       <a-form
-        :model="condition"
-        :label-col="{ span: 8 }"
-        :wrapper-col="{ span: 16 }"
-        label-align="left"
-        class="flex-1 grid grid-rows-2 grid-cols-2 gap-x-6"
-        autocomplete="off"
+        :model="condition" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" label-align="left"
+        class="flex-1 grid grid-rows-2 grid-cols-2 gap-x-6" autocomplete="off"
       >
         <a-form-item label="用户名称">
           <a-input v-model:value="condition.userName" />
         </a-form-item>
 
         <a-form-item v-show="currentCabinetDoorId === 0" label="所属部门">
-          <a-select v-model:value="condition.departmentId" allow-clear>
-            <a-select-option v-for="item in departmentList" :key="item.id" :value="item.id">
+          <a-select v-model:value="condition.departmentId" allow-clear @change="handleSearch">
+            <a-select-option v-for="item in departmentList" :key="item.dept_id" :value="item.dept_id">
               {{ item.dept_name }}
             </a-select-option>
           </a-select>
         </a-form-item>
 
         <a-form-item label="用户角色">
-          <a-select v-model:value="condition.roleId" allow-clear>
-            <a-select-option v-for="item in roleList" :key="item.id" :value="item.id">
+          <a-select v-model:value="condition.roleId" allow-clear @change="handleSearch">
+            <a-select-option v-for="item in roleList" :key="item.role_id" :value="item.role_id">
               {{ item.role_name }}
             </a-select-option>
           </a-select>
@@ -105,7 +109,7 @@ onMounted(() => {
       </a-form>
 
       <div class="w-[180px] flex justify-end">
-        <a-button type="primary" @click="handleSubmit">
+        <a-button type="primary" @click="handleSearch">
           搜索
         </a-button>
         <a-button class="ml-4" @click="handleInit">
@@ -115,9 +119,7 @@ onMounted(() => {
     </div>
 
     <a-table
-      :data-source="data"
-      :columns="columns"
-      :pagination="{
+      :data-source="data" :columns="columns" :pagination="{
         current: condition.page,
         pageSize: condition.size,
         total,

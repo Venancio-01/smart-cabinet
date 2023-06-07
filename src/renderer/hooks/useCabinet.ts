@@ -7,11 +7,10 @@ import { useCheckStore } from '@/store/check'
 export default function () {
   const router = useRouter()
   const store = useStore()
-  const { setCabinetData, setCabinetDoorList, setCabinetDoor } = store
-  const { lockControlIsOnline } = storeToRefs(store)
+  const { setCurrentCabinet, setCabinetDoorList, setCabinetDoor } = store
+  const { lockControlIsOnline, currentCabinet } = storeToRefs(store)
   const checkStore = useCheckStore()
   const { addLastOperationCabinetDoorRecords } = checkStore
-  const { departmentList } = storeToRefs(store)
   const { openLock } = useLock()
   const { resetOperationTimeoutCountdown } = useTime()
 
@@ -19,30 +18,27 @@ export default function () {
    * @description: 获取柜体信息
    * @return {*}
    */
-  const getCabinetInfo = async () => {
-    const data = await window.JSBridge.cabinet.getCabinetData()
-    setCabinetData(data)
+  const getCurrentCabinet = async () => {
+    const data = await window.JSBridge.cabinet.getCurrentCabinet()
+    setCurrentCabinet(data)
   }
 
   /**
    * @description: 获取柜门信息
    * @return {*}
    */
-  const getCabinetDoorInfo = async () => {
-    const records = await window.JSBridge.cabinet.getCabinetDoorList()
-    const list: CabinetDoorProps[] = []
-
-    for (let index = 0; index < records.length; index++) {
-      const item = records[index]
-
-      list.push({
+  const getCabinetDoors = async () => {
+    const cabinetDoors = await window.JSBridge.cabinet.getCabinetDoors()
+    const list: CabinetDoorProps[] = cabinetDoors.map((item: CabinetDoorProps) => {
+      return {
         ...item,
-        departmentName: departmentList.value.find(department => department.id === Number(item.binding_id))?.dept_name,
         isOpen: false,
+        rfidIsConnected: false,
         checkCountdown: CHECK_TIME,
-      })
-    }
+      }
+    })
 
+    console.log('🚀 ~ file: useCabinet.ts:42 ~ getCabinetDoors ~ list:', list)
     setCabinetDoorList(list)
   }
 
@@ -51,7 +47,7 @@ export default function () {
     resetOperationTimeoutCountdown()
 
     if (lockControlIsOnline) {
-      openLock(door.kgbh)
+      openLock(Number(door.Kgbh))
       addLastOperationCabinetDoorRecords(door)
 
       setTimeout(() => {
@@ -59,16 +55,19 @@ export default function () {
       }, 1000)
     }
 
-    router.push(`/open/${door.id}`)
+    router.push(`/open/${door.Id}`)
   }
 
   const initCabinetData = async () => {
-    return Promise.all([getCabinetInfo(), getCabinetDoorInfo()])
+    await getCurrentCabinet()
+    if (!currentCabinet)
+      return
+
+    getCabinetDoors()
   }
 
   return {
-    getCabinetInfo,
-    getCabinetDoorInfo,
+    getCabinetDoors,
     initCabinetData,
     openCabinetDoor,
   }

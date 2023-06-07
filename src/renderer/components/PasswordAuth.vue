@@ -1,8 +1,6 @@
 <script lang="ts" setup>
-import { useStore } from '@/store'
 import useListenEnter from '@/hooks/useListenEnter'
 import type { PasswordLoginType } from '@/hooks/useLogin'
-import { PASSWORD_KEY } from '@/config'
 
 interface Props {
   isVerify: boolean
@@ -12,12 +10,10 @@ withDefaults(defineProps<Props>(), {
   isVerify: false,
 })
 const emits = defineEmits(['complete'])
-const store = useStore()
-const { loginModeIndex } = storeToRefs(store)
 const { addListenEnter, removeListenEnter } = useListenEnter()
 
 const formState = reactive<PasswordLoginType>({
-  username: 'admin',
+  username: 'test',
   password: '123456',
 })
 
@@ -29,26 +25,12 @@ defineExpose({
   handleComplete,
 })
 
-const isActive = computed(() => {
-  return loginModeIndex.value === PASSWORD_KEY
-})
-
-// 监听当前登录方式的变化
-watch(
-  isActive,
-  (value) => {
-    if (value)
-      addListenEnter(handleComplete)
-    else
-      removeListenEnter(true)
-  },
-  {
-    immediate: true,
-  },
-)
-
 onMounted(() => {
   addListenEnter(handleComplete)
+})
+
+onBeforeUnmount(() => {
+  removeListenEnter(true)
 })
 </script>
 

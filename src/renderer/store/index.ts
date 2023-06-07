@@ -1,4 +1,4 @@
-import type { doc_document, rfid_cabinet, rfid_switch_record, sys_dept, sys_permission, sys_role, sys_user } from '@prisma/client'
+import type { doc_document, rfid_cabinet, rfid_switch_record, sys_dept, sys_role, sys_user, sys_user_role } from '@prisma/client'
 import { defineStore } from 'pinia'
 
 interface State {
@@ -7,16 +7,16 @@ interface State {
   networkIsOnline: boolean
   fingerIsOnline: boolean
   rfidIsOnline: boolean
-  loginModeIndex: number
+  rfidConnectionStatus: boolean[]
   isLoggedIn: boolean
-  user: UserProps | null
+  user: sys_user
   userList: sys_user[]
   departmentList: sys_dept[]
   roleList: sys_role[]
-  permissionList: sys_permission[]
+  userRoleList: sys_user_role[]
   carrierList: doc_document[]
   misPlaceCarrierData: rfid_switch_record[]
-  cabinetData: rfid_cabinet | null
+  currentCabinet: rfid_cabinet | null
   cabinetDoorList: CabinetDoorProps[]
   lockCommandInterval: number
   lockControlState: null | LockControlStateProps
@@ -43,15 +43,15 @@ export const useStore = defineStore('main', {
       networkIsOnline: false,
       fingerIsOnline: false,
       rfidIsOnline: false,
-      loginModeIndex: 1,
+      rfidConnectionStatus: [],
       isLoggedIn: false,
       user: null,
       userList: [],
       departmentList: [],
       roleList: [],
-      permissionList: [],
+      userRoleList: [],
       carrierList: [],
-      cabinetData: null,
+      currentCabinet: null,
       cabinetDoorList: [],
       misPlaceCarrierData: [],
       lockCommandInterval: 10,
@@ -80,6 +80,9 @@ export const useStore = defineStore('main', {
     carrierTotal(state) {
       return state.carrierList.length
     },
+    hasUnConnectedRfid(state) {
+      return state.cabinetDoorList.length > 0 && state.cabinetDoorList.some(item => !item.rfidIsConnected)
+    },
     inPlaceCarrierTotal(state) {
       return state.carrierList.reduce((total, item) => {
         if (item.loan_status === 0)
@@ -90,17 +93,6 @@ export const useStore = defineStore('main', {
     isChecking(state) {
       return state.cabinetDoorList.some(item => item.checkCountdown !== 10)
     },
-    currentUserPermissionList(state) {
-      if (!state.user) { return [] }
-      else {
-        return state.user.sys_user_role.reduce<sys_permission[]>((acc, cur) => {
-          const { sys_role } = cur
-          const { sys_role_permission } = sys_role
-          const permissionList = sys_role_permission.map(item => item.sys_permission)
-          return [...acc, ...permissionList]
-        }, [])
-      }
-    },
   },
   actions: {
     setBackgroundUrl(url: string) {
@@ -108,6 +100,9 @@ export const useStore = defineStore('main', {
     },
     setRfidIsConnected(state: boolean) {
       this.rfidIsOnline = state
+    },
+    setRfidConnectionStatus(status: boolean[]) {
+      this.rfidConnectionStatus = status
     },
     setLockControlIsOnline(state: boolean) {
       this.lockControlIsOnline = state
@@ -121,18 +116,15 @@ export const useStore = defineStore('main', {
     setIsLoggedIn(visible: boolean) {
       this.isLoggedIn = visible
     },
-    setLoginModeIndex(index: number) {
-      this.loginModeIndex = index
-    },
-    setCabinetData(data: rfid_cabinet) {
-      this.cabinetData = data
+    setCurrentCabinet(data: rfid_cabinet) {
+      this.currentCabinet = data
     },
     setCabinetDoorList(list: CabinetDoorProps[]) {
       this.cabinetDoorList = list
     },
     setCabinetDoor(data: CabinetDoorProps) {
-      this.cabinetDoorList = this.cabinetDoorList.reduce<CabinetDoorProps[]>((acc, cur) => {
-        if (cur.id === data.id)
+      this.cabinetDoorList = this.cabinetDoorList.reduce((acc: CabinetDoorProps[], cur: CabinetDoorProps) => {
+        if (cur.Id === data.Id)
           acc.push(data)
         else acc.push(cur)
 
@@ -154,8 +146,8 @@ export const useStore = defineStore('main', {
     setRoleList(list: sys_role[]) {
       this.roleList = list
     },
-    setPermissionList(list: sys_permission[]) {
-      this.permissionList = list
+    setUserRoleList(list: sys_user_role[]) {
+      this.userRoleList = list
     },
     setCarrierList(list: doc_document[]) {
       this.carrierList = list

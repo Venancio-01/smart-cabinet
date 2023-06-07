@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { useStore } from '@/store'
 import createAlert from '@/components/BaseAlert'
-import useSys from '@/hooks/useSys'
 import useTime from '@/hooks/useTime'
 
 interface Props {
@@ -17,7 +16,6 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emits = defineEmits(['update:visible'])
 const store = useStore()
-const { updateUserPassword } = useSys()
 const { user } = storeToRefs(store)
 const { resetOperationTimeoutCountdown } = useTime()
 
@@ -50,7 +48,9 @@ async function handleSave() {
     createAlert('新密码与确认密码不一致，请重新输入')
     return
   }
-  const success = await updateUserPassword(formState.password)
+
+  const userId = user.value?.user_id
+  const success = await await window.JSBridge.sys.updatePassword(userId, formState.password)
   if (success)
     createAlert('密码修改成功')
   else

@@ -12,7 +12,7 @@ const queryAllLockTimer = ref<number | null>(null)
 export default function () {
   const store = useStore()
   const { setLockControlIsOnline, setLockControlState, setCabinetDoor } = store
-  const { cabinetData, cabinetDoorList, lockControlState, lockControlIsOnline } = storeToRefs(store)
+  const { currentCabinet, cabinetDoorList, lockControlState, lockControlIsOnline } = storeToRefs(store)
   const checkStore = useCheckStore()
   const { addLastOperationCabinetDoorRecords } = checkStore
   const { handleCheck } = useCheck()
@@ -20,34 +20,34 @@ export default function () {
 
   // 获取锁控板连接状态
   const getLockControlConnectState = async () => {
-    if (cabinetData.value === null)
+    if (currentCabinet.value === null)
       return
 
-    const { opendoor } = cabinetData.value
-    if (opendoor === null)
+    const { openDoor } = currentCabinet.value
+    if (openDoor === null)
       return
 
-    const isConnected = await window.JSBridge.lockControl.getConnectState(opendoor)
+    const isConnected = await window.JSBridge.lockControl.getConnectState(openDoor)
     setLockControlIsOnline(isConnected)
   }
 
   // 初始化锁控板连接
   const initLockControl = async () => {
-    if (cabinetData.value === null)
+    if (currentCabinet.value === null)
       return
 
-    const { opendoor, open_baudrate } = cabinetData.value
-    if (opendoor === null)
+    const { openDoor } = currentCabinet.value
+    if (openDoor === null)
       return
 
-    await window.JSBridge.lockControl.init(opendoor, open_baudrate)
+    await window.JSBridge.lockControl.init(openDoor, 9600)
   }
 
   // 打开某个锁
-  const openLock = async (lockNumber: number) => {
+  const openLock = (lockNumber: number) => {
     const boardAddress = '01'
     const lockAddress = String(lockNumber).padStart(2, '0')
-    await window.JSBridge.lockControl.open(boardAddress, lockAddress)
+    window.JSBridge.lockControl.open(boardAddress, lockAddress)
   }
 
   // 门锁开启状态
@@ -91,21 +91,21 @@ export default function () {
         return
 
       cabinetDoorList.value.forEach((door) => {
-        const isOpen = value[door.kgbh]
+        const isOpen = value[door.Kgbh]
 
         if (door.isOpen && !isOpen && door.checkCountdown === 10) {
-          console.log(`${door.kgbh} - 门锁关闭`)
+          console.log(`${door.Kgbh} - 门锁关闭`)
 
           // 记录最后一次操作的柜门
           addLastOperationCabinetDoorRecords(door)
 
           // 记录盘点开始时的载体数据
           recordDataWhenCheckStart()
-          handleCheck(door.id)
+          handleCheck(door.Id)
           setCabinetDoor({ ...door, isOpen: false })
         }
         else if (isOpen) {
-          console.log(`${door.kgbh} - 门锁开启`)
+          console.log(`${door.Kgbh} - 门锁开启`)
           setCabinetDoor({ ...door, isOpen: true })
         }
       })

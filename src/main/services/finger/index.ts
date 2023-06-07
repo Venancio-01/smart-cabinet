@@ -1,4 +1,4 @@
-import Buffer from 'buffer'
+import { Buffer } from 'buffer'
 import {
   captureFingerImage,
   closeDeviceByHandle,
@@ -284,8 +284,8 @@ function handleIdentify() {
 async function loadAllTemplate() {
   userFingerData = await prisma.rfid_finger_user.findMany({
     select: {
-      data: true,
-      user_id: true,
+      FingerData: true,
+      Userid: true,
     },
   })
   if (userFingerData.length === 0)

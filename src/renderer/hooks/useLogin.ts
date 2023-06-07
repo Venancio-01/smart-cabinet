@@ -1,7 +1,6 @@
 import useSys from './useSys'
 import { useStore } from '@/store'
 import createAlert from '@/components/BaseAlert'
-import { PASSWORD_KEY } from '@/config'
 import useTime from '@/hooks/useTime'
 
 export interface PasswordLoginType {
@@ -12,7 +11,7 @@ export interface PasswordLoginType {
 export default function () {
   const router = useRouter()
   const store = useStore()
-  const { setIsLoggedIn, setUserData, setLoginModeIndex } = store
+  const { setIsLoggedIn, setUserData } = store
   const { getUserData } = useSys()
   const { openOperationTimeoutCountdown, closeOperationTimeoutCountdown } = useTime()
 
@@ -23,7 +22,6 @@ export default function () {
    */
   const handleLogin = (userData: UserProps) => {
     setIsLoggedIn(true)
-    setLoginModeIndex(PASSWORD_KEY)
     setUserData(userData)
     openOperationTimeoutCountdown()
     router.push('/main')
@@ -44,7 +42,7 @@ export default function () {
       createAlert('用户名或密码不可为空')
       return
     }
-    const result = await window.JSBridge.login.onPasswordLogin({ ...formData })
+    const result = await window.JSBridge.sys.onPasswordLogin({ ...formData })
     if (result.success)
       handleLogin(result.data)
     else
@@ -62,7 +60,7 @@ export default function () {
       return
     }
 
-    const result = await window.JSBridge.login.onCardLogin(cardNumber)
+    const result = await window.JSBridge.sys.onCardLogin(cardNumber)
     if (result.success)
       handleLogin(result.data)
     else

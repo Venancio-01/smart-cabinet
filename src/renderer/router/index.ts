@@ -5,6 +5,10 @@ import Login from '@/pages/login.vue'
 import Main from '@/pages/main.vue'
 import CabinetDoor from '@/pages/cabinet-door.vue'
 import ViewCarrier from '@/pages/view-carrier.vue'
+import Carrier from '@/pages/carrier.vue'
+import User from '@/pages/user.vue'
+import Department from '@/pages/department.vue'
+import Permission from '@/pages/permission.vue'
 
 const routes: RouteRecordRaw[] = [
   { path: '/', redirect: '/index' },
@@ -28,23 +32,23 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: 'carrier/:state',
-        component: () => import('@/pages/carrier.vue'),
+        component: Carrier,
         props: true,
         name: 'carrier',
       },
       {
         path: 'user',
-        component: () => import('@/pages/user.vue'),
+        component: User,
         name: 'user',
       },
       {
         path: 'department',
-        component: () => import('@/pages/department.vue'),
+        component: Department,
         name: 'department',
       },
       {
         path: 'permission',
-        component: () => import('@/pages/permission.vue'),
+        component: Permission,
         name: 'permission',
       },
     ],

@@ -97,10 +97,10 @@ const documentColumns: ColumnsType = [
   },
   {
     title: '所属柜门',
-    dataIndex: 'view_name',
-    key: 'view_name',
+    dataIndex: 'viewName',
+    key: 'viewName',
     customRender: ({ record }) => {
-      return cabinetDoorList.value.find(item => item.id === record.cabinet_door_id)?.view_name
+      return cabinetDoorList.value.find(item => item.id === record.CabinetDoorId)?.viewName
     },
   },
   {
@@ -136,10 +136,10 @@ const recordColumns: ColumnsType = [
   },
   {
     title: '错放柜门',
-    dataIndex: 'cabinet_door_id',
-    key: 'cabinet_door_id',
+    dataIndex: 'CabinetDoorId',
+    key: 'CabinetDoorId',
     customRender: ({ record }) => {
-      return cabinetDoorList.value.find(item => item.id === record.cabinet_door_id)?.view_name
+      return cabinetDoorList.value.find(item => item.id === record.CabinetDoorId)?.viewName
     },
   },
 ]
@@ -172,7 +172,7 @@ const recordColumns: ColumnsType = [
               :class="[index + 1 === checkResultList.length ? 'border-none' : '']"
             >
               <div class="font-large">
-                柜门名称：{{ item.view_name }}
+                柜门名称：{{ item.viewName }}
               </div>
 
               <div v-if="isCabinetDoorChanged(item.id)">

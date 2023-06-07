@@ -13,32 +13,14 @@ export default function () {
     setEndMisPlaceCarrierRecord,
   } = checkStore
 
-  const getAllCarrierData = async () => {
-    const carrierList = await window.JSBridge.carrier.getAllCarrierData()
+  const getCarriers = async () => {
+    const carrierList = await window.JSBridge.carrier.getCarriers()
     setCarrierList(carrierList)
     return carrierList
   }
 
-  const getCarrierDataByCondition = async (condition: CarrierQueryProps) => {
-    return await window.JSBridge.carrier.getCarrierDataByCondition({ ...condition })
-  }
-
-  /**
-   * @description: 根据柜门 ID 获取载体数据
-   * @param {number} cabinetId 柜门 ID
-   * @return {*}
-   */
-  const getCarrierDataByCabinetId = async (cabinetId: number) => {
-    return await window.JSBridge.carrier.getCarrierDataByCabinetId (cabinetId)
-  }
-
-  /**
-   * @description: 获取在位载体数量
-   * @param {number} cabinetId 柜门 ID
-   * @return {*}
-   */
-  const getInPlaceCarrierCount = async (cabinetId?: number) => {
-    return await window.JSBridge.carrier.getInPlaceCarrierCount(cabinetId)
+  const getCarriersByCondition = async (condition: CarrierQueryProps) => {
+    return await window.JSBridge.carrier.getCarriersByCondition({ ...condition })
   }
 
   /**
@@ -56,7 +38,7 @@ export default function () {
    * @return {*}
    */
   const updateCarrier = async (door: CabinetDoorProps) => {
-    const id = user.value?.id
+    const id = user.value?.user_id
     await window.JSBridge.carrier.updateCarrier({ ...door }, id)
   }
 
@@ -74,19 +56,17 @@ export default function () {
    * @return {*}
    */
   const recordDataWhenCheckEnd = async () => {
-    const carriers = await getAllCarrierData()
+    const carriers = await getCarriers()
     const misPlaceCarriers = await getMisPlaceCarriers()
     setEndCarrierRecord(carriers)
     setEndMisPlaceCarrierRecord(misPlaceCarriers)
   }
 
   return {
-    getCarrierDataByCondition,
-    getAllCarrierData,
+    getCarriersByCondition,
+    getCarriers,
     getMisPlaceCarriers,
     updateCarrier,
-    getCarrierDataByCabinetId,
-    getInPlaceCarrierCount,
     recordDataWhenCheckStart,
     recordDataWhenCheckEnd,
   }
