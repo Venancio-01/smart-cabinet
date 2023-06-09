@@ -1,7 +1,12 @@
-import type { doc_document, rfid_switch_record } from '@prisma/client'
+import type { DocDocument, RfidSwitchRecord } from '@prisma/client'
 import { getReportData } from './rfid'
 import { prisma } from '@/database'
 import { generateCurrentTime } from '@/utils'
+
+export enum BorrowedState {
+  Returned,
+  Borrowed,
+}
 
 /**
  * @description: 根据 tid 获取错放文件数量
@@ -9,10 +14,10 @@ import { generateCurrentTime } from '@/utils'
  * @return {*}
  */
 function queryMisplacedDocumentCount(cabinetDoorId?: string, rfid?: string) {
-  return prisma.rfid_switch_record.count({
+  return prisma.rfidSwitchRecord.count({
     where: {
-      operationID: rfid || undefined,
-      CabinetDoorId: cabinetDoorId || undefined,
+      operationId: rfid || undefined,
+      cabinetDoorId: cabinetDoorId || undefined,
     },
   })
 }
@@ -23,15 +28,15 @@ function queryMisplacedDocumentCount(cabinetDoorId?: string, rfid?: string) {
  * @param {number} state
  * @return {*}
  */
-function updateDocStatusByID(id: number, state: number, userId: number) {
-  return prisma.doc_document.updateMany({
+function updateDocStatusByID(id: bigint, state: number, userId: bigint) {
+  return prisma.docDocument.updateMany({
     where: {
-      doc_id: id,
+      docId: id,
     },
     data: {
-      operation_user_id: userId,
-      loan_status: state,
-      doc_last_time: new Date(),
+      docLastUserId: Number(userId),
+      docPStatus: state,
+      docLastTime: new Date(),
     },
   })
 }
@@ -41,8 +46,8 @@ function updateDocStatusByID(id: number, state: number, userId: number) {
  * @param {any} document
  * @return {*}
  */
-function addMisPlacedDocument(document: Partial<rfid_switch_record>) {
-  return prisma.rfid_switch_record.create({
+function addMisPlacedDocument(document: Partial<RfidSwitchRecord>) {
+  return prisma.rfidSwitchRecord.create({
     data: document,
   })
 }
@@ -53,53 +58,53 @@ function addMisPlacedDocument(document: Partial<rfid_switch_record>) {
  * @return {*}
  */
 function updateMisPlaceDocument(id: string) {
-  return prisma.rfid_switch_record.updateMany({
+  return prisma.rfidSwitchRecord.updateMany({
     where: {
-      operationID: id,
+      operationId: id,
     },
     data: {
-      operationID: '0',
+      operationId: '0',
     },
   })
 }
 
-async function getCarriers(): Promise<doc_document[]> {
-  return prisma.doc_document.findMany()
+async function getCarriers(): Promise<DocDocument[]> {
+  return prisma.docDocument.findMany()
 }
 
 async function getCarriersByCondition(condition: CarrierQueryProps): Promise<{
-  data: doc_document[]
+  data: DocDocument[]
   total: number
 }> {
-  const query: Partial<{ [key in keyof doc_document]: any }> = {
-    cabinet_door_id: condition.cabinetId ? Number(condition.cabinetId) : undefined,
-    doc_name: {
+  const query: Partial<{ [key in keyof DocDocument]: any }> = {
+    cabinetDoorId: condition.cabinetId ? Number(condition.cabinetId) : undefined,
+    docName: {
       contains: condition.title,
     },
-    // loan_status: condition.state ?? undefined,
-    dept_id: condition.departmentId ? Number(condition.departmentId) : undefined,
+    docPStatus: condition.state ?? undefined,
+    deptId: condition.departmentId ? Number(condition.departmentId) : undefined,
   }
 
   if (condition.state === 2) {
     const misPlaceDocuments = await getMisPlaceCarriers()
-    const rfids = misPlaceDocuments.map(item => item.operationID)
-    // query.loan_status = 1
-    query.doc_rfid = { in: rfids }
+    const rfids = misPlaceDocuments.map(item => item.operationId)
+    query.docPStatus = 1
+    query.docRfid = { in: rfids }
   }
   else if (condition.state === 1) {
     const misPlaceDocuments = await getMisPlaceCarriers()
-    const rfids = misPlaceDocuments.map(item => item.operationID)
-    // query.loan_status = 1
-    query.doc_rfid = { notIn: rfids }
+    const rfids = misPlaceDocuments.map(item => item.operationId)
+    query.docPStatus = 1
+    query.docRfid = { notIn: rfids }
   }
 
   const [data, total] = await Promise.all([
-    prisma.doc_document.findMany({
+    prisma.docDocument.findMany({
       skip: (condition.page - 1) * condition.size,
       take: condition.size,
       where: query,
     }),
-    prisma.doc_document.count({
+    prisma.docDocument.count({
       where: query,
     }),
   ])
@@ -110,22 +115,32 @@ async function getCarriersByCondition(condition: CarrierQueryProps): Promise<{
   }
 }
 
-function getMisPlaceCarriers(cabinetDoorID?: string): Promise<rfid_switch_record[]> {
-  return prisma.rfid_switch_record.findMany({
+function getMisPlaceCarriers(cabinetDoorID?: string): Promise<RfidSwitchRecord[]> {
+  return prisma.rfidSwitchRecord.findMany({
     where: {
-      operationID: {
+      operationId: {
         not: '0',
       },
-      CabinetDoorId: cabinetDoorID,
+      cabinetDoorId: cabinetDoorID,
     },
   })
 }
 
-async function updateCarrier(cabinetDoor: CabinetDoorProps, userId?: number) {
+async function updateCarrier(cabinetDoor: CabinetDoorProps, userId?: bigint) {
   const TIDList = getReportData(cabinetDoor.txAddr)
-  console.log(cabinetDoor.Id, '柜门id')
+  console.log(cabinetDoor.id, '柜门id')
   console.log('🚀 ~ file: document-service.ts:94 ~ updateCarrier ~ TIDList:', TIDList)
   console.log('🚀 ~ file: document-service.ts:94 ~ updateCarrier ~ TIDList.length:', TIDList.length)
+
+  const map = {
+    e280110c2000731c782f0a8b: '检测到文件一',
+    e280110c2000759c783a0a8b: '检测到文件二',
+    e280110c20007adb783e0a8b: '检测到文件三',
+  }
+  TIDList.forEach((item) => {
+    if (map[item])
+      console.log(map[item])
+  })
 
   const documents = await getCarriers()
 
@@ -133,40 +148,40 @@ async function updateCarrier(cabinetDoor: CabinetDoorProps, userId?: number) {
     const doc = documents[i]
 
     // 如果不是本柜门文件
-    if (doc.cabinet_door_id !== cabinetDoor.Id) {
-      const isWarningDocument = (await queryMisplacedDocumentCount(cabinetDoor.id, doc.doc_rfid)) !== 0
+    if (doc.cabinetDoorId !== cabinetDoor.id) {
+      const isWarningDocument = (await queryMisplacedDocumentCount(String(cabinetDoor.id), doc.docRfid)) !== 0
       if (isWarningDocument)
         continue
 
-      const data: Partial<rfid_switch_record> = {
-        CabinetDoorId: `${cabinetDoor.Id}`,
-        cabinet_id: cabinetDoor.CabinetId,
-        content: `文件[${doc.doc_name}]错放`,
+      const data: Partial<RfidSwitchRecord> = {
+        cabinetDoorId: `${cabinetDoor.id}`,
+        cabinetId: `${cabinetDoor.cabinetId}`,
+        content: `文件[${doc.docName}]错放`,
         datetime: generateCurrentTime(),
-        operationID: TIDList.includes(doc.doc_rfid) ? doc.doc_rfid : '0',
+        operationId: TIDList.includes(doc.docRfid) ? doc.docRfid : '0',
         type: '1',
-        user_id: userId || null,
+        userId: Number(userId) || null,
       }
       await addMisPlacedDocument(data)
     }
     else {
-      const isDocumentDetected = TIDList.includes(doc.doc_rfid)
+      const isDocumentDetected = TIDList.includes(doc.docRfid)
 
       // 归还
-      if (isDocumentDetected && doc.loan_status === 1)
-        await updateDocStatusByID(doc.doc_id, 0, userId)
+      if (isDocumentDetected && doc.docPStatus === BorrowedState.Borrowed)
+        await updateDocStatusByID(doc.docId, 0, userId)
 
-      // 借出
-      else if (!isDocumentDetected && doc.loan_status === 0)
-        await updateDocStatusByID(doc.doc_id, 1, userId)
+      // 领用
+      else if (!isDocumentDetected && doc.docPStatus === BorrowedState.Returned)
+        await updateDocStatusByID(doc.docId, 1, userId)
     }
   }
 
   const misPlaceDocuments = await getMisPlaceCarriers()
   for (let i = 0; i < misPlaceDocuments.length; i++) {
     const doc = misPlaceDocuments[i]
-    if (!TIDList.includes(doc.operationID))
-      await updateMisPlaceDocument(doc.operationID)
+    if (!TIDList.includes(doc.operationId))
+      await updateMisPlaceDocument(doc.operationId)
   }
 }
 

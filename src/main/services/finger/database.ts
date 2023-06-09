@@ -6,7 +6,7 @@ import { generateCurrentTime } from '@/utils'
  * @return {*}
  */
 export function queryFingerUsers() {
-  return prisma.rfid_finger_user.findMany()
+  return prisma.rfidFingerUser.findMany()
 }
 
 /**
@@ -16,9 +16,9 @@ export function queryFingerUsers() {
  * @return {*}
  */
 export function queryFingerByUserIdAndOrder(userId: number, order: FingerOrder) {
-  return prisma.rfid_finger_user.findFirst({
+  return prisma.rfidFingerUser.findFirst({
     where: {
-      Userid: userId,
+      userid: userId,
       order,
     },
   })
@@ -32,13 +32,13 @@ export function queryFingerByUserIdAndOrder(userId: number, order: FingerOrder) 
  * @return {*}
  */
 export function updateFingerByUserIdAndOrder(userId: number, order: FingerOrder, data: string) {
-  return prisma.rfid_finger_user.updateMany({
+  return prisma.rfidFingerUser.updateMany({
     where: {
-      Userid: userId,
+      userid: userId,
       order,
     },
     data: {
-      FingerData: data,
+      fingerData: data,
     },
   })
 }
@@ -51,12 +51,12 @@ export function updateFingerByUserIdAndOrder(userId: number, order: FingerOrder,
  * @return {*}
  */
 export function addFinger(userId: number, order: FingerOrder, data: string) {
-  return prisma.rfid_finger_user.create({
+  return prisma.rfidFingerUser.create({
     data: {
-      FingerData: data,
+      fingerData: data,
       order,
-      Userid: userId,
-      CreateDate: generateCurrentTime(),
+      userid: userId,
+      createDate: generateCurrentTime(),
     },
   })
 }

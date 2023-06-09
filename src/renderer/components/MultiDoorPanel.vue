@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { BorrowedState } from '~/types/enums'
 import { useStore } from '@/store'
 import { useCheckStore } from '@/store/check'
 import useLock from '@/hooks/useLock'
@@ -30,8 +31,8 @@ function handleClickDoor(door: CabinetDoorProps) {
 
 const doorList = computed(() => {
   return cabinetDoorList.value.map((door) => {
-    const totalCarriers = carrierList.value.filter(item => item.CabinetDoorId === door.id)
-    const inPlaceCarriers = totalCarriers.filter(item => item.loan_status === 0)
+    const totalCarriers = carrierList.value.filter(item => item.cabinetDoorId === door.id)
+    const inPlaceCarriers = totalCarriers.filter(item => item.docPStatus === BorrowedState.Returned)
 
     return {
       ...door,

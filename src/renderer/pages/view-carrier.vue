@@ -67,10 +67,10 @@ onMounted(() => {
         <a-form-item label="状态" name="title">
           <a-select v-model:value="condition.state" allow-clear>
             <a-select-option :value="0">
-              在位
+              在柜
             </a-select-option>
             <a-select-option :value="1">
-              借出
+              领用
             </a-select-option>
             <a-select-option :value="2">
               错放
@@ -86,10 +86,10 @@ onMounted(() => {
           </a-select>
         </a-form-item>
 
-        <a-form-item v-show="currentCabinetDoorId === 0" label="所属部门" name="title">
+        <a-form-item v-show="currentCabinetDoorId === 0" label="所属机构" name="title">
           <a-select v-model:value="condition.departmentId" allow-clear>
-            <a-select-option v-for="item in departmentList" :key="item.id" :value="item.id">
-              {{ item.dept_name }}
+            <a-select-option v-for="item in departmentList" :key="item.deptId" :value="item.deptId">
+              {{ item.deptName }}
             </a-select-option>
           </a-select>
         </a-form-item>

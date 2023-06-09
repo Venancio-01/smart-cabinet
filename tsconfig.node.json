@@ -18,6 +18,9 @@
       "@/*": [
         "src/main/*"
       ],
+      "~/*": [
+        "src/*"
+      ],
       "pkg": [
         "./package.json"
       ]

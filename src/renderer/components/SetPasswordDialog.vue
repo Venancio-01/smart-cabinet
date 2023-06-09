@@ -19,7 +19,7 @@ const store = useStore()
 const { user } = storeToRefs(store)
 const { resetOperationTimeoutCountdown } = useTime()
 
-const loginName = user.value?.login_name || ''
+const loginName = user.value?.loginName || ''
 
 const show = computed({
   get: () => {
@@ -30,8 +30,10 @@ const show = computed({
   },
 })
 
+const input = ref()
 watch(show, () => {
   resetOperationTimeoutCountdown()
+  input.value?.focus()
 })
 
 const formState = reactive<FormState>({
@@ -49,7 +51,8 @@ async function handleSave() {
     return
   }
 
-  const userId = user.value?.user_id
+  const userId = user.value?.userId
+  // @ts-expect-error bigint
   const success = await await window.JSBridge.sys.updatePassword(userId, formState.password)
   if (success)
     createAlert('密码修改成功')
@@ -67,13 +70,13 @@ function handleClose() {
 </script>
 
 <template>
-  <BaseDialog v-model:visible="show" title="设置密码" @ok="handleSave" @close="handleClose">
+  <BaseDialog v-model:visible="show" title="设置密码" centered @ok="handleSave" @close="handleClose">
     <div class="flex text-lg">
       <span>登录账号：</span>
       <span>{{ loginName }}</span>
     </div>
 
-    <AnimationInput v-model:value="formState.password" class="w-full my-8" label="请输入新密码：" type="password" />
+    <AnimationInput ref="input" v-model:value="formState.password" class="w-full my-8" label="请输入新密码：" type="password" />
     <AnimationInput v-model:value="formState.repeatPassword" class="w-full my-8" label="请确认新密码：" type="password" />
   </BaseDialog>
 </template>

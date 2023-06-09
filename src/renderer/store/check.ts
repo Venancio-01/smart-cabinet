@@ -1,11 +1,11 @@
-import type { doc_document, rfid_switch_record } from '@prisma/client'
+import type { DocDocument, RfidSwitchRecord } from '@prisma/client'
 import { defineStore } from 'pinia'
 
 interface State {
-  firstCarrierRecord: doc_document[]
-  firstMisPlaceCarrierRecord: rfid_switch_record[]
-  endCarrierRecord: doc_document[]
-  endMisPlaceCarrierRecord: rfid_switch_record[]
+  firstCarrierRecord: DocDocument[]
+  firstMisPlaceCarrierRecord: RfidSwitchRecord[]
+  endCarrierRecord: DocDocument[]
+  endMisPlaceCarrierRecord: RfidSwitchRecord[]
   checkResultList: CheckResultType[]
   lastOperationCabinetDoorRecords: CabinetDoorProps[]
   lastOperationCabinetDoorList: CabinetDoorProps[]
@@ -25,16 +25,16 @@ export const useCheckStore = defineStore('check', {
   },
   getters: {},
   actions: {
-    setFirstCarrierRecord(record: doc_document[]) {
+    setFirstCarrierRecord(record: DocDocument[]) {
       this.firstCarrierRecord = record
     },
-    setFirstMisPlaceCarrierRecord(record: rfid_switch_record[]) {
+    setFirstMisPlaceCarrierRecord(record: RfidSwitchRecord[]) {
       this.firstMisPlaceCarrierRecord = record
     },
-    setEndCarrierRecord(record: doc_document[]) {
+    setEndCarrierRecord(record: DocDocument[]) {
       this.endCarrierRecord = record
     },
-    setEndMisPlaceCarrierRecord(record: rfid_switch_record[]) {
+    setEndMisPlaceCarrierRecord(record: RfidSwitchRecord[]) {
       this.endMisPlaceCarrierRecord = record
     },
     setCheckResultList(result: CheckResultType[]) {

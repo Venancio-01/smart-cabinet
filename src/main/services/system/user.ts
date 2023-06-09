@@ -1,4 +1,4 @@
-import type { sys_user } from '@prisma/client'
+import type { SysUser } from '@prisma/client'
 import { genMd5EncryptedPassword } from './utils'
 import { prisma } from '@/database'
 import { genResponseData } from '@/utils/index'
@@ -9,9 +9,9 @@ import { genResponseData } from '@/utils/index'
  * @return {*}
  */
 export function getUserData(userId: number) {
-  return prisma.sys_user.findUnique({
+  return prisma.sysUser.findUnique({
     where: {
-      user_id: userId,
+      userId,
     },
   })
 }
@@ -20,8 +20,8 @@ export function getUserData(userId: number) {
  * @description: 获取所有用户
  * @return {*}
  */
-export async function getUsers(): Promise<sys_user[]> {
-  return await prisma.sys_user.findMany()
+export async function getUsers(): Promise<SysUser[]> {
+  return await prisma.sysUser.findMany()
 }
 
 /**
@@ -29,32 +29,32 @@ export async function getUsers(): Promise<sys_user[]> {
  * @param {UserQueryProps} { userName, departmentId, roleId }
  * @return {*}
  */
-export async function getUsersByCondition({ userName, departmentId, roleId }: UserQueryProps): Promise<sys_user[]> {
-  const query: Partial<{ [key in keyof sys_user]: any }> = {
-    user_name: {
+export async function getUsersByCondition({ userName, departmentId, roleId }: UserQueryProps): Promise<SysUser[]> {
+  const query: Partial<{ [key in keyof SysUser]: any }> = {
+    userName: {
       contains: userName,
     },
-    dept_id: departmentId ? Number(departmentId) : undefined,
+    deptId: departmentId ? Number(departmentId) : undefined,
   }
 
   if (roleId) {
-    const userRoleList = await prisma.sys_user_role.findMany()
-    const userIds = userRoleList.filter(item => item.role_id === roleId).map(item => item.user_id)
+    const userRoleList = await prisma.sysUserRole.findMany()
+    const userIds = userRoleList.filter(item => Number(item.roleId) === roleId).map(item => item.userId)
 
-    query.user_id = {
+    query.userId = {
       in: userIds,
     }
   }
 
-  return prisma.sys_user.findMany({
+  return prisma.sysUser.findMany({
     where: query,
   })
 }
 
 export async function onPasswordLogin({ username, password }: PasswordLoginProps) {
-  const user = await prisma.sys_user.findFirst({
+  const user = await prisma.sysUser.findFirst({
     where: {
-      login_name: username,
+      loginName: username,
     },
   })
 
@@ -68,15 +68,15 @@ export async function onPasswordLogin({ username, password }: PasswordLoginProps
 }
 
 export async function onCardLogin(cardNumber: string) {
-  const result = await prisma.rfid_card_user.findFirst({
+  const result = await prisma.rfidCardUser.findFirst({
     where: {
-      CardData: cardNumber,
+      cardData: cardNumber,
     },
   })
   if (result === null)
     return genResponseData(false, '用户ID查找失败')
 
-  const userId = result.Userid
+  const userId = result.userid
   const user = await getUserData(userId)
   if (user === null)
     return genResponseData(false, '用户查找失败')
@@ -92,10 +92,10 @@ export async function onCardLogin(cardNumber: string) {
  */
 export async function updatePassword(userId: number, password: string) {
   const user = await getUserData(userId)
-  const encryptedPassword = genMd5EncryptedPassword(user.login_name, password, user.salt)
-  const result = await prisma.sys_user.update({
+  const encryptedPassword = genMd5EncryptedPassword(user.loginName, password, user.salt)
+  const result = await prisma.sysUser.update({
     where: {
-      user_id: userId,
+      userId,
     },
     data: {
       password: encryptedPassword,
@@ -107,7 +107,7 @@ export async function updatePassword(userId: number, password: string) {
 
 /**
  * @description: 校验密码
- * @param {sys_user} user
+ * @param {SysUser} user
  * @param {string} password
  * @return {*}
  */
@@ -119,24 +119,23 @@ export function verifyPassword({ loginName, salt, password, newPassword }: { log
 
 /**
  * @description: 校验卡号
- * @param {sys_user} user
+ * @param {SysUser} user
  * @param {string} cardNumber
  * @return {*}
  */
 export async function verifyCard(userString: string, cardNumber: string) {
-  const user = JSON.parse(userString) as sys_user
+  const user = JSON.parse(userString) as SysUser
 
-  const result = await prisma.rfid_card_user.findFirst({
+  const result = await prisma.rfidCardUser.findFirst({
     where: {
-      // @ts-expect-error bigint
-      Userid: user.user_id,
+      userid: Number(user.userId),
     },
     select: {
-      CardData: true,
+      cardData: true,
     },
   })
 
-  const success = result.CardData === cardNumber
+  const success = result.cardData === cardNumber
   return success
 }
 
@@ -146,13 +145,13 @@ export async function verifyCard(userString: string, cardNumber: string) {
  * @param {string} cardNumber
  * @return {*}
  */
-export function updateCardNumber(userId: number, cardNumber: string) {
-  return prisma.rfid_card_user.updateMany({
+export function updateCardNumber(userId: bigint, cardNumber: string) {
+  return prisma.rfidCardUser.updateMany({
     where: {
-      Userid: userId,
+      userid: Number(userId),
     },
     data: {
-      CardData: cardNumber,
+      cardData: cardNumber,
     },
   })
 }

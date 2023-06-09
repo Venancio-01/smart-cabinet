@@ -40,6 +40,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, './src/renderer'),
+      '~': resolve(__dirname, './src'),
       'public': resolve(__dirname, './public'),
     },
   },

@@ -44,7 +44,7 @@ export default function () {
   }
 
   // 打开某个锁
-  const openLock = (lockNumber: number) => {
+  const openLock = (lockNumber: number | string) => {
     const boardAddress = '01'
     const lockAddress = String(lockNumber).padStart(2, '0')
     window.JSBridge.lockControl.open(boardAddress, lockAddress)
@@ -91,21 +91,21 @@ export default function () {
         return
 
       cabinetDoorList.value.forEach((door) => {
-        const isOpen = value[door.Kgbh]
+        const isOpen = value[door.kgbh]
 
         if (door.isOpen && !isOpen && door.checkCountdown === 10) {
-          console.log(`${door.Kgbh} - 门锁关闭`)
+          console.log(`${door.kgbh} - 门锁关闭`)
 
           // 记录最后一次操作的柜门
           addLastOperationCabinetDoorRecords(door)
 
           // 记录盘点开始时的载体数据
           recordDataWhenCheckStart()
-          handleCheck(door.Id)
+          handleCheck(door.id)
           setCabinetDoor({ ...door, isOpen: false })
         }
         else if (isOpen) {
-          console.log(`${door.Kgbh} - 门锁开启`)
+          console.log(`${door.kgbh} - 门锁开启`)
           setCabinetDoor({ ...door, isOpen: true })
         }
       })

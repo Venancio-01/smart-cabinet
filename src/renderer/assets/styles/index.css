@@ -97,6 +97,10 @@ body {
 }
 /* End */
 
+.ant-modal-confirm-title {
+  @apply !text-light;
+}
+
 /* unocss 转换 */
 .font-small {
   @apply text-[12px]

@@ -1,3 +1,4 @@
+import type { SysUser } from '@prisma/client'
 import useSys from './useSys'
 import { useStore } from '@/store'
 import createAlert from '@/components/BaseAlert'
@@ -20,7 +21,7 @@ export default function () {
    * @param {UserProps} userData
    * @return {*}
    */
-  const handleLogin = (userData: UserProps) => {
+  const handleLogin = (userData: SysUser) => {
     setIsLoggedIn(true)
     setUserData(userData)
     openOperationTimeoutCountdown()

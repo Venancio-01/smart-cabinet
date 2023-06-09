@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { ColumnsType } from 'ant-design-vue/es/table'
-import type { sys_dept } from '.prisma/client'
+import type { SysDept } from '.prisma/client'
 import useSys from '@/hooks/useSys'
 import useTime from '@/hooks/useTime'
 
@@ -13,13 +13,13 @@ const condition = reactive<DepartmentQueryProps>({
   departmentName: '',
 })
 
-const data = ref<sys_dept[]>([])
+const data = ref<SysDept[]>([])
 const total = ref(0)
 const columns: ColumnsType = [
   {
-    title: '部门名称',
-    dataIndex: 'dept_name',
-    key: 'dept_name',
+    title: '机构名称',
+    dataIndex: 'deptName',
+    key: 'deptName',
   },
 ]
 
@@ -64,7 +64,7 @@ onMounted(() => {
         class="flex-1 grid grid-rows-2 grid-cols-2 gap-x-6"
         autocomplete="off"
       >
-        <a-form-item label="部门名称">
+        <a-form-item label="机构名称">
           <a-input v-model:value="condition.departmentName" />
         </a-form-item>
       </a-form>

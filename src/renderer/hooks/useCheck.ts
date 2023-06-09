@@ -1,5 +1,7 @@
-import type { doc_document } from '@prisma/client'
+import type { DocDocument } from '@prisma/client'
+import { Modal } from 'ant-design-vue'
 import useCarrier from './useCarrier'
+import { BorrowedState } from '~/types/enums'
 import { useStore } from '@/store'
 import { useCheckStore } from '@/store/check'
 import { CHECK_TIME } from '@/config'
@@ -11,7 +13,7 @@ export default function () {
   const router = useRouter()
   const store = useStore()
   const { setCabinetDoor, setCheckStatusDialogVisible, setCurrentCheckCabinetDoorId } = store
-  const { cabinetDoorList, isChecking, rfidIsOnline } = storeToRefs(store)
+  const { cabinetDoorList, isChecking } = storeToRefs(store)
   const checkStore = useCheckStore()
   const { setCheckResultList, addLastOperationCabinetDoorRecords, clearLastOperationCabinetDoorRecords, changeLastOperationCabinetDoorList } = checkStore
   const {
@@ -32,17 +34,17 @@ export default function () {
    * @return {*}
    */
   const generateCheckResult = () => {
-    // 生成借出文件数据
-    const borrowCarriers = firstCarrierRecord.value.reduce<doc_document[]>((acc, cur, index) => {
-      if (cur.loan_status === 0 && endCarrierRecord.value[index].loan_status === 1)
+    // 生成领用文件数据
+    const borrowCarriers = firstCarrierRecord.value.reduce<DocDocument[]>((acc, cur, index) => {
+      if (cur.docPStatus === BorrowedState.Returned && endCarrierRecord.value[index].docPStatus === BorrowedState.Borrowed)
         acc.push(endCarrierRecord.value[index])
 
       return acc
     }, [])
 
     // 生成归还文件数据
-    const returnCarriers = firstCarrierRecord.value.reduce<doc_document[]>((acc, cur, index) => {
-      if (cur.loan_status === 1 && endCarrierRecord.value[index].loan_status === 0)
+    const returnCarriers = firstCarrierRecord.value.reduce<DocDocument[]>((acc, cur, index) => {
+      if (cur.docPStatus === BorrowedState.Borrowed && endCarrierRecord.value[index].docPStatus === BorrowedState.Returned)
         acc.push(endCarrierRecord.value[index])
 
       return acc
@@ -52,13 +54,13 @@ export default function () {
     const misPlaceCarrierRecords = endMisPlaceCarrierRecord.value
 
     const result: CheckResultType[] = cabinetDoorList.value.map((door) => {
-      const currentDoorBorrowCarriers = borrowCarriers.filter(item => item.cabinet_door_id === door.Id)
-      const currentDoorReturnCarriers = returnCarriers.filter(item => item.cabinet_door_id === door.Id)
+      const currentDoorBorrowCarriers = borrowCarriers.filter(item => item.cabinetDoorId === door.id)
+      const currentDoorReturnCarriers = returnCarriers.filter(item => item.cabinetDoorId === door.id)
 
       // 如果是本次操作的柜门，则显示错放文件数据
-      const isOperationCabinetDoor = lastOperationCabinetDoorList.value.find(item => item.Id === door.Id)
+      const isOperationCabinetDoor = lastOperationCabinetDoorList.value.find(item => item.id === door.id)
       const currentDoorMisPlaceCarrierRecords = isOperationCabinetDoor
-        ? misPlaceCarrierRecords.filter(item => Number(item.CabinetDoorId) === door.Id)
+        ? misPlaceCarrierRecords.filter(item => Number(item.cabinetDoorId) === door.id)
         : []
 
       return {
@@ -80,7 +82,7 @@ export default function () {
    */
   const startCheckCountdown = (doorId: number, callback: () => void) => {
     const timer = window.setInterval(async () => {
-      const door = cabinetDoorList.value.find(item => item.Id === doorId)
+      const door = cabinetDoorList.value.find(item => item.id === doorId)
       if (door === undefined)
         return
 
@@ -88,6 +90,7 @@ export default function () {
         ...door,
         checkCountdown: door.checkCountdown - 1,
       })
+
       if (door.checkCountdown !== 0)
         return
       callback()
@@ -104,7 +107,7 @@ export default function () {
    * @return {*}
    */
   const onCheckCountdownEnd = async (doorId: number) => {
-    const door = cabinetDoorList.value.find(item => item.Id === doorId)
+    const door = cabinetDoorList.value.find(item => item.id === doorId)
     if (door === undefined || door.txAddr === null)
       return
 
@@ -144,44 +147,44 @@ export default function () {
   }
 
   /**
-   * @description: 开启盘点
+   * @description: 进行盘点
    * @return {*}
    */
   const handleCheck = async (doorId: number) => {
     resetCountdowns()
 
-    const selectedDoor = cabinetDoorList.value.find(item => item.Id === doorId)
-    if (selectedDoor === undefined)
+    const currentDoor = cabinetDoorList.value.find(item => item.id === doorId)
+    if (currentDoor === undefined)
       return
 
-    const { txAddr: address, antenna_port: port, txId: antennaId } = selectedDoor
+    const { txAddr: address, txId: antennaId } = currentDoor
     if (address === null || antennaId === null)
       return
 
-    const isConnected = await initRfid(address, port)
+    const isConnected = await initRfid(address, 8899)
     if (!isConnected) {
       createAlert('读取连接设备失败')
       return false
     }
 
     // 如果该柜门正在盘点中
-    const selectedDoorIsChecking = selectedDoor.checkCountdown !== 10
-    if (selectedDoorIsChecking) {
+    const currentDoorIsChecking = currentDoor.checkCountdown !== 10
+    if (currentDoorIsChecking) {
       createAlert('该柜门正在盘点中')
       return false
     }
 
     // 记录本次盘点操作的柜门
-    setCurrentCheckCabinetDoorId(selectedDoor.id)
+    setCurrentCheckCabinetDoorId(currentDoor.id)
     // 开启盘点面板
     setCheckStatusDialogVisible(true)
 
     // 开启读取器
     handleOpenRfid(address, antennaId)
 
-    const stopCheckCountdown = await startCheckCountdown(selectedDoor.id, async () => {
+    const stopCheckCountdown = await startCheckCountdown(currentDoor.id, async () => {
       stopCheckCountdown()
-      await onCheckCountdownEnd(selectedDoor.id)
+      await onCheckCountdownEnd(currentDoor.id)
 
       if (isChecking.value)
         return
@@ -189,21 +192,44 @@ export default function () {
     })
   }
 
+  /**
+   * @description: 手动盘点
+   * @return {*}
+   */
   const handleManualCheck = () => {
     resetOperationTimeoutCountdown()
-
-    if (!rfidIsOnline.value) {
-      createAlert('读取器连接失败')
-      return
-    }
 
     // 记录盘点开始时的载体数据
     recordDataWhenCheckStart()
 
-    cabinetDoorList.value.forEach((door) => {
-      addLastOperationCabinetDoorRecords(door)
-      handleCheck(door.id)
-    })
+    const noAvailableRfid = cabinetDoorList.value.every(item => !item.rfidIsConnected)
+    if (noAvailableRfid) {
+      createAlert('RFID 读取器连接失败')
+      return
+    }
+
+    const availableCabinetDoors = cabinetDoorList.value.filter(item => item.rfidIsConnected)
+    if (availableCabinetDoors.length !== cabinetDoorList.value.length) {
+      const unavailableCabinetDoorNames = cabinetDoorList.value.filter(item => !item.rfidIsConnected).map(item => item.name).join('、')
+      Modal.confirm({
+        title: '提示',
+        content: `柜门${unavailableCabinetDoorNames}的 RFID 读取器连接失败，是否继续盘点？`,
+        okText: '确定',
+        cancelText: '取消',
+        onOk() {
+          availableCabinetDoors.forEach((door) => {
+            addLastOperationCabinetDoorRecords(door)
+            handleCheck(door.id)
+          })
+        },
+      })
+    }
+    else {
+      cabinetDoorList.value.forEach((door) => {
+        addLastOperationCabinetDoorRecords(door)
+        handleCheck(door.id)
+      })
+    }
   }
 
   return {

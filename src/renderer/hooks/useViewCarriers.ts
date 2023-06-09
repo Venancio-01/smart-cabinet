@@ -1,4 +1,4 @@
-import type { doc_document } from '@prisma/client'
+import type { DocDocument } from '@prisma/client'
 import CarrierTable from '@/components/CarrierTable.vue'
 import useCarrier from '@/hooks/useCarrier'
 import { useStore } from '@/store'
@@ -8,18 +8,23 @@ export default function () {
   const { cabinetDoorList, misPlaceCarrierData } = storeToRefs(store)
   const { getCarriersByCondition } = useCarrier()
 
-  const data = ref<doc_document[]>([])
+  const data = ref<DocDocument[]>([])
   const total = ref(0)
 
   const getCarriers = async (condition: CarrierQueryProps) => {
     const result = await getCarriersByCondition(condition)
 
     data.value = result.data.map((item) => {
-      const misPlaceDoorId = misPlaceCarrierData.value.reduce<null | number>(
-        (acc, cur) => (cur.operationID === item.doc_rfid ? cur.CabinetDoorId : acc),
-        null,
+      const misPlaceDoorId = misPlaceCarrierData.value.reduce(
+        (acc, cur) => {
+          if (cur.operationId === item.docRfid)
+            acc = cur.cabinetDoorId
+
+          return acc
+        },
+        '',
       )
-      const misPlaceDoorName = cabinetDoorList.value.find(item => item.id === misPlaceDoorId)?.viewName || ''
+      const misPlaceDoorName = cabinetDoorList.value.find(item => item.id === Number(misPlaceDoorId))?.viewName || ''
       return {
         ...item,
         misPlaceDoorName,

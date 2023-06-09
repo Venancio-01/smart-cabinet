@@ -47,7 +47,7 @@ export default function () {
     resetOperationTimeoutCountdown()
 
     if (isLockControlConnected) {
-      openLock(Number(door.Kgbh))
+      openLock(door.kgbh)
       addLastOperationCabinetDoorRecords(door)
 
       setTimeout(() => {
@@ -55,15 +55,13 @@ export default function () {
       }, 1000)
     }
 
-    router.push(`/open/${door.Id}`)
+    router.push(`/open/${door.id}`)
   }
 
   const initCabinetData = async () => {
     await getCurrentCabinet()
-    if (!currentCabinet)
-      return
-
-    getCabinetDoors()
+    if (currentCabinet)
+      await getCabinetDoors()
   }
 
   return {

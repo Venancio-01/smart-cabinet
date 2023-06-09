@@ -11,7 +11,7 @@ const cabinetDoor = computed(() => {
 })
 
 const misPlaceCarriers = computed(() => {
-  return misPlaceCarrierData.value.filter(item => item.CabinetDoorId === cabinetDoor.value.id)
+  return misPlaceCarrierData.value.filter(item => Number(item.cabinetDoorId) === cabinetDoor.value.id)
 })
 
 const hasMisPlace = computed(() => {

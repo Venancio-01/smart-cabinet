@@ -1,13 +1,11 @@
 import {
-  doc_document,
-  rfid_cabinetdoor,
-  sys_user,
-  rfid_switch_record,
-  sys_role,
-  sys_user_role,
-  sys_dept,
-  sys_role_permission,
-  sys_permission
+  DocDocument,
+  RfidCabinetdoor,
+  SysUser,
+  RfidSwitchRecord,
+  SysRole,
+  SysUserRole,
+  SysDept
 } from '@prisma/client'
 import type { ServiceType } from '../main/services/index'
 export { }
@@ -27,17 +25,6 @@ declare global {
     data?: T
   }
 
-  type UserProps = sys_user & {
-    sys_dept: sys_dept | null
-    sys_user_role: (sys_user_role & {
-      sys_role: sys_role & {
-        sys_role_permission: sys_role_permission & {
-          sys_permission: sys_permission
-        }
-      }
-    })[]
-  }
-
   type PasswordLoginProps = {
     username: string
     password: string
@@ -53,7 +40,7 @@ declare global {
     cardNumber: string
   }
 
-  type CabinetDoorProps = rfid_cabinetdoor & {
+  type CabinetDoorProps = RfidCabinetdoor & {
     isOpen: boolean
     rfidIsConnected:boolean
     checkCountdown: number
@@ -86,18 +73,9 @@ declare global {
   }
 
   type CheckResultType = CabinetDoorProps & {
-    borrowCarriers: doc_document[]
-    returnCarriers: doc_document[]
-    misPlaceCarrierRecords: rfid_switch_record[]
-  }
-
-  type UserWithRoleProps = sys_user & {
-    role: sys_role | null
-  }
-
-  type RFIDParseType = {
-    TID: string
-    EPC: string
+    borrowCarriers: DocDocument[]
+    returnCarriers: DocDocument[]
+    misPlaceCarrierRecords: rfidSwitchRecord[]
   }
 
   type FingerOrder = 1 | 2

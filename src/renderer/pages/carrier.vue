@@ -61,13 +61,13 @@ onMounted(() => {
           <a-input v-model:value="condition.title" />
         </a-form-item>
 
-        <a-form-item label="状态" name="title">
+        <a-form-item label="在位状态" name="title">
           <a-select v-model:value="condition.state" allow-clear @change="handleSearch">
             <a-select-option :value="0">
-              在位
+              在柜
             </a-select-option>
             <a-select-option :value="1">
-              借出
+              领用
             </a-select-option>
             <a-select-option :value="2">
               错放
@@ -77,7 +77,7 @@ onMounted(() => {
 
         <a-form-item v-show="currentCabinetDoorId === 0" label="所属柜门" name="title">
           <a-select v-model:value="condition.cabinetId" allow-clear @change="handleSearch">
-            <a-select-option v-for="item in cabinetDoorList" :key="item.CabinetId" :value="item.CabinetId">
+            <a-select-option v-for="item in cabinetDoorList" :key="item.cabinetId" :value="item.cabinetId">
               {{ item.viewName }}
             </a-select-option>
           </a-select>
@@ -85,8 +85,8 @@ onMounted(() => {
 
         <a-form-item v-show="currentCabinetDoorId === 0" label="所属部门" name="title">
           <a-select v-model:value="condition.departmentId" allow-clear @change="handleSearch">
-            <a-select-option v-for="item in departmentList" :key="item.dept_id" :value="item.dept_id">
-              {{ item.dept_name }}
+            <a-select-option v-for="item in departmentList" :key="item.deptId" :value="item.deptId">
+              {{ item.deptName }}
             </a-select-option>
           </a-select>
         </a-form-item>

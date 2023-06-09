@@ -72,14 +72,14 @@ function handleSetCard() {
 }
 
 const departmentName = computed(() => {
-  return departmentList.value.find(department => user.value.dept_id === department.dept_id)?.dept_name
+  return departmentList.value.find(department => user.value.deptId === department.deptId)?.deptName
 })
 const roleName = computed(() => {
-  const roleId = userRoleList.value.find(userRole => user.value.user_id === userRole.user_id)?.role_id
+  const roleId = userRoleList.value.find(userRole => user.value.userId === userRole.userId)?.roleId
   if (!roleId)
     return ''
 
-  return roleList.value.find(role => role.role_id === roleId)?.role_name
+  return roleList.value.find(role => role.roleId === roleId)?.roleName
 })
 </script>
 
@@ -98,7 +98,7 @@ const roleName = computed(() => {
       </div>
       <div class="flex justify-center items-center flex-col text-light">
         <div class="font-large mb-[4px]">
-          {{ user?.user_name }}
+          {{ user?.userName }}
         </div>
         <div class="font-small">
           {{ departmentName }}

@@ -1,8 +1,8 @@
-import type { rfid_cabinet, rfid_cabinetdoor } from '@prisma/client'
+import type { RfidCabinet, RfidCabinetdoor } from '@prisma/client'
 import { prisma } from '@/database'
 import { getLocalIpAddress } from '@/utils'
 
-let currentCabinet: rfid_cabinet | null = null
+let currentCabinet: RfidCabinet | null = null
 
 async function getCurrentCabinet() {
   if (currentCabinet)
@@ -16,14 +16,14 @@ async function getCurrentCabinet() {
   return currentCabinet
 }
 
-function getCabinetData(): Promise<rfid_cabinet[]> {
-  return prisma.rfid_cabinet.findMany()
+function getCabinetData(): Promise<RfidCabinet[]> {
+  return prisma.rfidCabinet.findMany()
 }
 
-function getCabinetDoors(): Promise<rfid_cabinetdoor[]> {
-  return prisma.rfid_cabinetdoor.findMany({
+function getCabinetDoors(): Promise<RfidCabinetdoor[]> {
+  return prisma.rfidCabinetdoor.findMany({
     where: {
-      CabinetId: currentCabinet.ID,
+      cabinetId: currentCabinet.id,
     },
   })
 }

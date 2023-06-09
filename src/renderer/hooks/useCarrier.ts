@@ -15,6 +15,7 @@ export default function () {
 
   const getCarriers = async () => {
     const carrierList = await window.JSBridge.carrier.getCarriers()
+    console.log('🚀 ~ file: useCarrier.ts:18 ~ getCarriers ~ carrierList:', carrierList)
     setCarrierList(carrierList)
     return carrierList
   }
@@ -38,7 +39,7 @@ export default function () {
    * @return {*}
    */
   const updateCarrier = async (door: CabinetDoorProps) => {
-    const id = user.value?.user_id
+    const id = user.value?.userId
     await window.JSBridge.carrier.updateCarrier({ ...door }, id)
   }
 

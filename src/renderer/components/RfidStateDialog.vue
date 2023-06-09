@@ -10,7 +10,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emits = defineEmits(['update:visible'])
 const store = useStore()
-const { rfidIsOnline, cabinetDoorList } = storeToRefs(store)
+const { cabinetDoorList } = storeToRefs(store)
 
 const show = computed({
   get: () => {
@@ -30,17 +30,17 @@ const show = computed({
       </div>
       <div class="content">
         <div v-for="(item, index) in cabinetDoorList" :key="index">
-          柜门 - {{ item.Name }} ，RFID 连接{{ item.rfidIsConnected ? '成功' : '失败' }}
+          柜门 - {{ item.name }} ，RFID 连接{{ item.rfidIsConnected ? '成功' : '失败' }}
         </div>
       </div>
     </div>
 
-    <div v-if="!rfidIsOnline" class="state-bar">
+    <div class="state-bar">
       <div class="label">
         解决方案：
       </div>
       <div class="content">
-        {{ rfidIsOnline ? 'RFID 正常连接' : '检查RFID线缆是否正常，并尝试插拔后重新启动软件。' }}
+        检查RFID线缆是否正常，并尝试插拔后重新启动软件。
       </div>
     </div>
 

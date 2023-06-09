@@ -15,8 +15,8 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emits = defineEmits(['update:visible'])
 const store = useStore()
-const { user } = storeToRefs(store)
-const { getConnectStatus, openFingerDevice, closeFingerDevice, startRegisterFinger, endRegisterFinger, registerResult } = useFinger()
+const { user, isFingerConnected } = storeToRefs(store)
+const { openFingerDevice, closeFingerDevice, startRegisterFinger, endRegisterFinger, registerResult } = useFinger()
 const { resetOperationTimeoutCountdown } = useTime()
 
 const show = computed({
@@ -56,16 +56,16 @@ watch(show, async (value) => {
   resetOperationTimeoutCountdown()
 
   if (value) {
-    isConnected.value = await getConnectStatus()
-    if (!isConnected.value) {
+    if (!isFingerConnected.value) {
       message.value = '设备未连接'
       return
     }
 
     message.value = '请按压同一手指3次'
     await openFingerDevice()
-    if (user.value?.user_id)
-      startRegisterFinger(user.value?.user_id, props.order)
+    if (user.value?.userId)
+    // @ts-expect-error bigint
+      startRegisterFinger(user.value?.userId, props.order)
   }
   else {
     await closeFingerDevice()
@@ -76,11 +76,12 @@ watch(show, async (value) => {
 </script>
 
 <template>
-  <BaseDialog v-model:visible="show" :title="title" :footer="null">
-    <div class="flex">
+  <BaseDialog v-model:visible="show" :title="title" :footer="null" centered>
+    <div class="flex pb-20px">
       <div class="flex h-full items-center">
         <BaseIcon icon="zhiwen" class="icon-large text-white" />
       </div>
+
       <div class="relative m-4 flex flex-1 select-none items-center justify-center rounded-lg text-white text-xl">
         {{ message }}
       </div>

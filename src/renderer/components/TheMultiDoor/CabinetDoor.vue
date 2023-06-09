@@ -17,9 +17,6 @@ const props = withDefaults(defineProps<Props>(), {
   departmentName: '',
 })
 
-onMounted(() => {
-  console.log(props.misPlaceNumber)
-})
 const hasMisPlace = computed(() => props.misPlaceNumber > 0)
 </script>
 

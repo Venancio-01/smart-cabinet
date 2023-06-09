@@ -28,9 +28,9 @@ const passwordAuthRef = ref()
 
 async function handlePasswordComplete() {
   const result = passwordAuthRef.value?.handleComplete()
-  const { login_name, salt, password } = user.value
+  const { loginName, salt, password } = user.value
   const params = {
-    loginName: login_name,
+    loginName,
     salt,
     password,
     newPassword: result.password,
@@ -50,7 +50,7 @@ function handleClose() {
 }
 
 function handleFingerComplete(userId: bigint) {
-  const result = user.value.user_id === userId
+  const result = user.value.userId === userId
   console.log('🚀 ~ file: VerifyIdentity.vue:71 ~ handleFingerComplete ~ result:', result)
 }
 

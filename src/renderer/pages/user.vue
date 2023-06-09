@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { ColumnsType } from 'ant-design-vue/es/table'
-import type { sys_user } from '@prisma/client'
+import type { SysUser } from '@prisma/client'
 import { useStore } from '@/store'
 import useSys from '@/hooks/useSys'
 import useTime from '@/hooks/useTime'
@@ -18,32 +18,32 @@ const condition = reactive<UserQueryProps>({
   departmentId: undefined,
 })
 
-const data = ref<sys_user[]>([])
+const data = ref<SysUser[]>([])
 const total = ref(0)
 const columns: ColumnsType = [
   {
     title: '用户名称',
-    dataIndex: 'user_name',
-    key: 'user_name',
+    dataIndex: 'userName',
+    key: 'userName',
   },
   {
-    title: '所属部门',
-    dataIndex: 'dept_id',
-    key: 'dept_id',
+    title: '所属机构',
+    dataIndex: 'deptId',
+    key: 'deptId',
     customRender: ({ record }) => {
-      return departmentList.value.find(item => item.dept_id === record.dept_id)?.dept_name
+      return departmentList.value.find(item => item.deptId === record.deptId)?.deptName
     },
   },
   {
     title: '用户角色',
-    dataIndex: 'role_id',
-    key: 'role_id',
+    dataIndex: 'roleId',
+    key: 'roleId',
     customRender: ({ record }) => {
-      const roleId = userRoleList.value.find(userRole => userRole.user_id === record.user_id)?.role_id
+      const roleId = userRoleList.value.find(userRole => userRole.userId === record.userId)?.roleId
       if (!roleId)
         return ''
 
-      return roleList.value.find(role => role.role_id === roleId)?.role_name
+      return roleList.value.find(role => role.roleId === roleId)?.roleName
     },
   },
 ]
@@ -91,18 +91,18 @@ onMounted(() => {
           <a-input v-model:value="condition.userName" />
         </a-form-item>
 
-        <a-form-item v-show="currentCabinetDoorId === 0" label="所属部门">
+        <a-form-item v-show="currentCabinetDoorId === 0" label="所属机构">
           <a-select v-model:value="condition.departmentId" allow-clear @change="handleSearch">
-            <a-select-option v-for="item in departmentList" :key="item.dept_id" :value="item.dept_id">
-              {{ item.dept_name }}
+            <a-select-option v-for="item in departmentList" :key="item.deptId" :value="item.deptId">
+              {{ item.deptName }}
             </a-select-option>
           </a-select>
         </a-form-item>
 
         <a-form-item label="用户角色">
           <a-select v-model:value="condition.roleId" allow-clear @change="handleSearch">
-            <a-select-option v-for="item in roleList" :key="item.role_id" :value="item.role_id">
-              {{ item.role_name }}
+            <a-select-option v-for="item in roleList" :key="item.roleId" :value="item.roleId">
+              {{ item.roleName }}
             </a-select-option>
           </a-select>
         </a-form-item>

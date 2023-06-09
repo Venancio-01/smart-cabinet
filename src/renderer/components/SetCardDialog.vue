@@ -41,8 +41,7 @@ async function handleUpdateCardNumber(cardNumber: string) {
     return false
   }
 
-  // @ts-expect-error bigint
-  const success = await window.JSBridge.sys.updateCardNumber(user.value.user_id, cardNumber)
+  const success = await window.JSBridge.sys.updateCardNumber(user.value.userId, cardNumber)
   const tips = success ? '卡号设置成功' : '卡号设置失败'
   createAlert(tips)
 
@@ -75,8 +74,8 @@ function onClose() {
 </script>
 
 <template>
-  <BaseDialog v-model:visible="show" title="设置卡号" :footer="null" @close="onClose">
-    <div class="h-full">
+  <BaseDialog v-model:visible="show" title="设置卡号" :footer="null" centered @close="onClose">
+    <div class="h-full pb-20px">
       <div class="flex justify-center">
         <BaseIcon icon="card" class="icon-large text-white" />
       </div>

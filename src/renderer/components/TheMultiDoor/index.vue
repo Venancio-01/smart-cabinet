@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import CabinetDoor from './CabinetDoor.vue'
+import { BorrowedState } from '~/types/enums'
 import { useStore } from '@/store'
 import useCabinet from '@/hooks/useCabinet'
 
@@ -14,9 +15,9 @@ const { openCabinetDoor } = useCabinet()
  */
 const doorList = computed(() => {
   return cabinetDoorList.value.map((door) => {
-    const totalCarriers = carrierList.value.filter(item => item.CabinetDoorId === door.id)
-    const inPlaceCarriers = totalCarriers.filter(item => item.loan_status === 0)
-    const misPlaceCarries = misPlaceCarrierData.value.filter(item => item.CabinetDoorId === door.id)
+    const totalCarriers = carrierList.value.filter(item => item.cabinetDoorId === door.id)
+    const inPlaceCarriers = totalCarriers.filter(item => item.docPStatus === BorrowedState.Returned)
+    const misPlaceCarries = misPlaceCarrierData.value.filter(item => Number(item.cabinetDoorId) === door.id)
 
     return {
       ...door,
@@ -29,9 +30,9 @@ const doorList = computed(() => {
 
 function generateDepartmentName(departmentId: number) {
   // @ts-expect-error bigint
-  const department = departmentList.value.find(item => item.dept_id === departmentId)
+  const department = departmentList.value.find(item => item.deptId === departmentId)
 
-  return department ? department.dept_name : ''
+  return department ? department.deptName : ''
 }
 </script>
 

@@ -2,17 +2,17 @@
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
+import type { DocDocument, RfidSwitchRecord } from '@prisma/client'
 import { useStore } from '@/store'
 import { useCheckStore } from '@/store/check'
 import useCheck from '@/hooks/useCheck'
 import useCheckRecord from '@/hooks/useCheckRecord'
-import createAlert from '@/components/BaseAlert'
 import useTime from '@/hooks/useTime'
 import BackButton from '@/components/BackButton.vue'
 
 const router = useRouter()
 const store = useStore()
-const { rfidIsOnline, isLoggedIn, userList, cabinetDoorList, departmentList } = storeToRefs(store)
+const { isLoggedIn, userList, cabinetDoorList, departmentList } = storeToRefs(store)
 const checkStore = useCheckStore()
 const { addLastOperationCabinetDoorRecords } = checkStore
 const { checkResultList, lastOperationCabinetDoorList } = storeToRefs(checkStore)
@@ -61,11 +61,6 @@ function isCabinetDoorChanged(id: number) {
 function handleRecheck() {
   resetConfirmationTimeCountdown()
 
-  if (!rfidIsOnline.value) {
-    createAlert('读取器连接失败')
-    return
-  }
-
   lastOperationCabinetDoorList.value.forEach((item) => {
     addLastOperationCabinetDoorRecords(item)
     handleCheck(item.id)
@@ -89,46 +84,46 @@ function goBack() {
   }
 }
 
-const documentColumns: ColumnsType = [
+const documentColumns: ColumnsType<DocDocument> = [
   {
     title: '载体名',
-    dataIndex: 'doc_name',
-    key: 'doc_name',
+    dataIndex: 'docName',
+    key: 'docName',
   },
   {
     title: '所属柜门',
     dataIndex: 'viewName',
     key: 'viewName',
     customRender: ({ record }) => {
-      return cabinetDoorList.value.find(item => item.id === record.CabinetDoorId)?.viewName
+      return cabinetDoorList.value.find(item => item.id === record.cabinetDoorId)?.viewName
     },
   },
   {
-    title: '所属部门',
+    title: '所属机构',
     dataIndex: 'department',
     key: 'department',
     customRender: ({ record }) => {
-      return departmentList.value.find(item => item.id === record.binding_dept_id)?.dept_name
+      return departmentList.value.find(item => item.deptId === record.deptId)?.deptName
     },
   },
   {
     title: '最后操作用户',
-    dataIndex: 'operation_user_id',
-    key: 'operation_user_id',
+    dataIndex: 'docLastUserId',
+    key: 'docLastUserId',
     customRender: ({ record }) => {
-      return userList.value.find(item => item.id === record.operation_user_id)?.user_name
+      return userList.value.find(item => Number(item.userId) === record.docLastUserId)?.userName
     },
   },
   {
     title: '最后操作时间',
-    dataIndex: 'doc_last_time',
-    key: 'doc_last_time',
+    dataIndex: 'docLastTime',
+    key: 'docLastTime',
     customRender: ({ record }) => {
-      return dayjs(record.doc_last_time).format('YYYY-MM-DD HH:mm:ss')
+      return dayjs(record.docLastTime).format('YYYY-MM-DD HH:mm:ss')
     },
   },
 ]
-const recordColumns: ColumnsType = [
+const recordColumns: ColumnsType<RfidSwitchRecord> = [
   {
     title: '错放内容',
     dataIndex: 'content',
@@ -136,10 +131,10 @@ const recordColumns: ColumnsType = [
   },
   {
     title: '错放柜门',
-    dataIndex: 'CabinetDoorId',
-    key: 'CabinetDoorId',
+    dataIndex: 'cabinetDoorId',
+    key: 'cabinetDoorId',
     customRender: ({ record }) => {
-      return cabinetDoorList.value.find(item => item.id === record.CabinetDoorId)?.viewName
+      return cabinetDoorList.value.find(item => item.id === Number(record.cabinetDoorId))?.viewName
     },
   },
 ]
@@ -178,7 +173,7 @@ const recordColumns: ColumnsType = [
               <div v-if="isCabinetDoorChanged(item.id)">
                 <div v-if="item.borrowCarriers.length !== 0">
                   <div class="my-4">
-                    本次借出载体
+                    本次领用载体
                   </div>
                   <a-table :data-source="item.borrowCarriers" :columns="documentColumns" :pagination="false">
                     <template #emptyText>
@@ -226,7 +221,7 @@ const recordColumns: ColumnsType = [
 
         <div class="statistics mt-4">
           <div class="!mt-0">
-            共计借出载体数量：{{ statisticsData.borrow }}
+            共计领用载体数量：{{ statisticsData.borrow }}
           </div>
           <div>共计归还载体数量：{{ statisticsData.return }}</div>
           <div>共计错放载体数量：{{ statisticsData.misPlace }}</div>

@@ -1,22 +1,21 @@
-import type { doc_document, rfid_cabinet, rfid_switch_record, sys_dept, sys_role, sys_user, sys_user_role } from '@prisma/client'
+import type { DocDocument, RfidCabinet, RfidSwitchRecord, SysDept, SysRole, SysUser, SysUserRole } from '@prisma/client'
 import { defineStore } from 'pinia'
+import { BorrowedState } from '~/types/enums'
 
 interface State {
   backgroundUrl: string
   isLockControlConnected: boolean
   isNetworkConnected: boolean
   isFingerConnected: boolean
-  rfidIsOnline: boolean
-  rfidConnectionStatus: boolean[]
   isLoggedIn: boolean
-  user: sys_user
-  userList: sys_user[]
-  departmentList: sys_dept[]
-  roleList: sys_role[]
-  userRoleList: sys_user_role[]
-  carrierList: doc_document[]
-  misPlaceCarrierData: rfid_switch_record[]
-  currentCabinet: rfid_cabinet | null
+  user: SysUser
+  userList: SysUser[]
+  departmentList: SysDept[]
+  roleList: SysRole[]
+  userRoleList: SysUserRole[]
+  carrierList: DocDocument[]
+  misPlaceCarrierData: RfidSwitchRecord[]
+  currentCabinet: RfidCabinet | null
   cabinetDoorList: CabinetDoorProps[]
   lockCommandInterval: number
   lockControlState: null | LockControlStateProps
@@ -24,7 +23,7 @@ interface State {
   checkCountdownDialogVisible: boolean
   verifyIdentityDialogVisible: boolean
   currentCheckCabinetDoorId: number | null
-  checkResultList: doc_document[]
+  checkResultList: DocDocument[]
   reviewCarrierCondition: ReviewCarrierCondition
   loading: boolean
   activationCode: string
@@ -42,8 +41,6 @@ export const useStore = defineStore('main', {
       isLockControlConnected: false,
       isNetworkConnected: false,
       isFingerConnected: false,
-      rfidIsOnline: false,
-      rfidConnectionStatus: [],
       isLoggedIn: false,
       user: null,
       userList: [],
@@ -85,7 +82,7 @@ export const useStore = defineStore('main', {
     },
     inPlaceCarrierTotal(state) {
       return state.carrierList.reduce((total, item) => {
-        if (item.loan_status === 0)
+        if (item.docPStatus === BorrowedState.Returned)
           total += 1
         return total
       }, 0)
@@ -97,12 +94,6 @@ export const useStore = defineStore('main', {
   actions: {
     setBackgroundUrl(url: string) {
       this.backgroundUrl = url
-    },
-    setRfidIsConnected(state: boolean) {
-      this.rfidIsOnline = state
-    },
-    setRfidConnectionStatus(status: boolean[]) {
-      this.rfidConnectionStatus = status
     },
     setLockControlConnectionStatus(state: boolean) {
       this.isLockControlConnected = state
@@ -116,40 +107,35 @@ export const useStore = defineStore('main', {
     setIsLoggedIn(visible: boolean) {
       this.isLoggedIn = visible
     },
-    setCurrentCabinet(data: rfid_cabinet) {
+    setCurrentCabinet(data: RfidCabinet) {
       this.currentCabinet = data
     },
     setCabinetDoorList(list: CabinetDoorProps[]) {
       this.cabinetDoorList = list
     },
     setCabinetDoor(data: CabinetDoorProps) {
-      this.cabinetDoorList = this.cabinetDoorList.reduce((acc: CabinetDoorProps[], cur: CabinetDoorProps) => {
-        if (cur.Id === data.Id)
-          acc.push(data)
-        else acc.push(cur)
-
-        return acc
-      }, [])
+      const index = this.cabinetDoorList.findIndex(item => item.id === data.id)
+      this.cabinetDoorList[index] = data
     },
-    setMisPlaceCarrierData(data: rfid_switch_record[]) {
+    setMisPlaceCarrierData(data: RfidSwitchRecord[]) {
       this.misPlaceCarrierData = data
     },
-    setUserData(user: UserProps | null) {
+    setUserData(user: SysUser | null) {
       this.user = user
     },
-    setUserList(list: sys_user[]) {
+    setUserList(list: SysUser[]) {
       this.userList = list
     },
-    setDepartmentList(list: sys_dept[]) {
+    setDepartmentList(list: SysDept[]) {
       this.departmentList = list
     },
-    setRoleList(list: sys_role[]) {
+    setRoleList(list: SysRole[]) {
       this.roleList = list
     },
-    setUserRoleList(list: sys_user_role[]) {
+    setUserRoleList(list: SysUserRole[]) {
       this.userRoleList = list
     },
-    setCarrierList(list: doc_document[]) {
+    setCarrierList(list: DocDocument[]) {
       this.carrierList = list
     },
     setLockCommandInterval(time: number) {
@@ -167,7 +153,7 @@ export const useStore = defineStore('main', {
     setCurrentCheckCabinetDoorId(cabinetDoorId: number | null) {
       this.currentCheckCabinetDoorId = cabinetDoorId
     },
-    setCheckResultList(result: doc_document[]) {
+    setCheckResultList(result: DocDocument[]) {
       this.checkResultList = result
     },
     setReviewCarrierCondition(condition: ReviewCarrierCondition) {

@@ -264,7 +264,7 @@ export function onIdentify(templateData) {
   const success = result === 1
   const msg = success ? '识别成功!' : '识别失败'
   const fingerIndex = fingerId[0] - 1
-  const userId = userFingerData[fingerIndex]?.user_id
+  const userId = userFingerData[fingerIndex]?.userId
   return genResponseData(success, msg, userId)
 }
 
@@ -283,10 +283,10 @@ export function handleIdentify() {
   * @return {*}
 */
 export async function loadAllTemplate() {
-  userFingerData = await prisma.rfid_finger_user.findMany({
+  userFingerData = await prisma.rfidFingerUser.findMany({
     select: {
-      FingerData: true,
-      Userid: true,
+      fingerData: true,
+      userid: true,
     },
   })
   if (userFingerData.length === 0)

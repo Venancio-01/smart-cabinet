@@ -58,7 +58,7 @@ watch(route, () => {
         <a-tab-pane v-if="hasPermission('borrow_return')" key="1" tab="柜门信息" />
         <a-tab-pane v-if="hasPermission('view_carrier')" key="2" tab="载体管理" />
         <a-tab-pane v-if="hasPermission('view_user')" key="3" tab="用户管理" />
-        <a-tab-pane v-if="hasPermission('view_dept')" key="4" tab="部门管理" />
+        <a-tab-pane v-if="hasPermission('view_dept')" key="4" tab="机构管理" />
       </a-tabs>
 
       <div class="relative flex justify-end items-center min-w-[200px]">

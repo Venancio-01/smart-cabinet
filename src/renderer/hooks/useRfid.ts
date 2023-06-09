@@ -10,7 +10,6 @@ export default function () {
    * @return {*}
    */
   const getConnectState = async () => {
-    console.log(111)
     const list: CabinetDoorProps[] = []
 
     for (let i = 0; i < cabinetDoorList.value.length; i++) {
@@ -19,7 +18,6 @@ export default function () {
         continue
 
       const connectStatus = await window.JSBridge.rfid.init(cabinetDoor.txAddr, 8899)
-      console.log('🚀 ~ file: useRfid.ts:21 ~ getConnectState ~ connectStatus:', connectStatus)
       await window.JSBridge.rfid.destroy(cabinetDoor.txAddr)
 
       const item = {

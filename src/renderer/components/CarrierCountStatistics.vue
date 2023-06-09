@@ -33,7 +33,7 @@ function goCarrierPageWithMisPlace() {
 
     <div class="statistics-count" @click="goCarrierPageWithInPlace">
       <span class="content">{{ inPlaceCarrierTotal }}</span>
-      <span class="title">在位载体</span>
+      <span class="title">在柜载体</span>
     </div>
 
     <div class="statistics-count" @click="goCarrierPageWithMisPlace">

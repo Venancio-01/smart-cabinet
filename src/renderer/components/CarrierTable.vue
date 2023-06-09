@@ -1,12 +1,13 @@
 <script lang="tsx" setup>
-import type { doc_document } from '@prisma/client'
+import type { DocDocument } from '@prisma/client'
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
+import { BorrowedState } from '~/types/enums'
 import { useStore } from '@/store'
 
 interface Props {
   operable: boolean
-  data: doc_document[]
+  data: DocDocument[]
   total: number
   condition: {
     page: number
@@ -14,7 +15,7 @@ interface Props {
   }
 }
 
-type CustomCarrierType = doc_document & { visible: boolean }
+type CustomCarrierType = DocDocument & { visible: boolean }
 
 const props = withDefaults(defineProps<Props>(), {
   operable: false,
@@ -31,18 +32,18 @@ watch(
     selfData.value = props.data.map(item => ({ ...item, visible: false }))
   },
 )
-const columns = ref<ColumnsType>([
+const columns = ref<ColumnsType<CustomCarrierType>>([
   {
     title: '载体名称',
-    dataIndex: 'doc_name',
-    key: 'doc_name',
+    dataIndex: 'docName',
+    key: 'docName',
   },
   {
     title: '所属柜门',
     dataIndex: 'viewName',
     key: 'viewName',
     customRender: ({ record }) => {
-      return cabinetDoorList.value.find(item => item.Id === record.CabinetDoorId)?.viewName
+      return cabinetDoorList.value.find(item => item.id === record.cabinetDoorId)?.viewName
     },
   },
   {
@@ -58,36 +59,36 @@ const columns = ref<ColumnsType>([
     dataIndex: 'department',
     key: 'department',
     customRender: ({ record }) => {
-      return departmentList.value.find(item => item.dept_id === record.dept_id)?.dept_name
+      return departmentList.value.find(item => item.deptId === record.deptId)?.deptName
     },
   },
   {
     title: '状态',
     width: '80px',
-    dataIndex: 'loan_status',
-    key: 'loan_status',
+    dataIndex: 'docPStatus',
+    key: 'docPStatus',
   },
   {
     title: '最后操作用户',
-    dataIndex: 'operation_user_id',
-    key: 'operation_user_id',
+    dataIndex: 'docLastUserId',
+    key: 'docLastUserId',
     customRender: ({ record }) => {
-      return userList.value.find(item => item.user_id === record.operation_user_id)?.user_name
+      return userList.value.find(item => Number(item.userId) === record.docLastUserId)?.userName
     },
   },
   {
     title: '最后操作时间',
-    dataIndex: 'doc_last_time',
-    key: 'doc_last_time',
+    dataIndex: 'docLastTime',
+    key: 'docLastTime',
     width: '170px',
     customRender: ({ record }) => {
-      return record.doc_last_time && dayjs(record.doc_last_time).format('YYYY-MM-DD HH:mm:ss')
+      return record.docLastTime && dayjs(record.docLastTime).format('YYYY-MM-DD HH:mm:ss')
     },
   },
 ])
 
-function judgeIsMisPlace(doc: doc_document) {
-  const misPlace = misPlaceCarrierData.value.find(item => item.operationID === doc.doc_rfid)
+function judgeIsMisPlace(doc: DocDocument) {
+  const misPlace = misPlaceCarrierData.value.find(item => item.operationId === doc.docRfid)
   return misPlace
 }
 
@@ -121,14 +122,15 @@ onMounted(() => {
     @resize-column="handleResizeColumn"
   >
     <template #bodyCell="{ column, record }">
-      <template v-if="column.dataIndex === 'loan_status'">
-        <span v-if="record.loan_status === 0" class="text-green-500">在位</span>
-        <span v-else-if="record.loan_status === 1 && !judgeIsMisPlace(record)" class="text-warning">借出</span>
-        <template v-else-if="record.loan_status === 1 && judgeIsMisPlace(record)">
+      <template v-if="column.dataIndex === 'docPStatus'">
+        <span v-if="record.docPStatus === BorrowedState.Returned" class="text-green-500">在柜</span>
+        <span v-else-if="record.docPStatus === BorrowedState.Borrowed && !judgeIsMisPlace(record)" class="text-warning">领用</span>
+        <template v-else-if="record.docPStatus === BorrowedState.Borrowed && judgeIsMisPlace(record)">
           <span class="text-error">错放</span>
         </template>
       </template>
     </template>
+
     <template #emptyText>
       <span>暂无数据</span>
     </template>

@@ -7,213 +7,229 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model doc_document {
-  doc_id           BigInt    @id @default(autoincrement())
-  doc_name         String    @db.VarChar(200)
-  doc_secret_level Int?
-  doc_type         Int?      @db.TinyInt
-  doc_rfid         String?   @db.VarChar(128)
-  remark           String?   @db.VarChar(100)
-  doc_p_status     Int?      @default(1)
-  user_id          BigInt?
-  dept_id          BigInt?
-  cabinet_id       Int?      @default(0)
-  cabinet_door_id  Int?
-  update_time      DateTime? @db.DateTime(0)
-  create_time      DateTime  @db.DateTime(0)
-  IS_one           String?   @default("0") @db.VarChar(255)
-  doc_last_time    DateTime? @db.DateTime(0)
-  end_time         DateTime? @db.DateTime(0)
-  remove_status    Int?      @default(0) @db.TinyInt
-  code             String?   @db.VarChar(255)
-  urgency          Int?      @db.TinyInt
-  send_dep         Int?      @db.TinyInt
-  send_code        String?   @db.VarChar(255)
-  bureau_depId     BigInt?
-  type             Int?      @db.TinyInt
-  carrier_type_id  BigInt?
-  receive          String?   @db.VarChar(10)
-  year             String?   @db.VarChar(10)
-  num              String?   @db.VarChar(50)
+model DocDocument {
+  docId          BigInt    @id @default(autoincrement()) @map("doc_id")
+  docName        String    @map("doc_name") @db.VarChar(200)
+  docSecretLevel Int?      @map("doc_secret_level")
+  docType        Int?      @map("doc_type") @db.TinyInt
+  docRfid        String?   @map("doc_rfid") @db.VarChar(128)
+  remark         String?   @db.VarChar(100)
+  docPStatus     Int?      @default(1) @map("doc_p_status")
+  userId         BigInt?   @map("user_id")
+  deptId         BigInt?   @map("dept_id")
+  cabinetId      Int?      @default(0) @map("cabinet_id")
+  cabinetDoorId  Int?      @map("cabinet_door_id")
+  updateTime     DateTime? @map("update_time") @db.DateTime(0)
+  createTime     DateTime  @map("create_time") @db.DateTime(0)
+  isOne          String?   @default("0") @map("IS_one") @db.VarChar(255)
+  docLastTime    DateTime? @map("doc_last_time") @db.DateTime(0)
+  endTime        DateTime? @map("end_time") @db.DateTime(0)
+  removeStatus   Int?      @default(0) @map("remove_status") @db.TinyInt
+  code           String?   @db.VarChar(255)
+  urgency        Int?      @db.TinyInt
+  sendDep        Int?      @map("send_dep") @db.TinyInt
+  sendCode       String?   @map("send_code") @db.VarChar(255)
+  bureauDepId    BigInt?   @map("bureau_depId")
+  type           Int?      @db.TinyInt
+  carrierTypeId  BigInt?   @map("carrier_type_id")
+  receive        String?   @db.VarChar(10)
+  year           String?   @db.VarChar(10)
+  num            String?   @db.VarChar(50)
+  docLastUserId  Int?      @map("doc_last_user_id")
 
-  @@index([doc_name], map: "doc_name")
-  @@index([doc_rfid], map: "rfid")
+  @@index([docName], map: "doc_name")
+  @@index([docRfid], map: "rfid")
+  @@map("doc_document")
 }
 
-model rfid_cabinet {
-  ID             Int     @id @default(autoincrement())
-  Name           String? @db.VarChar(20)
-  State          String? @db.VarChar(10)
-  TypeClass      String? @db.VarChar(255)
+model RfidCabinet {
+  id             Int     @id @default(autoincrement()) @map("ID")
+  name           String? @map("Name") @db.VarChar(20)
+  state          String? @map("State") @db.VarChar(10)
+  typeClass      String? @map("TypeClass") @db.VarChar(255)
   fid            Int     @default(0)
   cabIndex       String? @db.VarChar(20)
   cabAddr        String? @db.VarChar(15)
-  RDAddr         String? @db.VarChar(15)
-  RDAddr2        String? @db.VarChar(15)
-  RFAD_Com       String? @db.VarChar(20)
-  RFAD_baudrate  String? @db.VarChar(20)
+  rdAddr         String? @map("RDAddr") @db.VarChar(15)
+  rdAddr2        String? @map("RDAddr2") @db.VarChar(15)
+  rfadCom        String? @map("RFAD_Com") @db.VarChar(20)
+  rfadBaudrate   String? @map("RFAD_baudrate") @db.VarChar(20)
   operateOut     String? @db.VarChar(20)
   openDoor       String? @db.VarChar(10)
   fingerServer   String? @db.VarChar(15)
-  SecretLevel    String? @db.VarChar(50)
-  Classification String? @db.VarChar(50)
-  dept_id        BigInt?
+  secretLevel    String? @map("SecretLevel") @db.VarChar(50)
+  classification String? @map("Classification") @db.VarChar(50)
+  deptId         BigInt? @map("dept_id")
+
+  @@map("rfid_cabinet")
 }
 
-model rfid_card_user {
-  CardId     Int       @id @default(autoincrement())
-  Userid     Int?
-  CardData   String?   @db.VarChar(255)
-  CreateDate DateTime? @db.DateTime(0)
+model RfidCardUser {
+  cardId     Int       @id @default(autoincrement()) @map("CardId")
+  userid     Int?      @map("Userid")
+  cardData   String?   @map("CardData") @db.VarChar(255)
+  createDate DateTime? @map("CreateDate") @db.DateTime(0)
+
+  @@map("rfid_card_user")
 }
 
-model rfid_door_dept {
-  dd_id  BigInt @id @default(autoincrement())
-  DoorID Int?
+model RfidDoorDept {
+  ddId   BigInt @id @default(autoincrement()) @map("dd_id")
+  doorId Int?   @map("DoorID")
   deptid Int?
+
+  @@map("rfid_door_dept")
 }
 
-model rfid_door_user {
-  du_id  BigInt @id @default(autoincrement())
-  DoorID Int?
-  Userid Int?
+model RfidDoorUser {
+  duId   BigInt @id @default(autoincrement()) @map("du_id")
+  doorId Int?   @map("DoorID")
+  userid Int?   @map("Userid")
+
+  @@map("rfid_door_user")
 }
 
-model rfid_finger_user {
-  FingerID   Int       @id @default(autoincrement())
-  Userid     Int?
-  order      Int?
-  FingerData String?   @db.VarChar(3000)
-  CreateDate DateTime? @db.DateTime(0)
+model RfidRfidRecord {
+  id             Int       @id @default(autoincrement())
+  userId         BigInt?
+  operationId    String?   @map("operationID") @db.VarChar(50)
+  cabinetId      Int?
+  cabDoorId      Int?
+  rfidId         String?   @map("RFIDId") @db.VarChar(50)
+  createTime     DateTime? @db.DateTime(0)
+  handleId       String?   @default("-1") @map("handleID") @db.VarChar(50)
+  isOpen         String?   @db.VarChar(10)
+  isBorrow       String?   @db.VarChar(10)
+  type           Int?      @db.TinyInt
+  userName       String?   @map("user_name") @db.VarChar(255)
+  userDeptName   String?   @map("user_dept_name") @db.VarChar(255)
+  docCarName     String?   @map("doc_car_name") @db.VarChar(255)
+  doccarDeptName String?   @map("doccar_dept_name") @db.VarChar(255)
+  cabName        String?   @map("cab_name") @db.VarChar(255)
+  cabdoorName    String?   @map("cabdoor_name") @db.VarChar(255)
+
+  @@index([operationId], map: "index_operationID")
+  @@index([rfidId], map: "index_rfid")
+  @@map("rfid_rfid_record")
 }
 
-model rfid_rfid_record {
-  id               Int       @id @default(autoincrement())
-  userId           BigInt?
-  operationID      String?   @db.VarChar(50)
-  cabinetId        Int?
-  cabDoorId        Int?
-  RFIDId           String?   @db.VarChar(50)
-  createTime       DateTime? @db.DateTime(0)
-  handleID         String?   @default("-1") @db.VarChar(50)
-  isOpen           String?   @db.VarChar(10)
-  isBorrow         String?   @db.VarChar(10)
-  type             Int?      @db.TinyInt
-  user_name        String?   @db.VarChar(255)
-  user_dept_name   String?   @db.VarChar(255)
-  doc_car_name     String?   @db.VarChar(255)
-  doccar_dept_name String?   @db.VarChar(255)
-  cab_name         String?   @db.VarChar(255)
-  cabdoor_name     String?   @db.VarChar(255)
-
-  @@index([operationID], map: "index_operationID")
-  @@index([RFIDId], map: "index_rfid")
-}
-
-model rfid_switch_record {
-  Id            Int     @id @default(autoincrement())
-  CabinetId     String? @db.VarChar(255)
-  CabinetDoorId String? @db.VarChar(255)
-  operationID   String? @db.VarChar(50)
-  userID        Int?
-  TYPE          String? @db.VarChar(255)
+model RfidSwitchRecord {
+  id            Int     @id @default(autoincrement()) @map("Id")
+  cabinetId     String? @map("CabinetId") @db.VarChar(255)
+  cabinetDoorId String? @map("CabinetDoorId") @db.VarChar(255)
+  operationId   String? @map("operationID") @db.VarChar(50)
+  userId        Int?    @map("userID")
+  type          String? @map("TYPE") @db.VarChar(255)
   content       String? @db.VarChar(255)
-  Datetime      String? @db.VarChar(255)
+  datetime      String? @map("Datetime") @db.VarChar(255)
+
+  @@map("rfid_switch_record")
 }
 
-model sys_dept {
-  dept_id     BigInt    @id @default(autoincrement())
-  parent_id   BigInt?   @default(0)
-  ancestors   String?   @default("") @db.VarChar(50)
-  dept_name   String?   @default("") @db.VarChar(30)
-  order_num   Int?      @default(0)
-  leader      String?   @db.VarChar(20)
-  phone       String?   @db.VarChar(11)
-  email       String?   @db.VarChar(50)
-  status      String?   @default("0") @db.Char(1)
-  del_flag    String?   @default("0") @db.Char(1)
-  create_by   String?   @default("") @db.VarChar(64)
-  create_time DateTime? @db.DateTime(0)
-  update_by   String?   @default("") @db.VarChar(64)
-  update_time DateTime? @db.DateTime(0)
-  level       Int?      @db.TinyInt
-  code        Int?      @default(0)
+model SysDept {
+  deptId     BigInt    @id @default(autoincrement()) @map("dept_id")
+  parentId   BigInt?   @default(0) @map("parent_id")
+  ancestors  String?   @default("") @db.VarChar(50)
+  deptName   String?   @default("") @map("dept_name") @db.VarChar(30)
+  orderNum   Int?      @default(0) @map("order_num")
+  leader     String?   @db.VarChar(20)
+  phone      String?   @db.VarChar(11)
+  email      String?   @db.VarChar(50)
+  status     String?   @default("0") @db.Char(1)
+  delFlag    String?   @default("0") @map("del_flag") @db.Char(1)
+  createBy   String?   @default("") @map("create_by") @db.VarChar(64)
+  createTime DateTime? @map("create_time") @db.DateTime(0)
+  updateBy   String?   @default("") @map("update_by") @db.VarChar(64)
+  updateTime DateTime? @map("update_time") @db.DateTime(0)
+  level      Int?      @db.TinyInt
+  code       Int?      @default(0)
+
+  @@map("sys_dept")
 }
 
-model sys_dict_data {
-  dict_code   BigInt    @id @default(autoincrement())
-  dict_sort   Int?      @default(0)
-  dict_label  String?   @default("") @db.VarChar(100)
-  dict_value  String?   @default("") @db.VarChar(100)
-  dict_type   String?   @default("") @db.VarChar(100)
-  css_class   String?   @db.VarChar(100)
-  list_class  String?   @db.VarChar(100)
-  is_default  String?   @default("N") @db.Char(1)
-  status      String?   @default("0") @db.Char(1)
-  create_by   String?   @default("") @db.VarChar(64)
-  create_time DateTime? @db.DateTime(0)
-  update_by   String?   @default("") @db.VarChar(64)
-  update_time DateTime? @db.DateTime(0)
-  remark      String?   @db.VarChar(500)
+model SysDictData {
+  dictCode   BigInt    @id @default(autoincrement()) @map("dict_code")
+  dictSort   Int?      @default(0) @map("dict_sort")
+  dictLabel  String?   @default("") @map("dict_label") @db.VarChar(100)
+  dictValue  String?   @default("") @map("dict_value") @db.VarChar(100)
+  dictType   String?   @default("") @map("dict_type") @db.VarChar(100)
+  cssClass   String?   @map("css_class") @db.VarChar(100)
+  listClass  String?   @map("list_class") @db.VarChar(100)
+  isDefault  String?   @default("N") @map("is_default") @db.Char(1)
+  status     String?   @default("0") @db.Char(1)
+  createBy   String?   @default("") @map("create_by") @db.VarChar(64)
+  createTime DateTime? @map("create_time") @db.DateTime(0)
+  updateBy   String?   @default("") @map("update_by") @db.VarChar(64)
+  updateTime DateTime? @map("update_time") @db.DateTime(0)
+  remark     String?   @db.VarChar(500)
+
+  @@map("sys_dict_data")
 }
 
-model sys_dict_type {
-  dict_id     BigInt    @id @default(autoincrement())
-  dict_name   String?   @default("") @db.VarChar(100)
-  dict_type   String?   @unique(map: "dict_type") @default("") @db.VarChar(100)
-  status      String?   @default("0") @db.Char(1)
-  create_by   String?   @default("") @db.VarChar(64)
-  create_time DateTime? @db.DateTime(0)
-  update_by   String?   @default("") @db.VarChar(64)
-  update_time DateTime? @db.DateTime(0)
-  remark      String?   @db.VarChar(500)
+model SysDictType {
+  dictId     BigInt    @id @default(autoincrement()) @map("dict_id")
+  dictName   String?   @default("") @map("dict_name") @db.VarChar(100)
+  dictType   String?   @unique(map: "dict_type") @default("") @map("dict_type") @db.VarChar(100)
+  status     String?   @default("0") @db.Char(1)
+  createBy   String?   @default("") @map("create_by") @db.VarChar(64)
+  createTime DateTime? @map("create_time") @db.DateTime(0)
+  updateBy   String?   @default("") @map("update_by") @db.VarChar(64)
+  updateTime DateTime? @map("update_time") @db.DateTime(0)
+  remark     String?   @db.VarChar(500)
+
+  @@map("sys_dict_type")
 }
 
-model sys_menu {
-  menu_id     BigInt    @id @default(autoincrement())
-  menu_name   String    @db.VarChar(50)
-  parent_id   BigInt?   @default(0)
-  order_num   Int?      @default(0)
-  url         String?   @default("#") @db.VarChar(200)
-  menu_type   String?   @default("") @db.Char(1)
-  visible     String?   @default("0") @db.Char(1)
-  perms       String?   @db.VarChar(100)
-  icon        String?   @default("#") @db.VarChar(100)
-  create_by   String?   @default("") @db.VarChar(64)
-  create_time DateTime? @db.DateTime(0)
-  update_by   String?   @default("") @db.VarChar(64)
-  update_time DateTime? @db.DateTime(0)
-  remark      String?   @default("") @db.VarChar(500)
+model SysMenu {
+  menuId     BigInt    @id @default(autoincrement()) @map("menu_id")
+  menuName   String    @map("menu_name") @db.VarChar(50)
+  parentId   BigInt?   @default(0) @map("parent_id")
+  orderNum   Int?      @default(0) @map("order_num")
+  url        String?   @default("#") @db.VarChar(200)
+  menuType   String?   @default("") @map("menu_type") @db.Char(1)
+  visible    String?   @default("0") @db.Char(1)
+  perms      String?   @db.VarChar(100)
+  icon       String?   @default("#") @db.VarChar(100)
+  createBy   String?   @default("") @map("create_by") @db.VarChar(64)
+  createTime DateTime? @map("create_time") @db.DateTime(0)
+  updateBy   String?   @default("") @map("update_by") @db.VarChar(64)
+  updateTime DateTime? @map("update_time") @db.DateTime(0)
+  remark     String?   @default("") @db.VarChar(500)
+
+  @@map("sys_menu")
 }
 
-model sys_role {
-  role_id     BigInt    @id @default(autoincrement())
-  role_name   String    @db.VarChar(30)
-  role_key    String    @db.VarChar(100)
-  role_sort   Int
-  data_scope  String?   @default("1") @db.Char(1)
-  status      String    @db.Char(1)
-  del_flag    String?   @default("0") @db.Char(1)
-  create_by   String?   @default("") @db.VarChar(64)
-  create_time DateTime? @db.DateTime(0)
-  update_by   String?   @default("") @db.VarChar(64)
-  update_time DateTime? @db.DateTime(0)
-  remark      String?   @db.VarChar(500)
+model SysRole {
+  roleId     BigInt    @id @default(autoincrement()) @map("role_id")
+  roleName   String    @map("role_name") @db.VarChar(30)
+  roleKey    String    @map("role_key") @db.VarChar(100)
+  roleSort   Int       @map("role_sort")
+  dataScope  String?   @default("1") @map("data_scope") @db.Char(1)
+  status     String    @db.Char(1)
+  delFlag    String?   @default("0") @map("del_flag") @db.Char(1)
+  createBy   String?   @default("") @map("create_by") @db.VarChar(64)
+  createTime DateTime? @map("create_time") @db.DateTime(0)
+  updateBy   String?   @default("") @map("update_by") @db.VarChar(64)
+  updateTime DateTime? @map("update_time") @db.DateTime(0)
+  remark     String?   @db.VarChar(500)
+
+  @@map("sys_role")
 }
 
-model sys_role_menu {
-  role_id BigInt
-  menu_id BigInt
+model SysRoleMenu {
+  roleId BigInt @map("role_id")
+  menuId BigInt @map("menu_id")
 
-  @@id([role_id, menu_id])
+  @@id([roleId, menuId])
+  @@map("sys_role_menu")
 }
 
-model sys_user {
-  user_id     BigInt    @id @default(autoincrement())
-  dept_id     BigInt?
-  login_name  String    @db.VarChar(30)
-  user_name   String    @db.VarChar(30)
-  user_type   String?   @default("00") @db.VarChar(2)
+model SysUser {
+  userId      BigInt    @id @default(autoincrement()) @map("user_id")
+  deptId      BigInt?   @map("dept_id")
+  loginName   String    @map("login_name") @db.VarChar(30)
+  userName    String    @map("user_name") @db.VarChar(30)
+  userType    String?   @default("00") @map("user_type") @db.VarChar(2)
   email       String?   @default("") @db.VarChar(50)
   phonenumber String?   @default("") @db.VarChar(11)
   sex         String?   @default("0") @db.Char(1)
@@ -221,704 +237,794 @@ model sys_user {
   password    String?   @default("") @db.VarChar(50)
   salt        String?   @default("") @db.VarChar(20)
   status      String?   @default("0") @db.Char(1)
-  del_flag    String?   @default("0") @db.Char(1)
-  login_ip    String?   @default("") @db.VarChar(50)
-  login_date  DateTime? @db.DateTime(0)
-  create_by   String?   @default("") @db.VarChar(64)
-  create_time DateTime? @db.DateTime(0)
-  update_by   String?   @default("") @db.VarChar(64)
-  update_time DateTime? @db.DateTime(0)
+  delFlag     String?   @default("0") @map("del_flag") @db.Char(1)
+  loginIp     String?   @default("") @map("login_ip") @db.VarChar(50)
+  loginDate   DateTime? @map("login_date") @db.DateTime(0)
+  createBy    String?   @default("") @map("create_by") @db.VarChar(64)
+  createTime  DateTime? @map("create_time") @db.DateTime(0)
+  updateBy    String?   @default("") @map("update_by") @db.VarChar(64)
+  updateTime  DateTime? @map("update_time") @db.DateTime(0)
   remark      String?   @default("") @db.VarChar(500)
   type        Int?      @default(1)
   code        String?   @db.VarChar(255)
+
+  @@map("sys_user")
 }
 
-model sys_user_role {
-  user_id BigInt
-  role_id BigInt
+model SysUserRole {
+  userId BigInt @map("user_id")
+  roleId BigInt @map("role_id")
 
-  @@id([user_id, role_id])
+  @@id([userId, roleId])
+  @@map("sys_user_role")
 }
 
-model sys_config {
-  config_id    Int       @id @default(autoincrement())
-  config_name  String?   @default("") @db.VarChar(100)
-  config_key   String?   @default("") @db.VarChar(100)
-  config_value String?   @default("") @db.VarChar(100)
-  config_type  String?   @default("N") @db.Char(1)
-  create_by    String?   @default("") @db.VarChar(64)
-  create_time  DateTime? @db.DateTime(0)
-  update_by    String?   @default("") @db.VarChar(64)
-  update_time  DateTime? @db.DateTime(0)
-  remark       String?   @db.VarChar(500)
-}
+model SysConfig {
+  configId    Int       @id @default(autoincrement()) @map("config_id")
+  configName  String?   @default("") @map("config_name") @db.VarChar(100)
+  configKey   String?   @default("") @map("config_key") @db.VarChar(100)
+  configValue String?   @default("") @map("config_value") @db.VarChar(100)
+  configType  String?   @default("N") @map("config_type") @db.Char(1)
+  createBy    String?   @default("") @map("create_by") @db.VarChar(64)
+  createTime  DateTime? @map("create_time") @db.DateTime(0)
+  updateBy    String?   @default("") @map("update_by") @db.VarChar(64)
+  updateTime  DateTime? @map("update_time") @db.DateTime(0)
+  remark      String?   @db.VarChar(500)
 
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model doc_carrier {
-  Carrier_ID       Int       @id @default(autoincrement())
-  carrier_rfid     String?   @db.VarChar(128)
-  cabinet_id       String?   @db.VarChar(20)
-  cabinet_door_id  Int?
-  carrier_p_status Int?      @default(1)
-  user_id          BigInt?
-  add_user         BigInt?
-  type             Int?      @db.TinyInt
-  remark           String?   @db.VarChar(255)
-  create_time      DateTime? @db.DateTime(0)
-  name             String?   @db.VarChar(255)
-  remove_status    Int?      @default(0) @db.TinyInt
-  secret_level     Int?
-
-  @@index([carrier_rfid], map: "index_rfid")
+  @@map("sys_config")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model doc_carrier_type {
-  carrier_type_id BigInt  @id @default(autoincrement())
-  type_name       String? @db.VarChar(255)
+model DocCarrier {
+  carrierId      Int       @id @default(autoincrement()) @map("Carrier_ID")
+  carrierRfid    String?   @map("carrier_rfid") @db.VarChar(128)
+  cabinetId      String?   @map("cabinet_id") @db.VarChar(20)
+  cabinetDoorId  Int?      @map("cabinet_door_id")
+  carrierPStatus Int?      @default(1) @map("carrier_p_status")
+  userId         BigInt?   @map("user_id")
+  addUser        BigInt?   @map("add_user")
+  type           Int?      @db.TinyInt
+  remark         String?   @db.VarChar(255)
+  createTime     DateTime? @map("create_time") @db.DateTime(0)
+  name           String?   @db.VarChar(255)
+  removeStatus   Int?      @default(0) @map("remove_status") @db.TinyInt
+  secretLevel    Int?      @map("secret_level")
+
+  @@index([carrierRfid], map: "index_rfid")
+  @@map("doc_carrier")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model doc_check_log {
-  check_log_id BigInt    @id @default(autoincrement())
-  file_name    String?   @db.VarChar(200)
-  in_count     Int?
-  out_count    Int?
-  sum_count    Int?
-  create_time  DateTime? @db.DateTime(0)
-  update_time  DateTime? @db.DateTime(0)
-  create_user  BigInt?
+model DocCarrierType {
+  carrierTypeId BigInt  @id @default(autoincrement()) @map("carrier_type_id")
+  typeName      String? @map("type_name") @db.VarChar(255)
+
+  @@map("doc_carrier_type")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model doc_check_result {
-  id           BigInt    @id @default(autoincrement())
-  check_log_id BigInt?
-  rfid         String?   @db.VarChar(100)
-  name         String?   @db.VarChar(255)
-  state        Int?      @db.TinyInt
-  create_time  DateTime? @db.DateTime(0)
-  update_time  DateTime? @db.DateTime(0)
+model DocCheckLog {
+  checkLogId BigInt    @id @default(autoincrement()) @map("check_log_id")
+  fileName   String?   @map("file_name") @db.VarChar(200)
+  inCount    Int?      @map("in_count")
+  outCount   Int?      @map("out_count")
+  sumCount   Int?      @map("sum_count")
+  createTime DateTime? @map("create_time") @db.DateTime(0)
+  updateTime DateTime? @map("update_time") @db.DateTime(0)
+  createUser BigInt?   @map("create_user")
+
+  @@map("doc_check_log")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model doc_directory {
-  directory_id    BigInt    @id @unique(map: "index_id") @default(autoincrement())
-  parent_id       BigInt
-  display_name    String?   @db.VarChar(100)
-  doc_name        String?   @db.VarChar(200)
-  doc_e_directory String    @unique(map: "index_doc_e_directory") @db.VarChar(300)
-  sort            Int?
-  status          Int
-  update_time     DateTime? @db.DateTime(0)
-  create_time     DateTime  @db.DateTime(0)
+model DocCheckResult {
+  id         BigInt    @id @default(autoincrement())
+  checkLogId BigInt?   @map("check_log_id")
+  rfid       String?   @db.VarChar(100)
+  name       String?   @db.VarChar(255)
+  state      Int?      @db.TinyInt
+  createTime DateTime? @map("create_time") @db.DateTime(0)
+  updateTime DateTime? @map("update_time") @db.DateTime(0)
+
+  @@map("doc_check_result")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model doc_operation_log {
-  operationlog_id String    @id @db.VarChar(32)
-  doc_id          BigInt?
-  doc_name        String?   @db.VarChar(255)
-  operation_type  Int?
-  operation_name  String?   @db.VarChar(100)
-  user_id         BigInt
-  user_name       String    @db.VarChar(100)
-  dept_id         BigInt
-  dept_name       String    @db.VarChar(100)
-  update_time     DateTime? @db.DateTime(0)
-  create_time     DateTime  @db.DateTime(0)
+model DocDirectory {
+  directoryId   BigInt    @id @unique(map: "index_id") @default(autoincrement()) @map("directory_id")
+  parentId      BigInt    @map("parent_id")
+  displayName   String?   @map("display_name") @db.VarChar(100)
+  docName       String?   @map("doc_name") @db.VarChar(200)
+  docEDirectory String    @unique(map: "index_doc_e_directory") @map("doc_e_directory") @db.VarChar(300)
+  sort          Int?
+  status        Int
+  updateTime    DateTime? @map("update_time") @db.DateTime(0)
+  createTime    DateTime  @map("create_time") @db.DateTime(0)
+
+  @@map("doc_directory")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model doc_secret_level_role {
-  slr_id      BigInt    @id @default(autoincrement())
-  role_id     BigInt
-  role_name   String?   @db.VarChar(30)
-  slr_name    String?   @db.VarChar(100)
-  slr_code    BigInt?
-  update_time DateTime? @db.DateTime(0)
-  create_time DateTime  @db.DateTime(0)
+model DocOperationLog {
+  operationlogId String    @id @map("operationlog_id") @db.VarChar(32)
+  docId          BigInt?   @map("doc_id")
+  docName        String?   @map("doc_name") @db.VarChar(255)
+  operationType  Int?      @map("operation_type")
+  operationName  String?   @map("operation_name") @db.VarChar(100)
+  userId         BigInt    @map("user_id")
+  userName       String    @map("user_name") @db.VarChar(100)
+  deptId         BigInt    @map("dept_id")
+  deptName       String    @map("dept_name") @db.VarChar(100)
+  updateTime     DateTime? @map("update_time") @db.DateTime(0)
+  createTime     DateTime  @map("create_time") @db.DateTime(0)
+
+  @@map("doc_operation_log")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model document_info {
-  id               BigInt    @id @default(autoincrement())
-  doc_name         String    @db.VarChar(200)
-  doc_secret_level Int?
-  doc_type         Int?      @db.TinyInt
-  remark           String?   @db.VarChar(100)
-  doc_p_status     Int?      @default(1)
-  user_id          BigInt?
-  dept_id          BigInt?
-  cabinet_id       Int?      @default(0)
-  cabinet_door_id  Int?
-  update_time      DateTime? @db.DateTime(0)
-  create_time      DateTime  @db.DateTime(0)
-  IS_one           String?   @default("0") @db.VarChar(255)
-  doc_last_time    DateTime? @db.DateTime(0)
-  end_time         DateTime? @db.DateTime(0)
-  remove_status    Int?      @default(0) @db.TinyInt
-  code             String?   @db.VarChar(255)
-  urgency          Int?      @db.TinyInt
-  send_dep         Int?      @db.TinyInt
-  send_code        String?   @db.VarChar(255)
-  bureau_depId     BigInt?
-  copies           Int?
-  page_count       Int?
-  received_by      String?   @db.VarChar(11)
-  parent_id        BigInt?
+model DocSecretLevelRole {
+  slrId      BigInt    @id @default(autoincrement()) @map("slr_id")
+  roleId     BigInt    @map("role_id")
+  roleName   String?   @map("role_name") @db.VarChar(30)
+  slrName    String?   @map("slr_name") @db.VarChar(100)
+  slrCode    BigInt?   @map("slr_code")
+  updateTime DateTime? @map("update_time") @db.DateTime(0)
+  createTime DateTime  @map("create_time") @db.DateTime(0)
 
-  @@index([doc_name], map: "doc_name")
+  @@map("doc_secret_level_role")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model door_access_records {
-  AccessID            Int       @id @default(autoincrement())
-  AccessDirection     Int?
+model DocumentInfo {
+  id             BigInt    @id @default(autoincrement())
+  docName        String    @map("doc_name") @db.VarChar(200)
+  docSecretLevel Int?      @map("doc_secret_level")
+  docType        Int?      @map("doc_type") @db.TinyInt
+  remark         String?   @db.VarChar(100)
+  docPStatus     Int?      @default(1) @map("doc_p_status")
+  userId         BigInt?   @map("user_id")
+  deptId         BigInt?   @map("dept_id")
+  cabinetId      Int?      @default(0) @map("cabinet_id")
+  cabinetDoorId  Int?      @map("cabinet_door_id")
+  updateTime     DateTime? @map("update_time") @db.DateTime(0)
+  createTime     DateTime  @map("create_time") @db.DateTime(0)
+  isOne          String?   @default("0") @map("IS_one") @db.VarChar(255)
+  docLastTime    DateTime? @map("doc_last_time") @db.DateTime(0)
+  endTime        DateTime? @map("end_time") @db.DateTime(0)
+  removeStatus   Int?      @default(0) @map("remove_status") @db.TinyInt
+  code           String?   @db.VarChar(255)
+  urgency        Int?      @db.TinyInt
+  sendDep        Int?      @map("send_dep") @db.TinyInt
+  sendCode       String?   @map("send_code") @db.VarChar(255)
+  bureauDepId    BigInt?   @map("bureau_depId")
+  copies         Int?
+  pageCount      Int?      @map("page_count")
+  receivedBy     String?   @map("received_by") @db.VarChar(11)
+  parentId       BigInt?   @map("parent_id")
+
+  @@index([docName], map: "doc_name")
+  @@map("document_info")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model DoorAccessRecords {
+  accessId            Int       @id @default(autoincrement()) @map("AccessID")
+  accessDirection     Int?      @map("AccessDirection")
   directionCreateTime DateTime? @db.DateTime(0)
-  EquipmentID         Int?
-  EquipmentName       String?   @db.VarChar(100)
+  equipmentId         Int?      @map("EquipmentID")
+  equipmentName       String?   @map("EquipmentName") @db.VarChar(100)
   remark              String?   @db.VarChar(100)
+
+  @@map("door_access_records")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model door_alarmrecord {
-  Alarmid                Int       @id @default(autoincrement())
-  EquipmentId            String?   @db.VarChar(100)
-  EquipmentName          String?   @db.VarChar(100)
-  Carrier_Id             String?   @db.VarChar(100)
-  Carrier_rfid           String?   @db.VarChar(100)
-  Carrier_Name           String?   @db.VarChar(100)
-  Carrier_Deptid         String?   @db.VarChar(100)
-  Carrier_DeptName       String?   @db.VarChar(100)
-  Carrier_type           String?   @db.VarChar(255)
+model DoorAlarmrecord {
+  alarmid                Int       @id @default(autoincrement()) @map("Alarmid")
+  equipmentId            String?   @map("EquipmentId") @db.VarChar(100)
+  equipmentName          String?   @map("EquipmentName") @db.VarChar(100)
+  carrierId              String?   @map("Carrier_Id") @db.VarChar(100)
+  carrierRfid            String?   @map("Carrier_rfid") @db.VarChar(100)
+  carrierName            String?   @map("Carrier_Name") @db.VarChar(100)
+  carrierDeptid          String?   @map("Carrier_Deptid") @db.VarChar(100)
+  carrierDeptName        String?   @map("Carrier_DeptName") @db.VarChar(100)
+  carrierType            String?   @map("Carrier_type") @db.VarChar(255)
   isOperation            String?   @db.VarChar(10)
   remark                 String?   @db.VarChar(100)
-  CreateTime             DateTime? @db.DateTime(0)
-  deal_user              BigInt?
-  deal_name              String?   @db.VarChar(255)
-  deal_time              DateTime? @db.DateTime(0)
+  createTime             DateTime? @map("CreateTime") @db.DateTime(0)
+  dealUser               BigInt?   @map("deal_user")
+  dealName               String?   @map("deal_name") @db.VarChar(255)
+  dealTime               DateTime? @map("deal_time") @db.DateTime(0)
   lastAccessUsername     String?   @db.VarChar(255)
-  lastAccessUserID       BigInt?
+  lastAccessUserId       BigInt?   @map("lastAccessUserID")
   lastAccessUserDeptname String?   @db.VarChar(255)
   lastAccessRecord       BigInt?
+
+  @@map("door_alarmrecord")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model door_equipment {
-  equipmentid     Int       @id @default(autoincrement())
-  equipment_name  String?   @db.VarChar(100)
-  addressip       String?   @db.VarChar(100)
-  type            Int?
-  fid             Int?
-  status          String?   @db.VarChar(100)
-  equipment_addr  String?   @db.VarChar(100)
-  equipment_Port  String?   @db.VarChar(100)
-  equipment_txid  String?   @db.VarChar(100)
-  remark          String?   @db.VarChar(100)
-  macAddress      String?   @db.VarChar(100)
-  macIp           String?   @db.VarChar(100)
-  Alarm_switch    Int?
-  CreatorTime     DateTime? @db.DateTime(0)
-  equipment_In    Int?
-  equipment_InIP  String?   @db.VarChar(100)
-  equipment_Out   Int?
-  equipment_OutIp String?   @db.VarChar(100)
-  equipment_Type  Int?
-  deviceUserName  String?   @db.VarChar(100)
-  deviceUserPwd   String?   @db.VarChar(100)
-  devicePort      String?   @db.VarChar(100)
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model door_read_record {
-  ReadID         Int       @id @default(autoincrement())
-  ReadCreateTine DateTime? @db.DateTime(0)
-  ReadRfid       String?   @db.VarChar(100)
-  EquipmentID    Int?
-  EquipmentName  String?   @db.VarChar(100)
+model DoorEquipment {
+  equipmentid    Int       @id @default(autoincrement())
+  equipmentName  String?   @map("equipment_name") @db.VarChar(100)
+  addressip      String?   @db.VarChar(100)
+  type           Int?
+  fid            Int?
+  status         String?   @db.VarChar(100)
+  equipmentAddr  String?   @map("equipment_addr") @db.VarChar(100)
+  equipmentPort  String?   @map("equipment_Port") @db.VarChar(100)
+  equipmentTxid  String?   @map("equipment_txid") @db.VarChar(100)
   remark         String?   @db.VarChar(100)
+  macAddress     String?   @db.VarChar(100)
+  macIp          String?   @db.VarChar(100)
+  alarmSwitch    Int?      @map("Alarm_switch")
+  creatorTime    DateTime? @map("CreatorTime") @db.DateTime(0)
+  equipmentIn    Int?      @map("equipment_In")
+  equipmentInIp  String?   @map("equipment_InIP") @db.VarChar(100)
+  equipmentOut   Int?      @map("equipment_Out")
+  equipmentOutIp String?   @map("equipment_OutIp") @db.VarChar(100)
+  equipmentType  Int?      @map("equipment_Type")
+  deviceUserName String?   @db.VarChar(100)
+  deviceUserPwd  String?   @db.VarChar(100)
+  devicePort     String?   @db.VarChar(100)
+
+  @@map("door_equipment")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model door_rfidrecord {
-  Record_id        Int       @id @default(autoincrement())
-  EquipmentId      String?   @db.VarChar(100)
-  EquipmentName    String?   @db.VarChar(100)
-  Carrier_Id       String?   @db.VarChar(100)
-  Carrier_Name     String?   @db.VarChar(100)
-  Carrier_rfid     String?   @db.VarChar(100)
-  Carrier_Deptid   String?   @db.VarChar(100)
-  Carrier_DeptName String?   @db.VarChar(100)
-  Carrier_type     String?   @db.VarChar(255)
-  equipment_Type   String?   @db.VarChar(100)
-  type             String?   @db.VarChar(100)
-  is_alarm         String?   @db.VarChar(100)
-  alarmid          String?   @db.VarChar(100)
-  CreatorTime      DateTime? @db.DateTime(0)
-  is_Register      String?   @db.VarChar(255)
+model DoorReadRecord {
+  readId         Int       @id @default(autoincrement()) @map("ReadID")
+  readCreateTine DateTime? @map("ReadCreateTine") @db.DateTime(0)
+  readRfid       String?   @map("ReadRfid") @db.VarChar(100)
+  equipmentId    Int?      @map("EquipmentID")
+  equipmentName  String?   @map("EquipmentName") @db.VarChar(100)
+  remark         String?   @db.VarChar(100)
+
+  @@map("door_read_record")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model door_rfidregister {
-  register_id       Int       @id @default(autoincrement())
-  Carrier_ID        BigInt?
-  Carrier_Deptid_ID String?   @db.VarChar(50)
-  start_time        String?   @db.VarChar(100)
-  end_time          String?   @db.VarChar(100)
-  reamrk            String?   @db.VarChar(100)
-  create_userid     BigInt?
-  CreatorTime       DateTime? @db.DateTime(0)
-  DeleteTime        DateTime? @db.DateTime(0)
-  applyUser         String?   @db.VarChar(50)
-  approvalUser      String?   @db.VarChar(255)
-  outaddress        String?   @db.VarChar(255)
-  applyUnit         String?   @db.VarChar(255)
-  outreason         String?   @db.VarChar(255)
-  doc_rfid          String?   @db.VarChar(100)
-  type              Boolean?
-  state             Int?      @default(0) @db.TinyInt
+model DoorRfidrecord {
+  recordId        Int       @id @default(autoincrement()) @map("Record_id")
+  equipmentId     String?   @map("EquipmentId") @db.VarChar(100)
+  equipmentName   String?   @map("EquipmentName") @db.VarChar(100)
+  carrierId       String?   @map("Carrier_Id") @db.VarChar(100)
+  carrierName     String?   @map("Carrier_Name") @db.VarChar(100)
+  carrierRfid     String?   @map("Carrier_rfid") @db.VarChar(100)
+  carrierDeptid   String?   @map("Carrier_Deptid") @db.VarChar(100)
+  carrierDeptName String?   @map("Carrier_DeptName") @db.VarChar(100)
+  carrierType     String?   @map("Carrier_type") @db.VarChar(255)
+  equipmentType   String?   @map("equipment_Type") @db.VarChar(100)
+  type            String?   @db.VarChar(100)
+  isAlarm         String?   @map("is_alarm") @db.VarChar(100)
+  alarmid         String?   @db.VarChar(100)
+  creatorTime     DateTime? @map("CreatorTime") @db.DateTime(0)
+  isRegister      String?   @map("is_Register") @db.VarChar(255)
 
-  @@index([Carrier_ID, state], map: "index_carrierId_state")
+  @@map("door_rfidrecord")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model generate_code {
-  id          BigInt   @id @default(autoincrement())
-  create_time DateTime @db.DateTime(0)
+model DoorRfidregister {
+  registerId      Int       @id @default(autoincrement()) @map("register_id")
+  carrierId       BigInt?   @map("Carrier_ID")
+  carrierDeptidId String?   @map("Carrier_Deptid_ID") @db.VarChar(50)
+  startTime       String?   @map("start_time") @db.VarChar(100)
+  endTime         String?   @map("end_time") @db.VarChar(100)
+  reamrk          String?   @db.VarChar(100)
+  createUserid    BigInt?   @map("create_userid")
+  creatorTime     DateTime? @map("CreatorTime") @db.DateTime(0)
+  deleteTime      DateTime? @map("DeleteTime") @db.DateTime(0)
+  applyUser       String?   @db.VarChar(50)
+  approvalUser    String?   @db.VarChar(255)
+  outaddress      String?   @db.VarChar(255)
+  applyUnit       String?   @db.VarChar(255)
+  outreason       String?   @db.VarChar(255)
+  docRfid         String?   @map("doc_rfid") @db.VarChar(100)
+  type            Boolean?
+  state           Int?      @default(0) @db.TinyInt
+
+  @@index([carrierId, state], map: "index_carrierId_state")
+  @@map("door_rfidregister")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model print_job {
-  JobsID       String    @id @db.VarChar(32)
-  DocName      String?   @db.VarChar(100)
-  SecLevel     Int?      @db.TinyInt
-  Usage        String?   @db.VarChar(255)
-  PageCount    Int?
-  CopyCount    Int?
-  SubmitTime   DateTime? @db.DateTime(0)
-  PrintTime    DateTime? @db.DateTime(0)
-  Status       Int?      @db.TinyInt
-  create_time  DateTime? @db.DateTime(0)
-  update_time  DateTime? @db.DateTime(0)
-  import_state Int?      @default(0) @db.TinyInt
-}
+model GenerateCode {
+  id         BigInt   @id @default(autoincrement())
+  createTime DateTime @map("create_time") @db.DateTime(0)
 
-model qrtz_blob_triggers {
-  sched_name    String        @db.VarChar(120)
-  trigger_name  String        @db.VarChar(200)
-  trigger_group String        @db.VarChar(200)
-  blob_data     Bytes?        @db.Blob
-  qrtz_triggers qrtz_triggers @relation(fields: [sched_name, trigger_name, trigger_group], references: [sched_name, trigger_name, trigger_group], onUpdate: Restrict, map: "qrtz_blob_triggers_ibfk_1")
-
-  @@id([sched_name, trigger_name, trigger_group])
-}
-
-model qrtz_calendars {
-  sched_name    String @db.VarChar(120)
-  calendar_name String @db.VarChar(200)
-  calendar      Bytes  @db.Blob
-
-  @@id([sched_name, calendar_name])
-}
-
-model qrtz_cron_triggers {
-  sched_name      String        @db.VarChar(120)
-  trigger_name    String        @db.VarChar(200)
-  trigger_group   String        @db.VarChar(200)
-  cron_expression String        @db.VarChar(200)
-  time_zone_id    String?       @db.VarChar(80)
-  qrtz_triggers   qrtz_triggers @relation(fields: [sched_name, trigger_name, trigger_group], references: [sched_name, trigger_name, trigger_group], onUpdate: Restrict, map: "qrtz_cron_triggers_ibfk_1")
-
-  @@id([sched_name, trigger_name, trigger_group])
-}
-
-model qrtz_fired_triggers {
-  sched_name        String  @db.VarChar(120)
-  entry_id          String  @db.VarChar(95)
-  trigger_name      String  @db.VarChar(200)
-  trigger_group     String  @db.VarChar(200)
-  instance_name     String  @db.VarChar(200)
-  fired_time        BigInt
-  sched_time        BigInt
-  priority          Int
-  state             String  @db.VarChar(16)
-  job_name          String? @db.VarChar(200)
-  job_group         String? @db.VarChar(200)
-  is_nonconcurrent  String? @db.VarChar(1)
-  requests_recovery String? @db.VarChar(1)
-
-  @@id([sched_name, entry_id])
-}
-
-model qrtz_job_details {
-  sched_name        String          @db.VarChar(120)
-  job_name          String          @db.VarChar(200)
-  job_group         String          @db.VarChar(200)
-  description       String?         @db.VarChar(250)
-  job_class_name    String          @db.VarChar(250)
-  is_durable        String          @db.VarChar(1)
-  is_nonconcurrent  String          @db.VarChar(1)
-  is_update_data    String          @db.VarChar(1)
-  requests_recovery String          @db.VarChar(1)
-  job_data          Bytes?          @db.Blob
-  qrtz_triggers     qrtz_triggers[]
-
-  @@id([sched_name, job_name, job_group])
-}
-
-model qrtz_locks {
-  sched_name String @db.VarChar(120)
-  lock_name  String @db.VarChar(40)
-
-  @@id([sched_name, lock_name])
-}
-
-model qrtz_paused_trigger_grps {
-  sched_name    String @db.VarChar(120)
-  trigger_group String @db.VarChar(200)
-
-  @@id([sched_name, trigger_group])
-}
-
-model qrtz_scheduler_state {
-  sched_name        String @db.VarChar(120)
-  instance_name     String @db.VarChar(200)
-  last_checkin_time BigInt
-  checkin_interval  BigInt
-
-  @@id([sched_name, instance_name])
-}
-
-model qrtz_simple_triggers {
-  sched_name      String        @db.VarChar(120)
-  trigger_name    String        @db.VarChar(200)
-  trigger_group   String        @db.VarChar(200)
-  repeat_count    BigInt
-  repeat_interval BigInt
-  times_triggered BigInt
-  qrtz_triggers   qrtz_triggers @relation(fields: [sched_name, trigger_name, trigger_group], references: [sched_name, trigger_name, trigger_group], onUpdate: Restrict, map: "qrtz_simple_triggers_ibfk_1")
-
-  @@id([sched_name, trigger_name, trigger_group])
-}
-
-model qrtz_simprop_triggers {
-  sched_name    String        @db.VarChar(120)
-  trigger_name  String        @db.VarChar(200)
-  trigger_group String        @db.VarChar(200)
-  str_prop_1    String?       @db.VarChar(512)
-  str_prop_2    String?       @db.VarChar(512)
-  str_prop_3    String?       @db.VarChar(512)
-  int_prop_1    Int?
-  int_prop_2    Int?
-  long_prop_1   BigInt?
-  long_prop_2   BigInt?
-  dec_prop_1    Decimal?      @db.Decimal(13, 4)
-  dec_prop_2    Decimal?      @db.Decimal(13, 4)
-  bool_prop_1   String?       @db.VarChar(1)
-  bool_prop_2   String?       @db.VarChar(1)
-  qrtz_triggers qrtz_triggers @relation(fields: [sched_name, trigger_name, trigger_group], references: [sched_name, trigger_name, trigger_group], onUpdate: Restrict, map: "qrtz_simprop_triggers_ibfk_1")
-
-  @@id([sched_name, trigger_name, trigger_group])
-}
-
-model qrtz_triggers {
-  sched_name            String                 @db.VarChar(120)
-  trigger_name          String                 @db.VarChar(200)
-  trigger_group         String                 @db.VarChar(200)
-  job_name              String                 @db.VarChar(200)
-  job_group             String                 @db.VarChar(200)
-  description           String?                @db.VarChar(250)
-  next_fire_time        BigInt?
-  prev_fire_time        BigInt?
-  priority              Int?
-  trigger_state         String                 @db.VarChar(16)
-  trigger_type          String                 @db.VarChar(8)
-  start_time            BigInt
-  end_time              BigInt?
-  calendar_name         String?                @db.VarChar(200)
-  misfire_instr         Int?                   @db.SmallInt
-  job_data              Bytes?                 @db.Blob
-  qrtz_blob_triggers    qrtz_blob_triggers?
-  qrtz_cron_triggers    qrtz_cron_triggers?
-  qrtz_simple_triggers  qrtz_simple_triggers?
-  qrtz_simprop_triggers qrtz_simprop_triggers?
-  qrtz_job_details      qrtz_job_details       @relation(fields: [sched_name, job_name, job_group], references: [sched_name, job_name, job_group], onUpdate: Restrict, map: "qrtz_triggers_ibfk_1")
-
-  @@id([sched_name, trigger_name, trigger_group])
-  @@index([sched_name, job_name, job_group], map: "sched_name")
+  @@map("generate_code")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model rfid_cabinetdoor {
-  Id         Int     @id @default(autoincrement())
-  CabinetId  Int?
-  Name       Int?
-  State      String? @db.VarChar(10)
-  Kgbh       String? @db.VarChar(255)
-  Kgzt       String? @db.VarChar(255)
-  Kglx       String? @db.VarChar(255)
-  FolderPath String? @db.VarChar(255)
-  OrderIndex String? @db.VarChar(255)
+model PrintJob {
+  jobsId      String    @id @map("JobsID") @db.VarChar(32)
+  docName     String?   @map("DocName") @db.VarChar(100)
+  secLevel    Int?      @map("SecLevel") @db.TinyInt
+  usage       String?   @map("Usage") @db.VarChar(255)
+  pageCount   Int?      @map("PageCount")
+  copyCount   Int?      @map("CopyCount")
+  submitTime  DateTime? @map("SubmitTime") @db.DateTime(0)
+  printTime   DateTime? @map("PrintTime") @db.DateTime(0)
+  status      Int?      @map("Status") @db.TinyInt
+  createTime  DateTime? @map("create_time") @db.DateTime(0)
+  updateTime  DateTime? @map("update_time") @db.DateTime(0)
+  importState Int?      @default(0) @map("import_state") @db.TinyInt
+
+  @@map("print_job")
+}
+
+model QrtzBlobTriggers {
+  schedName    String       @map("sched_name") @db.VarChar(120)
+  triggerName  String       @map("trigger_name") @db.VarChar(200)
+  triggerGroup String       @map("trigger_group") @db.VarChar(200)
+  blobData     Bytes?       @map("blob_data") @db.Blob
+  qrtzTriggers QrtzTriggers @relation(fields: [schedName, triggerName, triggerGroup], references: [schedName, triggerName, triggerGroup], onUpdate: Restrict, map: "qrtz_blob_triggers_ibfk_1")
+
+  @@id([schedName, triggerName, triggerGroup])
+  @@map("qrtz_blob_triggers")
+}
+
+model QrtzCalendars {
+  schedName    String @map("sched_name") @db.VarChar(120)
+  calendarName String @map("calendar_name") @db.VarChar(200)
+  calendar     Bytes  @db.Blob
+
+  @@id([schedName, calendarName])
+  @@map("qrtz_calendars")
+}
+
+model QrtzCronTriggers {
+  schedName      String       @map("sched_name") @db.VarChar(120)
+  triggerName    String       @map("trigger_name") @db.VarChar(200)
+  triggerGroup   String       @map("trigger_group") @db.VarChar(200)
+  cronExpression String       @map("cron_expression") @db.VarChar(200)
+  timeZoneId     String?      @map("time_zone_id") @db.VarChar(80)
+  qrtzTriggers   QrtzTriggers @relation(fields: [schedName, triggerName, triggerGroup], references: [schedName, triggerName, triggerGroup], onUpdate: Restrict, map: "qrtz_cron_triggers_ibfk_1")
+
+  @@id([schedName, triggerName, triggerGroup])
+  @@map("qrtz_cron_triggers")
+}
+
+model QrtzFiredTriggers {
+  schedName        String  @map("sched_name") @db.VarChar(120)
+  entryId          String  @map("entry_id") @db.VarChar(95)
+  triggerName      String  @map("trigger_name") @db.VarChar(200)
+  triggerGroup     String  @map("trigger_group") @db.VarChar(200)
+  instanceName     String  @map("instance_name") @db.VarChar(200)
+  firedTime        BigInt  @map("fired_time")
+  schedTime        BigInt  @map("sched_time")
+  priority         Int
+  state            String  @db.VarChar(16)
+  jobName          String? @map("job_name") @db.VarChar(200)
+  jobGroup         String? @map("job_group") @db.VarChar(200)
+  isNonconcurrent  String? @map("is_nonconcurrent") @db.VarChar(1)
+  requestsRecovery String? @map("requests_recovery") @db.VarChar(1)
+
+  @@id([schedName, entryId])
+  @@map("qrtz_fired_triggers")
+}
+
+model QrtzJobDetails {
+  schedName        String         @map("sched_name") @db.VarChar(120)
+  jobName          String         @map("job_name") @db.VarChar(200)
+  jobGroup         String         @map("job_group") @db.VarChar(200)
+  description      String?        @db.VarChar(250)
+  jobClassName     String         @map("job_class_name") @db.VarChar(250)
+  isDurable        String         @map("is_durable") @db.VarChar(1)
+  isNonconcurrent  String         @map("is_nonconcurrent") @db.VarChar(1)
+  isUpdateData     String         @map("is_update_data") @db.VarChar(1)
+  requestsRecovery String         @map("requests_recovery") @db.VarChar(1)
+  jobData          Bytes?         @map("job_data") @db.Blob
+  qrtzTriggers     QrtzTriggers[]
+
+  @@id([schedName, jobName, jobGroup])
+  @@map("qrtz_job_details")
+}
+
+model QrtzLocks {
+  schedName String @map("sched_name") @db.VarChar(120)
+  lockName  String @map("lock_name") @db.VarChar(40)
+
+  @@id([schedName, lockName])
+  @@map("qrtz_locks")
+}
+
+model QrtzPausedTriggerGrps {
+  schedName    String @map("sched_name") @db.VarChar(120)
+  triggerGroup String @map("trigger_group") @db.VarChar(200)
+
+  @@id([schedName, triggerGroup])
+  @@map("qrtz_paused_trigger_grps")
+}
+
+model QrtzSchedulerState {
+  schedName       String @map("sched_name") @db.VarChar(120)
+  instanceName    String @map("instance_name") @db.VarChar(200)
+  lastCheckinTime BigInt @map("last_checkin_time")
+  checkinInterval BigInt @map("checkin_interval")
+
+  @@id([schedName, instanceName])
+  @@map("qrtz_scheduler_state")
+}
+
+model QrtzSimpleTriggers {
+  schedName      String       @map("sched_name") @db.VarChar(120)
+  triggerName    String       @map("trigger_name") @db.VarChar(200)
+  triggerGroup   String       @map("trigger_group") @db.VarChar(200)
+  repeatCount    BigInt       @map("repeat_count")
+  repeatInterval BigInt       @map("repeat_interval")
+  timesTriggered BigInt       @map("times_triggered")
+  qrtzTriggers   QrtzTriggers @relation(fields: [schedName, triggerName, triggerGroup], references: [schedName, triggerName, triggerGroup], onUpdate: Restrict, map: "qrtz_simple_triggers_ibfk_1")
+
+  @@id([schedName, triggerName, triggerGroup])
+  @@map("qrtz_simple_triggers")
+}
+
+model QrtzSimpropTriggers {
+  schedName    String       @map("sched_name") @db.VarChar(120)
+  triggerName  String       @map("trigger_name") @db.VarChar(200)
+  triggerGroup String       @map("trigger_group") @db.VarChar(200)
+  strProp_1    String?      @map("str_prop_1") @db.VarChar(512)
+  strProp_2    String?      @map("str_prop_2") @db.VarChar(512)
+  strProp_3    String?      @map("str_prop_3") @db.VarChar(512)
+  intProp_1    Int?         @map("int_prop_1")
+  intProp_2    Int?         @map("int_prop_2")
+  longProp_1   BigInt?      @map("long_prop_1")
+  longProp_2   BigInt?      @map("long_prop_2")
+  decProp_1    Decimal?     @map("dec_prop_1") @db.Decimal(13, 4)
+  decProp_2    Decimal?     @map("dec_prop_2") @db.Decimal(13, 4)
+  boolProp_1   String?      @map("bool_prop_1") @db.VarChar(1)
+  boolProp_2   String?      @map("bool_prop_2") @db.VarChar(1)
+  qrtzTriggers QrtzTriggers @relation(fields: [schedName, triggerName, triggerGroup], references: [schedName, triggerName, triggerGroup], onUpdate: Restrict, map: "qrtz_simprop_triggers_ibfk_1")
+
+  @@id([schedName, triggerName, triggerGroup])
+  @@map("qrtz_simprop_triggers")
+}
+
+model QrtzTriggers {
+  schedName           String               @map("sched_name") @db.VarChar(120)
+  triggerName         String               @map("trigger_name") @db.VarChar(200)
+  triggerGroup        String               @map("trigger_group") @db.VarChar(200)
+  jobName             String               @map("job_name") @db.VarChar(200)
+  jobGroup            String               @map("job_group") @db.VarChar(200)
+  description         String?              @db.VarChar(250)
+  nextFireTime        BigInt?              @map("next_fire_time")
+  prevFireTime        BigInt?              @map("prev_fire_time")
+  priority            Int?
+  triggerState        String               @map("trigger_state") @db.VarChar(16)
+  triggerType         String               @map("trigger_type") @db.VarChar(8)
+  startTime           BigInt               @map("start_time")
+  endTime             BigInt?              @map("end_time")
+  calendarName        String?              @map("calendar_name") @db.VarChar(200)
+  misfireInstr        Int?                 @map("misfire_instr") @db.SmallInt
+  jobData             Bytes?               @map("job_data") @db.Blob
+  qrtzBlobTriggers    QrtzBlobTriggers?
+  qrtzCronTriggers    QrtzCronTriggers?
+  qrtzSimpleTriggers  QrtzSimpleTriggers?
+  qrtzSimpropTriggers QrtzSimpropTriggers?
+  qrtzJobDetails      QrtzJobDetails       @relation(fields: [schedName, jobName, jobGroup], references: [schedName, jobName, jobGroup], onUpdate: Restrict, map: "qrtz_triggers_ibfk_1")
+
+  @@id([schedName, triggerName, triggerGroup])
+  @@index([schedName, jobName, jobGroup], map: "sched_name")
+  @@map("qrtz_triggers")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model RfidCabinetdoor {
+  id         Int     @id @default(autoincrement()) @map("Id")
+  cabinetId  Int?    @map("CabinetId")
+  name       Int?    @map("Name")
+  state      String? @map("State") @db.VarChar(10)
+  kgbh       String? @map("Kgbh") @db.VarChar(255)
+  kgzt       String? @map("Kgzt") @db.VarChar(255)
+  kglx       String? @map("Kglx") @db.VarChar(255)
+  folderPath String? @map("FolderPath") @db.VarChar(255)
+  orderIndex String? @map("OrderIndex") @db.VarChar(255)
   txAddr     String? @db.VarChar(255)
   txId       String? @db.VarChar(255)
   viewName   String? @db.VarChar(255)
+
+  @@map("rfid_cabinetdoor")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model rfid_operation_record {
+model RfidOperationRecord {
   recordId    Int     @id @default(autoincrement())
   operationid String? @db.VarChar(50)
-  UserID      String? @db.VarChar(255)
-  CreateDate  String? @db.VarChar(255)
-  Type        String? @db.VarChar(255)
-  cadinetID   String? @db.VarChar(255)
+  userId      String? @map("UserID") @db.VarChar(255)
+  createDate  String? @map("CreateDate") @db.VarChar(255)
+  type        String? @map("Type") @db.VarChar(255)
+  cadinetId   String? @map("cadinetID") @db.VarChar(255)
   doorid      String? @db.VarChar(11)
   content     String? @db.VarChar(255)
+
+  @@map("rfid_operation_record")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model rfid_remove_carrier {
-  Carrier_ID       Int       @id @default(autoincrement())
-  carrier_rfid     String?   @db.VarChar(128)
-  cabinet_id       String?   @db.VarChar(20)
-  cabinet_door_id  String?   @db.VarChar(20)
-  carrier_p_status String?   @db.VarChar(255)
-  user_id          BigInt?
-  add_user         BigInt?
-  type             Int?      @db.TinyInt
-  remark           String?   @db.VarChar(255)
-  create_time      DateTime? @db.DateTime(0)
-  name             String?   @db.VarChar(255)
-  record_id        BigInt?
+model RfidRemoveCarrier {
+  carrierId      Int       @id @default(autoincrement()) @map("Carrier_ID")
+  carrierRfid    String?   @map("carrier_rfid") @db.VarChar(128)
+  cabinetId      String?   @map("cabinet_id") @db.VarChar(20)
+  cabinetDoorId  String?   @map("cabinet_door_id") @db.VarChar(20)
+  carrierPStatus String?   @map("carrier_p_status") @db.VarChar(255)
+  userId         BigInt?   @map("user_id")
+  addUser        BigInt?   @map("add_user")
+  type           Int?      @db.TinyInt
+  remark         String?   @db.VarChar(255)
+  createTime     DateTime? @map("create_time") @db.DateTime(0)
+  name           String?   @db.VarChar(255)
+  recordId       BigInt?   @map("record_id")
+
+  @@map("rfid_remove_carrier")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model rfid_remove_document {
-  doc_id           BigInt    @id @default(autoincrement())
-  doc_name         String    @db.VarChar(200)
-  doc_secret_level Int?
-  doc_type         String?   @db.VarChar(10)
-  doc_rfid         String?   @db.VarChar(128)
-  remark           String?   @db.VarChar(100)
-  doc_p_status     Int?      @default(1)
-  user_id          BigInt?
-  dept_id          BigInt
-  cabinet_id       String?   @db.VarChar(20)
-  cabinet_door_id  String?   @db.VarChar(20)
-  update_time      DateTime? @db.DateTime(0)
-  create_time      DateTime  @db.DateTime(0)
-  IS_one           String?   @default("0") @db.VarChar(255)
-  doc_last_time    DateTime? @db.DateTime(0)
-  end_time         DateTime? @db.DateTime(0)
-  record_id        BigInt?
+model RfidRemoveDocument {
+  docId          BigInt    @id @default(autoincrement()) @map("doc_id")
+  docName        String    @map("doc_name") @db.VarChar(200)
+  docSecretLevel Int?      @map("doc_secret_level")
+  docType        String?   @map("doc_type") @db.VarChar(10)
+  docRfid        String?   @map("doc_rfid") @db.VarChar(128)
+  remark         String?   @db.VarChar(100)
+  docPStatus     Int?      @default(1) @map("doc_p_status")
+  userId         BigInt?   @map("user_id")
+  deptId         BigInt    @map("dept_id")
+  cabinetId      String?   @map("cabinet_id") @db.VarChar(20)
+  cabinetDoorId  String?   @map("cabinet_door_id") @db.VarChar(20)
+  updateTime     DateTime? @map("update_time") @db.DateTime(0)
+  createTime     DateTime  @map("create_time") @db.DateTime(0)
+  isOne          String?   @default("0") @map("IS_one") @db.VarChar(255)
+  docLastTime    DateTime? @map("doc_last_time") @db.DateTime(0)
+  endTime        DateTime? @map("end_time") @db.DateTime(0)
+  recordId       BigInt?   @map("record_id")
+
+  @@map("rfid_remove_document")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model rfid_remove_record {
-  id          BigInt    @id @default(autoincrement())
-  remove_time DateTime? @db.DateTime(0)
-  user_id     BigInt?
+model RfidRemoveRecord {
+  id         BigInt    @id @default(autoincrement())
+  removeTime DateTime? @map("remove_time") @db.DateTime(0)
+  userId     BigInt?   @map("user_id")
+
+  @@map("rfid_remove_record")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model rfid_remove_record_rfid {
-  id               BigInt  @id @default(autoincrement())
-  remove_record_id BigInt?
-  rfid             String? @db.VarChar(255)
+model RfidRemoveRecordRfid {
+  id             BigInt  @id @default(autoincrement())
+  removeRecordId BigInt? @map("remove_record_id")
+  rfid           String? @db.VarChar(255)
+
+  @@map("rfid_remove_record_rfid")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model rfid_remove_temp {
+model RfidRemoveTemp {
   id   Int    @id @default(autoincrement())
   rfid String @db.VarChar(255)
+
+  @@map("rfid_remove_temp")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model rfid_tips_alarm_record {
-  recordId           Int       @id @default(autoincrement())
-  Alarm_Type         String?   @db.VarChar(255)
-  Type               Int?      @default(0)
-  UserID             Int?
-  operationid        String?   @db.VarChar(50)
-  CreateDate         DateTime? @db.DateTime(0)
-  Handle_UserID      Int?
-  Handle_operationid String?   @db.VarChar(50)
-  Handle_Date        DateTime? @db.DateTime(0)
-  cadinetID          Int?      @default(0)
-  doorid             Int?      @default(0)
-  content            String?   @db.VarChar(255)
-  contentType        Int?      @db.TinyInt
-  Rfid               String?   @db.VarChar(255)
-  groupid            BigInt?
-  docId              BigInt?
-  doc_car_name       String?   @db.VarChar(255)
-  dept_name          String?   @db.VarChar(255)
-  car_user_name      String?   @db.VarChar(255)
-  cab_name           String?   @db.VarChar(255)
-  cabdoor_name       String?   @db.VarChar(255)
-  ope_user_name      String?   @db.VarChar(255)
-  cabdoor_User_name  String?   @db.VarChar(255)
-  cabdoor_dept_name  String?   @db.VarChar(255)
-  isOperation        Int?      @default(0) @db.TinyInt
+model RfidTipsAlarmRecord {
+  recordId          Int       @id @default(autoincrement())
+  alarmType         String?   @map("Alarm_Type") @db.VarChar(255)
+  type              Int?      @default(0) @map("Type")
+  userId            Int?      @map("UserID")
+  operationid       String?   @db.VarChar(50)
+  createDate        DateTime? @map("CreateDate") @db.DateTime(0)
+  handleUserId      Int?      @map("Handle_UserID")
+  handleOperationid String?   @map("Handle_operationid") @db.VarChar(50)
+  handleDate        DateTime? @map("Handle_Date") @db.DateTime(0)
+  cadinetId         Int?      @default(0) @map("cadinetID")
+  doorid            Int?      @default(0)
+  content           String?   @db.VarChar(255)
+  contentType       Int?      @db.TinyInt
+  rfid              String?   @map("Rfid") @db.VarChar(255)
+  groupid           BigInt?
+  docId             BigInt?
+  docCarName        String?   @map("doc_car_name") @db.VarChar(255)
+  deptName          String?   @map("dept_name") @db.VarChar(255)
+  carUserName       String?   @map("car_user_name") @db.VarChar(255)
+  cabName           String?   @map("cab_name") @db.VarChar(255)
+  cabdoorName       String?   @map("cabdoor_name") @db.VarChar(255)
+  opeUserName       String?   @map("ope_user_name") @db.VarChar(255)
+  cabdoorUserName   String?   @map("cabdoor_User_name") @db.VarChar(255)
+  cabdoorDeptName   String?   @map("cabdoor_dept_name") @db.VarChar(255)
+  isOperation       Int?      @default(0) @db.TinyInt
 
   @@index([doorid], map: "index_doorid")
-  @@index([Type], map: "index_type")
+  @@index([type], map: "index_type")
+  @@map("rfid_tips_alarm_record")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model rfid_tips_record {
-  recordId           Int       @id @default(autoincrement())
-  UserID             Int?
-  operationid        String?   @db.VarChar(50)
-  CreateDate         DateTime? @db.DateTime(0)
-  Handle_UserID      Int?
-  Handle_operationid String?   @db.VarChar(50)
-  Handle_Date        DateTime? @db.DateTime(0)
-  cadinetID          Int?      @default(0)
-  doorid             Int?      @default(0)
-  content            String?   @db.VarChar(255)
-  contentType        Int?      @db.TinyInt
-  Rfid               String?   @db.VarChar(255)
-  groupid            BigInt?
-  docId              BigInt?
-  doc_car_name       String?   @db.VarChar(255)
-  dept_name          String?   @db.VarChar(255)
-  car_user_name      String?   @db.VarChar(255)
-  cab_name           String?   @db.VarChar(255)
-  cabdoor_name       String?   @db.VarChar(255)
-  ope_user_name      String?   @db.VarChar(255)
-  cabdoor_User_name  String?   @db.VarChar(255)
-  cabdoor_dept_name  String?   @db.VarChar(255)
-  isOperation        Int?      @default(0) @db.TinyInt
+model RfidTipsRecord {
+  recordId          Int       @id @default(autoincrement())
+  userId            Int?      @map("UserID")
+  operationid       String?   @db.VarChar(50)
+  createDate        DateTime? @map("CreateDate") @db.DateTime(0)
+  handleUserId      Int?      @map("Handle_UserID")
+  handleOperationid String?   @map("Handle_operationid") @db.VarChar(50)
+  handleDate        DateTime? @map("Handle_Date") @db.DateTime(0)
+  cadinetId         Int?      @default(0) @map("cadinetID")
+  doorid            Int?      @default(0)
+  content           String?   @db.VarChar(255)
+  contentType       Int?      @db.TinyInt
+  rfid              String?   @map("Rfid") @db.VarChar(255)
+  groupid           BigInt?
+  docId             BigInt?
+  docCarName        String?   @map("doc_car_name") @db.VarChar(255)
+  deptName          String?   @map("dept_name") @db.VarChar(255)
+  carUserName       String?   @map("car_user_name") @db.VarChar(255)
+  cabName           String?   @map("cab_name") @db.VarChar(255)
+  cabdoorName       String?   @map("cabdoor_name") @db.VarChar(255)
+  opeUserName       String?   @map("ope_user_name") @db.VarChar(255)
+  cabdoorUserName   String?   @map("cabdoor_User_name") @db.VarChar(255)
+  cabdoorDeptName   String?   @map("cabdoor_dept_name") @db.VarChar(255)
+  isOperation       Int?      @default(0) @db.TinyInt
+
+  @@map("rfid_tips_record")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model sys_file_info {
-  file_id   Int     @id @default(autoincrement())
-  file_name String? @default("") @db.VarChar(50)
-  file_path String? @default("") @db.VarChar(255)
+model SysFileInfo {
+  fileId   Int     @id @default(autoincrement()) @map("file_id")
+  fileName String? @default("") @map("file_name") @db.VarChar(50)
+  filePath String? @default("") @map("file_path") @db.VarChar(255)
+
+  @@map("sys_file_info")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model sys_job {
-  job_id          BigInt    @default(autoincrement())
-  job_name        String    @default("") @db.VarChar(64)
-  job_group       String    @default("") @db.VarChar(64)
-  method_name     String?   @default("") @db.VarChar(500)
-  method_params   String?   @db.VarChar(50)
-  cron_expression String?   @default("") @db.VarChar(255)
-  misfire_policy  String?   @default("3") @db.VarChar(20)
-  concurrent      String?   @default("1") @db.Char(1)
-  status          String?   @default("0") @db.Char(1)
-  create_by       String?   @default("") @db.VarChar(64)
-  create_time     DateTime? @db.DateTime(0)
-  update_by       String?   @default("") @db.VarChar(64)
-  update_time     DateTime? @db.DateTime(0)
-  remark          String?   @default("") @db.VarChar(500)
-
-  @@id([job_id, job_name, job_group])
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model sys_job_log {
-  job_log_id     BigInt    @id @default(autoincrement())
-  job_name       String    @db.VarChar(64)
-  job_group      String    @db.VarChar(64)
-  method_name    String?   @db.VarChar(500)
-  method_params  String?   @db.VarChar(50)
-  job_message    String?   @db.VarChar(500)
+model SysJob {
+  jobId          BigInt    @default(autoincrement()) @map("job_id")
+  jobName        String    @default("") @map("job_name") @db.VarChar(64)
+  jobGroup       String    @default("") @map("job_group") @db.VarChar(64)
+  methodName     String?   @default("") @map("method_name") @db.VarChar(500)
+  methodParams   String?   @map("method_params") @db.VarChar(50)
+  cronExpression String?   @default("") @map("cron_expression") @db.VarChar(255)
+  misfirePolicy  String?   @default("3") @map("misfire_policy") @db.VarChar(20)
+  concurrent     String?   @default("1") @db.Char(1)
   status         String?   @default("0") @db.Char(1)
-  exception_info String?   @default("") @db.VarChar(2000)
-  create_time    DateTime? @db.DateTime(0)
+  createBy       String?   @default("") @map("create_by") @db.VarChar(64)
+  createTime     DateTime? @map("create_time") @db.DateTime(0)
+  updateBy       String?   @default("") @map("update_by") @db.VarChar(64)
+  updateTime     DateTime? @map("update_time") @db.DateTime(0)
+  remark         String?   @default("") @db.VarChar(500)
+
+  @@id([jobId, jobName, jobGroup])
+  @@map("sys_job")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model sys_logininfor {
-  info_id        BigInt    @id @default(autoincrement())
-  login_name     String?   @default("") @db.VarChar(50)
+model SysJobLog {
+  jobLogId      BigInt    @id @default(autoincrement()) @map("job_log_id")
+  jobName       String    @map("job_name") @db.VarChar(64)
+  jobGroup      String    @map("job_group") @db.VarChar(64)
+  methodName    String?   @map("method_name") @db.VarChar(500)
+  methodParams  String?   @map("method_params") @db.VarChar(50)
+  jobMessage    String?   @map("job_message") @db.VarChar(500)
+  status        String?   @default("0") @db.Char(1)
+  exceptionInfo String?   @default("") @map("exception_info") @db.VarChar(2000)
+  createTime    DateTime? @map("create_time") @db.DateTime(0)
+
+  @@map("sys_job_log")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model SysLogininfor {
+  infoId        BigInt    @id @default(autoincrement()) @map("info_id")
+  loginName     String?   @default("") @map("login_name") @db.VarChar(50)
+  ipaddr        String?   @default("") @db.VarChar(50)
+  loginLocation String?   @default("") @map("login_location") @db.VarChar(255)
+  browser       String?   @default("") @db.VarChar(50)
+  os            String?   @default("") @db.VarChar(50)
+  status        String?   @default("0") @db.Char(1)
+  msg           String?   @default("") @db.VarChar(255)
+  loginTime     DateTime? @map("login_time") @db.DateTime(0)
+
+  @@map("sys_logininfor")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model SysNotice {
+  noticeId      Int       @id @default(autoincrement()) @map("notice_id")
+  noticeTitle   String    @map("notice_title") @db.VarChar(50)
+  noticeType    String    @map("notice_type") @db.Char(1)
+  noticeContent String?   @map("notice_content") @db.VarChar(2000)
+  status        String?   @default("0") @db.Char(1)
+  createBy      String?   @default("") @map("create_by") @db.VarChar(64)
+  createTime    DateTime? @map("create_time") @db.DateTime(0)
+  updateBy      String?   @default("") @map("update_by") @db.VarChar(64)
+  updateTime    DateTime? @map("update_time") @db.DateTime(0)
+  remark        String?   @db.VarChar(255)
+
+  @@map("sys_notice")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model SysOperLog {
+  operId       BigInt    @id @default(autoincrement()) @map("oper_id")
+  title        String?   @default("") @db.VarChar(50)
+  businessType Int?      @default(0) @map("business_type")
+  method       String?   @default("") @db.VarChar(100)
+  operatorType Int?      @default(0) @map("operator_type")
+  operName     String?   @default("") @map("oper_name") @db.VarChar(50)
+  deptName     String?   @default("") @map("dept_name") @db.VarChar(50)
+  operUrl      String?   @default("") @map("oper_url") @db.VarChar(255)
+  operIp       String?   @default("") @map("oper_ip") @db.VarChar(50)
+  operLocation String?   @default("") @map("oper_location") @db.VarChar(255)
+  operParam    String?   @default("") @map("oper_param") @db.VarChar(2000)
+  status       Int?      @default(0)
+  errorMsg     String?   @default("") @map("error_msg") @db.VarChar(2000)
+  operTime     DateTime? @map("oper_time") @db.DateTime(0)
+
+  @@map("sys_oper_log")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model SysPost {
+  postId     BigInt    @id @default(autoincrement()) @map("post_id")
+  postCode   String    @map("post_code") @db.VarChar(64)
+  postName   String    @map("post_name") @db.VarChar(50)
+  postSort   Int       @map("post_sort")
+  status     String    @db.Char(1)
+  createBy   String?   @default("") @map("create_by") @db.VarChar(64)
+  createTime DateTime? @map("create_time") @db.DateTime(0)
+  updateBy   String?   @default("") @map("update_by") @db.VarChar(64)
+  updateTime DateTime? @map("update_time") @db.DateTime(0)
+  remark     String?   @db.VarChar(500)
+
+  @@map("sys_post")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model SysRoleDept {
+  roleId BigInt @map("role_id")
+  deptId BigInt @map("dept_id")
+
+  @@id([roleId, deptId])
+  @@map("sys_role_dept")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model SysUserOnline {
+  sessionId      String    @id @default("") @db.VarChar(50)
+  loginName      String?   @default("") @map("login_name") @db.VarChar(50)
+  deptName       String?   @default("") @map("dept_name") @db.VarChar(50)
   ipaddr         String?   @default("") @db.VarChar(50)
-  login_location String?   @default("") @db.VarChar(255)
+  loginLocation  String?   @default("") @map("login_location") @db.VarChar(255)
   browser        String?   @default("") @db.VarChar(50)
   os             String?   @default("") @db.VarChar(50)
-  status         String?   @default("0") @db.Char(1)
-  msg            String?   @default("") @db.VarChar(255)
-  login_time     DateTime? @db.DateTime(0)
+  status         String?   @default("") @db.VarChar(10)
+  startTimestamp DateTime? @map("start_timestamp") @db.DateTime(0)
+  lastAccessTime DateTime? @map("last_access_time") @db.DateTime(0)
+  expireTime     Int?      @default(0) @map("expire_time")
+
+  @@map("sys_user_online")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model sys_notice {
-  notice_id      Int       @id @default(autoincrement())
-  notice_title   String    @db.VarChar(50)
-  notice_type    String    @db.Char(1)
-  notice_content String?   @db.VarChar(2000)
-  status         String?   @default("0") @db.Char(1)
-  create_by      String?   @default("") @db.VarChar(64)
-  create_time    DateTime? @db.DateTime(0)
-  update_by      String?   @default("") @db.VarChar(64)
-  update_time    DateTime? @db.DateTime(0)
-  remark         String?   @db.VarChar(255)
+model SysUserPost {
+  userId BigInt @map("user_id")
+  postId BigInt @map("post_id")
+
+  @@id([userId, postId])
+  @@map("sys_user_post")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model sys_oper_log {
-  oper_id       BigInt    @id @default(autoincrement())
-  title         String?   @default("") @db.VarChar(50)
-  business_type Int?      @default(0)
-  method        String?   @default("") @db.VarChar(100)
-  operator_type Int?      @default(0)
-  oper_name     String?   @default("") @db.VarChar(50)
-  dept_name     String?   @default("") @db.VarChar(50)
-  oper_url      String?   @default("") @db.VarChar(255)
-  oper_ip       String?   @default("") @db.VarChar(50)
-  oper_location String?   @default("") @db.VarChar(255)
-  oper_param    String?   @default("") @db.VarChar(2000)
-  status        Int?      @default(0)
-  error_msg     String?   @default("") @db.VarChar(2000)
-  oper_time     DateTime? @db.DateTime(0)
-}
+model RfidFingerUser {
+  fingerId   Int       @id @default(autoincrement()) @map("FingerID")
+  userid     Int?      @map("Userid")
+  order      Int?
+  fingerData String?   @map("FingerData") @db.VarChar(3000)
+  createDate DateTime? @map("CreateDate") @db.DateTime(0)
 
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model sys_post {
-  post_id     BigInt    @id @default(autoincrement())
-  post_code   String    @db.VarChar(64)
-  post_name   String    @db.VarChar(50)
-  post_sort   Int
-  status      String    @db.Char(1)
-  create_by   String?   @default("") @db.VarChar(64)
-  create_time DateTime? @db.DateTime(0)
-  update_by   String?   @default("") @db.VarChar(64)
-  update_time DateTime? @db.DateTime(0)
-  remark      String?   @db.VarChar(500)
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model sys_role_dept {
-  role_id BigInt
-  dept_id BigInt
-
-  @@id([role_id, dept_id])
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model sys_user_online {
-  sessionId        String    @id @default("") @db.VarChar(50)
-  login_name       String?   @default("") @db.VarChar(50)
-  dept_name        String?   @default("") @db.VarChar(50)
-  ipaddr           String?   @default("") @db.VarChar(50)
-  login_location   String?   @default("") @db.VarChar(255)
-  browser          String?   @default("") @db.VarChar(50)
-  os               String?   @default("") @db.VarChar(50)
-  status           String?   @default("") @db.VarChar(10)
-  start_timestamp  DateTime? @db.DateTime(0)
-  last_access_time DateTime? @db.DateTime(0)
-  expire_time      Int?      @default(0)
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model sys_user_post {
-  user_id BigInt
-  post_id BigInt
-
-  @@id([user_id, post_id])
+  @@map("rfid_finger_user")
 }

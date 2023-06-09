@@ -1,5 +1,4 @@
-export enum CarrierState {
-  Present,
+export enum BorrowedState {
+  Returned,
   Borrowed,
-  PendingDistribution,
 }
