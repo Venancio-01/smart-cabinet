@@ -1,56 +1,56 @@
 <script lang="ts" setup>
-import type { ColumnsType } from 'ant-design-vue/es/table'
-import type { SysDept } from '.prisma/client'
-import useSys from '@/hooks/useSys'
-import useTime from '@/hooks/useTime'
+import type { ColumnsType } from "ant-design-vue/es/table";
+import type { SysDept } from ".prisma/client";
+import useSys from "@/hooks/useSys";
+import useTime from "@/hooks/useTime";
 
-const { getDepartmentsByCondition } = useSys()
-const { resetOperationTimeoutCountdown } = useTime()
+const { getDepartmentsByCondition } = useSys();
+const { resetOperationTimeoutCountdown } = useTime();
 
 const condition = reactive<DepartmentQueryProps>({
   page: 1,
   size: 7,
-  departmentName: '',
-})
+  departmentName: "",
+});
 
-const data = ref<SysDept[]>([])
-const total = ref(0)
+const data = ref<SysDept[]>([]);
+const total = ref(0);
 const columns: ColumnsType = [
   {
-    title: '机构名称',
-    dataIndex: 'deptName',
-    key: 'deptName',
+    title: "机构名称",
+    dataIndex: "deptName",
+    key: "deptName",
   },
-]
+];
 
 async function onPageChange(page: number) {
-  condition.page = page
+  condition.page = page;
 
-  getUserList()
+  getUserList();
 }
 
 async function handleSearch() {
-  condition.page = 1
+  condition.page = 1;
 
-  getUserList()
+  getUserList();
 }
 
 function handleInit() {
-  condition.page = 1
-  condition.departmentName = ''
-  data.value = []
+  condition.page = 1;
+  condition.departmentName = "";
+  data.value = [];
 
-  getUserList()
+  getUserList();
 }
 
 async function getUserList() {
-  resetOperationTimeoutCountdown()
-  data.value = await getDepartmentsByCondition(condition)
+  resetOperationTimeoutCountdown();
+  data.value = await getDepartmentsByCondition(condition);
 }
 
 onMounted(() => {
-  handleInit()
-})
+  handleInit();
+});
 </script>
 
 <template>
@@ -70,12 +70,8 @@ onMounted(() => {
       </a-form>
 
       <div class="w-[180px] flex justify-end">
-        <a-button type="primary" @click="handleSearch">
-          搜索
-        </a-button>
-        <a-button class="ml-4" @click="handleInit">
-          重置
-        </a-button>
+        <a-button type="primary" @click="handleSearch"> 搜索 </a-button>
+        <a-button class="ml-4" @click="handleInit"> 重置 </a-button>
       </div>
     </div>
 

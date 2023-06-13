@@ -1,26 +1,27 @@
 <script lang="ts" setup>
-import { useStore } from '@/store'
+import { useStore } from "@/store";
 
-const router = useRouter()
-const store = useStore()
-const { misPlaceCarrierTotal, carrierTotal, inPlaceCarrierTotal } = storeToRefs(store)
+const router = useRouter();
+const store = useStore();
+const { misPlaceCarrierTotal, carrierTotal, inPlaceCarrierTotal } =
+  storeToRefs(store);
 
 function goCarrierPage() {
-  const state = null
+  const state = null;
 
-  router.push(`/main/carrier/${state}`)
+  router.push(`/main/carrier/${state}`);
 }
 
 function goCarrierPageWithInPlace() {
-  const state = 0
+  const state = 0;
 
-  router.push(`/main/carrier/${state}`)
+  router.push(`/main/carrier/${state}`);
 }
 
 function goCarrierPageWithMisPlace() {
-  const state = 2
+  const state = 2;
 
-  router.push(`/main/carrier/${state}`)
+  router.push(`/main/carrier/${state}`);
 }
 </script>
 
@@ -37,7 +38,14 @@ function goCarrierPageWithMisPlace() {
     </div>
 
     <div class="statistics-count" @click="goCarrierPageWithMisPlace">
-      <span class="content" :class="misPlaceCarrierTotal === 0 ? 'text-primary-color' : '!text-error-color'">
+      <span
+        class="content"
+        :class="
+          misPlaceCarrierTotal === 0
+            ? 'text-primary-color'
+            : '!text-error-color'
+        "
+      >
         {{ misPlaceCarrierTotal }}
       </span>
       <span class="title">错放载体</span>

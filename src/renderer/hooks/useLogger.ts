@@ -1,18 +1,18 @@
 export default function useLogger() {
   function info(message: string) {
-    window.JSBridge.log.info(message)
+    window.JSBridge.log.info(message);
   }
 
   function warn(message: string) {
-    window.JSBridge.log.warn(message)
+    window.JSBridge.log.warn(message);
   }
 
   function error(message: string) {
-    window.JSBridge.log.error(message)
+    window.JSBridge.log.error(message);
   }
 
   function debug(message: string) {
-    window.JSBridge.log.debug(message)
+    window.JSBridge.log.debug(message);
   }
 
   return {
@@ -20,5 +20,5 @@ export default function useLogger() {
     warn,
     error,
     debug,
-  }
+  };
 }

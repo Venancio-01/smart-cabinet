@@ -1,6 +1,6 @@
-import os from 'os'
-import dayjs from 'dayjs'
-import pkg from '../../../package.json'
+import os from "os";
+import dayjs from "dayjs";
+import pkg from "../../../package.json";
 
 /**
  * @description: 生成 ipc 通信的返回数据结构
@@ -12,11 +12,11 @@ export function genResponseData<T>(success: boolean, msg?: string, data?: T) {
     success,
     msg,
     data,
-  }
+  };
 }
 
 export function generateCurrentTime() {
-  return dayjs().format('YYYY-MM-DD HH:mm:ss')
+  return dayjs().format("YYYY-MM-DD HH:mm:ss");
 }
 
 /**
@@ -24,18 +24,18 @@ export function generateCurrentTime() {
  * @return {*}
  */
 export function getAppVersion(): string {
-  return pkg.version
+  return pkg.version;
 }
 
 // 获取本机 ip 地址
 export function getLocalIpAddress(): string[] {
-  const interfaces = os.networkInterfaces()
-  const addresses: string[] = []
+  const interfaces = os.networkInterfaces();
+  const addresses: string[] = [];
   for (const name of Object.keys(interfaces)) {
     for (const iface of interfaces[name] ?? []) {
-      if (iface.family === 'IPv4' && !iface.internal)
-        addresses.push(iface.address)
+      if (iface.family === "IPv4" && !iface.internal)
+        addresses.push(iface.address);
     }
   }
-  return addresses
+  return addresses;
 }

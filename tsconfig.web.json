@@ -13,12 +13,8 @@
     "baseUrl": ".",
     "jsx": "preserve",
     "paths": {
-      "@/*": [
-        "src/renderer/*"
-      ],
-      "~/*": [
-        "src/*"
-      ]
+      "@/*": ["src/renderer/*"],
+      "~/*": ["src/*"]
     }
   }
 }

@@ -1,0 +1,17 @@
+# Ignore all files and directories that start with a dot
+.*
+
+# Ignore build output directories
+build/
+dist/
+out/
+node_modules/
+devtools/
+release/
+
+# Ignore specific files
+README.md
+LICENSE
+
+# Ignore log files
+*.log

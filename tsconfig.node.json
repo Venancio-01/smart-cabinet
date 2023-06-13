@@ -10,20 +10,12 @@
   ],
   "compilerOptions": {
     "baseUrl": ".",
-    "types": [
-      "vite/client"
-    ],
+    "types": ["vite/client"],
     "resolveJsonModule": true,
     "paths": {
-      "@/*": [
-        "src/main/*"
-      ],
-      "~/*": [
-        "src/*"
-      ],
-      "pkg": [
-        "./package.json"
-      ]
+      "@/*": ["src/main/*"],
+      "~/*": ["src/*"],
+      "pkg": ["./package.json"]
     }
   }
 }

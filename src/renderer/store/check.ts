@@ -1,17 +1,17 @@
-import type { DocDocument, RfidSwitchRecord } from '@prisma/client'
-import { defineStore } from 'pinia'
+import type { DocDocument, RfidSwitchRecord } from "@prisma/client";
+import { defineStore } from "pinia";
 
 interface State {
-  firstCarrierRecord: DocDocument[]
-  firstMisPlaceCarrierRecord: RfidSwitchRecord[]
-  endCarrierRecord: DocDocument[]
-  endMisPlaceCarrierRecord: RfidSwitchRecord[]
-  checkResultList: CheckResultType[]
-  lastOperationCabinetDoorRecords: CabinetDoorProps[]
-  lastOperationCabinetDoorList: CabinetDoorProps[]
+  firstCarrierRecord: DocDocument[];
+  firstMisPlaceCarrierRecord: RfidSwitchRecord[];
+  endCarrierRecord: DocDocument[];
+  endMisPlaceCarrierRecord: RfidSwitchRecord[];
+  checkResultList: CheckResultType[];
+  lastOperationCabinetDoorRecords: CabinetDoorProps[];
+  lastOperationCabinetDoorList: CabinetDoorProps[];
 }
 
-export const useCheckStore = defineStore('check', {
+export const useCheckStore = defineStore("check", {
   state: (): State => {
     return {
       firstCarrierRecord: [],
@@ -21,37 +21,38 @@ export const useCheckStore = defineStore('check', {
       checkResultList: [],
       lastOperationCabinetDoorRecords: [],
       lastOperationCabinetDoorList: [],
-    }
+    };
   },
   getters: {},
   actions: {
     setFirstCarrierRecord(record: DocDocument[]) {
-      this.firstCarrierRecord = record
+      this.firstCarrierRecord = record;
     },
     setFirstMisPlaceCarrierRecord(record: RfidSwitchRecord[]) {
-      this.firstMisPlaceCarrierRecord = record
+      this.firstMisPlaceCarrierRecord = record;
     },
     setEndCarrierRecord(record: DocDocument[]) {
-      this.endCarrierRecord = record
+      this.endCarrierRecord = record;
     },
     setEndMisPlaceCarrierRecord(record: RfidSwitchRecord[]) {
-      this.endMisPlaceCarrierRecord = record
+      this.endMisPlaceCarrierRecord = record;
     },
     setCheckResultList(result: CheckResultType[]) {
-      this.checkResultList = result
+      this.checkResultList = result;
     },
     addLastOperationCabinetDoorRecords(door: CabinetDoorProps) {
-      const isExist = this.lastOperationCabinetDoorRecords.find(item => item.id === door.id)
-      if (isExist)
-        return
+      const isExist = this.lastOperationCabinetDoorRecords.find(
+        (item) => item.id === door.id
+      );
+      if (isExist) return;
 
-      this.lastOperationCabinetDoorRecords.push(door)
+      this.lastOperationCabinetDoorRecords.push(door);
     },
     clearLastOperationCabinetDoorRecords() {
-      this.lastOperationCabinetDoorRecords = []
+      this.lastOperationCabinetDoorRecords = [];
     },
     changeLastOperationCabinetDoorList(list: CabinetDoorProps[]) {
-      this.lastOperationCabinetDoorList = list
+      this.lastOperationCabinetDoorList = list;
     },
   },
-})
+});

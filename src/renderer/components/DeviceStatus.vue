@@ -1,13 +1,18 @@
 <script lang="ts" setup>
-import { useStore } from '@/store'
+import { useStore } from "@/store";
 
-const store = useStore()
-const { misPlaceCarrierTotal, isNetworkConnected, isLockControlConnected, hasUnConnectedRfid } = storeToRefs(store)
+const store = useStore();
+const {
+  misPlaceCarrierTotal,
+  isNetworkConnected,
+  isLockControlConnected,
+  hasUnConnectedRfid,
+} = storeToRefs(store);
 
-const rfidVisible = ref(false)
-const lockVisible = ref(false)
-const networkVisible = ref(false)
-const warnVisible = ref(false)
+const rfidVisible = ref(false);
+const lockVisible = ref(false);
+const networkVisible = ref(false);
+const warnVisible = ref(false);
 </script>
 
 <template>
@@ -18,25 +23,48 @@ const warnVisible = ref(false)
     <NetworkStateDialog v-model:visible="networkVisible" />
 
     <div class="flex h-[50px] items-center justify-end gap-4">
-      <div v-show="misPlaceCarrierTotal !== 0" class="flex items-center justify-center">
+      <div
+        v-show="misPlaceCarrierTotal !== 0"
+        class="flex items-center justify-center"
+      >
         <BaseIcon
           icon="warn"
           class="text-4xl"
-          :class="misPlaceCarrierTotal === 0 ? 'text-light' : 'text-error-color'"
+          :class="
+            misPlaceCarrierTotal === 0 ? 'text-light' : 'text-error-color'
+          "
           @click="warnVisible = true"
         />
       </div>
 
       <div v-show="hasUnConnectedRfid" class="flex items-center justify-center">
-        <BaseIcon icon="RFID" class="text-4xl text-error" @click="rfidVisible = true" />
+        <BaseIcon
+          icon="RFID"
+          class="text-4xl text-error"
+          @click="rfidVisible = true"
+        />
       </div>
 
-      <div v-show="!isLockControlConnected" class="flex items-center justify-center">
-        <BaseIcon icon="lock" class="text-4xl text-error" @click="lockVisible = true" />
+      <div
+        v-show="!isLockControlConnected"
+        class="flex items-center justify-center"
+      >
+        <BaseIcon
+          icon="lock"
+          class="text-4xl text-error"
+          @click="lockVisible = true"
+        />
       </div>
 
-      <div v-show="!isNetworkConnected" class="flex items-center justify-center">
-        <BaseIcon icon="network" class="text-4xl text-error" @click="networkVisible = true" />
+      <div
+        v-show="!isNetworkConnected"
+        class="flex items-center justify-center"
+      >
+        <BaseIcon
+          icon="network"
+          class="text-4xl text-error"
+          @click="networkVisible = true"
+        />
       </div>
     </div>
   </div>

@@ -12,15 +12,18 @@
     "default_popup": "popups/not-found.html",
     "default_title": "Vue Devtools"
   },
-  "content_scripts": [{
-    "js": ["build/hook.js"],
-    "matches": ["\u003Call_urls>"],
-    "run_at": "document_start"
-  }, {
-    "js": ["build/detector.js"],
-    "matches": ["\u003Call_urls>"],
-    "run_at": "document_idle"
-  }],
+  "content_scripts": [
+    {
+      "js": ["build/hook.js"],
+      "matches": ["\u003Call_urls>"],
+      "run_at": "document_start"
+    },
+    {
+      "js": ["build/detector.js"],
+      "matches": ["\u003Call_urls>"],
+      "run_at": "document_idle"
+    }
+  ],
   "content_security_policy": "script-src 'self'; object-src 'self'",
   "description": "Browser DevTools extension for debugging Vue.js applications.",
   "devtools_page": "devtools-background.html",
@@ -37,5 +40,9 @@
   "update_url": "https://clients2.google.com/service/update2/crx",
   "version": "6.5.0",
   "version_name": "6.5.0",
-  "web_accessible_resources": ["devtools.html", "devtools-background.html", "build/backend.js"]
+  "web_accessible_resources": [
+    "devtools.html",
+    "devtools-background.html",
+    "build/backend.js"
+  ]
 }

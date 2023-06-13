@@ -37,7 +37,8 @@ body {
 .ant-modal-content {
   @apply bg-gray-8 bg-opacity-30 text-light;
   backdrop-filter: blur(8px);
-  box-shadow: 0px -1px 2px -2px rgba(250, 250, 250, 0.2), 0px -3px 6px 0px rgba(250, 250, 250, 0.2),
+  box-shadow: 0px -1px 2px -2px rgba(250, 250, 250, 0.2),
+    0px -3px 6px 0px rgba(250, 250, 250, 0.2),
     0px -5px 12px 4px rgba(250, 250, 250, 0.2);
 }
 .ant-modal-header {
@@ -56,7 +57,6 @@ body {
   @apply text-light;
 }
 /* End */
-
 
 /* 修改 Tabs 的样式 */
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
@@ -103,53 +103,55 @@ body {
 
 /* unocss 转换 */
 .font-small {
-  @apply text-[12px]
+  @apply text-[12px];
 }
 .font-medium {
-  @apply text-[14px]
+  @apply text-[14px];
 }
 .font-large {
-  @apply text-[18px]
+  @apply text-[18px];
 }
 .font-xl {
-  @apply text-[32px]
+  @apply text-[32px];
 }
 .font-2xl {
-  @apply text-[48px]
+  @apply text-[48px];
 }
 .font-striking {
-  @apply text-[68px]
+  @apply text-[68px];
 }
 .icon-medium {
-  @apply text-[36px]
+  @apply text-[36px];
 }
 .icon-large {
-  @apply text-[180px]
+  @apply text-[180px];
 }
 .flex-center-center {
-  @apply flex justify-center items-center
+  @apply flex justify-center items-center;
 }
 /* End */
 
 /* 引入lcd字体 */
 @font-face {
-  font-family: 'LCDFont';
-  src: url('@/assets/fonts/ds-digi-webfont.eot'); /* IE9 Compat Modes */
-  src: url('@/assets/fonts/ds-digi-webfont.eot?#iefix') format('embedded-opentype'),
-    /*IE6-IE8 */ url('@/assets/fonts/ds-digi-webfont.woff') format('woff'),
-    /* Modern Browsers */ url('@/assets/fonts/ds-digi-webfont.ttf') format('truetype')
+  font-family: "LCDFont";
+  src: url("@/assets/fonts/ds-digi-webfont.eot"); /* IE9 Compat Modes */
+  src: url("@/assets/fonts/ds-digi-webfont.eot?#iefix")
+      format("embedded-opentype"),
+    /*IE6-IE8 */ url("@/assets/fonts/ds-digi-webfont.woff") format("woff"),
+    /* Modern Browsers */ url("@/assets/fonts/ds-digi-webfont.ttf")
+      format("truetype");
 }
 
 @font-face {
-  font-family: 'source-han-sans';
-  src: url('@/assets/fonts/SourceHanSansCN-VF.ttf');
+  font-family: "source-han-sans";
+  src: url("@/assets/fonts/SourceHanSansCN-VF.ttf");
   font-weight: 100 900;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'Barlow';
-  src: url('@/assets/fonts/Barlow-Regular.ttf');
+  font-family: "Barlow";
+  src: url("@/assets/fonts/Barlow-Regular.ttf");
   font-weight: normal;
   font-style: normal;
 }

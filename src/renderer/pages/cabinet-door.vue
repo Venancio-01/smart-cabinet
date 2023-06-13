@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { useStore } from '@/store'
-import TheMultiDoor from '@/components/TheMultiDoor/index.vue'
-import TheSingleDoor from '@/components/TheSingleDoor.vue'
-import CarrierCountStatistics from '@/components/CarrierCountStatistics.vue'
+import { useStore } from "@/store";
+import TheMultiDoor from "@/components/TheMultiDoor/index.vue";
+import TheSingleDoor from "@/components/TheSingleDoor.vue";
+import CarrierCountStatistics from "@/components/CarrierCountStatistics.vue";
 
-const store = useStore()
-const { isSingleDoor } = storeToRefs(store)
+const store = useStore();
+const { isSingleDoor } = storeToRefs(store);
 </script>
 
 <template>

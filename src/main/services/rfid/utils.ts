@@ -1,22 +1,22 @@
-import { Buffer } from 'buffer'
-import { Library } from 'ffi-napi'
-import { UcharType } from '@/services/finger/types'
-import { CRC_SDK_PATH } from '@/config'
+import { Buffer } from "buffer";
+import { Library } from "ffi-napi";
+import { UcharType } from "@/services/finger/types";
+import { CRC_SDK_PATH } from "@/config";
 
 export function parseRFIDReportData(data: string): string[] {
-  const PREFIX = '5a00011200'
-  const arr = data.split(PREFIX)
+  const PREFIX = "5a00011200";
+  const arr = data.split(PREFIX);
 
   const parseArr = arr.reduce((acc, cur) => {
-    if (cur.startsWith('00')) {
-      const length = parseInt(`0x${cur.substring(0, 4)}`, 16) * 2
-      acc.push(`${PREFIX}${cur.substring(0, 4 + length)}`)
+    if (cur.startsWith("00")) {
+      const length = parseInt(`0x${cur.substring(0, 4)}`, 16) * 2;
+      acc.push(`${PREFIX}${cur.substring(0, 4 + length)}`);
     }
 
-    return acc
-  }, [])
+    return acc;
+  }, []);
 
-  return parseArr
+  return parseArr;
 }
 
 /**
@@ -25,26 +25,29 @@ export function parseRFIDReportData(data: string): string[] {
  * @return {*}
  */
 export function getTIDByReportData(data: string) {
-  let str = data
-  const PREFIX = '5a00011200'
-  const TIDLengthCommandLength = 4
-  const MidCommandLength = 16
+  let str = data;
+  const PREFIX = "5a00011200";
+  const TIDLengthCommandLength = 4;
+  const MidCommandLength = 16;
 
-  str = str.replace(PREFIX, '')
+  str = str.replace(PREFIX, "");
 
-  const EPCLength = parseInt(`0x${str.substring(4, 8)}`, 16) * 2
-  const TIDLength
-    = parseInt(
-      `0x${str.substring(8 + EPCLength + MidCommandLength, 8 + EPCLength + MidCommandLength + TIDLengthCommandLength)}`,
-      16,
-    ) * 2
+  const EPCLength = parseInt(`0x${str.substring(4, 8)}`, 16) * 2;
+  const TIDLength =
+    parseInt(
+      `0x${str.substring(
+        8 + EPCLength + MidCommandLength,
+        8 + EPCLength + MidCommandLength + TIDLengthCommandLength
+      )}`,
+      16
+    ) * 2;
 
   const TID = str.substring(
     8 + EPCLength + MidCommandLength + TIDLengthCommandLength,
-    8 + EPCLength + MidCommandLength + TIDLengthCommandLength + TIDLength,
-  )
+    8 + EPCLength + MidCommandLength + TIDLengthCommandLength + TIDLength
+  );
 
-  return TID
+  return TID;
 }
 
 /**
@@ -53,12 +56,11 @@ export function getTIDByReportData(data: string) {
  * @return {*}
  */
 export function generateBinaryString(numbers: number[]) {
-  const binaryArray = Array.from({ length: 32 }, () => '0')
+  const binaryArray = Array.from({ length: 32 }, () => "0");
 
-  for (const num of numbers)
-    binaryArray[num - 1] = '1'
+  for (const num of numbers) binaryArray[num - 1] = "1";
 
-  return binaryArray.reverse().join('')
+  return binaryArray.reverse().join("");
 }
 
 /**
@@ -67,8 +69,8 @@ export function generateBinaryString(numbers: number[]) {
  * @return {*}
  */
 export function binaryToHex(binary: string): string {
-  const hex = parseInt(binary, 2).toString(16).toUpperCase()
-  return hex.padStart(8, '0')
+  const hex = parseInt(binary, 2).toString(16).toUpperCase();
+  return hex.padStart(8, "0");
 }
 
 /**
@@ -78,15 +80,15 @@ export function binaryToHex(binary: string): string {
  */
 export function generateCRC16Code(str: string) {
   const crcSDK = Library(CRC_SDK_PATH, {
-    CRC16_CCITT: ['int', [UcharType, 'int']],
-  })
+    CRC16_CCITT: ["int", [UcharType, "int"]],
+  });
 
-  const buffer = Buffer.from(str, 'hex')
-  return crcSDK.CRC16_CCITT(buffer, buffer.length).toString(16)
+  const buffer = Buffer.from(str, "hex");
+  return crcSDK.CRC16_CCITT(buffer, buffer.length).toString(16);
 }
 
 export function generateAntennaCommand(antennaIds: number[]) {
-  const binary = generateBinaryString(antennaIds)
-  const command = binaryToHex(binary)
-  return command
+  const binary = generateBinaryString(antennaIds);
+  const command = binaryToHex(binary);
+  return command;
 }

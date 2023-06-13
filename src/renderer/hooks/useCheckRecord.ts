@@ -1,36 +1,36 @@
-import { useCheckStore } from '@/store/check'
+import { useCheckStore } from "@/store/check";
 
 export default function () {
-  const checkStore = useCheckStore()
+  const checkStore = useCheckStore();
   const {
     setFirstCarrierRecord,
     setFirstMisPlaceCarrierRecord,
     setEndCarrierRecord,
     setEndMisPlaceCarrierRecord,
     setCheckResultList,
-  } = checkStore
+  } = checkStore;
 
   /**
    * @description: 重置盘点记录
    * @return {*}
    */
   const resetCheckRecord = () => {
-    setFirstCarrierRecord([])
-    setFirstMisPlaceCarrierRecord([])
-    setEndCarrierRecord([])
-    setEndMisPlaceCarrierRecord([])
-  }
+    setFirstCarrierRecord([]);
+    setFirstMisPlaceCarrierRecord([]);
+    setEndCarrierRecord([]);
+    setEndMisPlaceCarrierRecord([]);
+  };
 
   /**
    * @description: 重置盘点结果
    * @return {*}
    */
   const resetCheckResult = () => {
-    setCheckResultList([])
-  }
+    setCheckResultList([]);
+  };
 
   return {
     resetCheckRecord,
     resetCheckResult,
-  }
+  };
 }

@@ -1,12 +1,10 @@
-import { useStore } from '@/store'
+import { useStore } from "@/store";
 
 export default function usePermission() {
-  const store = useStore()
-  const { isLoggedIn } = storeToRefs(store)
+  const store = useStore();
+  const { isLoggedIn } = storeToRefs(store);
 
-  const whiteList = [
-    'view_carrier',
-  ]
+  const whiteList = ["view_carrier"];
 
   const hasPermission = (permission: string): boolean => {
     // if (!isLoggedIn.value) {
@@ -19,10 +17,10 @@ export default function usePermission() {
     // const values = currentUserPermissionList.value.map(item => item.value) as string[]
     // // Check if the permissions include the permission that we are checking for.
     // const result = values.includes(permission)
-    return true
-  }
+    return true;
+  };
 
   return {
     hasPermission,
-  }
+  };
 }

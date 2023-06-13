@@ -9,20 +9,13 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true
   },
-  "exclude": [
-    "dist",
-    "node_modules",
-    "electron-dist"
-  ],
+  "exclude": ["dist", "node_modules", "electron-dist"],
   "files": [],
   "references": [
     {

@@ -1,11 +1,14 @@
 <script lang="ts" setup>
-const isWaving = ref(true)
+const isWaving = ref(true);
 </script>
 
 <template>
   <div class="relative h-[56px] w-[144px]">
     <div id="water-button" class="start-btn">
-      <a-button type="primary" class="!h-[56px] !w-[144px] !rounded-lg !font-medium tracking-widest">
+      <a-button
+        type="primary"
+        class="!h-[56px] !w-[144px] !rounded-lg !font-medium tracking-widest"
+      >
         开始使用
       </a-button>
     </div>

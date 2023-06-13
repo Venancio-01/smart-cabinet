@@ -1,7 +1,11 @@
 module.exports = {
-  extends: '@antfu',
+  extends: [
+    '@antfu',
+    'plugin:prettier/recommended',
+  ],
   rules: {
     'unicorn/prefer-node-protocol': 'off',
     'no-console': 'off',
+    "@antfu/if-newline":'off'
   },
 }

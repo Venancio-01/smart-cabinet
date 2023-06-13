@@ -1,14 +1,14 @@
-import { connected } from '@/database'
+import { connected } from "@/database";
 
 function getConnectState() {
-  return connected
+  return connected;
 }
 
 const networkService = {
-  name: 'network' as const,
+  name: "network" as const,
   fns: {
     getConnectState,
   },
-}
+};
 
-export default networkService
+export default networkService;

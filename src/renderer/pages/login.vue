@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import useLogin from '@/hooks/useLogin'
+import useLogin from "@/hooks/useLogin";
 
-const activeKey = ref('1')
+const activeKey = ref("1");
 
-const { handlePasswordLogin, handleFingerLogin, handleCardLogin } = useLogin()
+const { handlePasswordLogin, handleFingerLogin, handleCardLogin } = useLogin();
 </script>
 
 <template>
@@ -11,7 +11,10 @@ const { handlePasswordLogin, handleFingerLogin, handleCardLogin } = useLogin()
   <div class="w-[500px] mt-[30px] mx-auto">
     <a-tabs v-model:active-key="activeKey" destroy-inactive-tab-pane>
       <a-tab-pane key="1" tab="账号登录">
-        <PasswordAuth class="mt-[80px] h-[300px]" @complete="handlePasswordLogin" />
+        <PasswordAuth
+          class="mt-[80px] h-[300px]"
+          @complete="handlePasswordLogin"
+        />
       </a-tab-pane>
       <a-tab-pane key="2" tab="指纹登录">
         <FingerAuth class="pt-[80px] h-[300px]" @complete="handleFingerLogin" />

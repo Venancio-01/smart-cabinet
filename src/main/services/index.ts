@@ -1,15 +1,15 @@
-import { ipcMain } from 'electron'
-import lockControlService from './lock-control'
-import rfidService from './rfid'
-import fingerService from './finger'
-import sysService from './system'
-import cabinetService from './cabinet'
-import carrierService from './carrier'
-import networkService from './network'
-import updateService from './update'
-import storeService from './store'
-import encryptionService from './encryption'
-import logService from './logger'
+import { ipcMain } from "electron";
+import lockControlService from "./lock-control";
+import rfidService from "./rfid";
+import fingerService from "./finger";
+import sysService from "./system";
+import cabinetService from "./cabinet";
+import carrierService from "./carrier";
+import networkService from "./network";
+import updateService from "./update";
+import storeService from "./store";
+import encryptionService from "./encryption";
+import logService from "./logger";
 
 export const services = [
   lockControlService,
@@ -23,12 +23,12 @@ export const services = [
   storeService,
   encryptionService,
   logService,
-]
+];
 
-export type ServiceType = typeof services
+export type ServiceType = typeof services;
 
 export function makeChannelName(name, fnName) {
-  return `${name}.${fnName}`
+  return `${name}.${fnName}`;
 }
 
 /**
@@ -38,7 +38,9 @@ export function makeChannelName(name, fnName) {
 export function installService() {
   services.forEach((service) => {
     Object.entries(service.fns).forEach(([apiName, apiFn]) => {
-      ipcMain.handle(makeChannelName(service.name, apiName), (ev, ...args) => apiFn(...args))
-    })
-  })
+      ipcMain.handle(makeChannelName(service.name, apiName), (ev, ...args) =>
+        apiFn(...args)
+      );
+    });
+  });
 }

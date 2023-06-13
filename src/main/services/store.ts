@@ -1,14 +1,14 @@
-import Store from 'electron-store'
+import Store from "electron-store";
 
 const defaults = {
-  activationCode: '',
-}
+  activationCode: "",
+};
 
-type StoreKeys = keyof typeof defaults
+type StoreKeys = keyof typeof defaults;
 
 const store = new Store({
   defaults,
-})
+});
 
 /**
  * Get a value from the store
@@ -16,7 +16,7 @@ const store = new Store({
  * @returns The value from the store
  */
 async function get(name: StoreKeys) {
-  return store.get(name)
+  return store.get(name);
 }
 
 /**
@@ -25,7 +25,7 @@ async function get(name: StoreKeys) {
  * @param value - The value to set
  */
 function set<T>(name: StoreKeys, value: T) {
-  store.set(name, value)
+  store.set(name, value);
 }
 
 /**
@@ -33,16 +33,16 @@ function set<T>(name: StoreKeys, value: T) {
  * @param name - The name of the value to delete
  */
 function del(name: StoreKeys) {
-  store.delete(name)
+  store.delete(name);
 }
 
 const storeService = {
-  name: 'store' as const,
+  name: "store" as const,
   fns: {
     get,
     set,
     delete: del,
   },
-}
+};
 
-export default storeService
+export default storeService;

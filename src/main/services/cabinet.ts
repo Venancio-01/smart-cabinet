@@ -1,23 +1,24 @@
-import type { RfidCabinet, RfidCabinetdoor } from '@prisma/client'
-import { prisma } from '@/database'
-import { getLocalIpAddress } from '@/utils'
+import type { RfidCabinet, RfidCabinetdoor } from "@prisma/client";
+import { prisma } from "@/database";
+import { getLocalIpAddress } from "@/utils";
 
-let currentCabinet: RfidCabinet | null = null
+let currentCabinet: RfidCabinet | null = null;
 
 async function getCurrentCabinet() {
-  if (currentCabinet)
-    return currentCabinet
+  if (currentCabinet) return currentCabinet;
 
-  const devices = await getCabinetData()
-  const ipList = getLocalIpAddress()
+  const devices = await getCabinetData();
+  const ipList = getLocalIpAddress();
 
-  currentCabinet = devices.find(item => item.cabAddr && ipList.includes(item.cabAddr)) || null
+  currentCabinet =
+    devices.find((item) => item.cabAddr && ipList.includes(item.cabAddr)) ||
+    null;
 
-  return currentCabinet
+  return currentCabinet;
 }
 
 function getCabinetData(): Promise<RfidCabinet[]> {
-  return prisma.rfidCabinet.findMany()
+  return prisma.rfidCabinet.findMany();
 }
 
 function getCabinetDoors(): Promise<RfidCabinetdoor[]> {
@@ -25,16 +26,16 @@ function getCabinetDoors(): Promise<RfidCabinetdoor[]> {
     where: {
       cabinetId: currentCabinet.id,
     },
-  })
+  });
 }
 
 const cabinetService = {
-  name: 'cabinet' as const,
+  name: "cabinet" as const,
   fns: {
     getCabinetData,
     getCabinetDoors,
     getCurrentCabinet,
   },
-}
+};
 
-export default cabinetService
+export default cabinetService;
