@@ -1,7 +1,7 @@
 appId: com.electron.app
 directories:
   buildResources: build
-  output: "release/${version}"
+  output: "../../release/cabinet/${version}"
 asar: true
 files:
   - "!**/.vscode/*"
