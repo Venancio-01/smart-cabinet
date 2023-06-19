@@ -18,8 +18,6 @@ export const UPDATE_SERVICE_SOCKET_PATH = "/tmp/hjrich-update-service.sock";
 export const CRC_SDK_PATH = isDev
   ? "public/crc-lib/libCRC16_CCITT.so"
   : join(process.resourcesPath, "/public/crc-lib/libCRC16_CCITT.so");
-// // CRC SDK 路径 - windows
-// export const CRC_SDK_PATH = isDev ? 'public/crc-lib/CRC16_CCITT_WIN' : join(process.resourcesPath, '/public/crc-lib/CRC16_CCITT_WIN')
 
 // 环境变量文件路径
 export const EVN_FILE_PATH = isDev

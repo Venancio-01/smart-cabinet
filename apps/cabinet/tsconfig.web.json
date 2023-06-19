@@ -14,7 +14,8 @@
     "module": "ESNext",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./renderer/*"]
+      "@/*": ["./renderer/*"],
+      "~/*": ["./types/*"]
     }
   }
 }

@@ -1,5 +1,4 @@
-import type { RfidCabinetdoor } from "database";
-import prisma from "@/database";
+import { prisma } from "@/database";
 
 /**
  * @description: 获取柜体信息

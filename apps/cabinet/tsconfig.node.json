@@ -8,12 +8,13 @@
     "types/*.d.ts"
   ],
   "compilerOptions": {
-    "target": "ES2015",
+    "target": "ESNext",
     "module": "ESNext",
     "baseUrl": ".",
     "types": ["vite/client"],
     "paths": {
-      "@/*": ["./main/*"]
+      "@/*": ["./main/*"],
+      "~/*": ["./types/*"]
     }
   }
 }

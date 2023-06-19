@@ -13,7 +13,8 @@
     "baseUrl": ".",
     "types": ["vite/client"],
     "paths": {
-      "@/*": ["./main/*"]
+      "@/*": ["./main/*"],
+      "~/*": ["./types/*"]
     }
   }
 }

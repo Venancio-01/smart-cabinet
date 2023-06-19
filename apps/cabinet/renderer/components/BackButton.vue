@@ -2,7 +2,7 @@
 import useTime from "@/hooks/useTime";
 
 interface Props {
-  onBack: (() => void) | null;
+  onBack?: (() => void) | null;
 }
 
 const props = withDefaults(defineProps<Props>(), {

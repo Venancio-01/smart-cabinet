@@ -1,7 +1,7 @@
 import type { SysUser } from "database";
+import { genResponseData } from "utils";
 import { genMd5EncryptedPassword } from "./utils";
 import { prisma } from "@/database";
-import { genResponseData } from "@/utils/index";
 
 /**
  * @description: 获取用户信息
@@ -72,7 +72,7 @@ export async function onPasswordLogin({
   const encryptedPassword = genMd5EncryptedPassword(
     username,
     password,
-    user.salt
+    user.salt || ""
   );
   if (user.password !== encryptedPassword)
     return genResponseData(false, "密码错误");
@@ -88,6 +88,8 @@ export async function onCardLogin(cardNumber: string) {
   if (result === null) return genResponseData(false, "用户ID查找失败");
 
   const userId = result.userid;
+  if (!userId) return genResponseData(false, "用户查找失败");
+
   const user = await getUserData(userId);
   if (user === null) return genResponseData(false, "用户查找失败");
 

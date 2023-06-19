@@ -1,4 +1,5 @@
 import { useStore } from "@/store";
+import MainBackground from "@/public/background/index.png";
 
 export async function getDepartmentList() {
   const store = useStore();
@@ -18,7 +19,7 @@ export async function getBackgroundImage() {
   const store = useStore();
 
   const path = import.meta.env.DEV
-    ? "./background/index.png"
+    ? MainBackground
     : await window.JSBridge.sys.getProductionBgImagePath();
   store.setBackgroundUrl(path);
 }

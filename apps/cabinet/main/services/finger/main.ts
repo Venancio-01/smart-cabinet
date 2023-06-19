@@ -1,4 +1,5 @@
 import { Buffer } from "buffer";
+import { genResponseData } from "utils";
 import { info } from "../logger";
 import {
   captureFingerImage,
@@ -32,7 +33,6 @@ import {
   MAX_REGISTRATION_COUNT,
   TEMPLATE_BYTE_LENGTH,
 } from "@/config";
-import { genResponseData } from "@/utils";
 import { prisma } from "@/database";
 
 // 指纹仪设备数组

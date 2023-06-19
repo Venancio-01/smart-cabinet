@@ -1,6 +1,6 @@
 import type { RfidCabinet, RfidCabinetdoor } from "database";
+import { getLocalIpAddress } from "utils";
 import { prisma } from "@/database";
-import { getLocalIpAddress } from "@/utils";
 
 let currentCabinet: RfidCabinet | null = null;
 

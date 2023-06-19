@@ -15,7 +15,7 @@ export async function createWindow() {
     frame: false,
     backgroundColor: "transparent",
     webPreferences: {
-      preload: join(__dirname, "../preload/index.js"),
+      preload: join(__dirname, "./preload.js"),
       nodeIntegration: true,
       contextIsolation: true,
     },

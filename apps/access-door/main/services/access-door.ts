@@ -4,9 +4,9 @@ import type {
   DoorEquipment,
   DoorRfidrecord,
 } from "database";
+import { getSkipAndTake } from "utils";
 import { getLocalIpAddress } from "./sys";
-import prisma from "@/database";
-import { getSkipAndTake } from "@/utils";
+import { prisma } from "@/database";
 import {
   AccessDirection,
   AccessHasAlarm,

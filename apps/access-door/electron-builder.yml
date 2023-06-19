@@ -15,10 +15,8 @@ files:
 extraResources:
   - from: ./node_modules/database/.env
     to: .env
-  - from: libs/finger-lib
-    to: public/finger-lib
-  - from: libs/crc-lib
-    to: public/crc-lib
+  - from: ../../libs
+    to: public/libs
   - from: ./renderer/public/background
     to: public/background
   - from: scripts/install.sh

@@ -1,6 +1,6 @@
 import os from "os";
 import type { SysDept } from "database";
-import prisma from "@/database";
+import {prisma} from "@/database";
 
 /**
  * @description: 获取用户列表

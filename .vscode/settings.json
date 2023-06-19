@@ -7,6 +7,7 @@
     "libzkfp",
     "libzkfpcap",
     "rfid",
+    "Rfidrecord",
     "zkfinger",
     "ZKFPM"
   ],

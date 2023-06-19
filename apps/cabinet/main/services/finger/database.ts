@@ -1,5 +1,5 @@
 import { prisma } from "@/database";
-import { generateCurrentTime } from "@/utils";
+import { generateCurrentTime } from "utils";
 
 /**
  * @description: 获取全部指纹用户数据

@@ -1,7 +1,7 @@
 import type { DocDocument, RfidSwitchRecord } from "database";
+import { generateCurrentTime } from "utils";
 import { getReportData } from "./rfid";
 import { prisma } from "@/database";
-import { generateCurrentTime } from "@/utils";
 
 export enum BorrowedState {
   Returned,

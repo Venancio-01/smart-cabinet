@@ -13,7 +13,8 @@
     "typecheck:web": "vue-tsc --noEmit -p tsconfig.web.json --composite false",
     "typecheck": "npm run typecheck:node && npm run typecheck:web",
     "dev": "vite",
-    "build": "vue-tsc --noEmit --skipLibCheck && vite build && electron-builder --linux"
+    "build:app": "electron-builder --linux",
+    "build": "nr build:code && nr build:app"
   },
   "dependencies": {
     "ajv": "^8.12.0",
@@ -45,6 +46,7 @@
     "unocss": "^0.52.3",
     "unplugin-auto-import": "^0.16.2",
     "unplugin-vue-components": "^0.24.1",
+    "utils": "workspace:*",
     "vite": "^4.3.8",
     "vite-plugin-electron-renderer": "^0.14.5",
     "vite-plugin-electron-vaausud": "^0.0.1",

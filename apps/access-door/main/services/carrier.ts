@@ -3,7 +3,7 @@ import {
   queryMisplacedCarrier,
   updateCarrierByID,
 } from "@/database/methods/carrier";
-import prisma from "@/database";
+import {prisma} from "@/database";
 
 /**
  * 获取所有载体数据

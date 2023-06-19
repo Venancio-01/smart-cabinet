@@ -18,8 +18,8 @@
     "dotenv": "^16.0.3"
   },
   "devDependencies": {
+    "config": "workspace:^",
     "prisma": "^4.14.1",
-    "prisma-case-format": "^1.5.0",
-    "config": "workspace:^"
+    "prisma-case-format": "^1.5.0"
   }
 }

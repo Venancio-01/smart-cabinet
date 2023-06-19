@@ -1,7 +1,7 @@
-import { connected } from "@/database";
+import { isConnected } from "@/database";
 
 function getConnectState() {
-  return connected;
+  return isConnected;
 }
 
 const networkService = {
