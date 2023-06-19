@@ -1,0 +1,50 @@
+appId: com.electron.app
+productName: 智能载体出入管控系统
+directories:
+  buildResources: build
+  output: "release/${version}"
+npmRebuild: false
+asar: true
+files:
+  - "!**/.vscode/*"
+  - main-dist
+  - "!vite.config.{js,ts,mjs,cjs}"
+  - "!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}"
+  - "!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}"
+  - dist
+extraResources:
+  - from: ./node_modules/database/.env
+    to: .env
+  - from: libs/finger-lib
+    to: public/finger-lib
+  - from: libs/crc-lib
+    to: public/crc-lib
+  - from: ./renderer/public/background
+    to: public/background
+  - from: scripts/install.sh
+    to: ../../install/install.sh
+  - from: scripts/run.sh
+    to: ../../install/run.sh
+  - from: template/smart-cabinet.desktop
+    to: ../../install/smart-cabinet.desktop
+  - "./node_modules/.prisma/**/*"
+  - "./node_modules/database/**/*"
+asarUnpack:
+  - "**/*.{node,dll}"
+win:
+  artifactName: "${productName}_${version}.${ext}"
+  target:
+    - target: nsis
+      arch: x64
+linux:
+  artifactName: "${productName}_${version}.${ext}"
+  target:
+    - target: deb
+      arch: x64
+    # - target: AppImage
+    #   arch: x64
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  deleteAppDataOnUninstall: false

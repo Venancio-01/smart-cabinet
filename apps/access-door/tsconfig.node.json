@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "vite.coinfig.ts",
+    "main/*",
+    "main/**/*",
+    "types/*.ts",
+    "types/*.d.ts"
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "types": ["vite/client"],
+    "resolveJsonModule": true,
+    "paths": {
+      "@/*": ["./main/*"],
+      "~/*": ["./types/*"],
+    }
+  }
+}

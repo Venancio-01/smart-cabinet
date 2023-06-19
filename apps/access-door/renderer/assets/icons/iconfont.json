@@ -1,0 +1,114 @@
+{
+  "id": "3951472",
+  "name": "电力智能柜",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "21233148",
+      "name": "历史记录",
+      "font_class": "record",
+      "unicode": "f4b9",
+      "unicode_decimal": 62649
+    },
+    {
+      "icon_id": "5285858",
+      "name": "指纹",
+      "font_class": "zhiwen",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "1638584",
+      "name": "寄件_激活",
+      "font_class": "activate",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "1334",
+      "name": "解锁",
+      "font_class": "jiesuo",
+      "unicode": "e602",
+      "unicode_decimal": 58882
+    },
+    {
+      "icon_id": "1599891",
+      "name": "网商银行无线端_错误",
+      "font_class": "warn",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "2849274",
+      "name": "成功",
+      "font_class": "chenggong",
+      "unicode": "e644",
+      "unicode_decimal": 58948
+    },
+    {
+      "icon_id": "5013",
+      "name": "列表",
+      "font_class": "menu",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "8949037",
+      "name": "用户",
+      "font_class": "user",
+      "unicode": "e660",
+      "unicode_decimal": 58976
+    },
+    {
+      "icon_id": "1130",
+      "name": "锁定",
+      "font_class": "lock",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "2488125",
+      "name": "返回",
+      "font_class": "fanhui",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "6176582",
+      "name": "网络",
+      "font_class": "network",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
+    },
+    {
+      "icon_id": "5343561",
+      "name": "双开门",
+      "font_class": "double_door",
+      "unicode": "e6ae",
+      "unicode_decimal": 59054
+    },
+    {
+      "icon_id": "6796697",
+      "name": "2_门禁",
+      "font_class": "door",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "21745670",
+      "name": "刷卡",
+      "font_class": "card",
+      "unicode": "e74b",
+      "unicode_decimal": 59211
+    },
+    {
+      "icon_id": "28075449",
+      "name": "165-RFID",
+      "font_class": "RFID",
+      "unicode": "e8df",
+      "unicode_decimal": 59615
+    }
+  ]
+}

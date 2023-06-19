@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "renderer/env.d.ts",
+    "renderer/**/*",
+    "renderer/**/*.vue",
+    "renderer/**/*.json",
+    "renderer/*.d.ts",
+    "types/*.ts",
+    "types/*.d.ts"
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "preserve",
+    "paths": {
+      "@/*": ["./renderer/*"],
+      "~/*": ["./types/*"],
+    }
+  }
+}

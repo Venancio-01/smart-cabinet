@@ -1,0 +1,25 @@
+{
+  "name": "database",
+  "version": "1.0.0",
+  "license": "ISC",
+  "keywords": [],
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "publish": "tsup && npx pnpm i",
+    "pull-db": "npx prisma db pull",
+    "format-db": "cd ./prisma && npx prisma-case-format",
+    "generate-db": "npx prisma generate",
+    "init-db": "npm run pull-db && npm run format-db && npm run generate-db"
+  },
+  "dependencies": {
+    "@prisma/client": "latest",
+    "dotenv": "^16.0.3"
+  },
+  "devDependencies": {
+    "prisma": "^4.14.1",
+    "prisma-case-format": "^1.5.0",
+    "config": "workspace:^"
+  }
+}
