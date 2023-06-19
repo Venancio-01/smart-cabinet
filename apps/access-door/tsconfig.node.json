@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "config/tsconfig.node.json",
   "include": [
     "vite.coinfig.ts",
     "main/*",
@@ -8,12 +8,12 @@
     "types/*.d.ts"
   ],
   "compilerOptions": {
+    "target": "ES2015",
+    "module": "ESNext",
     "baseUrl": ".",
     "types": ["vite/client"],
-    "resolveJsonModule": true,
     "paths": {
-      "@/*": ["./main/*"],
-      "~/*": ["./types/*"],
+      "@/*": ["./main/*"]
     }
   }
 }

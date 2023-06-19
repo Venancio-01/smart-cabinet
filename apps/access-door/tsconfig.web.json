@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "config/tsconfig.web.json",
   "include": [
     "renderer/env.d.ts",
     "renderer/**/*",
@@ -10,11 +10,11 @@
     "types/*.d.ts"
   ],
   "compilerOptions": {
+    "target": "ES2015",
+    "module": "ESNext",
     "baseUrl": ".",
-    "jsx": "preserve",
     "paths": {
-      "@/*": ["./renderer/*"],
-      "~/*": ["./types/*"],
+      "@/*": ["./renderer/*"]
     }
   }
 }
