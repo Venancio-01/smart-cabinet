@@ -1,0 +1,17 @@
+{
+  "name": "utils",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "publish": "tsup && npx pnpm i"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.7",
+    "electron": "^12.2.0"
+  },
+  "devDependencies": {
+    "config": "workspace:^"
+  }
+}
