@@ -1,18 +1,19 @@
 <script lang="ts" setup>
-import RfidStateDialog from './RfidStateDialog.vue'
-import NetworkStateDialog from './NetworkStateDialog.vue'
-import { useStore } from '@/store'
-import BaseIcon from '@/components/BaseIcon.vue'
+import RfidStateDialog from "./RfidStateDialog.vue";
+import NetworkStateDialog from "./NetworkStateDialog.vue";
+import { useStore } from "@/store";
+import BaseIcon from "@/components/BaseIcon.vue";
 
-const router = useRouter()
-const store = useStore()
-const { rfidIsOnline, networkIsOnline, unviewedAccessRecordCount } = storeToRefs(store)
+const router = useRouter();
+const store = useStore();
+const { rfidIsOnline, networkIsOnline, unviewedAccessRecordCount } =
+  storeToRefs(store);
 
-const rfidVisible = ref(false)
-const networkVisible = ref(false)
+const rfidVisible = ref(false);
+const networkVisible = ref(false);
 
 function goRecordPage() {
-  router.push({ path: '/record' })
+  router.push({ path: "/record" });
 }
 </script>
 
@@ -24,16 +25,28 @@ function goRecordPage() {
     <div class="flex h-[50px] items-center justify-end gap-4">
       <div class="flex items-center justify-center">
         <a-badge :count="unviewedAccessRecordCount">
-          <BaseIcon icon="record" class="text-5xl text-light" @click="goRecordPage" />
+          <BaseIcon
+            icon="record"
+            class="text-5xl text-light"
+            @click="goRecordPage"
+          />
         </a-badge>
       </div>
 
       <div v-show="!rfidIsOnline" class="flex items-center justify-center">
-        <BaseIcon icon="RFID" class="text-5xl text-error-color" @click="rfidVisible = true" />
+        <BaseIcon
+          icon="RFID"
+          class="text-5xl text-error-color"
+          @click="rfidVisible = true"
+        />
       </div>
 
       <div v-show="!networkIsOnline" class="flex items-center justify-center">
-        <BaseIcon icon="network" class="text-5xl text-error-color" @click="networkVisible = true" />
+        <BaseIcon
+          icon="network"
+          class="text-5xl text-error-color"
+          @click="networkVisible = true"
+        />
       </div>
     </div>
   </div>

@@ -1,4 +1,4 @@
-import type { SysUser } from "database"
+import type { SysUser } from "database";
 import useSys from "./useSys";
 import { useStore } from "@/store";
 import createAlert from "@/components/BaseAlert";

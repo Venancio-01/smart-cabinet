@@ -1,10 +1,9 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3951472 */
   /* Color fonts */
-  src: 
-       url('iconfont.woff2?t=1684308716004') format('woff2'),
-       url('iconfont.woff?t=1684308716004') format('woff'),
-       url('iconfont.ttf?t=1684308716004') format('truetype');
+  src: url("iconfont.woff2?t=1684308716004") format("woff2"),
+    url("iconfont.woff?t=1684308716004") format("woff"),
+    url("iconfont.ttf?t=1684308716004") format("truetype");
 }
 
 .iconfont {
@@ -74,4 +73,3 @@
 .icon-RFID:before {
   content: "\e8df";
 }
-

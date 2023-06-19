@@ -6,7 +6,7 @@ import {
   SysRole,
   SysUserRole,
   SysDept,
-} from "database"
+} from "database";
 import type { ServiceType } from "../main/services/index";
 export {};
 

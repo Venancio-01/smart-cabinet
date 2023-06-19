@@ -1,4 +1,4 @@
-import type { RfidCabinet, RfidCabinetdoor } from "database"
+import type { RfidCabinet, RfidCabinetdoor } from "database";
 import { prisma } from "@/database";
 import { getLocalIpAddress } from "@/utils";
 

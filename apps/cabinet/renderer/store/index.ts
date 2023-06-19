@@ -6,7 +6,7 @@ import type {
   SysRole,
   SysUser,
   SysUserRole,
-} from "database"
+} from "database";
 import { defineStore } from "pinia";
 import { BorrowedState } from "~/enums";
 

@@ -1,4 +1,4 @@
-import type { DocDocument } from "database"
+import type { DocDocument } from "database";
 import CarrierTable from "@/components/CarrierTable.vue";
 import useCarrier from "@/hooks/useCarrier";
 import { useStore } from "@/store";

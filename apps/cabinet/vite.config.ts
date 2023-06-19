@@ -18,7 +18,7 @@ const externalList = [
   "ref-struct-di",
   "prisma",
   "database",
-  "serialport"
+  "serialport",
 ];
 
 export default defineConfig({
@@ -47,8 +47,10 @@ export default defineConfig({
         },
         onstart(options) {
           options.startup([".", "--no-sandbox"], () => {
-            const electronPath = './node_modules/.bin/electron'
-            return spawn('sudo', [electronPath, '.', '--no-sandbox'], { stdio: 'inherit' })
+            const electronPath = "./node_modules/.bin/electron";
+            return spawn("sudo", [electronPath, ".", "--no-sandbox"], {
+              stdio: "inherit",
+            });
           });
         },
       },

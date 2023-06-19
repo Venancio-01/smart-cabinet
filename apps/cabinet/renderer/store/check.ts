@@ -1,4 +1,4 @@
-import type { DocDocument, RfidSwitchRecord } from "database"
+import type { DocDocument, RfidSwitchRecord } from "database";
 import { defineStore } from "pinia";
 
 interface State {

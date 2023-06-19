@@ -1,31 +1,35 @@
-import os from 'os'
-import type { SysDept } from 'database'
-import prisma from '@/database'
+import os from "os";
+import type { SysDept } from "database";
+import prisma from "@/database";
 
 /**
  * @description: 获取用户列表
  * @param {UserQueryProps} { userName, departmentId, roleId }
  * @return {*}
  */
-async function getUsersByCondition({ userName, departmentId, roleId }: UserQueryProps): Promise<UserWithRoleProps[]> {
+async function getUsersByCondition({
+  userName,
+  departmentId,
+  roleId,
+}: UserQueryProps): Promise<UserWithRoleProps[]> {
   const where = {
     userName: {
       contains: userName,
     },
     deptId: departmentId ? Number(departmentId) : undefined,
-  }
+  };
 
   return prisma.sysUser.findMany({
-    where
-  })
+    where,
+  });
 }
 /**
  * @description: 获取部门列表
  * @return {*}
  */
 async function getDepartmentData(): Promise<SysDept[]> {
-  const departments = await prisma.sysDept.findMany()
-  return departments
+  const departments = await prisma.sysDept.findMany();
+  return departments;
 }
 
 /**
@@ -38,9 +42,9 @@ export async function getDepartmentById(id: number): Promise<SysDept | null> {
     where: {
       deptId: id,
     },
-  })
+  });
 
-  return department
+  return department;
 }
 
 /**
@@ -48,14 +52,16 @@ export async function getDepartmentById(id: number): Promise<SysDept | null> {
  * @param {DepartmentQueryProps} { departmentName }
  * @return {*}
  */
-async function getDepartmentsByCondition({ departmentName }: DepartmentQueryProps): Promise<SysDept[]> {
+async function getDepartmentsByCondition({
+  departmentName,
+}: DepartmentQueryProps): Promise<SysDept[]> {
   return await prisma.sysDept.findMany({
     where: {
       deptName: {
         contains: departmentName,
       },
     },
-  })
+  });
 }
 
 /**
@@ -64,27 +70,27 @@ async function getDepartmentsByCondition({ departmentName }: DepartmentQueryProp
  */
 async function getProductionBgImagePath() {
   // const path = resolve(process.resourcesPath, './public/background/index.png')
-  const path = '../../public/background/index.png'
-  return path
+  const path = "../../public/background/index.png";
+  return path;
 }
 
-getProductionBgImagePath()
+getProductionBgImagePath();
 
 // 获取本机 ip 地址
 export function getLocalIpAddress(): string[] {
-  const interfaces = os.networkInterfaces()
-  const addresses: string[] = []
+  const interfaces = os.networkInterfaces();
+  const addresses: string[] = [];
   for (const name of Object.keys(interfaces)) {
     for (const iface of interfaces[name] ?? []) {
-      if (iface.family === 'IPv4' && !iface.internal)
-        addresses.push(iface.address)
+      if (iface.family === "IPv4" && !iface.internal)
+        addresses.push(iface.address);
     }
   }
-  return addresses
+  return addresses;
 }
 
 const sysService = {
-  name: 'sys' as const,
+  name: "sys" as const,
   fns: {
     getUsersByCondition,
     getDepartmentData,
@@ -92,6 +98,6 @@ const sysService = {
     getProductionBgImagePath,
     getLocalIpAddress,
   },
-}
+};
 
-export default sysService
+export default sysService;

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { ColumnsType } from "ant-design-vue/es/table";
-import type { SysUser } from "database"
+import type { SysUser } from "database";
 import { useStore } from "@/store";
 import useSys from "@/hooks/useSys";
 import useTime from "@/hooks/useTime";

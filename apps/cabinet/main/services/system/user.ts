@@ -1,4 +1,4 @@
-import type { SysUser } from "database"
+import type { SysUser } from "database";
 import { genMd5EncryptedPassword } from "./utils";
 import { prisma } from "@/database";
 import { genResponseData } from "@/utils/index";

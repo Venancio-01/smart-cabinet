@@ -1,4 +1,4 @@
-import type { DocDocument, RfidSwitchRecord } from "database"
+import type { DocDocument, RfidSwitchRecord } from "database";
 import { getReportData } from "./rfid";
 import { prisma } from "@/database";
 import { generateCurrentTime } from "@/utils";

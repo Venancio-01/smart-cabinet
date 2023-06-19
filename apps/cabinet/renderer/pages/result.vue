@@ -2,7 +2,7 @@
 import type { ColumnsType } from "ant-design-vue/lib/table/interface";
 import dayjs from "dayjs";
 import { PerfectScrollbar } from "vue3-perfect-scrollbar";
-import type { DocDocument, RfidSwitchRecord } from "database"
+import type { DocDocument, RfidSwitchRecord } from "database";
 import { useStore } from "@/store";
 import { useCheckStore } from "@/store/check";
 import useCheck from "@/hooks/useCheck";

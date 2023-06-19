@@ -1,5 +1,5 @@
 <script lang="tsx" setup>
-import type { DocDocument } from "database"
+import type { DocDocument } from "database";
 import type { ColumnsType } from "ant-design-vue/lib/table/interface";
 import dayjs from "dayjs";
 import { BorrowedState } from "~/enums";

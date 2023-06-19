@@ -8,7 +8,7 @@ export async function createWindow() {
     title: "智能载体管控系统",
     // icon: join(process.env.PUBLIC, 'favicon.ico'),
     frame: false,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     webPreferences: {
       preload: join(__dirname, "./preload.js"),
       nodeIntegration: true,
@@ -17,7 +17,7 @@ export async function createWindow() {
   });
 
   if (app.isPackaged) {
-    win.loadFile(join(__dirname, '../renderer/index.html'))
+    win.loadFile(join(__dirname, "../renderer/index.html"));
   } else {
     win.loadURL("http://localhost:4200/");
     // session.defaultSession.loadExtension(DEVTOOLS_PATH);
@@ -25,16 +25,15 @@ export async function createWindow() {
   }
 
   // 主进程主动向渲染进程推送消息
-  win.webContents.on('did-finish-load', () => {
-    win?.webContents.send('main-process-message', new Date().toLocaleString())
-  })
+  win.webContents.on("did-finish-load", () => {
+    win?.webContents.send("main-process-message", new Date().toLocaleString());
+  });
 
   // 所有链接都在浏览器中打开，而不是在应用程序中打开
   win.webContents.setWindowOpenHandler(({ url }) => {
-    if (url.startsWith('https:'))
-      shell.openExternal(url)
-    return { action: 'deny' }
-  })
+    if (url.startsWith("https:")) shell.openExternal(url);
+    return { action: "deny" };
+  });
 
   return win;
 }

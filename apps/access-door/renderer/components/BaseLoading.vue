@@ -25,17 +25,17 @@
   position: absolute;
   left: 0;
   top: 0;
-  animation: sk-chase-dot 2.0s infinite ease-in-out both;
+  animation: sk-chase-dot 2s infinite ease-in-out both;
 }
 
 .sk-chase-dot:before {
-  content: '';
+  content: "";
   display: block;
   width: 25%;
   height: 25%;
   background-color: #fff;
   border-radius: 100%;
-  animation: sk-chase-dot-before 2.0s infinite ease-in-out both;
+  animation: sk-chase-dot-before 2s infinite ease-in-out both;
 }
 
 .sk-chase-dot:nth-child(1) {
@@ -43,7 +43,7 @@
 }
 
 .sk-chase-dot:nth-child(2) {
-  animation-delay: -1.0s;
+  animation-delay: -1s;
 }
 
 .sk-chase-dot:nth-child(3) {
@@ -67,7 +67,7 @@
 }
 
 .sk-chase-dot:nth-child(2):before {
-  animation-delay: -1.0s;
+  animation-delay: -1s;
 }
 
 .sk-chase-dot:nth-child(3):before {
@@ -93,7 +93,6 @@
 }
 
 @keyframes sk-chase-dot {
-
   80%,
   100% {
     transform: rotate(360deg);
@@ -107,7 +106,7 @@
 
   100%,
   0% {
-    transform: scale(1.0);
+    transform: scale(1);
   }
 }
 </style>

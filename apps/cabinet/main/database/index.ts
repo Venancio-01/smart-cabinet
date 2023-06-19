@@ -1,7 +1,6 @@
-import { PrismaClient } from "database"
+import { PrismaClient } from "database";
 import dotenv from "dotenv";
 import { EVN_FILE_PATH } from "@/config";
-
 
 // 加载数据库地址环境变量
 dotenv.config({

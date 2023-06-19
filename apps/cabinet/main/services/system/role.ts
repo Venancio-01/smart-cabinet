@@ -1,4 +1,4 @@
-import type { SysRole, SysUserRole } from "database"
+import type { SysRole, SysUserRole } from "database";
 import { prisma } from "@/database";
 
 /**

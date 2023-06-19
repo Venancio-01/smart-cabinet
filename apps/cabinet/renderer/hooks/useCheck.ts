@@ -1,4 +1,4 @@
-import type { DocDocument } from "database"
+import type { DocDocument } from "database";
 import { Modal } from "ant-design-vue";
 import useCarrier from "./useCarrier";
 import { BorrowedState } from "~/enums";

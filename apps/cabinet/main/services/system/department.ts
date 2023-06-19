@@ -1,4 +1,4 @@
-import type { SysDept } from "database"
+import type { SysDept } from "database";
 import { prisma } from "@/database";
 
 /**

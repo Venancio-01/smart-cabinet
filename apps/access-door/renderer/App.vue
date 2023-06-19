@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import zhCN from 'ant-design-vue/es/locale/zh_CN'
-import dayjs from 'dayjs'
-import 'dayjs/locale/zh-cn'
-import { useStore } from '@/store'
-import useInit from '@/hooks/useInit'
+import zhCN from "ant-design-vue/es/locale/zh_CN";
+import dayjs from "dayjs";
+import "dayjs/locale/zh-cn";
+import { useStore } from "@/store";
+import useInit from "@/hooks/useInit";
 
-dayjs.locale('zh-cn')
+dayjs.locale("zh-cn");
 
-const store = useStore()
-const { backgroundUrl } = storeToRefs(store)
+const store = useStore();
+const { backgroundUrl } = storeToRefs(store);
 
-useInit()
+useInit();
 </script>
 
 <template>
@@ -30,5 +30,4 @@ useInit()
   </a-config-provider>
 </template>
 
-<style>
-</style>
+<style></style>

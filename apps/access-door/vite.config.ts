@@ -17,7 +17,7 @@ const externalList = [
   "ref-struct-di",
   "prisma",
   "database",
-  "serialport"
+  "serialport",
 ];
 
 export default defineConfig({
@@ -39,7 +39,7 @@ export default defineConfig({
           resolve: {
             alias: {
               "@": resolve(__dirname, "./main"),
-              "~": resolve(__dirname, "./types")
+              "~": resolve(__dirname, "./types"),
             },
           },
         },
@@ -53,13 +53,13 @@ export default defineConfig({
           build: {
             outDir: "dist/main",
             rollupOptions: {
-              external: externalList
+              external: externalList,
             },
           },
           resolve: {
             alias: {
               "@": resolve(__dirname, "./main"),
-              "~": resolve(__dirname, "./types")
+              "~": resolve(__dirname, "./types"),
             },
           },
         },
@@ -91,7 +91,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": resolve(__dirname, "./renderer"),
-      "~": resolve(__dirname, "./types")
+      "~": resolve(__dirname, "./types"),
     },
   },
 
