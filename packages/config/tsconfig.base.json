@@ -11,7 +11,8 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "strict": true
   },
   "exclude": ["dist", "node_modules"], // 排除编译的文件夹
   "files": []

@@ -6,9 +6,5 @@
   "license": "ISC",
   "keywords": [],
   "main": "index.js",
-  "scripts": {
-    "build": "",
-    "update": "ni",
-    "publish": "npm run build && npm run update"
-  }
+  "scripts": {}
 }

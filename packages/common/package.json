@@ -28,9 +28,7 @@
     }
   },
   "scripts": {
-    "build": "tsup",
-    "update": "ni",
-    "publish": "npm run build && npm run update"
+    "package": "tsup"
   },
   "dependencies": {},
   "devDependencies": {

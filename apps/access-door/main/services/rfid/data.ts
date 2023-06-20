@@ -18,7 +18,7 @@ import { getDepartmentById } from "../sys";
 import { generateCRC16Code } from "./utils";
 import ProtocolMap from "./protocol-map";
 import type { Message, MessageQueue } from "./message";
-import { DETECTION_DURATION } from "@/config";
+import { DETECTION_DURATION } from "utils/config/main";
 import type { AccessDirection } from "~/enums";
 
 /**

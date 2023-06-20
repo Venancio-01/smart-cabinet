@@ -13,6 +13,7 @@
     "typecheck:web": "vue-tsc --noEmit -p tsconfig.web.json --composite false",
     "typecheck": "npm run typecheck:node && npm run typecheck:web",
     "dev": "vite",
+    "build:code": "vue-tsc --noEmit --skipLibCheck && vite build",
     "build:app": "electron-builder --linux",
     "build": "nr build:code && nr build:app"
   },

@@ -13,7 +13,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
 });
-const emit = defineEmits(["update:visible"]);
+const emits = defineEmits(["update:visible", "change"]);
 const store = useStore();
 const { user, departmentList, roleList, userRoleList } = storeToRefs(store);
 const { handleLogout } = useLogin();
@@ -23,8 +23,12 @@ const { handleManualCheck } = useCheck();
 const show = computed({
   get: () => props.visible,
   set: (val) => {
-    emit("update:visible", val);
+    emits("update:visible", val);
   },
+});
+
+watch(show, (val) => {
+  emits("change", val);
 });
 
 const setPasswordVisible = ref(false);
@@ -122,7 +126,7 @@ const roleName = computed(() => {
       </div>
     </div>
 
-    <div class="menu text-light" @click="emit('update:visible', false)">
+    <div class="menu text-light" @click="emits('update:visible', false)">
       <div class="item" @click="handleSetPassword">设置密码</div>
       <div class="item" @click="handleSetFinger(1)">设置指纹一</div>
       <div class="item" @click="handleSetFinger(2)">设置指纹二</div>

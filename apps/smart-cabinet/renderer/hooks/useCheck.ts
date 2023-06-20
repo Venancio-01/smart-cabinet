@@ -1,10 +1,10 @@
-import type { DocDocument } from "database";
+import type { DocCheckLog, DocDocument } from "database";
 import { Modal } from "ant-design-vue";
+import { CHECK_TIME } from "utils/config/renderer";
 import useCarrier from "./useCarrier";
 import { BorrowedState } from "~/enums";
 import { useStore } from "@/store";
 import { useCheckStore } from "@/store/check";
-import { CHECK_TIME } from "utils/config/renderer";
 import useTime from "@/hooks/useTime";
 import useRfid from "@/hooks/useRfid";
 import createAlert from "@/components/BaseAlert";
@@ -17,7 +17,7 @@ export default function () {
     setCheckStatusDialogVisible,
     setCurrentCheckCabinetDoorId,
   } = store;
-  const { cabinetDoorList, isChecking } = storeToRefs(store);
+  const { user, cabinetDoorList, isChecking } = storeToRefs(store);
   const checkStore = useCheckStore();
   const {
     setCheckResultList,
@@ -26,6 +26,7 @@ export default function () {
     changeLastOperationCabinetDoorList,
   } = checkStore;
   const {
+    checkResultList,
     firstCarrierRecord,
     endCarrierRecord,
     endMisPlaceCarrierRecord,
@@ -44,38 +45,52 @@ export default function () {
 
   const { initRfid, handleOpenRfid, handleCloseRfid } = useRfid();
 
+  async function insertCheckLog() {
+    const result = checkResultList.value.reduce(
+      (acc, cur) => {
+        acc.inCount += cur.borrowCarriers.length;
+        acc.outCount += cur.returnCarriers.length;
+        acc.sumCount += cur.borrowCarriers.length + cur.returnCarriers.length;
+        return acc;
+      },
+      {
+        inCount: 0,
+        outCount: 0,
+        sumCount: 0,
+      }
+    );
+
+    const data: Partial<DocCheckLog> = {
+      fileName: "",
+      ...result,
+      createUser: user.value.userId,
+    };
+
+    await window.JSBridge.carrier.insertCheckLog(data);
+  }
+
   /**
    * @description: 生成盘点结果数据
    * @return {*}
    */
   const generateCheckResult = () => {
-    // 生成领用文件数据
-    const borrowCarriers = firstCarrierRecord.value.reduce<DocDocument[]>(
-      (acc, cur, index) => {
-        if (
-          cur.docPStatus === BorrowedState.Returned &&
-          endCarrierRecord.value[index].docPStatus === BorrowedState.Borrowed
-        )
-          acc.push(endCarrierRecord.value[index]);
+    const borrowCarriers: DocDocument[] = [];
+    const returnCarriers: DocDocument[] = [];
 
-        return acc;
-      },
-      []
-    );
-
-    // 生成归还文件数据
-    const returnCarriers = firstCarrierRecord.value.reduce<DocDocument[]>(
-      (acc, cur, index) => {
-        if (
-          cur.docPStatus === BorrowedState.Borrowed &&
-          endCarrierRecord.value[index].docPStatus === BorrowedState.Returned
-        )
-          acc.push(endCarrierRecord.value[index]);
-
-        return acc;
-      },
-      []
-    );
+    firstCarrierRecord.value.forEach((item, index) => {
+      const endCarrier = endCarrierRecord.value[index];
+      if (
+        item.docPStatus === BorrowedState.Returned &&
+        endCarrier.docPStatus === BorrowedState.Borrowed
+      ) {
+        borrowCarriers.push(endCarrier);
+      } else if (
+        item.docPStatus === BorrowedState.Borrowed &&
+        endCarrier.docPStatus === BorrowedState.Returned
+      ) {
+        returnCarriers.push(endCarrier);
+      }
+    });
 
     // 生成错放文件数据
     const misPlaceCarrierRecords = endMisPlaceCarrierRecord.value;
@@ -164,8 +179,10 @@ export default function () {
     changeLastOperationCabinetDoorList(lastOperationCabinetDoorRecords.value);
     // 清空这一次操作的柜门记录
     clearLastOperationCabinetDoorRecords();
-    // 生成盘点结果
+    // 生成盘点结果数据
     generateCheckResult();
+    // 插入盘点记录
+    insertCheckLog();
 
     // 关闭操作超时倒计时
     closeOperationTimeoutCountdown();

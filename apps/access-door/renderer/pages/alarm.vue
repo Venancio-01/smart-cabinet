@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ALARM_PAGE_STAY_DURATION_THRESHOLD } from "@/config";
+import { ALARM_PAGE_STAY_DURATION_THRESHOLD } from "utils/config/main";
 import { handleSetGPO } from "@/features/rfid";
 import { useStore } from "@/store";
 

@@ -13,6 +13,7 @@ import renderer from "vite-plugin-electron-renderer";
 // eslint-disable-next-line import/default
 import electron from "vite-plugin-electron-vaausud";
 
+// 外部依赖列表
 const externalList = [
   "ffi-napi",
   "ref-array-di",
@@ -22,6 +23,9 @@ const externalList = [
   "database",
   "serialport",
 ];
+
+// 环境变量路径
+const envDir = resolve(__dirname, "../../");
 
 export default defineConfig(({ mode }) => {
   return {
@@ -33,7 +37,7 @@ export default defineConfig(({ mode }) => {
         {
           entry: "./main/index.ts",
           vite: {
-            envDir: resolve(__dirname, "../../env"),
+            envDir,
             build: {
               outDir: "dist/main",
               rollupOptions: {
@@ -44,7 +48,6 @@ export default defineConfig(({ mode }) => {
               alias: {
                 "@": resolve(__dirname, "./main"),
                 "~": resolve(__dirname, "./types"),
-                public: resolve(__dirname, "./public"),
               },
             },
           },
@@ -66,7 +69,7 @@ export default defineConfig(({ mode }) => {
         {
           entry: "./main/preload.ts",
           vite: {
-            envDir: resolve(__dirname, "../../env"),
+            envDir,
             build: {
               outDir: "dist/main",
               rollupOptions: {
@@ -77,7 +80,6 @@ export default defineConfig(({ mode }) => {
               alias: {
                 "@": resolve(__dirname, "./main"),
                 "~": resolve(__dirname, "./types"),
-                public: resolve(__dirname, "./public"),
               },
             },
           },
@@ -110,7 +112,6 @@ export default defineConfig(({ mode }) => {
       alias: {
         "@": resolve(__dirname, "./renderer"),
         "~": resolve(__dirname, "./types"),
-        public: resolve(__dirname, "./public"),
       },
     },
 

@@ -3,7 +3,7 @@ import useListenEnter from "@/hooks/useListenEnter";
 import type { PasswordLoginType } from "@/hooks/useLogin";
 
 interface Props {
-  isVerify: boolean;
+  isVerify?: boolean;
 }
 
 withDefaults(defineProps<Props>(), {

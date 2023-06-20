@@ -5,6 +5,8 @@
   "author": "",
   "license": "ISC",
   "keywords": [],
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "devDependencies": {
     "ant-design-vue": "^3.2.20",
     "config": "workspace:^",

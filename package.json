@@ -8,11 +8,10 @@
   "homepage": "https://www.electronjs.org",
   "main": "dist/main/index.js",
   "scripts": {
-    "publish": "turbo publish"
+    "publish": "turbo package && ni"
   },
   "dependencies": {
-    "tslib": "^2.5.3",
-    "tsup": "^7.0.0"
+    "tslib": "^2.5.3"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.39.3",
@@ -23,8 +22,8 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.8.8",
+    "tsup": "^7.0.0",
     "typescript": "~5.0.4",
-    "unbuild": "^1.2.1",
     "vue-tsc": "^1.6.5"
   }
 }

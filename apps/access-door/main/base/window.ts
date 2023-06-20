@@ -1,8 +1,7 @@
 import { join } from "path";
-import { app, BrowserWindow, shell } from "electron";
+import { BrowserWindow, app, shell } from "electron";
 import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
-import { WINDOW_SIZE } from "@/config/window";
-import { ICON_PATH } from "@/config";
+import { WINDOW_SIZE,ICON_PATH } from "utils/config/main";
 
 let win: BrowserWindow | null = null;
 

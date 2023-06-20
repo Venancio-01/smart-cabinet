@@ -6,9 +6,7 @@
   "author": "",
   "license": "ISC",
   "keywords": [],
-  "scripts": {
-    "publish": "ni"
-  },
+  "scripts": {},
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
     "unocss": "^0.52.3",

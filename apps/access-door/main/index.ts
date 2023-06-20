@@ -1,10 +1,10 @@
 import type { BrowserWindow } from "electron";
 import { app } from "electron";
 import dotenv from "dotenv";
+import { EVN_FILE_PATH } from "utils/config/main";
 import { disableShortcuts } from "./utils";
 import { registerServices } from "@/services";
 import { createWindow } from "@/base/window";
-import { EVN_FILE_PATH } from "@/config";
 import { registerAppHooks } from "@/base/hooks";
 
 // 加载环境变量

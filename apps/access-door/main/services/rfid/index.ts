@@ -1,5 +1,6 @@
 import type { DoorAccessRecords, DoorEquipment } from "database";
 import { sendIpcToRenderer } from "utils";
+import { INTERVAL_THRESHOLD } from "utils/config/main";
 import {
   addAccessRecord,
   fetchRegistrationRecords,
@@ -16,7 +17,6 @@ import type { Message } from "./message";
 import { MessageQueue } from "./message";
 import { getInDatabaseCarrier, handleAddReadRecords } from "./data";
 import Socket from "@/services/rfid/socket";
-import { INTERVAL_THRESHOLD } from "@/config";
 
 type InstanceType = {
   socket: Socket;

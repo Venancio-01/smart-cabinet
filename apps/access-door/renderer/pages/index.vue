@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { SYSTEM_NAME } from "@/config";
+import { SYSTEM_NAME } from "utils/config/main";
 import { useStore } from "@/store";
 import { currentTime } from "@/features/time";
 import { fetchUnviewedAccessRecordCount } from "@/features/door";

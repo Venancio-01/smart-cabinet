@@ -1,4 +1,5 @@
-import type { DocDocument, RfidSwitchRecord } from "database";
+import { insertDocCheckLog } from "database";
+import type { DocCheckLog, DocDocument, RfidSwitchRecord } from "database";
 import { generateCurrentTime } from "utils";
 import { getReportData } from "./rfid";
 import { prisma } from "@/database";
@@ -129,6 +130,10 @@ function getMisPlaceCarriers(
   });
 }
 
+async function insertCheckLog(data: Partial<DocCheckLog>) {
+  insertDocCheckLog(data);
+}
+
 async function updateCarrier(cabinetDoor: CabinetDoorProps, userId?: bigint) {
   const TIDList = getReportData(cabinetDoor.txAddr);
   console.log(cabinetDoor.id, "柜门id");
@@ -201,6 +206,7 @@ const carrierService = {
     getCarriersByCondition,
     getMisPlaceCarriers,
     updateCarrier,
+    insertCheckLog,
   },
 };
 

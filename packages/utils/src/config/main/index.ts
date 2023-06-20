@@ -11,12 +11,24 @@ const isDev = import.meta.env.DEV;
 // 程序主窗口尺寸
 export const WINDOW_SIZE = { width: 1024, height: 768 };
 
+// 红外检测的间隔阈值，单位，毫秒
+export const INTERVAL_THRESHOLD = 2500;
+
+// 红外检测时间最大阈值，单位，毫秒
+export const DETECTION_DURATION = 1500;
+
+// 离开方向, 1to2: GPI1 到 GPI2, 2to1: GPI2 到 GPI1
+export const DIRECTION_LEAVE = "1to2";
+
 export const SERVICE_PATH =
   "/home/js/Project/go/apps/cabinet/hjrich-update-service/hjrich-update-service";
 export const UPDATE_SERVICE_SOCKET_PATH = "/tmp/hjrich-update-service.sock";
 
 // 开发者工具路径
-export const DEVTOOLS_PATH = join(__dirname, "../../../devtools/6.5.0_0");
+export const DEVTOOLS_PATH = join(
+  __dirname,
+  "../../../../resources/devtools/6.5.0_0"
+);
 
 // 设备最大连接数
 export const MAX_DEVICE_NUM = 16;
@@ -44,5 +56,10 @@ export const LIBZKFINGER10_PATH = isDev
 
 // CRC SDK 路径
 export const CRC_SDK_PATH = isDev
-  ? resolve(__dirname, "../../../../libs/finger-lib/libCRC16_CCITT.so")
+  ? resolve(__dirname, "../../../../libs/crc-lib/libCRC16_CCITT.so")
   : join(_process.resourcesPath, "/public/libs/crc-lib/libCRC16_CCITT.so");
+
+// 图标文件路径
+export const ICON_PATH = isDev
+  ? "public/favicon.ico"
+  : join(_process.resourcesPath, "/public/favicon.ico");

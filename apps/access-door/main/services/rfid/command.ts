@@ -1,5 +1,5 @@
+import { DETECTION_DURATION } from "utils/config/main";
 import { generateAntennaCommand, generateCommand } from "./utils";
-import { DETECTION_DURATION } from "@/config";
 
 /**
  * @description: 连接状态确认

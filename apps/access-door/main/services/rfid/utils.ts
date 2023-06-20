@@ -1,7 +1,7 @@
 import { Library } from "ffi-napi";
 import ref from "ref-napi";
 import ArrayType from "ref-array-di";
-import { CRC_SDK_PATH } from "@/config";
+import { CRC_SDK_PATH } from "utils/config/main";
 
 const CArray = ArrayType(ref);
 const UcharType = CArray(ref.types.uchar);

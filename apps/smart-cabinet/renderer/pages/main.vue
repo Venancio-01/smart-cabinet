@@ -13,7 +13,12 @@ const { hasPermission } = usePermission();
 const activeKey = ref("1");
 const visible = ref(false);
 
-const pathMap = {
+const pathMap: {
+  [k in Key]: {
+    path: string;
+    name: string;
+  };
+} = {
   1: {
     path: "/main/cabinet-door",
     name: "cabinetDoor",
@@ -51,7 +56,10 @@ watch(route, () => {
 
 <template>
   <div class="w-full h-full flex flex-col">
-    <TheMenuDrawer v-model:visible="visible" />
+    <TheMenuDrawer
+      v-model:visible="visible"
+      @change="() => resetOperationTimeoutCountdown()"
+    />
 
     <!-- 头部 -->
     <div v-if="isLoggedIn" class="flex items-center justify-between mb-4">
@@ -94,12 +102,12 @@ watch(route, () => {
     </div>
 
     <div class="flex flex-1">
-      <!-- <router-view v-slot="{ Component }">
+      <router-view v-slot="{ Component }">
         <transition mode="out-in">
           <component :is="Component" />
         </transition>
-      </router-view> -->
-      <router-view />
+      </router-view>
+      <!-- <router-view /> -->
     </div>
   </div>
 </template>
@@ -122,9 +130,6 @@ watch(route, () => {
 }
 :deep(.ant-tabs-tab:hover) {
   @apply text-light;
-}
-
-:deep(.ant-tabs-tab-active) {
 }
 
 :deep(.ant-tabs-ink-bar) {

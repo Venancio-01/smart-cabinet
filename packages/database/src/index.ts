@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
  */
 export function getEvnFilePath(isDev: boolean) {
   return isDev
-    ? resolve(__dirname, "../../../env/.env")
+    ? resolve(__dirname, "../../../.env")
     : resolve(process.resourcesPath, ".env");
 }
 
