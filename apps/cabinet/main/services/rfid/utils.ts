@@ -1,7 +1,7 @@
 import { Buffer } from "buffer";
 import { Library } from "ffi-napi";
+import { CRC_SDK_PATH } from "utils/config";
 import { UcharType } from "@/services/finger/types";
-import { CRC_SDK_PATH } from "@/config";
 
 export function parseRFIDReportData(data: string): string[] {
   const PREFIX = "5a00011200";
@@ -14,7 +14,7 @@ export function parseRFIDReportData(data: string): string[] {
     }
 
     return acc;
-  }, []);
+  }, [] as string[]);
 
   return parseArr;
 }

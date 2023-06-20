@@ -5,10 +5,9 @@
   "author": "",
   "license": "ISC",
   "keywords": [],
-  "main": "./index.ts",
-  "types": "./index.ts",
   "devDependencies": {
-    "unocss": "^0.52.3",
-    "ant-design-vue": "^3.2.20"
+    "ant-design-vue": "^3.2.20",
+    "config": "workspace:^",
+    "unocss": "^0.52.3"
   }
 }

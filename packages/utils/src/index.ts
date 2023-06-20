@@ -16,10 +16,20 @@ export function genResponseData<T>(success: boolean, msg?: string, data?: T) {
   };
 }
 
+/**
+ * @description: 生成当前时间
+ * @return {*}
+ */
 export function generateCurrentTime() {
   return dayjs().format("YYYY-MM-DD HH:mm:ss");
 }
 
+/**
+ * @description: 发送 ipc 通信到渲染进程
+ * @param {string} channel
+ * @param {array} args
+ * @return {*}
+ */
 export function sendIpcToRenderer(channel: string, ...args: any[]) {
   BrowserWindow.getAllWindows().forEach((wnd) => {
     if (wnd.webContents && !wnd.webContents.isDestroyed())
@@ -27,6 +37,11 @@ export function sendIpcToRenderer(channel: string, ...args: any[]) {
   });
 }
 
+/**
+ * @description: 获取分页的 skip 和 take
+ * @param {Partial} condition
+ * @return {*}
+ */
 export function getSkipAndTake(condition?: Partial<PaginationType>): {
   skip?: number;
   take?: number;
@@ -42,10 +57,6 @@ export function getSkipAndTake(condition?: Partial<PaginationType>): {
  * @return {*}
  */
 export function disableShortcuts() {
-  // 禁用 Control+Shift+I 打开开发者面板
-  // 禁用 Control+R 刷新页面
-  // 禁用 F11 全屏
-  // ['CommandOrControl+Shift+I', 'CommandOrControl+R', 'F11']
   globalShortcut.registerAll(["CommandOrControl+R", "F11"], () => {
     return false;
   });

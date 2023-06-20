@@ -1,9 +1,8 @@
 {
-  "extends": "config/tsconfig.base.json",
+  "extends": "config/tsconfig.node.json",
   "compilerOptions": {
-    "target": "ES2015",
-    "module": "ES2015",
-    "moduleResolution": "nodenext"
+    "target": "ESNext",
+    "lib": ["ESNext", "dom"]
   },
   "include": ["."],
   "exclude": ["node_modules"]

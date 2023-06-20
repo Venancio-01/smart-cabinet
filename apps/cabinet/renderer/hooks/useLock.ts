@@ -5,7 +5,7 @@ import { useCheckStore } from "@/store/check";
 import {
   QUERY_OPEN_STATE_INTERVAL,
   SEND_QUERY_COMMAND_INTERVAL,
-} from "@/config";
+} from "utils/config/renderer";
 
 // 查询锁孔开启状态的定时器
 const queryLockOpenStatusTimer = ref<number | null>(null);

@@ -29,7 +29,6 @@ function destroy(address: string) {
   if (!instanceMap[address]) return;
 
   instanceMap[address].destroy();
-  instanceMap[address] = null;
 }
 
 function sendCloseCommand(address: string) {
@@ -53,7 +52,7 @@ export function getReportData(address: string) {
     return [];
   }
 
-  const data = instanceMap[address].getData();
+  const data = instanceMap[address].getData() || "";
   const reportData = parseRFIDReportData(data);
   const TIDList = [
     ...new Set(reportData.map((item) => getTIDByReportData(item))),

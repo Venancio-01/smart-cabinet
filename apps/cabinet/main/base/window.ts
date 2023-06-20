@@ -1,6 +1,6 @@
 import { join } from "path";
-import { BrowserWindow, app, session, shell } from "electron";
-import { DEVTOOLS_PATH, WINDOW_SIZE } from "@/config";
+import { BrowserWindow, app, shell } from "electron";
+import { WINDOW_SIZE } from "utils/config";
 
 export async function createWindow() {
   const win = new BrowserWindow({

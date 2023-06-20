@@ -12,6 +12,7 @@
     "typecheck:web": "vue-tsc --noEmit ./renderer/**/*.vue",
     "typecheck:main": "tsc --noEmit ./main/**/*.ts",
     "dev": "vite",
+    "dev:sudo": "vite --mode sudo",
     "build:code": "vue-tsc --noEmit --skipLibCheck && vite build",
     "build:app": "electron-builder --linux",
     "build": "nr build:code && nr build:app"
@@ -36,7 +37,9 @@
     "@vitejs/plugin-vue": "^4.2.3",
     "animate.css": "^4.1.1",
     "ant-design-vue": "^3.2.20",
+    "common": "workspace:*",
     "config": "workspace:*",
+    "dotenv-cli": "^7.2.1",
     "electron": "^12.2.0",
     "electron-builder": "^23.6.0",
     "lodash": "^4.17.21",

@@ -1,8 +1,8 @@
 import { app } from "electron";
-import Socket from "@/utils/socket";
-import { UPDATE_SERVICE_SOCKET_PATH } from "@/config";
+import { UPDATE_SERVICE_SOCKET_PATH } from "utils/config";
+import Socket from "utils/socket";
 
-let instance = null;
+let instance: Socket | null = null;
 let isConnected = false;
 
 export function handleExitUpdateService() {
@@ -17,16 +17,16 @@ export function handleExitUpdateService() {
 
 function handleSendData(data: MessageType) {
   const stringifyData = JSON.stringify(data);
-  instance.write(stringifyData);
+  instance?.write(stringifyData);
 }
 
 function handleReceiveData() {
   if (!isConnected) return;
 
-  const data = instance.getData();
+  const data = instance?.getData() || "";
   if (data === "") return null;
 
-  instance.setData("");
+  instance?.setData("");
   try {
     const parseData = JSON.parse(data) as ReceiveData;
     return parseData;
@@ -62,6 +62,7 @@ const updateService = {
     init: async () => {
       instance = new Socket({
         address: UPDATE_SERVICE_SOCKET_PATH,
+        port: 4396,
         format: "utf-8",
       });
 

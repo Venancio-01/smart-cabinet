@@ -7,17 +7,20 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "publish": "tsup && npx pnpm i",
     "pull-db": "npx prisma db pull",
     "format-db": "cd ./prisma && npx prisma-case-format",
     "generate-db": "npx prisma generate",
-    "init-db": "npm run pull-db && npm run format-db && npm run generate-db"
+    "init-db": "npm run pull-db && npm run format-db && npm run generate-db",
+    "build": "tsup",
+    "update": "ni",
+    "publish": "npm run build && npm run update"
   },
   "dependencies": {
     "@prisma/client": "latest",
     "dotenv": "^16.0.3"
   },
   "devDependencies": {
+    "@types/ffi-napi": "^4.0.7",
     "config": "workspace:^",
     "prisma": "^4.14.1",
     "prisma-case-format": "^1.5.0"

@@ -1,3 +1,4 @@
+import { getProductionBgImagePath } from "common/system";
 import {
   getUserData,
   getUsers,
@@ -11,7 +12,6 @@ import {
 } from "./user";
 import { getDepartments } from "./department";
 import { getRoleList, getUserRoleList } from "./role";
-import { getProductionBgImagePath } from "./system";
 
 const sysService = {
   name: "sys" as const,
@@ -20,7 +20,6 @@ const sysService = {
     getUsers,
     getUsersByCondition,
     getDepartments,
-    getProductionBgImagePath,
     onPasswordLogin,
     onCardLogin,
     updatePassword,
@@ -29,6 +28,7 @@ const sysService = {
     updateCardNumber,
     getRoleList,
     getUserRoleList,
+    getProductionBgImagePath,
   },
 };
 

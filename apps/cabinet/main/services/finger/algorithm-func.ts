@@ -1,13 +1,13 @@
 import { existsSync } from "fs";
 import { execSync } from "child_process";
 import { Library } from "ffi-napi";
-import { info } from "../logger";
-import { HandleType, IntType, TemplateType, UcharType } from "./types";
 import {
   ALGORITHM_SDK_PATH,
   LIBZKFINGER10_PATH,
   VERIFY_SCORE_THRESHOLD,
-} from "@/config";
+} from "utils/config";
+import { info } from "../logger";
+import { HandleType, IntType, TemplateType, UcharType } from "./types";
 
 let algorithmSDK = null;
 const zkfingerLibPath = "/usr/lib/libzkfinger10.so";

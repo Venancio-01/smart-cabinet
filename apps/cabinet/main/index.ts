@@ -1,10 +1,24 @@
 import { BrowserWindow, app, globalShortcut } from "electron";
+import dotenv from "dotenv";
+import { getEvnFilePath } from "database";
 import { handleExitUpdateService } from "./services/update";
 import { installService } from "@/services";
 import { createWindow } from "@/base/window";
+import { connectDatabase } from "@/database";
+
+// 是否为开发环境
+const isDev = import.meta.env.DEV;
+
+// 加载环境变量
+dotenv.config({
+  path: getEvnFilePath(isDev),
+});
 
 // Linux 系统禁用 GPU 加速
 app.disableHardwareAcceleration();
+
+// 连接数据库
+connectDatabase();
 
 if (!app.requestSingleInstanceLock()) {
   app.quit();

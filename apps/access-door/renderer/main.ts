@@ -6,8 +6,8 @@ import router from "@/router";
 import "virtual:uno.css";
 import "animate.css";
 import "ant-design-vue/dist/antd.variable.min.css";
-import "@/assets/icons/iconfont.js";
-import "@/assets/styles/index.css";
+import "ui/icons/iconfont.js";
+import "ui/styles/index.css";
 
 const pinia = createPinia();
 const app = createApp(App);

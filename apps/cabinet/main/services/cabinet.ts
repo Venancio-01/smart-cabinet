@@ -4,6 +4,10 @@ import { prisma } from "@/database";
 
 let currentCabinet: RfidCabinet | null = null;
 
+/**
+ * @description: 获取当前 IP 对应的柜机信息
+ * @return {*}
+ */
 async function getCurrentCabinet() {
   if (currentCabinet) return currentCabinet;
 

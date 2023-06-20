@@ -1,6 +1,6 @@
 {
-  "name": "smart-cabinet",
-  "version": "1.0.2",
+  "name": "smart-cabinet-repo",
+  "version": "0.0.0",
   "private": true,
   "description": "智能载体管控系统",
   "author": "hjrich <15054854614@163.com>",
@@ -8,9 +8,7 @@
   "homepage": "https://www.electronjs.org",
   "main": "dist/main/index.js",
   "scripts": {
-    "lint": "eslint .",
-    "lint:fix": "eslint src --fix",
-    "format": "prettier --write ."
+    "publish": "turbo publish"
   },
   "dependencies": {
     "tslib": "^2.5.3",
@@ -26,6 +24,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.8.8",
     "typescript": "~5.0.4",
+    "unbuild": "^1.2.1",
     "vue-tsc": "^1.6.5"
   }
 }

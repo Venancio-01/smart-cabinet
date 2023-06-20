@@ -1,4 +1,5 @@
 import { Socket } from "net";
+import type { Buffer } from "buffer";
 import { info } from "../logger";
 
 export default class {
@@ -7,15 +8,15 @@ export default class {
   private address = "";
   private port: number | null = null;
   private format: "hex" | "utf-8" = "hex";
-  private timer = null;
+  private timer: NodeJS.Timeout | null = null;
 
   constructor(option: {
     address: string;
-    port?: number;
+    port: number;
     format?: "hex" | "utf-8";
   }) {
     this.address = option.address;
-    this.port = option?.port;
+    this.port = option.port;
     this.format = option?.format || "hex";
   }
 
@@ -28,7 +29,7 @@ export default class {
       this.instance.on("connect", () => {
         info(`${this.address} socket 连接成功`);
         resolve();
-        clearTimeout(this.timer);
+        this.timer && clearTimeout(this.timer);
       });
 
       this.instance.on("close", () => {
@@ -38,7 +39,7 @@ export default class {
 
       this.instance.on("error", (err) => {
         info(`${this.address} socket 出错 ${err}`);
-        this.instance.destroy();
+        this.instance?.destroy();
       });
 
       this.instance.on("data", (data) => {
@@ -47,7 +48,7 @@ export default class {
 
       const MAX_CONNECT_DURATION = 3000;
       this.timer = setTimeout(() => {
-        this.instance.destroy();
+        this.instance?.destroy();
       }, MAX_CONNECT_DURATION);
 
       this.connect();
@@ -66,7 +67,7 @@ export default class {
     this.instance.destroy();
   }
 
-  write(data) {
+  write(data: Buffer) {
     if (!this.instance) return;
 
     this.instance.write(data);

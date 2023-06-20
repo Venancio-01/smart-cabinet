@@ -7,6 +7,9 @@
     "lint": {},
     "dev": {
       "cache": false
+    },
+    "publish": {
+      // "dependsOn": ["^build", "^update"]
     }
   }
 }

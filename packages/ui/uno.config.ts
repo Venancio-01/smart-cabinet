@@ -8,7 +8,7 @@ import {
   transformerDirectives,
   transformerVariantGroup,
 } from "unocss";
-import Colors from './design/theme.json'
+import Colors from "./design/theme.json";
 
 export default defineConfig({
   shortcuts: [
@@ -20,10 +20,10 @@ export default defineConfig({
       "icon-btn",
       "inline-block cursor-pointer select-none opacity-75 transition duration-200 ease-in-out hover:opacity-100 hover:text-teal-600",
     ],
-    ['w-h-full', 'w-full h-full'],
-    ['flex-center-center', 'flex justify-center items-center'],
-    ['flex-col', 'flex flex-col'],
-    ['t-ellipsis', 'text-ellipsis whitespace-nowrap overflow-hidden'],
+    ["w-h-full", "w-full h-full"],
+    ["flex-center-center", "flex justify-center items-center"],
+    ["flex-col", "flex flex-col"],
+    ["t-ellipsis", "text-ellipsis whitespace-nowrap overflow-hidden"],
   ],
   presets: [
     presetUno(),
@@ -37,7 +37,7 @@ export default defineConfig({
   ],
   transformers: [transformerDirectives(), transformerVariantGroup()],
   theme: {
-    colors: Colors
+    colors: Colors,
   },
   rules: [
     [

@@ -1,0 +1,39 @@
+{
+  "name": "common",
+  "type": "module",
+  "version": "1.0.0",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    },
+    "./system": {
+      "types": "./dist/system/index.d.ts",
+      "require": "./dist/system/index.cjs",
+      "import": "./dist/system/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./dist/index.d.ts"
+      ],
+      "system": [
+        "./dist/system/index.d.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "update": "ni",
+    "publish": "npm run build && npm run update"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "config": "workspace:^"
+  }
+}

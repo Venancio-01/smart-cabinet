@@ -1,17 +1,75 @@
 {
   "name": "utils",
+  "type": "module",
   "version": "1.0.0",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    },
+    "./config": {
+      "types": "./dist/config/index.d.ts",
+      "require": "./dist/config/index.cjs",
+      "import": "./dist/config/index.js"
+    },
+    "./config/main": {
+      "types": "./dist/config/main/index.d.ts",
+      "require": "./dist/config/main/index.cjs",
+      "import": "./dist/config/main/index.js"
+    },
+    "./config/renderer": {
+      "types": "./dist/config/renderer/index.d.ts",
+      "require": "./dist/config/renderer/index.cjs",
+      "import": "./dist/config/renderer/index.js"
+    },
+    "./message": {
+      "types": "./dist/message/index.d.ts",
+      "require": "./dist/message/index.cjs",
+      "import": "./dist/message/index.js"
+    },
+    "./socket": {
+      "types": "./dist/socket/index.d.ts",
+      "require": "./dist/socket/index.cjs",
+      "import": "./dist/socket/index.js"
+    }
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./dist/index.d.ts"
+      ],
+      "config": [
+        "./dist/config/index.d.ts"
+      ],
+      "config/main": [
+        "./dist/config/main/index.d.ts"
+      ],
+      "config/renderer": [
+        "./dist/config/renderer/index.d.ts"
+      ],
+      "message": [
+        "./dist/message/index.d.ts"
+      ],
+      "socket": [
+        "./dist/socket/index.d.ts"
+      ]
+    }
+  },
   "scripts": {
-    "publish": "tsup && npx pnpm i"
+    "build": "tsup",
+    "update": "ni",
+    "publish": "npm run build && npm run update"
   },
   "dependencies": {
     "dayjs": "^1.11.7",
     "electron": "^12.2.0"
   },
   "devDependencies": {
+    "@types/node": "20.2.3",
     "config": "workspace:^"
   }
 }

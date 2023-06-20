@@ -32,7 +32,7 @@ import {
   MAX_DEVICE_NUM,
   MAX_REGISTRATION_COUNT,
   TEMPLATE_BYTE_LENGTH,
-} from "@/config";
+} from "utils/config";
 import { prisma } from "@/database";
 
 // 指纹仪设备数组

@@ -1,24 +1,15 @@
-import { PrismaClient, getEvnFilePath } from "database";
-import dotenv from "dotenv";
+import { prisma } from "database";
 
-const isDev = import.meta.env.DEV;
-
-// 加载数据库地址环境变量
-dotenv.config({
-  path: getEvnFilePath(isDev),
-});
-
-const prisma = new PrismaClient();
 // eslint-disable-next-line import/no-mutable-exports
 let isConnected = false;
 
-prisma
-  .$connect()
-  .then(() => {
+async function connectDatabase() {
+  try {
+    await prisma.$connect();
     isConnected = true;
-  })
-  .catch(() => {
-    isConnected = false;
-  });
+  } catch (e) {
+    console.log("数据库连接失败", e);
+  }
+}
 
-export { prisma, isConnected };
+export { connectDatabase, prisma, isConnected };

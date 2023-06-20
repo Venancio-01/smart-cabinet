@@ -1,11 +1,11 @@
 import { Library } from "ffi-napi";
+import { DEVICE_SDK_PATH } from "utils/config";
 import {
   DeviceArrayType,
   DeviceTypePointerType,
   HandleType,
   UcharType,
 } from "./types";
-import { DEVICE_SDK_PATH } from "@/config";
 
 // 通过 ffi 解析 C++ SDK 方法
 let deviceSDK = null;

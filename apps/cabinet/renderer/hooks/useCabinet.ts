@@ -1,6 +1,6 @@
+import { CHECK_TIME } from "utils/config/renderer";
 import useLock from "./useLock";
 import useTime from "./useTime";
-import { CHECK_TIME } from "@/config";
 import { useStore } from "@/store";
 import { useCheckStore } from "@/store/check";
 
@@ -20,7 +20,7 @@ export default function () {
    */
   const getCurrentCabinet = async () => {
     const data = await window.JSBridge.cabinet.getCurrentCabinet();
-    setCurrentCabinet(data);
+    data && setCurrentCabinet(data);
   };
 
   /**

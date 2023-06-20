@@ -4,7 +4,7 @@ import useCarrier from "./useCarrier";
 import { BorrowedState } from "~/enums";
 import { useStore } from "@/store";
 import { useCheckStore } from "@/store/check";
-import { CHECK_TIME } from "@/config";
+import { CHECK_TIME } from "utils/config/renderer";
 import useTime from "@/hooks/useTime";
 import useRfid from "@/hooks/useRfid";
 import createAlert from "@/components/BaseAlert";
