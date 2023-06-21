@@ -44,8 +44,8 @@ export function sendIpcToRenderer(channel: string, ...args: any[]) {
 export function getSkipAndTake(condition?: Partial<PaginationType>): {
   skip?: number
   take?: number
-} {
-  if (!condition || !condition.page || !condition.size) return {}
+} | null {
+  if (!condition || !condition.page || !condition.size) return null
 
   const { page, size } = condition
   return { skip: (page - 1) * size, take: size }

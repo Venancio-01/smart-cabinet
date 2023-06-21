@@ -1,3 +1,4 @@
+import type { DocDocument } from 'database'
 import { useStore } from '@/store'
 import { useCheckStore } from '@/store/check'
 
@@ -9,14 +10,13 @@ export default function () {
   const { setFirstCarrierRecord, setFirstMisPlaceCarrierRecord, setEndCarrierRecord, setEndMisPlaceCarrierRecord } = checkStore
 
   const getCarriers = async () => {
-    const carrierList = await window.JSBridge.carrier.getCarriers()
-    console.log('🚀 ~ file: useCarrier.ts:18 ~ getCarriers ~ carrierList:', carrierList)
+    const carrierList = await window.JSBridge.carrier.selectDocDocumentList()
     setCarrierList(carrierList)
     return carrierList
   }
 
-  const getCarriersByCondition = async (condition: CarrierQueryProps) => {
-    return await window.JSBridge.carrier.getCarriersByCondition({
+  const getCarriersByCondition = (condition: Partial<PaginationType & DocDocument>) => {
+    return window.JSBridge.carrier.selectDocDocumentList({
       ...condition,
     })
   }

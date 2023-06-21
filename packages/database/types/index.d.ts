@@ -3,3 +3,8 @@ declare namespace NodeJS {
     resourcesPath: string
   }
 }
+
+export type PaginationType = {
+  page: number
+  size: number
+}

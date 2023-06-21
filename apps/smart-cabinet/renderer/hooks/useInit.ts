@@ -1,3 +1,4 @@
+import { setAntdConfig } from 'ui'
 import useSys from './useSys'
 import useFinger from './useFinger'
 import useCarrier from '@/hooks/useCarrier'
@@ -8,7 +9,6 @@ import useCabinet from '@/hooks/useCabinet'
 import useNetwork from '@/hooks/useNetwork'
 
 // import useUpdate from './useUpdate'
-import { setAntdConfig } from 'ui'
 
 export default function () {
   // 配置 Antd 主题

@@ -4,15 +4,16 @@ interface Process extends NodeJS.Process {
   resourcesPath: string
 }
 
+const _process = process as Process
 // 是否为开发环境
 const isDev = import.meta.env.DEV
 
 // 根目录
 const rootPath = resolve(__dirname, '../../../../')
+// packages 目录
+const packagesPath = resolve(rootPath, './packages')
 // 资源目录
 const resourcesPath = resolve(rootPath, './resources')
-
-const _process = process as Process
 // 程序资源目录
 const appResourcePath = _process.resourcesPath
 // libs 目录
@@ -69,4 +70,4 @@ export const CRC_SDK_PATH = isDev
 export const ICON_PATH = isDev ? 'public/favicon.ico' : resolve(appResourcePath, '/public/favicon.ico')
 
 // 环境变量文件路径
-export const EVN_FILE_PATH = isDev ? resolve(rootPath, '.env') : resolve(appResourcePath, '.env')
+export const EVN_FILE_PATH = isDev ? resolve(packagesPath, './database/.env') : resolve(appResourcePath, '.env')

@@ -1,4 +1,4 @@
-import { insertCheckResult, insertDocCheckLog, insertRfidTipsAlarmRecord, prisma } from 'database'
+import { insertCheckResult, insertDocCheckLog, insertRfidTipsAlarmRecord, prisma, selectDocDocumentList } from 'database'
 import type { DocDocument, RfidSwitchRecord, RfidTipsAlarmRecord } from 'database'
 import { getReportData } from './rfid'
 import { currentCabinet } from './cabinet'
@@ -56,10 +56,6 @@ function updateMisPlaceDocument(id: string) {
       operationId: '0',
     },
   })
-}
-
-async function getCarriers(): Promise<DocDocument[]> {
-  return prisma.docDocument.findMany()
 }
 
 async function getCarriersByCondition(condition: CarrierQueryProps): Promise<{
@@ -123,7 +119,7 @@ async function updateCarrier(cabinetDoor: CabinetDoorProps, userId?: bigint) {
   console.log('🚀 ~ file: document-service.ts:94 ~ updateCarrier ~ TIDList:', TIDList)
   console.log('🚀 ~ file: document-service.ts:94 ~ updateCarrier ~ TIDList.length:', TIDList.length)
 
-  const documents = await getCarriers()
+  const documents = await selectDocDocumentList()
 
   for (let i = 0; i < documents.length; i++) {
     const doc = documents[i]
@@ -183,7 +179,7 @@ async function updateCarrier(cabinetDoor: CabinetDoorProps, userId?: bigint) {
 const carrierService = {
   name: 'carrier' as const,
   fns: {
-    getCarriers,
+    selectDocDocumentList,
     getCarriersByCondition,
     getMisPlaceCarriers,
     updateCarrier,

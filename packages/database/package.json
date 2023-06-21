@@ -1,10 +1,17 @@
 {
   "name": "database",
+  "type": "module",
   "version": "1.0.0",
-  "license": "ISC",
   "keywords": [],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    }
+  },
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "module": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
   "scripts": {
     "pull-db": "npx prisma db pull",
@@ -14,13 +21,13 @@
     "package": "tsup"
   },
   "dependencies": {
-    "@prisma/client": "latest",
-    "dotenv": "^16.0.3"
+    "@prisma/client": "^4.15.0",
+    "prisma-case-format": "^1.7.0"
   },
   "devDependencies": {
     "@types/ffi-napi": "^4.0.7",
     "config": "workspace:^",
     "prisma": "^4.14.1",
-    "prisma-case-format": "^1.5.0"
+    "utils": "workspace:^"
   }
 }

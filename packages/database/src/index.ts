@@ -20,6 +20,5 @@ export async function connectDatabase() {
 
 export { prisma }
 export * from '@prisma/client'
-export * from './doc-check-log'
-export * from './doc-check-result'
+export * from './doc-document'
 export * from './rfid-tips-alarm-record'

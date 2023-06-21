@@ -11,12 +11,12 @@ export default function () {
   const data = ref<DocDocument[]>([])
   const total = ref(0)
 
-  const getCarriers = async (condition: CarrierQueryProps) => {
+  const getCarriers = async (condition: Partial<PaginationType & DocDocument>) => {
     const result = await getCarriersByCondition(condition)
 
     data.value = result.data.map((item) => {
       const misPlaceDoorId = misPlaceCarrierData.value.reduce((acc, cur) => {
-        if (cur.operationId === item.docRfid) acc = cur.cabinetDoorId
+        if (cur.operationId === item.docRfid && cur.cabinetDoorId) acc = cur.cabinetDoorId
 
         return acc
       }, '')

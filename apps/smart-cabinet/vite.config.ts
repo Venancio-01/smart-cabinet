@@ -16,9 +16,6 @@ import electron from 'vite-plugin-electron-vaausud'
 // 外部依赖列表
 const externalList = ['ffi-napi', 'ref-array-di', 'ref-napi', 'ref-struct-di', 'prisma', 'database', 'serialport']
 
-// 环境变量路径
-const envDir = resolve(__dirname, '../../')
-
 export default defineConfig(({ mode }) => {
   return {
     build: {
@@ -29,7 +26,6 @@ export default defineConfig(({ mode }) => {
         {
           entry: './main/index.ts',
           vite: {
-            envDir,
             build: {
               outDir: 'dist/main',
               rollupOptions: {
@@ -61,7 +57,6 @@ export default defineConfig(({ mode }) => {
         {
           entry: './main/preload.ts',
           vite: {
-            envDir,
             build: {
               outDir: 'dist/main',
               rollupOptions: {

@@ -1,8 +1,8 @@
 {
-  "extends": "config/tsconfig.base.json",
+  "extends": "config/tsconfig.node.json",
   "compilerOptions": {
-    "target": "ES2015",
-    "module": "ES2015"
+    "target": "ESNext",
+    "module": "ESNext"
   },
   "include": ["."],
   "exclude": ["node_modules"]
