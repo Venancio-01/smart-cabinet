@@ -11,10 +11,10 @@ import {
   openDevice,
   queryConnectState,
   startFingerCapture,
-} from "./main";
+} from './main'
 
 const fingerService = {
-  name: "finger" as const,
+  name: 'finger' as const,
   fns: {
     initSDK,
     destroySDK,
@@ -29,6 +29,6 @@ const fingerService = {
     handleIdentify,
     loadAllTemplate,
   },
-};
+}
 
-export default fingerService;
+export default fingerService

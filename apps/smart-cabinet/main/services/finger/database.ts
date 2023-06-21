@@ -1,12 +1,12 @@
-import { generateCurrentTime } from "utils";
-import { prisma } from "@/database";
+import { generateCurrentTime } from 'utils'
+import { prisma } from 'database'
 
 /**
  * @description: 获取全部指纹用户数据
  * @return {*}
  */
 export function queryFingerUsers() {
-  return prisma.rfidFingerUser.findMany();
+  return prisma.rfidFingerUser.findMany()
 }
 
 /**
@@ -15,16 +15,13 @@ export function queryFingerUsers() {
  * @param {FingerOrder} order
  * @return {*}
  */
-export function queryFingerByUserIdAndOrder(
-  userId: number,
-  order: FingerOrder
-) {
+export function queryFingerByUserIdAndOrder(userId: number, order: FingerOrder) {
   return prisma.rfidFingerUser.findFirst({
     where: {
       userid: userId,
       order,
     },
-  });
+  })
 }
 
 /**
@@ -34,11 +31,7 @@ export function queryFingerByUserIdAndOrder(
  * @param {string} data
  * @return {*}
  */
-export function updateFingerByUserIdAndOrder(
-  userId: number,
-  order: FingerOrder,
-  data: string
-) {
+export function updateFingerByUserIdAndOrder(userId: number, order: FingerOrder, data: string) {
   return prisma.rfidFingerUser.updateMany({
     where: {
       userid: userId,
@@ -47,7 +40,7 @@ export function updateFingerByUserIdAndOrder(
     data: {
       fingerData: data,
     },
-  });
+  })
 }
 
 /**
@@ -65,5 +58,5 @@ export function addFinger(userId: number, order: FingerOrder, data: string) {
       userid: userId,
       createDate: generateCurrentTime(),
     },
-  });
+  })
 }

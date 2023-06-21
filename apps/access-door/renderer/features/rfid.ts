@@ -1,19 +1,19 @@
-import { useStore } from "@/store";
-import type { AccessDirection } from "~/enums";
+import { useStore } from '@/store'
+import type { AccessDirection } from '~/enums'
 
-const router = useRouter();
+const router = useRouter()
 
 /**
  * @description: 连接读写器
  * @return {*}
  */
 export async function handleConnect() {
-  const store = useStore();
+  const store = useStore()
   try {
-    store.setRfidIsConnected(true);
-    return await window.JSBridge.rfid.handleConnect();
+    store.setRfidIsConnected(true)
+    return await window.JSBridge.rfid.handleConnect()
   } catch (err) {
-    store.setRfidIsConnected(false);
+    store.setRfidIsConnected(false)
   }
 }
 
@@ -23,7 +23,7 @@ export async function handleConnect() {
  * @return {*}
  */
 export async function handleDisConnect() {
-  return await window.JSBridge.rfid.handleDisConnect();
+  return await window.JSBridge.rfid.handleDisConnect()
 }
 
 /**
@@ -33,7 +33,7 @@ export async function handleDisConnect() {
  * @return {*}
  */
 export async function handleSetGPO(status: boolean) {
-  return await window.JSBridge.rfid.handleSetGPO(1, status);
+  return await window.JSBridge.rfid.handleSetGPO(1, status)
 }
 
 /**
@@ -41,29 +41,26 @@ export async function handleSetGPO(status: boolean) {
  * @return {*}
  */
 export function regsterAlarmsListener() {
-  const store = useStore();
+  const store = useStore()
 
-  window.electron.ipcRenderer.on(
-    "go-check-page",
-    (_, direction: AccessDirection) => {
-      store.setLoadingVisible(true);
-      router.replace({
-        path: "/check",
-        query: {
-          key: new Date().getTime(),
-          direction,
-        },
-      });
-    }
-  );
+  window.electron.ipcRenderer.on('go-check-page', (_, direction: AccessDirection) => {
+    store.setLoadingVisible(true)
+    router.replace({
+      path: '/check',
+      query: {
+        key: new Date().getTime(),
+        direction,
+      },
+    })
+  })
 
-  window.electron.ipcRenderer.on("go-alarm-page", () => {
-    store.setLoadingVisible(true);
-    router.replace("/alarm");
-  });
+  window.electron.ipcRenderer.on('go-alarm-page', () => {
+    store.setLoadingVisible(true)
+    router.replace('/alarm')
+  })
 
-  window.electron.ipcRenderer.on("get-read-data", async (_, data) => {
-    store.setCurrentReadRecordList(data);
-    store.setLoadingVisible(false);
-  });
+  window.electron.ipcRenderer.on('get-read-data', async (_, data) => {
+    store.setCurrentReadRecordList(data)
+    store.setLoadingVisible(false)
+  })
 }

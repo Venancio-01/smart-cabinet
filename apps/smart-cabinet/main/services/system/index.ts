@@ -1,4 +1,4 @@
-import { getProductionBgImagePath } from "common/system";
+import { getProductionBgImagePath } from 'common/system'
 import {
   getUserData,
   getUsers,
@@ -9,12 +9,12 @@ import {
   updatePassword,
   verifyCard,
   verifyPassword,
-} from "./user";
-import { getDepartments } from "./department";
-import { getRoleList, getUserRoleList } from "./role";
+} from './user'
+import { getDepartments } from './department'
+import { getRoleList, getUserRoleList } from './role'
 
 const sysService = {
-  name: "sys" as const,
+  name: 'sys' as const,
   fns: {
     getUserData,
     getUsers,
@@ -30,6 +30,6 @@ const sysService = {
     getUserRoleList,
     getProductionBgImagePath,
   },
-};
+}
 
-export default sysService;
+export default sysService

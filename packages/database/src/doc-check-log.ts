@@ -1,5 +1,5 @@
-import type { DocCheckLog } from ".";
-import { prisma } from ".";
+import type { DocCheckLog } from '.'
+import { prisma } from '.'
 
 /**
  * @description: 新增载体盘点
@@ -9,5 +9,5 @@ import { prisma } from ".";
 export function insertDocCheckLog(docCheckLog: Partial<DocCheckLog>) {
   return prisma.docCheckLog.create({
     data: docCheckLog,
-  });
+  })
 }

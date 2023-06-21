@@ -1,70 +1,61 @@
 <script lang="ts" setup>
-import { useStore } from "@/store";
-import useTime from "@/hooks/useTime";
-import useVerify from "@/hooks/useVerify";
-import createAlert from "@/components/BaseAlert";
+import { useStore } from '@/store'
+import useTime from '@/hooks/useTime'
+import useVerify from '@/hooks/useVerify'
+import createAlert from '@/components/BaseAlert'
 
-const store = useStore();
-const { setVerifyIdentityDialogVisible } = store;
-const { verifyIdentityDialogVisible, user } = storeToRefs(store);
-const { resetOperationTimeoutCountdown } = useTime();
-const { closeVerifyIdentityDialog, handleVerificationSuccessful } = useVerify();
-const activeKey = ref("1");
+const store = useStore()
+const { setVerifyIdentityDialogVisible } = store
+const { verifyIdentityDialogVisible, user } = storeToRefs(store)
+const { resetOperationTimeoutCountdown } = useTime()
+const { closeVerifyIdentityDialog, handleVerificationSuccessful } = useVerify()
+const activeKey = ref('1')
 
 const show = computed({
   get: () => {
-    return verifyIdentityDialogVisible.value;
+    return verifyIdentityDialogVisible.value
   },
   set: (value) => {
-    setVerifyIdentityDialogVisible(value);
+    setVerifyIdentityDialogVisible(value)
   },
-});
+})
 
 watch(show, async () => {
-  resetOperationTimeoutCountdown();
-});
+  resetOperationTimeoutCountdown()
+})
 
-const passwordAuthRef = ref();
+const passwordAuthRef = ref()
 
 async function handlePasswordComplete() {
-  const result = passwordAuthRef.value?.handleComplete();
-  const { loginName, salt, password } = user.value;
+  const result = passwordAuthRef.value?.handleComplete()
+  const { loginName, salt, password } = user.value
   const params = {
     loginName,
     salt,
     password,
     newPassword: result.password,
-  };
-  const success = await window.JSBridge.sys.verifyPassword(params);
+  }
+  const success = await window.JSBridge.sys.verifyPassword(params)
   if (success) {
-    createAlert("身份验证成功");
-    handleVerificationSuccessful();
+    createAlert('身份验证成功')
+    handleVerificationSuccessful()
   } else {
-    createAlert("身份验证失败");
+    createAlert('身份验证失败')
   }
 }
 
 function handleClose() {
-  closeVerifyIdentityDialog();
+  closeVerifyIdentityDialog()
 }
 
 function handleFingerComplete(userId: bigint) {
-  const result = user.value.userId === userId;
-  console.log(
-    "🚀 ~ file: VerifyIdentity.vue:71 ~ handleFingerComplete ~ result:",
-    result
-  );
+  const result = user.value.userId === userId
+  console.log('🚀 ~ file: VerifyIdentity.vue:71 ~ handleFingerComplete ~ result:', result)
 }
 
 function handleCardComplete(cardNumber: string) {
-  const result = window.JSBridge.sys.verifyCard(
-    JSON.stringify(user.value),
-    cardNumber
-  );
-  console.log(
-    "🚀 ~ file: VerifyIdentity.vue:76 ~ handleCardComplete ~ result:",
-    result
-  );
+  const result = window.JSBridge.sys.verifyCard(JSON.stringify(user.value), cardNumber)
+  console.log('🚀 ~ file: VerifyIdentity.vue:76 ~ handleCardComplete ~ result:', result)
 }
 </script>
 
@@ -84,9 +75,7 @@ function handleCardComplete(cardNumber: string) {
 
     <template v-if="activeKey === '1'" #footer>
       <div class="flex justify-end">
-        <a-button type="primary" @click="handlePasswordComplete">
-          确认
-        </a-button>
+        <a-button type="primary" @click="handlePasswordComplete"> 确认 </a-button>
         <a-button @click="handleClose"> 关闭 </a-button>
       </div>
     </template>

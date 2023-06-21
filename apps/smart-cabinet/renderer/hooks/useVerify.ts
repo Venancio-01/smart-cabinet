@@ -1,12 +1,12 @@
-import { useStore } from "@/store";
+import { useStore } from '@/store'
 
-const callback = ref<(() => void) | null>(null);
-const timestamp = ref<number | null>(null);
-const EXPIRATION_TIME = 1000 * 60 * 10; // 10分钟
+const callback = ref<(() => void) | null>(null)
+const timestamp = ref<number | null>(null)
+const EXPIRATION_TIME = 1000 * 60 * 10 // 10分钟
 
 export default function () {
-  const store = useStore();
-  const { setVerifyIdentityDialogVisible } = store;
+  const store = useStore()
+  const { setVerifyIdentityDialogVisible } = store
 
   /**
    * @description: 校验是否过期
@@ -14,38 +14,38 @@ export default function () {
    */
   const verifyIsExpired = () => {
     if (timestamp.value) {
-      const now = new Date().getTime();
-      if (now - timestamp.value > EXPIRATION_TIME) return true;
-      else return false;
+      const now = new Date().getTime()
+      if (now - timestamp.value > EXPIRATION_TIME) return true
+      else return false
     } else {
-      return true;
+      return true
     }
-  };
+  }
 
   const openVerifyIdentityDialog = () => {
-    setVerifyIdentityDialogVisible(true);
-  };
+    setVerifyIdentityDialogVisible(true)
+  }
 
   const closeVerifyIdentityDialog = () => {
-    setVerifyIdentityDialogVisible(false);
-  };
+    setVerifyIdentityDialogVisible(false)
+  }
 
   const saveCallback = (cb: () => void) => {
-    callback.value = cb;
-  };
+    callback.value = cb
+  }
 
   const executeCallback = () => {
     if (callback.value) {
-      callback.value();
-      callback.value = null;
+      callback.value()
+      callback.value = null
     }
-  };
+  }
 
   const handleVerificationSuccessful = () => {
-    timestamp.value = new Date().getTime();
-    executeCallback();
-    closeVerifyIdentityDialog();
-  };
+    timestamp.value = new Date().getTime()
+    executeCallback()
+    closeVerifyIdentityDialog()
+  }
 
   return {
     openVerifyIdentityDialog,
@@ -54,5 +54,5 @@ export default function () {
     saveCallback,
     executeCallback,
     handleVerificationSuccessful,
-  };
+  }
 }

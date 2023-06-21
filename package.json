@@ -8,6 +8,7 @@
   "homepage": "https://www.electronjs.org",
   "main": "dist/main/index.js",
   "scripts": {
+    "format": "prettier --write .",
     "publish": "turbo package && ni"
   },
   "dependencies": {

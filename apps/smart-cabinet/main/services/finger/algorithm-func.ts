@@ -1,50 +1,43 @@
-import { existsSync } from "fs";
-import { execSync } from "child_process";
-import { Library } from "ffi-napi";
-import {
-  ALGORITHM_SDK_PATH,
-  LIBZKFINGER10_PATH,
-  VERIFY_SCORE_THRESHOLD,
-} from "utils/config";
-import { info } from "../logger";
-import { HandleType, IntType, TemplateType, UcharType } from "./types";
+import { existsSync } from 'fs'
+import { execSync } from 'child_process'
+import { Library } from 'ffi-napi'
+import { ALGORITHM_SDK_PATH, LIBZKFINGER10_PATH, VERIFY_SCORE_THRESHOLD } from 'utils/config'
+import { info } from '../logger'
+import { HandleType, IntType, TemplateType, UcharType } from './types'
 
-let algorithmSDK = null;
-const zkfingerLibPath = "/usr/lib/libzkfinger10.so";
+let algorithmSDK = null
+const zkfingerLibPath = '/usr/lib/libzkfinger10.so'
 
 // 检查 libzkfinger10.so 文件是否存在，如果不存在则复制文件
 export function checkFileExist() {
   if (!existsSync(zkfingerLibPath)) {
     // 文件不存在，复制文件
     try {
-      execSync(`sudo cp ${LIBZKFINGER10_PATH} ${zkfingerLibPath}`);
-      info("SDK 文件复制成功");
+      execSync(`sudo cp ${LIBZKFINGER10_PATH} ${zkfingerLibPath}`)
+      info('SDK 文件复制成功')
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
   } else {
-    info("SDK 文件已存在目标文件夹内，跳过复制");
+    info('SDK 文件已存在目标文件夹内，跳过复制')
   }
 }
 
 // 通过 ffi 解析 C++ SDK 方法
 export function initAlgorithmSDK() {
   algorithmSDK = Library(ALGORITHM_SDK_PATH, {
-    BIOKEY_INIT_SIMPLE: [HandleType, ["int", "int", "int", "int"]], // 初始化算法
-    BIOKEY_CLOSE: ["int", [HandleType]], // 释放算法
-    BIOKEY_EXTRACT_GRAYSCALEDATA: [
-      "int",
-      [HandleType, UcharType, "int", "int", UcharType, "int", "int"],
-    ], // 提取模版
-    BIOKEY_IDENTIFYTEMP: ["int", [HandleType, UcharType, IntType, IntType]], // 1:N 识别
-    BIOKEY_GENTEMPLATE: ["int", [HandleType, TemplateType, "int", UcharType]], // ⽣成登记特征(多个模板之中取最好)
-    BIOKEY_VERIFY: ["int", [HandleType, UcharType, UcharType]], // 对比两个模板
-    BIOKEY_DB_ADD: ["int", [HandleType, "int", "int", UcharType]], // 添加模板到1:N内存中
-  });
+    BIOKEY_INIT_SIMPLE: [HandleType, ['int', 'int', 'int', 'int']], // 初始化算法
+    BIOKEY_CLOSE: ['int', [HandleType]], // 释放算法
+    BIOKEY_EXTRACT_GRAYSCALEDATA: ['int', [HandleType, UcharType, 'int', 'int', UcharType, 'int', 'int']], // 提取模版
+    BIOKEY_IDENTIFYTEMP: ['int', [HandleType, UcharType, IntType, IntType]], // 1:N 识别
+    BIOKEY_GENTEMPLATE: ['int', [HandleType, TemplateType, 'int', UcharType]], // ⽣成登记特征(多个模板之中取最好)
+    BIOKEY_VERIFY: ['int', [HandleType, UcharType, UcharType]], // 对比两个模板
+    BIOKEY_DB_ADD: ['int', [HandleType, 'int', 'int', UcharType]], // 添加模板到1:N内存中
+  })
 }
 
 export function destroyAlgorithmSDK() {
-  algorithmSDK = null;
+  algorithmSDK = null
 }
 
 /**
@@ -54,7 +47,7 @@ export function destroyAlgorithmSDK() {
  * @return {*} 返回算法句柄
  */
 export function initAlgorithm(width: number, height: number) {
-  return algorithmSDK.BIOKEY_INIT_SIMPLE(0, width, height, 0);
+  return algorithmSDK.BIOKEY_INIT_SIMPLE(0, width, height, 0)
 }
 
 /**
@@ -63,7 +56,7 @@ export function initAlgorithm(width: number, height: number) {
  * @return {*} 1 表⽰成功,其余表⽰失败
  */
 export function closeAlgorithm(handle: unknown): number {
-  return algorithmSDK.BIOKEY_CLOSE(handle);
+  return algorithmSDK.BIOKEY_CLOSE(handle)
 }
 
 /**
@@ -75,17 +68,12 @@ export function closeAlgorithm(handle: unknown): number {
  * @return {*} >0 表⽰成功，值为最好模板的实际数据⻓度
  */
 export function generateTemplate(handle, templates, num, gTemplate) {
-  const result = algorithmSDK.BIOKEY_GENTEMPLATE(
-    handle,
-    templates,
-    num,
-    gTemplate
-  );
-  const success = result > 0;
+  const result = algorithmSDK.BIOKEY_GENTEMPLATE(handle, templates, num, gTemplate)
+  const success = result > 0
   return {
     success,
     result,
-  };
+  }
 }
 
 /**
@@ -97,10 +85,10 @@ export function generateTemplate(handle, templates, num, gTemplate) {
  */
 export function verifyTemplate(handle, template1, template2): boolean {
   // 返回分数(0~1000), 推荐阈值50
-  const result = algorithmSDK.BIOKEY_VERIFY(handle, template1, template2);
+  const result = algorithmSDK.BIOKEY_VERIFY(handle, template1, template2)
 
-  const success = result >= VERIFY_SCORE_THRESHOLD;
-  return success;
+  const success = result >= VERIFY_SCORE_THRESHOLD
+  return success
 }
 
 /**
@@ -111,13 +99,8 @@ export function verifyTemplate(handle, template1, template2): boolean {
  * @param {unknown} score 返回识别成功的分数(推荐阈值70)
  * @return {number} 成功返回1
  */
-export function identifyTemplate(
-  handle: unknown,
-  templateDate: unknown,
-  tid: unknown,
-  score: unknown
-): number {
-  return algorithmSDK.BIOKEY_IDENTIFYTEMP(handle, templateDate, tid, score);
+export function identifyTemplate(handle: unknown, templateDate: unknown, tid: unknown, score: unknown): number {
+  return algorithmSDK.BIOKEY_IDENTIFYTEMP(handle, templateDate, tid, score)
 }
 
 /**
@@ -136,17 +119,9 @@ export function extractTemplate(
   width: number,
   height: number,
   template: unknown,
-  len: number
+  len: number,
 ): number {
-  return algorithmSDK.BIOKEY_EXTRACT_GRAYSCALEDATA(
-    handle,
-    imageBuffer,
-    width,
-    height,
-    template,
-    len,
-    0
-  );
+  return algorithmSDK.BIOKEY_EXTRACT_GRAYSCALEDATA(handle, imageBuffer, width, height, template, len, 0)
 }
 
 /**
@@ -157,18 +132,8 @@ export function extractTemplate(
  * @param {unknown} templateData 指纹模板数据
  * @return {*} 返回添加结果和代码
  */
-export function addTemplateToDb(
-  handle: unknown,
-  tid: number,
-  templateLength: number,
-  templateData: unknown
-) {
-  const result = algorithmSDK.BIOKEY_DB_ADD(
-    handle,
-    tid,
-    templateLength,
-    templateData
-  );
-  const success = result === 1;
-  return { success, result };
+export function addTemplateToDb(handle: unknown, tid: number, templateLength: number, templateData: unknown) {
+  const result = algorithmSDK.BIOKEY_DB_ADD(handle, tid, templateLength, templateData)
+  const success = result === 1
+  return { success, result }
 }

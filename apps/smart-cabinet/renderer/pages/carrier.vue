@@ -1,51 +1,49 @@
 <script lang="ts" setup>
-import { useStore } from "@/store";
-import useViewCarriers from "@/hooks/useViewCarriers";
+import { useStore } from '@/store'
+import useViewCarriers from '@/hooks/useViewCarriers'
 
-const route = useRoute();
-const store = useStore();
-const { cabinetDoorList, departmentList, currentCabinetDoorId } =
-  storeToRefs(store);
-const { CarrierTable, getCarriers, data, total } = useViewCarriers();
+const route = useRoute()
+const store = useStore()
+const { cabinetDoorList, departmentList, currentCabinetDoorId } = storeToRefs(store)
+const { CarrierTable, getCarriers, data, total } = useViewCarriers()
 
 const condition = reactive<CarrierQueryProps>({
   page: 1,
   size: 7,
-  title: "",
+  title: '',
   cabinetId: undefined,
   departmentId: undefined,
   state: undefined,
-});
+})
 
 async function onPageChange(page: number) {
-  condition.page = page;
+  condition.page = page
 
-  getCarriers(condition);
+  getCarriers(condition)
 }
 
 async function handleSearch() {
-  condition.page = 1;
+  condition.page = 1
 
-  getCarriers(condition);
+  getCarriers(condition)
 }
 
 function handleInit() {
-  const state =
-    route.params.state === "null" ? undefined : Number(route.params.state);
+  const state = route.params.state === 'null' ? undefined : Number(route.params.state)
 
-  condition.page = 1;
-  condition.title = "";
-  condition.cabinetId = undefined;
-  condition.departmentId = undefined;
-  condition.state = state;
-  data.value = [];
+  condition.page = 1
+  condition.title = ''
+  condition.cabinetId = undefined
+  condition.departmentId = undefined
+  condition.state = state
+  data.value = []
 
-  getCarriers(condition);
+  getCarriers(condition)
 }
 
 onMounted(() => {
-  handleInit();
-});
+  handleInit()
+})
 </script>
 
 <template>
@@ -57,59 +55,30 @@ onMounted(() => {
         :wrapper-col="{ span: 16 }"
         label-align="left"
         class="flex-1 grid grid-rows-2 grid-cols-2 gap-x-6"
-        autocomplete="off"
-      >
+        autocomplete="off">
         <a-form-item label="载体名称" name="title">
           <a-input v-model:value="condition.title" />
         </a-form-item>
 
         <a-form-item label="在位状态" name="title">
-          <a-select
-            v-model:value="condition.state"
-            allow-clear
-            @change="handleSearch"
-          >
+          <a-select v-model:value="condition.state" allow-clear @change="handleSearch">
             <a-select-option :value="0"> 在柜 </a-select-option>
             <a-select-option :value="1"> 领用 </a-select-option>
             <a-select-option :value="2"> 错放 </a-select-option>
           </a-select>
         </a-form-item>
 
-        <a-form-item
-          v-show="currentCabinetDoorId === 0"
-          label="所属柜门"
-          name="title"
-        >
-          <a-select
-            v-model:value="condition.cabinetId"
-            allow-clear
-            @change="handleSearch"
-          >
-            <a-select-option
-              v-for="item in cabinetDoorList"
-              :key="item.cabinetId"
-              :value="item.cabinetId"
-            >
+        <a-form-item v-show="currentCabinetDoorId === 0" label="所属柜门" name="title">
+          <a-select v-model:value="condition.cabinetId" allow-clear @change="handleSearch">
+            <a-select-option v-for="item in cabinetDoorList" :key="item.cabinetId" :value="item.cabinetId">
               {{ item.viewName }}
             </a-select-option>
           </a-select>
         </a-form-item>
 
-        <a-form-item
-          v-show="currentCabinetDoorId === 0"
-          label="所属部门"
-          name="title"
-        >
-          <a-select
-            v-model:value="condition.departmentId"
-            allow-clear
-            @change="handleSearch"
-          >
-            <a-select-option
-              v-for="item in departmentList"
-              :key="item.deptId"
-              :value="item.deptId"
-            >
+        <a-form-item v-show="currentCabinetDoorId === 0" label="所属部门" name="title">
+          <a-select v-model:value="condition.departmentId" allow-clear @change="handleSearch">
+            <a-select-option v-for="item in departmentList" :key="item.deptId" :value="item.deptId">
               {{ item.deptName }}
             </a-select-option>
           </a-select>
@@ -127,7 +96,6 @@ onMounted(() => {
       :condition="{ page: condition.page, size: condition.size }"
       :operable="true"
       @on-page-change="onPageChange"
-      @on-data-change="() => getCarriers(condition)"
-    />
+      @on-data-change="() => getCarriers(condition)" />
   </div>
 </template>

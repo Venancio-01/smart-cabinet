@@ -29,7 +29,7 @@
 }
 
 .sk-chase-dot:before {
-  content: "";
+  content: '';
   display: block;
   width: 25%;
   height: 25%;

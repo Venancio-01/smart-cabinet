@@ -1,22 +1,22 @@
 <script lang="ts" setup>
-import useTime from "@/hooks/useTime";
+import useTime from '@/hooks/useTime'
 
 interface Props {
-  onBack?: (() => void) | null;
+  onBack?: (() => void) | null
 }
 
 const props = withDefaults(defineProps<Props>(), {
   onBack: null,
-});
-const router = useRouter();
-const { resetOperationTimeoutCountdown } = useTime();
+})
+const router = useRouter()
+const { resetOperationTimeoutCountdown } = useTime()
 
 function handleBack() {
   if (props.onBack) {
-    props.onBack();
+    props.onBack()
   } else {
-    resetOperationTimeoutCountdown();
-    router.go(-1);
+    resetOperationTimeoutCountdown()
+    router.go(-1)
   }
 }
 </script>

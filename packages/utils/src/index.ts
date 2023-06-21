@@ -1,7 +1,7 @@
-import os from "os";
-import dayjs from "dayjs";
-import { BrowserWindow, globalShortcut } from "electron";
-import type { PaginationType } from "../types";
+import os from 'os'
+import dayjs from 'dayjs'
+import { BrowserWindow, globalShortcut } from 'electron'
+import type { PaginationType } from '../types'
 
 /**
  * @description: 生成 ipc 通信的返回数据结构
@@ -13,7 +13,7 @@ export function genResponseData<T>(success: boolean, msg?: string, data?: T) {
     success,
     msg,
     data,
-  };
+  }
 }
 
 /**
@@ -21,7 +21,7 @@ export function genResponseData<T>(success: boolean, msg?: string, data?: T) {
  * @return {*}
  */
 export function generateCurrentTime() {
-  return dayjs().format("YYYY-MM-DD HH:mm:ss");
+  return dayjs().format('YYYY-MM-DD HH:mm:ss')
 }
 
 /**
@@ -32,9 +32,8 @@ export function generateCurrentTime() {
  */
 export function sendIpcToRenderer(channel: string, ...args: any[]) {
   BrowserWindow.getAllWindows().forEach((wnd) => {
-    if (wnd.webContents && !wnd.webContents.isDestroyed())
-      wnd.webContents.send(channel, ...args);
-  });
+    if (wnd.webContents && !wnd.webContents.isDestroyed()) wnd.webContents.send(channel, ...args)
+  })
 }
 
 /**
@@ -43,13 +42,13 @@ export function sendIpcToRenderer(channel: string, ...args: any[]) {
  * @return {*}
  */
 export function getSkipAndTake(condition?: Partial<PaginationType>): {
-  skip?: number;
-  take?: number;
+  skip?: number
+  take?: number
 } {
-  if (!condition || !condition.page || !condition.size) return {};
+  if (!condition || !condition.page || !condition.size) return {}
 
-  const { page, size } = condition;
-  return { skip: (page - 1) * size, take: size };
+  const { page, size } = condition
+  return { skip: (page - 1) * size, take: size }
 }
 
 /**
@@ -57,20 +56,19 @@ export function getSkipAndTake(condition?: Partial<PaginationType>): {
  * @return {*}
  */
 export function disableShortcuts() {
-  globalShortcut.registerAll(["CommandOrControl+R", "F11"], () => {
-    return false;
-  });
+  globalShortcut.registerAll(['CommandOrControl+R', 'F11'], () => {
+    return false
+  })
 }
 
 // 获取本机 ip 地址
 export function getLocalIpAddress(): string[] {
-  const interfaces = os.networkInterfaces();
-  const addresses: string[] = [];
+  const interfaces = os.networkInterfaces()
+  const addresses: string[] = []
   for (const name of Object.keys(interfaces)) {
     for (const iface of interfaces[name] ?? []) {
-      if (iface.family === "IPv4" && !iface.internal)
-        addresses.push(iface.address);
+      if (iface.family === 'IPv4' && !iface.internal) addresses.push(iface.address)
     }
   }
-  return addresses;
+  return addresses
 }

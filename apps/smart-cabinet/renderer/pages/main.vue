@@ -1,99 +1,77 @@
 <script lang="ts" setup>
-import type { Key } from "ant-design-vue/lib/_util/type";
-import useTime from "@/hooks/useTime";
-import usePermission from "@/hooks/usePermission";
-import { useStore } from "@/store";
+import type { Key } from 'ant-design-vue/lib/_util/type'
+import useTime from '@/hooks/useTime'
+import usePermission from '@/hooks/usePermission'
+import { useStore } from '@/store'
 
-const router = useRouter();
-const route = useRoute();
-const store = useStore();
-const { isLoggedIn } = storeToRefs(store);
-const { resetOperationTimeoutCountdown, operationTimeout } = useTime();
-const { hasPermission } = usePermission();
-const activeKey = ref("1");
-const visible = ref(false);
+const router = useRouter()
+const route = useRoute()
+const store = useStore()
+const { isLoggedIn } = storeToRefs(store)
+const { resetOperationTimeoutCountdown, operationTimeout } = useTime()
+const { hasPermission } = usePermission()
+const activeKey = ref('1')
+const visible = ref(false)
 
 const pathMap: {
   [k in Key]: {
-    path: string;
-    name: string;
-  };
+    path: string
+    name: string
+  }
 } = {
   1: {
-    path: "/main/cabinet-door",
-    name: "cabinetDoor",
+    path: '/main/cabinet-door',
+    name: 'cabinetDoor',
   },
   2: {
-    path: "/main/carrier/null",
-    name: "carrier",
+    path: '/main/carrier/null',
+    name: 'carrier',
   },
   3: {
-    path: "/main/user",
-    name: "user",
+    path: '/main/user',
+    name: 'user',
   },
   4: {
-    path: "/main/department",
-    name: "department",
+    path: '/main/department',
+    name: 'department',
   },
   5: {
-    path: "/main/permission",
-    name: "permission",
+    path: '/main/permission',
+    name: 'permission',
   },
-};
+}
 
 function handleTabChange(key: Key) {
-  resetOperationTimeoutCountdown();
-  router.push(pathMap[key].path);
+  resetOperationTimeoutCountdown()
+  router.push(pathMap[key].path)
 }
 
 watch(route, () => {
-  const key = Object.keys(pathMap).find(
-    (key) => route.name === pathMap[key].name
-  );
-  if (key) activeKey.value = key;
-});
+  const key = Object.keys(pathMap).find((key) => route.name === pathMap[key].name)
+  if (key) activeKey.value = key
+})
 </script>
 
 <template>
   <div class="w-full h-full flex flex-col">
-    <TheMenuDrawer
-      v-model:visible="visible"
-      @change="() => resetOperationTimeoutCountdown()"
-    />
+    <TheMenuDrawer v-model:visible="visible" @change="() => resetOperationTimeoutCountdown()" />
 
     <!-- 头部 -->
     <div v-if="isLoggedIn" class="flex items-center justify-between mb-4">
       <a-tabs :active-key="activeKey" @change="handleTabChange">
-        <a-tab-pane
-          v-if="hasPermission('borrow_return')"
-          key="1"
-          tab="柜门信息"
-        />
-        <a-tab-pane
-          v-if="hasPermission('view_carrier')"
-          key="2"
-          tab="载体管理"
-        />
+        <a-tab-pane v-if="hasPermission('borrow_return')" key="1" tab="柜门信息" />
+        <a-tab-pane v-if="hasPermission('view_carrier')" key="2" tab="载体管理" />
         <a-tab-pane v-if="hasPermission('view_user')" key="3" tab="用户管理" />
         <a-tab-pane v-if="hasPermission('view_dept')" key="4" tab="机构管理" />
       </a-tabs>
 
       <div class="relative flex justify-end items-center min-w-[200px]">
-        <div
-          class="absolute top-1/2 -translate-y-1/2 left-0 w-[140px] h-[30px] leading-[30px] text-light flex items-center mr-12"
-        >
-          <span class="font-large mr-2 font-['Barlow'] -mt-[3px]">{{
-            operationTimeout
-          }}</span>
+        <div class="absolute top-1/2 -translate-y-1/2 left-0 w-[140px] h-[30px] leading-[30px] text-light flex items-center mr-12">
+          <span class="font-large mr-2 font-['Barlow'] -mt-[3px]">{{ operationTimeout }}</span>
           <span>秒后自动退出</span>
         </div>
 
-        <BaseIcon
-          v-show="!visible"
-          icon="menu"
-          class="icon-button"
-          @click="visible = true"
-        />
+        <BaseIcon v-show="!visible" icon="menu" class="icon-button" @click="visible = true" />
       </div>
     </div>
 

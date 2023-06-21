@@ -1,10 +1,10 @@
-import { Library } from "ffi-napi";
-import ref from "ref-napi";
-import ArrayType from "ref-array-di";
-import { CRC_SDK_PATH } from "utils/config/main";
+import { Library } from 'ffi-napi'
+import ref from 'ref-napi'
+import ArrayType from 'ref-array-di'
+import { CRC_SDK_PATH } from 'utils/config/main'
 
-const CArray = ArrayType(ref);
-const UcharType = CArray(ref.types.uchar);
+const CArray = ArrayType(ref)
+const UcharType = CArray(ref.types.uchar)
 
 /**
  * @description: 生成 RFID 命令
@@ -12,10 +12,10 @@ const UcharType = CArray(ref.types.uchar);
  * @return {*}
  */
 export function generateCommand(command: string) {
-  const FH = "5A";
-  const body = command;
-  const checkCode = generateCRC16Code(body).padStart(4, "0");
-  return Buffer.from(FH + body + checkCode, "hex");
+  const FH = '5A'
+  const body = command
+  const checkCode = generateCRC16Code(body).padStart(4, '0')
+  return Buffer.from(FH + body + checkCode, 'hex')
 }
 
 /**
@@ -24,11 +24,11 @@ export function generateCommand(command: string) {
  * @return {*}
  */
 export function generateBinaryString(numbers: number[]) {
-  const binaryArray = Array.from({ length: 32 }, () => "0");
+  const binaryArray = Array.from({ length: 32 }, () => '0')
 
-  for (const num of numbers) binaryArray[num - 1] = "1";
+  for (const num of numbers) binaryArray[num - 1] = '1'
 
-  return binaryArray.reverse().join("");
+  return binaryArray.reverse().join('')
 }
 
 /**
@@ -37,8 +37,8 @@ export function generateBinaryString(numbers: number[]) {
  * @return {*}
  */
 export function binaryToHex(binary: string): string {
-  const hex = parseInt(binary, 2).toString(16).toUpperCase();
-  return hex.padStart(8, "0");
+  const hex = parseInt(binary, 2).toString(16).toUpperCase()
+  return hex.padStart(8, '0')
 }
 
 /**
@@ -48,10 +48,10 @@ export function binaryToHex(binary: string): string {
  */
 export function generateCRC16Code(str: string) {
   const crcSDK = Library(CRC_SDK_PATH, {
-    CRC16_CCITT: ["int", [UcharType, "int"]],
-  });
-  const buffer = Buffer.from(str, "hex");
-  return crcSDK.CRC16_CCITT(buffer, buffer.length).toString(16);
+    CRC16_CCITT: ['int', [UcharType, 'int']],
+  })
+  const buffer = Buffer.from(str, 'hex')
+  return crcSDK.CRC16_CCITT(buffer, buffer.length).toString(16)
 }
 
 /**
@@ -60,7 +60,7 @@ export function generateCRC16Code(str: string) {
  * @returns 命令字符串
  */
 export function generateAntennaCommand(antennaIds: number[]) {
-  const binary = generateBinaryString(antennaIds);
-  const command = binaryToHex(binary);
-  return command;
+  const binary = generateBinaryString(antennaIds)
+  const command = binaryToHex(binary)
+  return command
 }

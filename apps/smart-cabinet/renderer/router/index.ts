@@ -1,74 +1,74 @@
-import type { RouteRecordRaw } from "vue-router";
-import { createRouter, createWebHashHistory } from "vue-router";
-import Index from "@/pages/index.vue";
-import Login from "@/pages/login.vue";
-import Main from "@/pages/main.vue";
-import CabinetDoor from "@/pages/cabinet-door.vue";
-import ViewCarrier from "@/pages/view-carrier.vue";
-import Carrier from "@/pages/carrier.vue";
-import User from "@/pages/user.vue";
-import Department from "@/pages/department.vue";
-import Permission from "@/pages/permission.vue";
+import type { RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
+import Index from '@/pages/index.vue'
+import Login from '@/pages/login.vue'
+import Main from '@/pages/main.vue'
+import CabinetDoor from '@/pages/cabinet-door.vue'
+import ViewCarrier from '@/pages/view-carrier.vue'
+import Carrier from '@/pages/carrier.vue'
+import User from '@/pages/user.vue'
+import Department from '@/pages/department.vue'
+import Permission from '@/pages/permission.vue'
 
 const routes: RouteRecordRaw[] = [
-  { path: "/", redirect: "/index" },
+  { path: '/', redirect: '/index' },
   {
-    path: "/index",
+    path: '/index',
     component: Index,
   },
   {
-    path: "/login",
+    path: '/login',
     component: Login,
   },
   {
-    path: "/main",
+    path: '/main',
     component: Main,
-    redirect: "/main/cabinet-door",
+    redirect: '/main/cabinet-door',
     children: [
       {
-        path: "cabinet-door",
-        name: "cabinetDoor",
+        path: 'cabinet-door',
+        name: 'cabinetDoor',
         component: CabinetDoor,
       },
       {
-        path: "carrier/:state",
+        path: 'carrier/:state',
         component: Carrier,
         props: true,
-        name: "carrier",
+        name: 'carrier',
       },
       {
-        path: "user",
+        path: 'user',
         component: User,
-        name: "user",
+        name: 'user',
       },
       {
-        path: "department",
+        path: 'department',
         component: Department,
-        name: "department",
+        name: 'department',
       },
       {
-        path: "permission",
+        path: 'permission',
         component: Permission,
-        name: "permission",
+        name: 'permission',
       },
     ],
   },
   {
-    path: "/view-carrier/:state",
+    path: '/view-carrier/:state',
     component: ViewCarrier,
     props: true,
   },
   {
-    path: "/open/:id",
-    component: () => import("@/pages/open.vue"),
+    path: '/open/:id',
+    component: () => import('@/pages/open.vue'),
     props: true,
   },
-  { path: "/result", component: () => import("@/pages/result.vue") },
-];
+  { path: '/result', component: () => import('@/pages/result.vue') },
+]
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
-});
+})
 
-export default router;
+export default router

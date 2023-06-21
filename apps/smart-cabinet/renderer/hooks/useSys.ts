@@ -1,68 +1,60 @@
-import { useStore } from "@/store";
-import BgImg from "@/public/background/index.png";
+import { useStore } from '@/store'
+import BgImg from '@/public/background/index.png'
 
 export default function () {
-  const store = useStore();
-  const {
-    setDepartmentList,
-    setUserList,
-    setRoleList,
-    setUserRoleList,
-    setBackgroundUrl,
-  } = store;
+  const store = useStore()
+  const { setDepartmentList, setUserList, setRoleList, setUserRoleList, setBackgroundUrl } = store
 
   const getUserData = async (userId: number) => {
-    const data = await window.JSBridge.sys.getUserData(userId);
-    return data;
-  };
+    const data = await window.JSBridge.sys.getUserData(userId)
+    return data
+  }
 
   const getUserList = async () => {
-    const list = await window.JSBridge.sys.getUsers();
-    setUserList(list);
-    return list;
-  };
+    const list = await window.JSBridge.sys.getUsers()
+    setUserList(list)
+    return list
+  }
 
   const getUsersByCondition = async (params: UserQueryProps) => {
-    const list = await window.JSBridge.sys.getUsersByCondition({ ...params });
-    return list;
-  };
+    const list = await window.JSBridge.sys.getUsersByCondition({ ...params })
+    return list
+  }
 
   const getDepartmentList = async () => {
-    const departments = await window.JSBridge.sys.getDepartments();
-    setDepartmentList(departments);
-    return departments;
-  };
+    const departments = await window.JSBridge.sys.getDepartments()
+    setDepartmentList(departments)
+    return departments
+  }
 
   const getDepartmentsByCondition = async (params: UserQueryProps) => {
     const list = await window.JSBridge.sys.getDepartments({
       ...params,
-    });
-    return list;
-  };
+    })
+    return list
+  }
 
   const getRoleList = async () => {
-    const roleList = await window.JSBridge.sys.getRoleList();
-    setRoleList(roleList);
-  };
+    const roleList = await window.JSBridge.sys.getRoleList()
+    setRoleList(roleList)
+  }
 
   const getUserRoleList = async () => {
-    const roleList = await window.JSBridge.sys.getUserRoleList();
-    setUserRoleList(roleList);
-  };
+    const roleList = await window.JSBridge.sys.getUserRoleList()
+    setUserRoleList(roleList)
+  }
 
   const getBackgroundImage = async () => {
-    const path = import.meta.env.DEV
-      ? BgImg
-      : await window.JSBridge.sys.getProductionBgImagePath();
-    setBackgroundUrl(path);
-  };
+    const path = import.meta.env.DEV ? BgImg : await window.JSBridge.sys.getProductionBgImagePath()
+    setBackgroundUrl(path)
+  }
 
   const init = async () => {
-    getUserList();
-    getDepartmentList();
-    getRoleList();
-    getUserRoleList();
-  };
+    getUserList()
+    getDepartmentList()
+    getRoleList()
+    getUserRoleList()
+  }
 
   return {
     init,
@@ -72,5 +64,5 @@ export default function () {
     getDepartmentList,
     getDepartmentsByCondition,
     getBackgroundImage,
-  };
+  }
 }

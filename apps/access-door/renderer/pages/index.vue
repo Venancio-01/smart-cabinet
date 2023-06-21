@@ -1,22 +1,21 @@
 <script lang="ts" setup>
-import { SYSTEM_NAME } from "utils/config/main";
-import { useStore } from "@/store";
-import { currentTime } from "@/features/time";
-import { fetchUnviewedAccessRecordCount } from "@/features/door";
+import { SYSTEM_NAME } from 'utils/config/main'
+import { useStore } from '@/store'
+import { currentTime } from '@/features/time'
+import { fetchUnviewedAccessRecordCount } from '@/features/door'
 
-import DeviceStatus from "@/components/DeviceStatus.vue";
+import DeviceStatus from '@/components/DeviceStatus.vue'
 
-const store = useStore();
-const { currentAccessDoorDevice } = storeToRefs(store);
+const store = useStore()
+const { currentAccessDoorDevice } = storeToRefs(store)
 
-const deviceName = computed(() => currentAccessDoorDevice.value?.equipmentName);
+const deviceName = computed(() => currentAccessDoorDevice.value?.equipmentName)
 
-const titleClass =
-  "text-center select-none font-thin tracking-[10px] text-light";
+const titleClass = 'text-center select-none font-thin tracking-[10px] text-light'
 
 onMounted(() => {
-  fetchUnviewedAccessRecordCount();
-});
+  fetchUnviewedAccessRecordCount()
+})
 </script>
 
 <template>

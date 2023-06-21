@@ -1,69 +1,56 @@
-import type { DoorAccessRecords, DoorEquipment } from "database";
-import { sendIpcToRenderer } from "utils";
-import { INTERVAL_THRESHOLD } from "utils/config/main";
-import {
-  addAccessRecord,
-  fetchRegistrationRecords,
-  getCurrentAccessDoorDevice,
-  updateAccessRecord,
-} from "../access-door";
-import { generateAntennaCommand } from "./utils";
-import {
-  generateCheckConnectionStatusCommand,
-  generateSetGPOCommand,
-  generteSetGPITriggerCommand,
-} from "./command";
-import type { Message } from "./message";
-import { MessageQueue } from "./message";
-import { getInDatabaseCarrier, handleAddReadRecords } from "./data";
-import Socket from "@/services/rfid/socket";
+import type { DoorAccessRecords, DoorEquipment } from 'database'
+import { sendIpcToRenderer } from 'utils'
+import { INTERVAL_THRESHOLD } from 'utils/config/main'
+import { addAccessRecord, fetchRegistrationRecords, getCurrentAccessDoorDevice, updateAccessRecord } from '../access-door'
+import { generateAntennaCommand } from './utils'
+import { generateCheckConnectionStatusCommand, generateSetGPOCommand, generteSetGPITriggerCommand } from './command'
+import type { Message } from './message'
+import { MessageQueue } from './message'
+import { getInDatabaseCarrier, handleAddReadRecords } from './data'
+import Socket from '@/services/rfid/socket'
 
 type InstanceType = {
-  socket: Socket;
-  messageQueue: MessageQueue;
-} | null;
+  socket: Socket
+  messageQueue: MessageQueue
+} | null
 
-let instance: InstanceType = null;
+let instance: InstanceType = null
 
 /**
  * @description: 连接 RFID Socket
  * @return {*}
  */
 export async function handleConnect() {
-  if (instance !== null) return;
+  if (instance !== null) return
 
-  const device = await getCurrentAccessDoorDevice();
-  if (device === null) return;
+  const device = await getCurrentAccessDoorDevice()
+  if (device === null) return
 
-  const {
-    equipment_addr: address,
-    equipment_port: port,
-    equipment_txid: txid,
-  } = device;
-  if (address === null || port === null || txid === null) return;
+  const { equipment_addr: address, equipment_port: port, equipment_txid: txid } = device
+  if (address === null || port === null || txid === null) return
 
-  const messageQueue = new MessageQueue();
+  const messageQueue = new MessageQueue()
   const socket = new Socket({
     address,
     port: Number(port),
     message: messageQueue,
-  });
+  })
 
   instance = {
     messageQueue,
     socket,
-  };
+  }
 
   // 连接 RFID Socket
-  await socket.connect();
+  await socket.connect()
   // 注册心跳检测
-  registerHeartbeatCheck();
+  registerHeartbeatCheck()
   // 设置 GPI1 触发
-  handleSetGPITrigger(0, txid);
+  handleSetGPITrigger(0, txid)
   // 设置 GPI2 触发
-  handleSetGPITrigger(1, txid);
+  handleSetGPITrigger(1, txid)
   // 注册消息监听器
-  registerMessageListerner(device, messageQueue);
+  registerMessageListerner(device, messageQueue)
 }
 
 /**
@@ -71,10 +58,10 @@ export async function handleConnect() {
  * @return {*}
  */
 export async function handleDisConnect() {
-  if (instance === null) return;
+  if (instance === null) return
 
-  instance.socket.destroy();
-  instance = null;
+  instance.socket.destroy()
+  instance = null
 }
 
 /**
@@ -85,14 +72,14 @@ export async function handleDisConnect() {
  */
 function registerHeartbeatCheck() {
   setInterval(() => {
-    if (instance === null) return;
+    if (instance === null) return
 
-    const count = instance.socket.heartbeatCount || 0;
-    const command = generateCheckConnectionStatusCommand(count);
-    instance.socket.write(command);
+    const count = instance.socket.heartbeatCount || 0
+    const command = generateCheckConnectionStatusCommand(count)
+    instance.socket.write(command)
 
-    instance.socket.heartbeatCount++;
-  }, 5 * 1000);
+    instance.socket.heartbeatCount++
+  }, 5 * 1000)
 }
 
 /**
@@ -102,11 +89,11 @@ function registerHeartbeatCheck() {
  * @return {*}
  */
 export function handleSetGPO(GPOIndex: GPOIndexType, status: boolean) {
-  if (!instance) return;
+  if (!instance) return
 
-  const command = generateSetGPOCommand(GPOIndex, status);
+  const command = generateSetGPOCommand(GPOIndex, status)
 
-  instance.socket.write(command);
+  instance.socket.write(command)
 }
 
 /**
@@ -116,15 +103,13 @@ export function handleSetGPO(GPOIndex: GPOIndexType, status: boolean) {
  * @return {*}
  */
 function handleSetGPITrigger(GPIIndex: GPIIndexType, antennaIds: string) {
-  if (!instance) return;
+  if (!instance) return
 
-  const antennaIdList = antennaIds.split(",").map((item) => Number(item));
-  const triggerCommand = `000102100008${generateAntennaCommand(
-    antennaIdList
-  )}01020006`;
-  const command = generteSetGPITriggerCommand(GPIIndex, triggerCommand);
+  const antennaIdList = antennaIds.split(',').map((item) => Number(item))
+  const triggerCommand = `000102100008${generateAntennaCommand(antennaIdList)}01020006`
+  const command = generteSetGPITriggerCommand(GPIIndex, triggerCommand)
 
-  instance.socket.write(command);
+  instance.socket.write(command)
 }
 
 /**
@@ -134,43 +119,40 @@ function handleSetGPITrigger(GPIIndex: GPIIndexType, antennaIds: string) {
  * @return {*}
  */
 
-let GPI1Start: Message | null = null;
-let GPI2Start: Message | null = null;
-let GPIEnd: Message | null = null;
-let isEntry = false;
-let isExit = false;
-let currentAccessRecord: DoorAccessRecords | null = null;
+let GPI1Start: Message | null = null
+let GPI2Start: Message | null = null
+let GPIEnd: Message | null = null
+let isEntry = false
+let isExit = false
+let currentAccessRecord: DoorAccessRecords | null = null
 
-export async function registerMessageListerner(
-  equipment: DoorEquipment,
-  message: MessageQueue
-) {
-  message.on<[Message]>("push", async (msg) => {
+export async function registerMessageListerner(equipment: DoorEquipment, message: MessageQueue) {
+  message.on<[Message]>('push', async (msg) => {
     // 开始触发红外
-    if (msg.name === "ReceiveGPITriggerStartReport") {
+    if (msg.name === 'ReceiveGPITriggerStartReport') {
       // 如果已经触发过 GPI1 或 GPI2，则跳过
-      if (isEntry || isExit) return;
+      if (isEntry || isExit) return
 
-      const command = msg.content;
-      const isGPI1 = command.slice(14, 16) === "00";
-      const isGPI2 = command.slice(14, 16) === "01";
+      const command = msg.content
+      const isGPI1 = command.slice(14, 16) === '00'
+      const isGPI2 = command.slice(14, 16) === '01'
 
       if (isGPI1) {
-        GPI1Start = msg;
-        isExit = true;
+        GPI1Start = msg
+        isExit = true
         setTimeout(() => {
-          isExit = false;
-          currentAccessRecord = null;
-        }, INTERVAL_THRESHOLD);
+          isExit = false
+          currentAccessRecord = null
+        }, INTERVAL_THRESHOLD)
       }
 
       if (isGPI2) {
-        GPI2Start = msg;
-        isEntry = true;
+        GPI2Start = msg
+        isEntry = true
         setTimeout(() => {
-          isEntry = false;
-          currentAccessRecord = null;
-        }, INTERVAL_THRESHOLD);
+          isEntry = false
+          currentAccessRecord = null
+        }, INTERVAL_THRESHOLD)
       }
 
       const data: Partial<DoorAccessRecords> = {
@@ -181,113 +163,86 @@ export async function registerMessageListerner(
         carrier_count: 0,
         has_alarm: 0,
         is_viewed: 0,
-      };
+      }
 
-      currentAccessRecord = await addAccessRecord(data);
+      currentAccessRecord = await addAccessRecord(data)
 
-      sendIpcToRenderer("go-check-page", isEntry ? 1 : isExit ? 2 : null);
+      sendIpcToRenderer('go-check-page', isEntry ? 1 : isExit ? 2 : null)
     }
     // 触发红外结束
-    else if (msg.name === "ReceiveGPITriggerStopReport") {
-      if (!isEntry && !isExit) return;
+    else if (msg.name === 'ReceiveGPITriggerStopReport') {
+      if (!isEntry && !isExit) return
 
-      GPIEnd = msg;
+      GPIEnd = msg
 
       const recentMessages = isExit
-        ? message
-            .getMessages("ReceiveEPCReport")
-            .filter(
-              (item) => item.time > GPI1Start!.time && item.time < GPIEnd!.time
-            )
-        : message
-            .getMessages("ReceiveEPCReport")
-            .filter(
-              (item) => item.time > GPI2Start!.time && item.time < GPIEnd!.time
-            );
+        ? message.getMessages('ReceiveEPCReport').filter((item) => item.time > GPI1Start!.time && item.time < GPIEnd!.time)
+        : message.getMessages('ReceiveEPCReport').filter((item) => item.time > GPI2Start!.time && item.time < GPIEnd!.time)
 
-      const carriers = await getInDatabaseCarrier(recentMessages);
+      const carriers = await getInDatabaseCarrier(recentMessages)
 
       // 如果没有读到在库载体的 EPC 标签，则跳过
       if (carriers.length === 0) {
-        sendIpcToRenderer("get-read-data", []);
-        return;
+        sendIpcToRenderer('get-read-data', [])
+        return
       }
 
       // 如果没有出入记录数据，则跳过
-      if (currentAccessRecord === null) return;
+      if (currentAccessRecord === null) return
 
-      const registrationRecords = await fetchRegistrationRecords();
+      const registrationRecords = await fetchRegistrationRecords()
 
       // 如果是外出状态
       if (isExit) {
-        const dataList = await handleAddReadRecords(
-          carriers,
-          registrationRecords,
-          currentAccessRecord,
-          1
-        );
-        sendIpcToRenderer("get-read-data", dataList);
+        const dataList = await handleAddReadRecords(carriers, registrationRecords, currentAccessRecord, 1)
+        sendIpcToRenderer('get-read-data', dataList)
 
-        const registerRFIDList = registrationRecords.map(
-          (item) => item.docRfid
-        );
-        const hasUnregistered = carriers.some(
-          (carrier) => !registerRFIDList.includes(carrier.docRfid)
-        );
+        const registerRFIDList = registrationRecords.map((item) => item.docRfid)
+        const hasUnregistered = carriers.some((carrier) => !registerRFIDList.includes(carrier.docRfid))
 
         const updateData = {
           ...currentAccessRecord,
           carrier_count: carriers.length,
           has_alarm: hasUnregistered ? 1 : 0,
-        };
+        }
 
-        updateAccessRecord(currentAccessRecord.accessId, updateData);
+        updateAccessRecord(currentAccessRecord.accessId, updateData)
       }
 
       // 如果是进入状态
       if (isEntry) {
-        const dataList = await handleAddReadRecords(
-          carriers,
-          registrationRecords,
-          currentAccessRecord,
-          2
-        );
-        sendIpcToRenderer("get-read-data", dataList);
+        const dataList = await handleAddReadRecords(carriers, registrationRecords, currentAccessRecord, 2)
+        sendIpcToRenderer('get-read-data', dataList)
 
         const updateData = {
           ...currentAccessRecord,
           carrier_count: carriers.length,
-        };
-        updateAccessRecord(currentAccessRecord.accessId, updateData);
+        }
+        updateAccessRecord(currentAccessRecord.accessId, updateData)
       }
     }
     // 读到 EPC 标签
-    else if (msg.name === "ReceiveEPCReport") {
-      if (!isExit) return;
+    else if (msg.name === 'ReceiveEPCReport') {
+      if (!isExit) return
 
-      const [carriers, registrationRecords] = await Promise.all([
-        await getInDatabaseCarrier([msg]),
-        await fetchRegistrationRecords(),
-      ]);
-      if (carriers.length === 0 || registrationRecords.length === 0) return;
+      const [carriers, registrationRecords] = await Promise.all([await getInDatabaseCarrier([msg]), await fetchRegistrationRecords()])
+      if (carriers.length === 0 || registrationRecords.length === 0) return
 
-      const registerRFIDList = registrationRecords.map((item) => item.docRfid);
-      const hasUnregistered = carriers.some(
-        (carrier) => !registerRFIDList.includes(carrier.docRfid)
-      );
+      const registerRFIDList = registrationRecords.map((item) => item.docRfid)
+      const hasUnregistered = carriers.some((carrier) => !registerRFIDList.includes(carrier.docRfid))
 
-      if (hasUnregistered) sendIpcToRenderer("go-alarm-page");
+      if (hasUnregistered) sendIpcToRenderer('go-alarm-page')
     }
-  });
+  })
 }
 
 const rfidService = {
-  name: "rfid" as const,
+  name: 'rfid' as const,
   fns: {
     handleConnect,
     handleDisConnect,
     handleSetGPO,
   },
-};
+}
 
-export default rfidService;
+export default rfidService

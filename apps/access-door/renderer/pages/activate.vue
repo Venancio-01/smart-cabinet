@@ -1,57 +1,53 @@
 <script lang="ts" setup>
-import useListenEnter from "@/hooks/useListenEnter";
-import {
-  generateRegistrationCode,
-  generateActivationCode,
-  saveActivationCode,
-} from "@/features/encryption";
-import createAlert from "@/components/BaseAlert";
+import useListenEnter from '@/hooks/useListenEnter'
+import { generateRegistrationCode, generateActivationCode, saveActivationCode } from '@/features/encryption'
+import createAlert from '@/components/BaseAlert'
 
-const router = useRouter();
-const { addListenEnter, removeListenEnter } = useListenEnter();
+const router = useRouter()
+const { addListenEnter, removeListenEnter } = useListenEnter()
 
-const registrationCode = ref("");
-const userInputActivationCode = ref("");
+const registrationCode = ref('')
+const userInputActivationCode = ref('')
 
 async function handleActive() {
-  const activationCode = await generateActivationCode();
+  const activationCode = await generateActivationCode()
 
   if (userInputActivationCode.value === activationCode) {
-    saveActivationCode(activationCode);
+    saveActivationCode(activationCode)
 
-    createAlert("激活成功");
+    createAlert('激活成功')
 
-    router.replace("/index");
+    router.replace('/index')
   } else {
-    createAlert("激活失败");
+    createAlert('激活失败')
   }
 }
 
 // 使输入框聚焦
 
-const inputEl = ref<null | HTMLInputElement>(null);
+const inputEl = ref<null | HTMLInputElement>(null)
 
 function handleFocus() {
-  inputEl.value?.focus();
+  inputEl.value?.focus()
 }
 
-const labelWord = "请输入激活码";
+const labelWord = '请输入激活码'
 
-const labelWordArr = labelWord.split("");
+const labelWordArr = labelWord.split('')
 
 onMounted(async () => {
-  registrationCode.value = await generateRegistrationCode();
+  registrationCode.value = await generateRegistrationCode()
 
-  addListenEnter(handleActive);
+  addListenEnter(handleActive)
 
   nextTick(() => {
-    handleFocus();
-  });
-});
+    handleFocus()
+  })
+})
 
 onBeforeMount(() => {
-  removeListenEnter(true);
-});
+  removeListenEnter(true)
+})
 </script>
 
 <template>
@@ -66,27 +62,10 @@ onBeforeMount(() => {
     </div>
 
     <div class="flex-center-center">
-      <div
-        m="y-40px"
-        w="500px"
-        flex="~"
-        justify-center
-        relative
-        class="form-control"
-      >
-        <input
-          ref="inputEl"
-          v-model="userInputActivationCode"
-          type="password"
-          required
-        />
+      <div m="y-40px" w="500px" flex="~" justify-center relative class="form-control">
+        <input ref="inputEl" v-model="userInputActivationCode" type="password" required />
         <label>
-          <span
-            v-for="(item, index) in labelWordArr"
-            :key="index"
-            :style="{ transitionDelay: `${index * 20}ms` }"
-            >{{ item }}</span
-          >
+          <span v-for="(item, index) in labelWordArr" :key="index" :style="{ transitionDelay: `${index * 20}ms` }">{{ item }}</span>
         </label>
       </div>
     </div>

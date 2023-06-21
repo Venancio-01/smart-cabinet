@@ -1,12 +1,6 @@
 {
   "extends": "config/tsconfig.node.json",
-  "include": [
-    "vite.coinfig.ts",
-    "main/*",
-    "main/**/*",
-    "types/*.ts",
-    "types/*.d.ts"
-  ],
+  "include": ["vite.coinfig.ts", "main/*", "main/**/*", "types/*.ts", "types/*.d.ts"],
   "compilerOptions": {
     "target": "ES2015",
     "module": "ESNext",

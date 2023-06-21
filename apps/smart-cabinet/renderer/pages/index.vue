@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { SYSTEM_NAME } from "@/config";
-import StartButton from "@/components/StartButton.vue";
-import CarrierCountStatistics from "@/components/CarrierCountStatistics.vue";
-import DeviceStatus from "@/components/DeviceStatus.vue";
+import { SYSTEM_NAME } from '@/config'
+import StartButton from '@/components/StartButton.vue'
+import CarrierCountStatistics from '@/components/CarrierCountStatistics.vue'
+import DeviceStatus from '@/components/DeviceStatus.vue'
 
-const router = useRouter();
+const router = useRouter()
 
 function goLoginPage() {
-  router.push("/login");
+  router.push('/login')
 }
 </script>
 
@@ -15,9 +15,7 @@ function goLoginPage() {
   <div class="relative flex h-full items-center justify-center">
     <div class="w-full h-full flex flex-col">
       <!-- 系统名 -->
-      <div
-        class="text-center select-none text-[48px] leading-[48px] pt-[40px] font-thin tracking-[10px] text-white"
-      >
+      <div class="text-center select-none text-[48px] leading-[48px] pt-[40px] font-thin tracking-[10px] text-white">
         {{ SYSTEM_NAME }}
       </div>
 

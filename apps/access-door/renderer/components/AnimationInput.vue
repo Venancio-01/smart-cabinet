@@ -1,49 +1,44 @@
 <script lang="ts" setup>
 export interface Props {
-  label: string;
-  value: string;
+  label: string
+  value: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  label: "请输入",
-  value: "",
-});
-const emit = defineEmits(["update:value"]);
+  label: '请输入',
+  value: '',
+})
+const emit = defineEmits(['update:value'])
 const labelWords = computed(() => {
-  return props.label.split("");
-});
+  return props.label.split('')
+})
 
 const inputValue = computed({
   get: () => {
-    return props.value;
+    return props.value
   },
   set: (value) => {
-    emit("update:value", value);
+    emit('update:value', value)
   },
-});
+})
 
-const inputRef = ref<null | HTMLInputElement>(null);
+const inputRef = ref<null | HTMLInputElement>(null)
 function focus() {
   nextTick(() => {
-    inputRef.value?.focus();
-  });
+    inputRef.value?.focus()
+  })
 }
 
 defineExpose({
   focus,
-});
+})
 </script>
 
 <template>
   <div class="form-control">
     <input ref="inputRef" v-model="inputValue" type="password" required />
     <label>
-      <span
-        v-for="(item, index) in labelWords"
-        :key="index"
-        :style="{ transitionDelay: `${index * 20}ms` }"
-        >{{ item }}</span
-      >
+      <span v-for="(item, index) in labelWords" :key="index" :style="{ transitionDelay: `${index * 20}ms` }">{{ item }}</span>
     </label>
   </div>
 </template>

@@ -1,45 +1,53 @@
-import type { RfidCabinet, RfidCabinetdoor } from "database";
-import { getLocalIpAddress } from "utils";
-import { prisma } from "@/database";
+import type { RfidCabinet } from 'database'
+import { getLocalIpAddress } from 'utils'
+import { prisma } from 'database'
 
-let currentCabinet: RfidCabinet | null = null;
+let currentCabinet: RfidCabinet | null = null
 
 /**
- * @description: 获取当前 IP 对应的柜机信息
+ * @description: 获取本机 IP 对应的柜机信息
  * @return {*}
  */
 async function getCurrentCabinet() {
-  if (currentCabinet) return currentCabinet;
+  if (currentCabinet) return currentCabinet
 
-  const devices = await getCabinetData();
-  const ipList = getLocalIpAddress();
+  const devices = await getCabinetData()
+  const ipList = getLocalIpAddress()
 
-  currentCabinet =
-    devices.find((item) => item.cabAddr && ipList.includes(item.cabAddr)) ||
-    null;
+  currentCabinet = devices.find((item) => item.cabAddr && ipList.includes(item.cabAddr)) || null
 
-  return currentCabinet;
+  return currentCabinet
 }
 
-function getCabinetData(): Promise<RfidCabinet[]> {
-  return prisma.rfidCabinet.findMany();
+/**
+ * @description: 获取所有柜机信息
+ * @return {*}
+ */
+function getCabinetData() {
+  return prisma.rfidCabinet.findMany()
 }
 
-function getCabinetDoors(): Promise<RfidCabinetdoor[]> {
+/**
+ * @description: 获取当前柜机所属的柜门信息
+ * @return {*}
+ */
+function getCabinetDoors() {
   return prisma.rfidCabinetdoor.findMany({
     where: {
-      cabinetId: currentCabinet.id,
+      cabinetId: currentCabinet?.id,
     },
-  });
+  })
 }
 
 const cabinetService = {
-  name: "cabinet" as const,
+  name: 'cabinet' as const,
   fns: {
     getCabinetData,
     getCabinetDoors,
     getCurrentCabinet,
   },
-};
+}
 
-export default cabinetService;
+export default cabinetService
+
+export { currentCabinet }

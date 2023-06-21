@@ -4,11 +4,11 @@ const props = defineProps({
     type: String,
     required: true,
   },
-});
-const prefix = "#icon-";
+})
+const prefix = '#icon-'
 const iconClassName = computed(() => {
-  return prefix + props.icon;
-});
+  return prefix + props.icon
+})
 </script>
 
 <template>

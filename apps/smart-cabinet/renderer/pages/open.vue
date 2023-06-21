@@ -1,34 +1,34 @@
 <script lang="ts" setup>
-import BackButton from "../components/BackButton.vue";
-import { useStore } from "@/store";
-import useViewCarriers from "@/hooks/useViewCarriers";
+import BackButton from '../components/BackButton.vue'
+import { useStore } from '@/store'
+import useViewCarriers from '@/hooks/useViewCarriers'
 
 interface Props {
-  id: string;
+  id: string
 }
 
-const props = defineProps<Props>();
+const props = defineProps<Props>()
 
-const store = useStore();
-const { isLockControlConnected } = storeToRefs(store);
-const { CarrierTable, getCarriers, data, total } = useViewCarriers();
+const store = useStore()
+const { isLockControlConnected } = storeToRefs(store)
+const { CarrierTable, getCarriers, data, total } = useViewCarriers()
 
 const condition = reactive<CarrierQueryProps>({
   page: 1,
   size: 5,
-  title: "",
+  title: '',
   cabinetId: Number(props.id),
-});
+})
 
 async function handlePageChange(page: number) {
-  condition.page = page;
+  condition.page = page
 
-  getCarriers(condition);
+  getCarriers(condition)
 }
 
 onMounted(() => {
-  getCarriers(condition);
-});
+  getCarriers(condition)
+})
 </script>
 
 <template>
@@ -36,10 +36,7 @@ onMounted(() => {
     <BackButton />
 
     <div class="h-[200px] font-2xl flex-center-center">
-      <div
-        v-if="isLockControlConnected"
-        class="text-light font-400 h-full flex-center-center"
-      >
+      <div v-if="isLockControlConnected" class="text-light font-400 h-full flex-center-center">
         <BaseIcon icon="chenggong" class="mr-4" />
         <span>柜门已打开</span>
       </div>
@@ -53,7 +50,6 @@ onMounted(() => {
       :data="data"
       :total="total"
       :condition="{ page: condition.page, size: condition.size }"
-      @on-page-change="handlePageChange"
-    />
+      @on-page-change="handlePageChange" />
   </div>
 </template>

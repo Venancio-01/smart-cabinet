@@ -1,29 +1,29 @@
 <script lang="ts" setup>
-import useListenEnter from "@/hooks/useListenEnter";
+import useListenEnter from '@/hooks/useListenEnter'
 
-const emits = defineEmits(["complete"]);
-const { addListenEnter, removeListenEnter } = useListenEnter();
+const emits = defineEmits(['complete'])
+const { addListenEnter, removeListenEnter } = useListenEnter()
 
-const cardNumber = ref("");
+const cardNumber = ref('')
 async function handleCardLogin() {
-  emits("complete", cardNumber.value);
+  emits('complete', cardNumber.value)
 }
 
 onMounted(() => {
-  addListenEnter(handleCardLogin);
+  addListenEnter(handleCardLogin)
   nextTick(() => {
-    handleFocus();
-  });
-});
+    handleFocus()
+  })
+})
 
 onBeforeUnmount(() => {
-  removeListenEnter(true);
-});
+  removeListenEnter(true)
+})
 
 // 使输入框聚焦
-const cardNumberInput = ref<null | HTMLInputElement>(null);
+const cardNumberInput = ref<null | HTMLInputElement>(null)
 function handleFocus() {
-  cardNumberInput.value?.focus();
+  cardNumberInput.value?.focus()
 }
 </script>
 
@@ -33,12 +33,7 @@ function handleFocus() {
       <BaseIcon icon="card" class="icon-large text-white" />
     </div>
     <div class="flex justify-center items-center">
-      <AnimationInput
-        ref="cardNumberInput"
-        v-model:value="cardNumber"
-        class="w-[500px] mt-[10px]"
-        label="请刷卡登录"
-      />
+      <AnimationInput ref="cardNumberInput" v-model:value="cardNumber" class="w-[500px] mt-[10px]" label="请刷卡登录" />
     </div>
   </div>
 </template>

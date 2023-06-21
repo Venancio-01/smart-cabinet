@@ -1,15 +1,15 @@
-import { machineId } from "node-machine-id";
-import CryptoJS from "crypto-js";
+import { machineId } from 'node-machine-id'
+import CryptoJS from 'crypto-js'
 
-const key = "liqingshan_hjrich";
+const key = 'liqingshan_hjrich'
 
 /**
  * 获取机器ID
  * @returns Promise<string>
  */
 async function getDeskId(): Promise<string> {
-  const id = await machineId();
-  return id;
+  const id = await machineId()
+  return id
 }
 
 /**
@@ -18,19 +18,19 @@ async function getDeskId(): Promise<string> {
  * @returns string
  */
 function encrypt(data: string): string {
-  const encrypted = CryptoJS.HmacMD5(data, key).toString();
-  return encrypted;
+  const encrypted = CryptoJS.HmacMD5(data, key).toString()
+  return encrypted
 }
 
 /**
  * 加密服务
  */
 const encryptionService = {
-  name: "encryption" as const,
+  name: 'encryption' as const,
   fns: {
     getDeskId,
     encrypt,
   },
-};
+}
 
-export default encryptionService;
+export default encryptionService

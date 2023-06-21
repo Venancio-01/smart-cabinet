@@ -1,13 +1,13 @@
-import { ipcMain } from "electron";
-import rfidService from "./rfid";
-import sysService from "./sys";
-import cabinetService from "./cabinet";
-import carrierService from "./carrier";
-import networkService from "./network";
-import storeService from "./store";
-import encryptionService from "./encryption";
-import logService from "./log";
-import accessDoorService from "./access-door";
+import { ipcMain } from 'electron'
+import rfidService from './rfid'
+import sysService from './sys'
+import cabinetService from './cabinet'
+import carrierService from './carrier'
+import networkService from './network'
+import storeService from './store'
+import encryptionService from './encryption'
+import logService from './log'
+import accessDoorService from './access-door'
 
 export const services = [
   rfidService,
@@ -19,22 +19,20 @@ export const services = [
   encryptionService,
   logService,
   accessDoorService,
-];
+]
 
-export type ServiceType = typeof services;
+export type ServiceType = typeof services
 
 // 生成通道名称
 export function makeChannelName(name, fnName) {
-  return `${name}.${fnName}`;
+  return `${name}.${fnName}`
 }
 
 // 注册服务
 export function registerServices() {
   services.forEach((service) => {
     Object.entries(service.fns).forEach(([apiName, apiFn]) => {
-      ipcMain.handle(makeChannelName(service.name, apiName), (_, ...args) =>
-        apiFn(...args)
-      );
-    });
-  });
+      ipcMain.handle(makeChannelName(service.name, apiName), (_, ...args) => apiFn(...args))
+    })
+  })
 }

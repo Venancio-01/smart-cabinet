@@ -1,33 +1,29 @@
 <script lang="ts" setup>
 interface Props {
-  index: number;
-  name: string;
-  inPlaceNumber: number;
-  misPlaceNumber: number;
-  totalNumber: number;
-  departmentName: string;
+  index: number
+  name: string
+  inPlaceNumber: number
+  misPlaceNumber: number
+  totalNumber: number
+  departmentName: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   index: 0,
-  name: "柜门",
+  name: '柜门',
   inPlaceNumber: 0,
   misPlaceNumber: 0,
   totalNumber: 0,
-  departmentName: "",
-});
+  departmentName: '',
+})
 
-const hasMisPlace = computed(() => props.misPlaceNumber > 0);
+const hasMisPlace = computed(() => props.misPlaceNumber > 0)
 </script>
 
 <template>
   <div class="rounded-md bg-white bg-opacity-20 p-4 text-light">
     <div class="flex justify-between">
-      <BaseIcon
-        icon="door"
-        class="text-4xl"
-        :class="[hasMisPlace ? 'text-error' : 'text-white']"
-      />
+      <BaseIcon icon="door" class="text-4xl" :class="[hasMisPlace ? 'text-error' : 'text-white']" />
       <div class="text-sm">
         {{ departmentName }}
       </div>
