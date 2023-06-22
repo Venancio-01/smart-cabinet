@@ -1,7 +1,7 @@
 import { BrowserWindow, app } from 'electron'
 import dotenv from 'dotenv'
 import { connectDatabase } from 'database'
-import { disableShortcuts } from 'utils'
+import { disableShortcuts } from 'utils/electron'
 import { EVN_FILE_PATH } from 'utils/config'
 import { handleExitUpdateService } from './services/update'
 import { installService } from '@/services'

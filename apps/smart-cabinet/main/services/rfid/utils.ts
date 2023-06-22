@@ -9,7 +9,7 @@ export function parseRFIDReportData(data: string): string[] {
 
   const parseArr = arr.reduce((acc, cur) => {
     if (cur.startsWith('00')) {
-      const length = parseInt(`0x${cur.substring(0, 4)}`, 16) * 2
+      const length = Number.parseInt(`0x${cur.substring(0, 4)}`, 16) * 2
       acc.push(`${PREFIX}${cur.substring(0, 4 + length)}`)
     }
 
@@ -32,9 +32,10 @@ export function getTIDByReportData(data: string) {
 
   str = str.replace(PREFIX, '')
 
-  const EPCLength = parseInt(`0x${str.substring(4, 8)}`, 16) * 2
+  const EPCLength = Number.parseInt(`0x${str.substring(4, 8)}`, 16) * 2
   const TIDLength =
-    parseInt(`0x${str.substring(8 + EPCLength + MidCommandLength, 8 + EPCLength + MidCommandLength + TIDLengthCommandLength)}`, 16) * 2
+    Number.parseInt(`0x${str.substring(8 + EPCLength + MidCommandLength, 8 + EPCLength + MidCommandLength + TIDLengthCommandLength)}`, 16) *
+    2
 
   const TID = str.substring(
     8 + EPCLength + MidCommandLength + TIDLengthCommandLength,
@@ -63,7 +64,7 @@ export function generateBinaryString(numbers: number[]) {
  * @return {*}
  */
 export function binaryToHex(binary: string): string {
-  const hex = parseInt(binary, 2).toString(16).toUpperCase()
+  const hex = Number.parseInt(binary, 2).toString(16).toUpperCase()
   return hex.padStart(8, '0')
 }
 

@@ -1,6 +1,6 @@
 import { getProductionBgImagePath } from 'common/system'
+import { selectSysDeptList } from 'database'
 import {
-  getUserData,
   getUsers,
   getUsersByCondition,
   onCardLogin,
@@ -10,16 +10,14 @@ import {
   verifyCard,
   verifyPassword,
 } from './user'
-import { getDepartments } from './department'
 import { getRoleList, getUserRoleList } from './role'
 
 const sysService = {
   name: 'sys' as const,
   fns: {
-    getUserData,
+    selectSysDeptList,
     getUsers,
     getUsersByCondition,
-    getDepartments,
     onPasswordLogin,
     onCardLogin,
     updatePassword,

@@ -51,7 +51,7 @@ watch(registerResult, (value) => {
 
 const isConnected = ref(false)
 watch(show, async (value) => {
-  resetOperationTimeoutCountdown()
+  
 
   if (value) {
     if (!isFingerConnected.value) {

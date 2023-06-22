@@ -73,7 +73,6 @@ function goBack() {
   resetCheckResult()
 
   if (isLoggedIn.value) {
-    resetOperationTimeoutCountdown()
     openOperationTimeoutCountdown()
 
     router.replace('/main/cabinet-door')

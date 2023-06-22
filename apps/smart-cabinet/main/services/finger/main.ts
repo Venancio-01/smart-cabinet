@@ -1,7 +1,8 @@
 import { Buffer } from 'buffer'
 import { genResponseData } from 'utils'
 import { MAX_DEVICE_NUM, MAX_REGISTRATION_COUNT, TEMPLATE_BYTE_LENGTH } from 'utils/config'
-import { prisma } from 'database'
+import type { RfidFingerUser } from 'database'
+import { insertRfidFingerUser, selectRfidFingerUser, selectRfidFingerUserList, updateRfidFingerUser } from 'database'
 import { info } from '../logger'
 import {
   captureFingerImage,
@@ -25,7 +26,6 @@ import {
   verifyTemplate,
 } from './algorithm-func'
 import { DeviceArrayType, IntType, TemplateType, UcharType } from './types'
-import { addFinger, queryFingerByUserIdAndOrder, updateFingerByUserIdAndOrder } from './database'
 
 // 指纹仪设备数组
 const deviceList = new DeviceArrayType(MAX_DEVICE_NUM)
@@ -48,7 +48,7 @@ let registerTemplates = []
 let registerCurrentIndex = 0
 
 // 指纹对应的用户数据
-let userFingerData = []
+let fingerUserList: RfidFingerUser[] = []
 
 export function initSDK() {
   checkFileExist()
@@ -223,12 +223,25 @@ export async function onRegister(templateData, userId, order) {
     })
   }
 
-  const fingerData = await queryFingerByUserIdAndOrder(userId, order)
+  const fingerData = await selectRfidFingerUser({
+    userid: userId,
+    order,
+  })
+
   const data = registerTemplateData.buffer.toString('base64')
   const orderText = order === 1 ? '一' : '二'
   if (fingerData !== null) {
     try {
-      await updateFingerByUserIdAndOrder(userId, order, data)
+      await updateRfidFingerUser(
+        {
+          userid: userId,
+          order,
+        },
+        {
+          fingerData: data,
+        },
+      )
+
       resetRegisterData()
       return genResponseData(true, `指纹${orderText}更新成功`, {
         registerSuccess: true,
@@ -242,7 +255,13 @@ export async function onRegister(templateData, userId, order) {
     }
   } else {
     try {
-      await addFinger(userId, order, data)
+      await insertRfidFingerUser({
+        fingerData: data,
+        order,
+        userid: userId,
+        createDate: new Date(),
+      })
+
       resetRegisterData()
       return genResponseData(true, `指纹${orderText}添加成功`, {
         registerSuccess: true,
@@ -268,7 +287,7 @@ export function onIdentify(templateData) {
   const success = result === 1
   const msg = success ? '识别成功!' : '识别失败'
   const fingerIndex = fingerId[0] - 1
-  const userId = userFingerData[fingerIndex]?.userId
+  const userId = fingerUserList[fingerIndex]?.userid
   return genResponseData(success, msg, userId)
 }
 
@@ -286,17 +305,12 @@ export function handleIdentify() {
  * @return {*}
  */
 export async function loadAllTemplate() {
-  userFingerData = await prisma.rfidFingerUser.findMany({
-    select: {
-      fingerData: true,
-      userid: true,
-    },
-  })
-  if (userFingerData.length === 0) return
+  fingerUserList = await selectRfidFingerUserList()
+  if (fingerUserList.length === 0) return
 
-  userFingerData.forEach((item, index) => {
-    if (item.data) {
-      const buf = Buffer.from(item.data, 'base64')
+  fingerUserList.forEach((item, index) => {
+    if (item.fingerData) {
+      const buf = Buffer.from(item.fingerData, 'base64')
       addTemplateToDb(algorithmHandler, index + 1, TEMPLATE_BYTE_LENGTH, buf)
     }
   })

@@ -1,20 +1,7 @@
 import type { SysUser } from 'database'
 import { genResponseData } from 'utils'
-import { prisma } from 'database'
+import { prisma, selectRfidCardUser, selectSysUser } from 'database'
 import { genMd5EncryptedPassword } from './utils'
-
-/**
- * @description: 获取用户信息
- * @param {number} userId
- * @return {*}
- */
-export function getUserData(userId: number) {
-  return prisma.sysUser.findUnique({
-    where: {
-      userId,
-    },
-  })
-}
 
 /**
  * @description: 获取所有用户
@@ -76,7 +63,9 @@ export async function onCardLogin(cardNumber: string) {
   const userId = result.userid
   if (!userId) return genResponseData(false, '用户查找失败')
 
-  const user = await getUserData(userId)
+  const user = await selectSysUser({
+    userId: BigInt(userId),
+  })
   if (user === null) return genResponseData(false, '用户查找失败')
 
   return genResponseData(true, '登录成功', user)
@@ -89,8 +78,12 @@ export async function onCardLogin(cardNumber: string) {
  * @return {*}
  */
 export async function updatePassword(userId: number, password: string) {
-  const user = await getUserData(userId)
-  const encryptedPassword = genMd5EncryptedPassword(user.loginName, password, user.salt)
+  const user = await selectSysUser({
+    userId: BigInt(userId),
+  })
+  if (!user) return false
+
+  const encryptedPassword = genMd5EncryptedPassword(user.loginName, password, user.salt || '')
   const result = await prisma.sysUser.update({
     where: {
       userId,
@@ -131,19 +124,12 @@ export function verifyPassword({
  * @param {string} cardNumber
  * @return {*}
  */
-export async function verifyCard(userString: string, cardNumber: string) {
-  const user = JSON.parse(userString) as SysUser
-
-  const result = await prisma.rfidCardUser.findFirst({
-    where: {
-      userid: Number(user.userId),
-    },
-    select: {
-      cardData: true,
-    },
+export async function verifyCard(userId: bigint, cardNumber: string) {
+  const cardUser = await selectRfidCardUser({
+    userid: Number(userId),
   })
 
-  const success = result.cardData === cardNumber
+  const success = cardUser?.cardData === cardNumber
   return success
 }
 

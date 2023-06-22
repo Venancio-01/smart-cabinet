@@ -49,7 +49,7 @@ async function handleUpdateCardNumber(cardNumber: string) {
 }
 
 watch(show, (value) => {
-  resetOperationTimeoutCountdown()
+  
 
   if (value) {
     addListenEnter(() => {
@@ -65,7 +65,7 @@ watch(show, (value) => {
 })
 
 function onClose() {
-  resetOperationTimeoutCountdown()
+  
 
   cardNumber.value = ''
 }

@@ -15,7 +15,7 @@ const { openLock } = useLock()
 const { resetOperationTimeoutCountdown } = useTime()
 
 function handleClickDoor(door: CabinetDoorProps) {
-  resetOperationTimeoutCountdown()
+  
 
   if (isLockControlConnected) {
     openLock(door.kgbh)

@@ -1,7 +1,5 @@
 import os from 'os'
 import dayjs from 'dayjs'
-import { BrowserWindow, globalShortcut } from 'electron'
-import type { PaginationType } from '../types'
 
 /**
  * @description: 生成 ipc 通信的返回数据结构
@@ -24,16 +22,9 @@ export function generateCurrentTime() {
   return dayjs().format('YYYY-MM-DD HH:mm:ss')
 }
 
-/**
- * @description: 发送 ipc 通信到渲染进程
- * @param {string} channel
- * @param {array} args
- * @return {*}
- */
-export function sendIpcToRenderer(channel: string, ...args: any[]) {
-  BrowserWindow.getAllWindows().forEach((wnd) => {
-    if (wnd.webContents && !wnd.webContents.isDestroyed()) wnd.webContents.send(channel, ...args)
-  })
+export type PaginationType = {
+  page: number
+  size: number
 }
 
 /**
@@ -49,16 +40,6 @@ export function getSkipAndTake(condition?: Partial<PaginationType>): {
 
   const { page, size } = condition
   return { skip: (page - 1) * size, take: size }
-}
-
-/**
- * @description: 禁用快捷键
- * @return {*}
- */
-export function disableShortcuts() {
-  globalShortcut.registerAll(['CommandOrControl+R', 'F11'], () => {
-    return false
-  })
 }
 
 // 获取本机 ip 地址

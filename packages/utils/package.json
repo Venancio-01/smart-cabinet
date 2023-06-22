@@ -32,10 +32,15 @@
       "types": "./dist/socket/index.d.ts",
       "require": "./dist/socket/index.cjs",
       "import": "./dist/socket/index.js"
+    },
+    "./electron": {
+      "types": "./dist/electron/index.d.ts",
+      "require": "./dist/electron/index.cjs",
+      "import": "./dist/electron/index.js"
     }
   },
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "module": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
   "typesVersions": {
     "*": {
@@ -56,6 +61,9 @@
       ],
       "socket": [
         "./dist/socket/index.d.ts"
+      ],
+      "electron": [
+        "./dist/electron/index.d.ts"
       ]
     }
   },
@@ -63,8 +71,7 @@
     "package": "tsup"
   },
   "dependencies": {
-    "dayjs": "^1.11.7",
-    "electron": "^12.2.0"
+    "dayjs": "^1.11.7"
   },
   "devDependencies": {
     "@types/node": "20.2.3",

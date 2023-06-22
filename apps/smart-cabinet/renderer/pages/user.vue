@@ -70,7 +70,7 @@ function handleInit() {
 }
 
 async function getUserList() {
-  resetOperationTimeoutCountdown()
+  
   data.value = await getUsersByCondition(condition)
 }
 

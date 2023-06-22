@@ -15,12 +15,22 @@ export default function () {
   const { setCabinetDoor, setCheckStatusDialogVisible, setCurrentCheckCabinetDoorId } = store
   const { cabinetDoorList, isChecking } = storeToRefs(store)
   const checkStore = useCheckStore()
-  const { setCheckResultList, addLastOperationCabinetDoorRecords, clearLastOperationCabinetDoorRecords, changeLastOperationCabinetDoorList } = checkStore
+  const {
+    setCheckResultList,
+    addLastOperationCabinetDoorRecords,
+    clearLastOperationCabinetDoorRecords,
+    changeLastOperationCabinetDoorList,
+  } = checkStore
   const { firstCarrierRecord, endCarrierRecord, endMisPlaceCarrierRecord, lastOperationCabinetDoorRecords, lastOperationCabinetDoorList } =
     storeToRefs(checkStore)
   const { updateCarrier, recordDataWhenCheckEnd, recordDataWhenCheckStart } = useCarrier()
-  const { resetCountdowns, resetConfirmationTimeCountdown, resetOperationTimeoutCountdown, closeOperationTimeoutCountdown, openConfirmationTimeCountdown } =
-    useTime()
+  const {
+    resetCountdowns,
+    resetConfirmationTimeCountdown,
+    resetOperationTimeoutCountdown,
+    closeOperationTimeoutCountdown,
+    openConfirmationTimeCountdown,
+  } = useTime()
 
   const { initRfid, handleOpenRfid, handleCloseRfid } = useRfid()
   /**
@@ -49,7 +59,9 @@ export default function () {
 
       // 如果是本次操作的柜门，则显示错放文件数据
       const isOperationCabinetDoor = lastOperationCabinetDoorList.value.find((item) => item.id === door.id)
-      const currentDoorMisPlaceCarrierRecords = isOperationCabinetDoor ? misPlaceCarrierRecords.filter((item) => Number(item.cabinetDoorId) === door.id) : []
+      const currentDoorMisPlaceCarrierRecords = isOperationCabinetDoor
+        ? misPlaceCarrierRecords.filter((item) => Number(item.cabinetDoorId) === door.id)
+        : []
 
       return {
         ...door,
@@ -179,8 +191,6 @@ export default function () {
    * @return {*}
    */
   const handleManualCheck = () => {
-    resetOperationTimeoutCountdown()
-
     // 记录盘点开始时的载体数据
     recordDataWhenCheckStart()
 

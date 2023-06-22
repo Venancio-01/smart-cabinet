@@ -22,13 +22,13 @@ export default function () {
   }
 
   const getDepartmentList = async () => {
-    const departments = await window.JSBridge.sys.getDepartments()
+    const departments = await window.JSBridge.sys.selectSysDeptList()
     setDepartmentList(departments)
     return departments
   }
 
-  const getDepartmentsByCondition = async (params: UserQueryProps) => {
-    const list = await window.JSBridge.sys.getDepartments({
+  const getDepartmentsByCondition = async (params: DepartmentQueryProps) => {
+    const list = await window.JSBridge.sys.selectSysDeptList({
       ...params,
     })
     return list

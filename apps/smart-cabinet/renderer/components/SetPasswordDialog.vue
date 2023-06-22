@@ -32,7 +32,7 @@ const show = computed({
 
 const input = ref()
 watch(show, () => {
-  resetOperationTimeoutCountdown()
+  
   input.value?.focus()
 })
 

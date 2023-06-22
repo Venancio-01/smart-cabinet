@@ -1,8 +1,8 @@
 import dayjs from 'dayjs'
+import { CONFIRM_TIMEOUT, OPERATION_TIMEOUT } from 'utils/config/renderer'
 import useCheckRecord from './useCheckRecord'
 import useVerify from './useVerify'
 import { useStore } from '@/store'
-import { CONFIRM_TIMEOUT, OPERATION_TIMEOUT } from 'utils/config/renderer'
 
 const currentTime = ref<string | null>(null)
 const currentTimeTimer = ref<number | null>(null)

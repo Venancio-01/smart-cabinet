@@ -44,8 +44,6 @@ export default function () {
 
   // 打开柜门
   const openCabinetDoor = async (door: CabinetDoorProps) => {
-    resetOperationTimeoutCountdown()
-
     if (isLockControlConnected && door.kgbh) {
       openLock(door.kgbh)
       addLastOperationCabinetDoorRecords(door)

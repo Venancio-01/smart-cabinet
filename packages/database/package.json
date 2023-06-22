@@ -15,19 +15,20 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "pull-db": "npx prisma db pull",
-    "format-db": "cd ./prisma && npx prisma-case-format",
+    "format-db": "npx prisma-case-format --file ./prisma/schema.prisma",
     "generate-db": "npx prisma generate",
     "init-db": "npm run pull-db && npm run format-db && npm run generate-db",
     "package": "tsup"
   },
   "dependencies": {
-    "@prisma/client": "^4.15.0",
+    "@prisma/client": "4.16.0",
+    "prisma": "4.16.0",
     "prisma-case-format": "^1.7.0"
   },
   "devDependencies": {
     "@types/ffi-napi": "^4.0.7",
     "config": "workspace:^",
-    "prisma": "^4.14.1",
+    "electron": "^12.2.0",
     "utils": "workspace:^"
   }
 }

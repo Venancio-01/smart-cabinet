@@ -3,7 +3,6 @@ import { defineConfig } from 'tsup'
 const isProduction = process.env.NODE_ENV === 'production'
 
 export default defineConfig({
-  target: 'es2015',
   clean: true,
   dts: true,
   entry: ['src/index.ts'],

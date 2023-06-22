@@ -1,5 +1,5 @@
 import { getSkipAndTake } from 'utils'
-import type { PaginationType } from '../types'
+import type { PaginationType } from 'utils'
 import type { DocDocument, Prisma } from '.'
 import { prisma } from '.'
 
@@ -43,9 +43,6 @@ export async function selectDocDocumentList(
       prisma.docDocument.findMany({
         ...pageCondition,
         where: query,
-        include: {
-          sysUser: true,
-        },
       }),
       prisma.docDocument.count({
         where: query,
@@ -61,4 +58,17 @@ export async function selectDocDocumentList(
       where: query,
     })
   }
+}
+
+/**
+ * @description: 更新载体
+ * @param {Partial} condition
+ * @param {Partial} data
+ * @return {*}
+ */
+export function updateDocDocument(condition: Prisma.DocDocumentWhereUniqueInput, data: Partial<DocDocument>): Promise<DocDocument> {
+  return prisma.docDocument.update({
+    where: condition,
+    data,
+  })
 }

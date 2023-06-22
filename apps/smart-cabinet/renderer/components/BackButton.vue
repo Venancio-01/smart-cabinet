@@ -15,7 +15,7 @@ function handleBack() {
   if (props.onBack) {
     props.onBack()
   } else {
-    resetOperationTimeoutCountdown()
+    
     router.go(-1)
   }
 }

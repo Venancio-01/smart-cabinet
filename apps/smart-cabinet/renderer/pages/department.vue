@@ -26,13 +26,13 @@ const columns: ColumnsType = [
 async function onPageChange(page: number) {
   condition.page = page
 
-  getUserList()
+  getDepartmentList()
 }
 
 async function handleSearch() {
   condition.page = 1
 
-  getUserList()
+  getDepartmentList()
 }
 
 function handleInit() {
@@ -40,12 +40,13 @@ function handleInit() {
   condition.departmentName = ''
   data.value = []
 
-  getUserList()
+  getDepartmentList()
 }
 
-async function getUserList() {
-  resetOperationTimeoutCountdown()
-  data.value = await getDepartmentsByCondition(condition)
+async function getDepartmentList() {
+  const { data: _data, total: _total } = await getDepartmentsByCondition(condition)
+  data.value = _data
+  total.value = _total
 }
 
 onMounted(() => {

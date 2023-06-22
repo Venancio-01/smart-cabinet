@@ -3,11 +3,14 @@
     "default": {
       "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": []
+        "cacheableOperations": ["package"]
       }
     }
   },
   "affected": {
     "defaultBase": "main"
+  },
+  "targetDefaults": {
+    "package": {}
   }
 }

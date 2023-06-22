@@ -21,7 +21,7 @@ const show = computed({
 })
 
 watch(show, async () => {
-  resetOperationTimeoutCountdown()
+  
 })
 
 const passwordAuthRef = ref()
@@ -31,8 +31,8 @@ async function handlePasswordComplete() {
   const { loginName, salt, password } = user.value
   const params = {
     loginName,
-    salt,
-    password,
+    salt: salt || '',
+    password: password || '',
     newPassword: result.password,
   }
   const success = await window.JSBridge.sys.verifyPassword(params)
@@ -54,7 +54,7 @@ function handleFingerComplete(userId: bigint) {
 }
 
 function handleCardComplete(cardNumber: string) {
-  const result = window.JSBridge.sys.verifyCard(JSON.stringify(user.value), cardNumber)
+  const result = window.JSBridge.sys.verifyCard(user.value?.userId, cardNumber)
   console.log('🚀 ~ file: VerifyIdentity.vue:76 ~ handleCardComplete ~ result:', result)
 }
 </script>

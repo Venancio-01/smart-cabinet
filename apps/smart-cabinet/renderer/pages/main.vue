@@ -42,7 +42,6 @@ const pathMap: {
 }
 
 function handleTabChange(key: Key) {
-  resetOperationTimeoutCountdown()
   router.push(pathMap[key].path)
 }
 
@@ -50,11 +49,23 @@ watch(route, () => {
   const key = Object.keys(pathMap).find((key) => route.name === pathMap[key].name)
   if (key) activeKey.value = key
 })
+
+function handleUserAction() {
+  resetOperationTimeoutCountdown()
+}
+
+onMounted(() => {
+  window.addEventListener('click', handleUserAction)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('click', handleUserAction)
+})
 </script>
 
 <template>
   <div class="w-full h-full flex flex-col">
-    <TheMenuDrawer v-model:visible="visible" @change="() => resetOperationTimeoutCountdown()" />
+    <TheMenuDrawer v-model:visible="visible" />
 
     <!-- 头部 -->
     <div v-if="isLoggedIn" class="flex items-center justify-between mb-4">
@@ -85,7 +96,6 @@ watch(route, () => {
           <component :is="Component" />
         </transition>
       </router-view>
-      <!-- <router-view /> -->
     </div>
   </div>
 </template>

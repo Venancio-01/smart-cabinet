@@ -1,6 +1,6 @@
 import type { RfidCabinet } from 'database'
 import { getLocalIpAddress } from 'utils'
-import { prisma } from 'database'
+import { prisma, selectRfidCabinet } from 'database'
 
 let currentCabinet: RfidCabinet | null = null
 
@@ -11,7 +11,7 @@ let currentCabinet: RfidCabinet | null = null
 async function getCurrentCabinet() {
   if (currentCabinet) return currentCabinet
 
-  const devices = await getCabinetData()
+  const devices = await selectRfidCabinet()
   const ipList = getLocalIpAddress()
 
   currentCabinet = devices.find((item) => item.cabAddr && ipList.includes(item.cabAddr)) || null
@@ -19,13 +19,6 @@ async function getCurrentCabinet() {
   return currentCabinet
 }
 
-/**
- * @description: 获取所有柜机信息
- * @return {*}
- */
-function getCabinetData() {
-  return prisma.rfidCabinet.findMany()
-}
 
 /**
  * @description: 获取当前柜机所属的柜门信息
@@ -42,7 +35,6 @@ function getCabinetDoors() {
 const cabinetService = {
   name: 'cabinet' as const,
   fns: {
-    getCabinetData,
     getCabinetDoors,
     getCurrentCabinet,
   },
