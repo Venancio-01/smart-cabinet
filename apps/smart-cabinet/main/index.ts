@@ -7,8 +7,6 @@ import { handleExitUpdateService } from './services/update'
 import { installService } from '@/services'
 import { createWindow } from '@/base/window'
 
-console.log(EVN_FILE_PATH, 'EVN_FILE_PATH')
-
 // 加载环境变量
 dotenv.config({
   path: EVN_FILE_PATH,
@@ -19,7 +17,7 @@ connectDatabase().then((isConnected) => {
   if (isConnected) console.log('数据库连接成功')
   else console.log('数据库连接失败')
 
-  global.databaseIsConnected = isConnected
+  globalThis.databaseIsConnected = isConnected
 })
 
 // Linux 系统禁用 GPU 加速

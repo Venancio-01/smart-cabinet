@@ -1,13 +1,11 @@
 <script lang="ts" setup>
 import { useStore } from '@/store'
-import useTime from '@/hooks/useTime'
 import useVerify from '@/hooks/useVerify'
 import createAlert from '@/components/BaseAlert'
 
 const store = useStore()
 const { setVerifyIdentityDialogVisible } = store
 const { verifyIdentityDialogVisible, user } = storeToRefs(store)
-const { resetOperationTimeoutCountdown } = useTime()
 const { closeVerifyIdentityDialog, handleVerificationSuccessful } = useVerify()
 const activeKey = ref('1')
 
@@ -20,9 +18,7 @@ const show = computed({
   },
 })
 
-watch(show, async () => {
-  
-})
+watch(show, async () => {})
 
 const passwordAuthRef = ref()
 

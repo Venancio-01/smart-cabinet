@@ -1,9 +1,9 @@
-import { useCheckStore } from '@/store/check'
+import { useStore } from '@/store'
 
 export default function () {
-  const checkStore = useCheckStore()
+  const store = useStore()
   const { setFirstCarrierRecord, setFirstMisPlaceCarrierRecord, setEndCarrierRecord, setEndMisPlaceCarrierRecord, setCheckResultList } =
-    checkStore
+    store
 
   /**
    * @description: 重置盘点记录

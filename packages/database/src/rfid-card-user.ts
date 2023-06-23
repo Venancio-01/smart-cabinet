@@ -14,8 +14,8 @@ export function selectRfidCardUserList() {
  * @param {Partial} condition
  * @return {*}
  */
-export function selectRfidCardUser(condition: Prisma.RfidCardUserWhereUniqueInput) {
-  return prisma.rfidCardUser.findUnique({
+export function selectRfidCardUser(condition: Prisma.RfidCardUserWhereInput) {
+  return prisma.rfidCardUser.findFirst({
     where: condition,
   })
 }
@@ -26,8 +26,8 @@ export function selectRfidCardUser(condition: Prisma.RfidCardUserWhereUniqueInpu
  * @param {Partial} data
  * @return {*}
  */
-export function updateRfidCardUser(condition: Prisma.RfidCardUserWhereUniqueInput, data: Partial<RfidCardUser>) {
-  return prisma.rfidCardUser.update({
+export function updateRfidCardUser(condition: Prisma.RfidCardUserWhereInput, data: Partial<RfidCardUser>) {
+  return prisma.rfidCardUser.updateMany({
     where: condition,
     data,
   })

@@ -1,12 +1,13 @@
 <script lang="ts" setup>
-import { ALARM_PAGE_STAY_DURATION_THRESHOLD } from 'utils/config/main'
-import { handleSetGPO } from '@/features/rfid'
+import { ALARM_PAGE_STAY_DURATION_THRESHOLD } from 'utils/config/renderer'
+import useRfid from '@/hooks/useRfid'
 import { useStore } from '@/store'
 
 const router = useRouter()
 const store = useStore()
 const { setCurrentReadRecordList } = store
 const { currentReadRecordList, loadingVisible } = storeToRefs(store)
+const { handleSetGPO } = useRfid()
 
 function goHome() {
   setCurrentReadRecordList([])

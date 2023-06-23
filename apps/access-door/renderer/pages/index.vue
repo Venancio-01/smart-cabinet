@@ -1,13 +1,15 @@
 <script lang="ts" setup>
-import { SYSTEM_NAME } from 'utils/config/main'
+import { SYSTEM_NAME } from '@/config'
 import { useStore } from '@/store'
-import { currentTime } from '@/features/time'
-import { fetchUnviewedAccessRecordCount } from '@/features/door'
+import useTime from '@/hooks/useTime'
+import useDoor from '@/hooks/useDoor'
 
 import DeviceStatus from '@/components/DeviceStatus.vue'
 
 const store = useStore()
 const { currentAccessDoorDevice } = storeToRefs(store)
+const { currentTime } = useTime()
+const { fetchUnviewedAccessRecordCount } = useDoor()
 
 const deviceName = computed(() => currentAccessDoorDevice.value?.equipmentName)
 

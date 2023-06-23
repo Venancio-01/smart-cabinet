@@ -5,13 +5,15 @@ export default function () {
   const store = useStore()
   const { setDepartmentList, setUserList, setRoleList, setUserRoleList, setBackgroundUrl } = store
 
-  const getUserData = async (userId: number) => {
-    const data = await window.JSBridge.sys.getUserData(userId)
+  const getUserData = async (userId: bigint) => {
+    const data = await window.JSBridge.sys.selectSysUser({
+      userId,
+    })
     return data
   }
 
   const getUserList = async () => {
-    const list = await window.JSBridge.sys.getUsers()
+    const list = await window.JSBridge.sys.selectSysUserList()
     setUserList(list)
     return list
   }
@@ -35,12 +37,12 @@ export default function () {
   }
 
   const getRoleList = async () => {
-    const roleList = await window.JSBridge.sys.getRoleList()
+    const roleList = await window.JSBridge.sys.selectSysRoleList()
     setRoleList(roleList)
   }
 
   const getUserRoleList = async () => {
-    const roleList = await window.JSBridge.sys.getUserRoleList()
+    const roleList = await window.JSBridge.sys.selectSysUserRoleList()
     setUserRoleList(roleList)
   }
 

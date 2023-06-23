@@ -17,6 +17,8 @@ type JSBridgeType = {
 }
 
 declare global {
+  var databaseIsConnected: boolean
+  
   interface Window {
     JSBridge: JSBridgeType
   }

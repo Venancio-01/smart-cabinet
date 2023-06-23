@@ -1,7 +1,7 @@
 import type { DoorAccessRecords, DoorAlarmrecord, DoorEquipment, DoorRfidrecord } from 'database'
 import { getSkipAndTake } from 'utils'
-import { getLocalIpAddress } from './sys'
-import { prisma } from '@/database'
+import { getLocalIpAddress } from 'utils'
+import { prisma } from 'database'
 import { AccessDirection, AccessHasAlarm, AccessTimeRange, AccessWithCarrier } from '~/enums'
 
 // 获取当前设备

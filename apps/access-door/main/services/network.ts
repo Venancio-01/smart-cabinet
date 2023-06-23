@@ -1,11 +1,5 @@
-import { isConnected } from '@/database'
-
-/**
- * 获取连接状态
- * @returns {boolean} 连接状态
- */
-function getConnectState(): boolean {
-  return isConnected
+function getConnectState() {
+  return globalThis.databaseIsConnected
 }
 
 const networkService = {

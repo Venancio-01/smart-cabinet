@@ -1,9 +1,16 @@
 {
   "extends": "config/tsconfig.web.json",
-  "include": ["renderer/env.d.ts", "renderer/**/*", "renderer/**/*.vue", "renderer/**/*.json", "renderer/*.d.ts", "types/*.ts", "types/*.d.ts"],
+  "include": [
+    "renderer/env.d.ts",
+    "renderer/**/*",
+    "renderer/**/*.vue",
+    "renderer/**/*.json",
+    "renderer/*.d.ts",
+    "types/*.ts",
+    "types/*.d.ts"
+  ],
   "compilerOptions": {
-    "target": "ES2015",
-    "module": "ESNext",
+    "composite": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./renderer/*"],

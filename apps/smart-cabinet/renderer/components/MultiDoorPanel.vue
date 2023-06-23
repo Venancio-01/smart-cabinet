@@ -1,22 +1,15 @@
 <script lang="ts" setup>
 import { BorrowedState } from '~/enums'
 import { useStore } from '@/store'
-import { useCheckStore } from '@/store/check'
 import useLock from '@/hooks/useLock'
-import useTime from '@/hooks/useTime'
 
 const router = useRouter()
 const store = useStore()
-const { setCabinetDoor } = store
+const { setCabinetDoor, addLastOperationCabinetDoorRecords } = store
 const { cabinetDoorList, carrierList, isLockControlConnected } = storeToRefs(store)
-const checkStore = useCheckStore()
-const { addLastOperationCabinetDoorRecords } = checkStore
 const { openLock } = useLock()
-const { resetOperationTimeoutCountdown } = useTime()
 
 function handleClickDoor(door: CabinetDoorProps) {
-  
-
   if (isLockControlConnected) {
     openLock(door.kgbh)
     addLastOperationCabinetDoorRecords(door)

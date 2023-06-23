@@ -1,6 +1,6 @@
 import { setAntdConfig } from 'ui'
-import useSys from './useSys'
-import useFinger from './useFinger'
+import useSys from '@/hooks/useSys'
+import useFinger from '@/hooks/useFinger'
 import useCarrier from '@/hooks/useCarrier'
 import useRfid from '@/hooks/useRfid'
 import useLock from '@/hooks/useLock'

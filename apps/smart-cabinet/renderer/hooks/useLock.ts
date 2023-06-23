@@ -1,8 +1,7 @@
+import { QUERY_OPEN_STATE_INTERVAL, SEND_QUERY_COMMAND_INTERVAL } from 'utils/config/renderer'
 import useCheck from './useCheck'
 import useCarrier from './useCarrier'
 import { useStore } from '@/store'
-import { useCheckStore } from '@/store/check'
-import { QUERY_OPEN_STATE_INTERVAL, SEND_QUERY_COMMAND_INTERVAL } from 'utils/config/renderer'
 
 // 查询锁孔开启状态的定时器
 const queryLockOpenStatusTimer = ref<number | null>(null)
@@ -11,10 +10,8 @@ const queryAllLockTimer = ref<number | null>(null)
 
 export default function () {
   const store = useStore()
-  const { setLockControlConnectionStatus, setLockControlState, setCabinetDoor } = store
+  const { setLockControlConnectionStatus, setLockControlState, setCabinetDoor, addLastOperationCabinetDoorRecords } = store
   const { currentCabinet, cabinetDoorList, lockControlState, isLockControlConnected } = storeToRefs(store)
-  const checkStore = useCheckStore()
-  const { addLastOperationCabinetDoorRecords } = checkStore
   const { handleCheck } = useCheck()
   const { recordDataWhenCheckStart } = useCarrier()
 

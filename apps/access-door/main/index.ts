@@ -1,8 +1,9 @@
 import type { BrowserWindow } from 'electron'
 import { app } from 'electron'
 import dotenv from 'dotenv'
-import { EVN_FILE_PATH } from 'utils/config/main'
-import { disableShortcuts } from './utils'
+import { connectDatabase } from 'database'
+import { EVN_FILE_PATH } from 'utils/config'
+import { disableShortcuts } from 'utils/electron'
 import { registerServices } from '@/services'
 import { createWindow } from '@/base/window'
 import { registerAppHooks } from '@/base/hooks'
@@ -10,6 +11,14 @@ import { registerAppHooks } from '@/base/hooks'
 // 加载环境变量
 dotenv.config({
   path: EVN_FILE_PATH,
+})
+
+// 连接数据库
+connectDatabase().then((isConnected) => {
+  if (isConnected) console.log('数据库连接成功')
+  else console.log('数据库连接失败')
+
+  globalThis.databaseIsConnected = isConnected
 })
 
 // 禁用 Linux 的 GPU 加速。

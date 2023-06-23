@@ -1,6 +1,6 @@
-import os from 'os'
 import type { SysDept } from 'database'
-import { prisma } from '@/database'
+import { prisma } from 'database'
+import { getProductionBgImagePath } from 'common/system'
 
 /**
  * @description: 获取用户列表
@@ -58,29 +58,7 @@ async function getDepartmentsByCondition({ departmentName }: DepartmentQueryProp
   })
 }
 
-/**
- * @description: 获取生产环境下的背景图片路径
- * @return {*}
- */
-async function getProductionBgImagePath() {
-  // const path = resolve(process.resourcesPath, './public/background/index.png')
-  const path = '../../public/background/index.png'
-  return path
-}
 
-getProductionBgImagePath()
-
-// 获取本机 ip 地址
-export function getLocalIpAddress(): string[] {
-  const interfaces = os.networkInterfaces()
-  const addresses: string[] = []
-  for (const name of Object.keys(interfaces)) {
-    for (const iface of interfaces[name] ?? []) {
-      if (iface.family === 'IPv4' && !iface.internal) addresses.push(iface.address)
-    }
-  }
-  return addresses
-}
 
 const sysService = {
   name: 'sys' as const,
@@ -89,7 +67,6 @@ const sysService = {
     getDepartmentData,
     getDepartmentsByCondition,
     getProductionBgImagePath,
-    getLocalIpAddress,
   },
 }
 

@@ -2,13 +2,15 @@
 import type { DoorAlarmrecord } from 'database'
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
-import { fetchReadRecords } from '@/features/door'
+import useDoor from '@/hooks/useDoor'
 import { useStore } from '@/store'
 
 const router = useRouter()
 const store = useStore()
 const { departmentList } = storeToRefs(store)
 const route = useRoute()
+const { fetchReadRecords } = useDoor()
+
 const accessId = computed(() => route.params.id as string)
 const isFromAlarm = computed(() => route.params.fromAlarmPage === '1')
 

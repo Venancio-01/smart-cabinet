@@ -48,7 +48,7 @@ export default function () {
     else createAlert(result.msg || '')
   }
 
-  const handleFingerLogin = async (userId: number) => {
+  const handleFingerLogin = async (userId: bigint) => {
     const user = await getUserData(userId)
     handleLogin(user)
   }

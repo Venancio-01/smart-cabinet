@@ -2,7 +2,6 @@
 import useFinger from '@/hooks/useFinger'
 import { useStore } from '@/store'
 import createAlert from '@/components/BaseAlert'
-import useTime from '@/hooks/useTime'
 
 interface Props {
   visible: boolean
@@ -17,7 +16,6 @@ const emits = defineEmits(['update:visible'])
 const store = useStore()
 const { user, isFingerConnected } = storeToRefs(store)
 const { openFingerDevice, closeFingerDevice, startRegisterFinger, endRegisterFinger, registerResult } = useFinger()
-const { resetOperationTimeoutCountdown } = useTime()
 
 const show = computed({
   get: () => {
@@ -51,8 +49,6 @@ watch(registerResult, (value) => {
 
 const isConnected = ref(false)
 watch(show, async (value) => {
-  
-
   if (value) {
     if (!isFingerConnected.value) {
       message.value = '设备未连接'

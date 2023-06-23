@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { useStore } from '@/store'
 import createAlert from '@/components/BaseAlert'
-import useTime from '@/hooks/useTime'
 
 interface Props {
   visible: boolean
@@ -17,7 +16,6 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits(['update:visible'])
 const store = useStore()
 const { user } = storeToRefs(store)
-const { resetOperationTimeoutCountdown } = useTime()
 
 const loginName = user.value?.loginName || ''
 
@@ -32,7 +30,6 @@ const show = computed({
 
 const input = ref()
 watch(show, () => {
-  
   input.value?.focus()
 })
 

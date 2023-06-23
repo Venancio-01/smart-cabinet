@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import useListenEnter from '@/hooks/useListenEnter'
-import useTime from '@/hooks/useTime'
 import AnimationInput from '@/components/AnimationInput.vue'
 import createAlert from '@/components/BaseAlert'
 import { useStore } from '@/store'
@@ -16,7 +15,6 @@ const emits = defineEmits(['update:visible'])
 const store = useStore()
 const { user } = storeToRefs(store)
 const { addListenEnter, removeListenEnter } = useListenEnter()
-const { resetOperationTimeoutCountdown } = useTime()
 
 const show = computed({
   get: () => {
@@ -35,13 +33,21 @@ function handleFocus() {
   inputRef.value?.focus()
 }
 
-async function handleUpdateCardNumber(cardNumber: string) {
-  if (cardNumber === '') {
+async function handleUpdateCardNumber(cardData: string) {
+  if (cardData === '') {
     createAlert('请输入卡号')
     return false
   }
 
-  const success = await window.JSBridge.sys.updateCardNumber(user.value.userId, cardNumber)
+  const success = await window.JSBridge.sys.updateRfidCardUser(
+    {
+      userid: Number(user.value.userId),
+    },
+    {
+      cardData,
+    },
+  )
+
   const tips = success ? '卡号设置成功' : '卡号设置失败'
   createAlert(tips)
 
@@ -49,8 +55,6 @@ async function handleUpdateCardNumber(cardNumber: string) {
 }
 
 watch(show, (value) => {
-  
-
   if (value) {
     addListenEnter(() => {
       handleUpdateCardNumber(cardNumber.value)
@@ -65,8 +69,6 @@ watch(show, (value) => {
 })
 
 function onClose() {
-  
-
   cardNumber.value = ''
 }
 </script>

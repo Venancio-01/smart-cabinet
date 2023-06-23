@@ -2,10 +2,8 @@
 import type { ColumnsType } from 'ant-design-vue/es/table'
 import type { SysDept } from '.prisma/client'
 import useSys from '@/hooks/useSys'
-import useTime from '@/hooks/useTime'
 
 const { getDepartmentsByCondition } = useSys()
-const { resetOperationTimeoutCountdown } = useTime()
 
 const condition = reactive<DepartmentQueryProps>({
   page: 1,

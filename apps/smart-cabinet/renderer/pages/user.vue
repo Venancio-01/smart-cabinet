@@ -3,12 +3,10 @@ import type { ColumnsType } from 'ant-design-vue/es/table'
 import type { SysUser } from 'database'
 import { useStore } from '@/store'
 import useSys from '@/hooks/useSys'
-import useTime from '@/hooks/useTime'
 
 const store = useStore()
 const { roleList, departmentList, userRoleList, currentCabinetDoorId } = storeToRefs(store)
 const { getUsersByCondition } = useSys()
-const { resetOperationTimeoutCountdown } = useTime()
 
 const condition = reactive<UserQueryProps>({
   page: 1,
@@ -70,7 +68,6 @@ function handleInit() {
 }
 
 async function getUserList() {
-  
   data.value = await getUsersByCondition(condition)
 }
 

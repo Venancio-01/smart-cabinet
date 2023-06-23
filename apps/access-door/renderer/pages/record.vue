@@ -2,10 +2,11 @@
 import type { DoorAccessRecords } from 'database'
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
-import { fetchAccessRecords, updateAccessRecord } from '@/features/door'
+import useDoor from '@/hooks/useDoor'
 import { AccessTimeRange, AccessWithCarrier, IsViewed } from '~/enums'
 
 const router = useRouter()
+const { fetchAccessRecords, updateAccessRecord } = useDoor()
 
 const data = ref<DoorAccessRecords[]>([])
 const total = ref(0)

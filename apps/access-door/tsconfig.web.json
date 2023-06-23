@@ -10,8 +10,6 @@
     "types/*.d.ts"
   ],
   "compilerOptions": {
-    "target": "ES2015",
-    "module": "ESNext",
     "baseUrl": ".",
     "paths": {
       "@/*": ["./renderer/*"],

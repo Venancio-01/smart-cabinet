@@ -4,7 +4,6 @@ import { CHECK_TIME } from 'utils/config/renderer'
 import useCarrier from './useCarrier'
 import { BorrowedState } from '~/enums'
 import { useStore } from '@/store'
-import { useCheckStore } from '@/store/check'
 import useTime from '@/hooks/useTime'
 import useRfid from '@/hooks/useRfid'
 import createAlert from '@/components/BaseAlert'
@@ -12,17 +11,25 @@ import createAlert from '@/components/BaseAlert'
 export default function () {
   const router = useRouter()
   const store = useStore()
-  const { setCabinetDoor, setCheckStatusDialogVisible, setCurrentCheckCabinetDoorId } = store
-  const { cabinetDoorList, isChecking } = storeToRefs(store)
-  const checkStore = useCheckStore()
   const {
+    setCabinetDoor,
+    setCheckStatusDialogVisible,
+    setCurrentCheckCabinetDoorId,
     setCheckResultList,
     addLastOperationCabinetDoorRecords,
     clearLastOperationCabinetDoorRecords,
     changeLastOperationCabinetDoorList,
-  } = checkStore
-  const { firstCarrierRecord, endCarrierRecord, endMisPlaceCarrierRecord, lastOperationCabinetDoorRecords, lastOperationCabinetDoorList } =
-    storeToRefs(checkStore)
+  } = store
+  const {
+    cabinetDoorList,
+    isChecking,
+    firstCarrierRecord,
+    endCarrierRecord,
+    endMisPlaceCarrierRecord,
+    lastOperationCabinetDoorRecords,
+    lastOperationCabinetDoorList,
+  } = storeToRefs(store)
+  storeToRefs(store)
   const { updateCarrier, recordDataWhenCheckEnd, recordDataWhenCheckStart } = useCarrier()
   const {
     resetCountdowns,

@@ -1,5 +1,5 @@
 function getConnectState() {
-  return global.databaseIsConnected
+  return globalThis.databaseIsConnected
 }
 
 const networkService = {

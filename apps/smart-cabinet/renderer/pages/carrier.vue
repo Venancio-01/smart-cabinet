@@ -30,7 +30,7 @@ async function handleSearch() {
 }
 
 function handleInit() {
-  const state = route.params.docPStatus === 'null' ? undefined : Number(route.params.docPStatus)
+  const state = route.params.docPStatus === 'null' ? undefined : Number(route.params.state)
 
   condition.page = 1
   condition.docName = ''

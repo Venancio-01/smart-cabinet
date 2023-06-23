@@ -1,31 +1,22 @@
 import { getProductionBgImagePath } from 'common/system'
-import { selectSysDeptList } from 'database'
-import {
-  getUsers,
-  getUsersByCondition,
-  onCardLogin,
-  onPasswordLogin,
-  updateCardNumber,
-  updatePassword,
-  verifyCard,
-  verifyPassword,
-} from './user'
-import { getRoleList, getUserRoleList } from './role'
+import { selectSysDeptList, selectSysRoleList, selectSysUser, selectSysUserList, selectSysUserRoleList, updateRfidCardUser } from 'database'
+import { getUsersByCondition, onCardLogin, onPasswordLogin, updatePassword, verifyCard, verifyPassword } from './user'
 
 const sysService = {
   name: 'sys' as const,
   fns: {
+    selectSysUser,
+    selectSysUserList,
     selectSysDeptList,
-    getUsers,
     getUsersByCondition,
     onPasswordLogin,
     onCardLogin,
     updatePassword,
     verifyPassword,
     verifyCard,
-    updateCardNumber,
-    getRoleList,
-    getUserRoleList,
+    updateRfidCardUser,
+    selectSysRoleList,
+    selectSysUserRoleList,
     getProductionBgImagePath,
   },
 }

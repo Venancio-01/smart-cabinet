@@ -23,10 +23,15 @@ interface State {
   checkCountdownDialogVisible: boolean
   verifyIdentityDialogVisible: boolean
   currentCheckCabinetDoorId: number | null
-  checkResultList: DocDocument[]
   reviewCarrierCondition: ReviewCarrierCondition
-  loading: boolean
   activationCode: string
+  firstCarrierRecord: DocDocument[]
+  firstMisPlaceCarrierRecord: RfidSwitchRecord[]
+  endCarrierRecord: DocDocument[]
+  endMisPlaceCarrierRecord: RfidSwitchRecord[]
+  checkResultList: CheckResultType[]
+  lastOperationCabinetDoorRecords: CabinetDoorProps[]
+  lastOperationCabinetDoorList: CabinetDoorProps[]
 }
 
 interface ReviewCarrierCondition {
@@ -57,13 +62,18 @@ export const useStore = defineStore('main', {
       checkCountdownDialogVisible: false,
       verifyIdentityDialogVisible: false,
       currentCheckCabinetDoorId: null,
-      checkResultList: [],
-      loading: true,
       reviewCarrierCondition: {
         cabinetDoorId: null,
         state: null,
       },
       activationCode: '',
+      firstCarrierRecord: [],
+      firstMisPlaceCarrierRecord: [],
+      endCarrierRecord: [],
+      endMisPlaceCarrierRecord: [],
+      checkResultList: [],
+      lastOperationCabinetDoorRecords: [],
+      lastOperationCabinetDoorList: [],
     }
   },
   getters: {
@@ -152,14 +162,35 @@ export const useStore = defineStore('main', {
     setCurrentCheckCabinetDoorId(cabinetDoorId: number | null) {
       this.currentCheckCabinetDoorId = cabinetDoorId
     },
-    setCheckResultList(result: DocDocument[]) {
-      this.checkResultList = result
-    },
     setReviewCarrierCondition(condition: ReviewCarrierCondition) {
       this.reviewCarrierCondition = condition
     },
-    setLoading(loading: boolean) {
-      this.loading = loading
+    setFirstCarrierRecord(record: DocDocument[]) {
+      this.firstCarrierRecord = record
+    },
+    setFirstMisPlaceCarrierRecord(record: RfidSwitchRecord[]) {
+      this.firstMisPlaceCarrierRecord = record
+    },
+    setEndCarrierRecord(record: DocDocument[]) {
+      this.endCarrierRecord = record
+    },
+    setEndMisPlaceCarrierRecord(record: RfidSwitchRecord[]) {
+      this.endMisPlaceCarrierRecord = record
+    },
+    setCheckResultList(result: CheckResultType[]) {
+      this.checkResultList = result
+    },
+    addLastOperationCabinetDoorRecords(door: CabinetDoorProps) {
+      const isExist = this.lastOperationCabinetDoorRecords.find((item) => item.id === door.id)
+      if (isExist) return
+
+      this.lastOperationCabinetDoorRecords.push(door)
+    },
+    clearLastOperationCabinetDoorRecords() {
+      this.lastOperationCabinetDoorRecords = []
+    },
+    changeLastOperationCabinetDoorList(list: CabinetDoorProps[]) {
+      this.lastOperationCabinetDoorList = list
     },
   },
 })

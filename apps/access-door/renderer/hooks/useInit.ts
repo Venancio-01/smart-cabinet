@@ -1,18 +1,25 @@
-import { initSysData } from '@/features/system'
-import { checkActivationCode } from '@/features/encryption'
-import { getNetworkStatus } from '@/features/network'
-import { init as initAccessDoor } from '@/features/door'
-import { handleConnect, regsterAlarmsListener } from '@/features/rfid'
-import { startGenerateCurrentTime, stopGenerateCurrentTime } from '@/features/time'
-import { initCabinetData } from '@/features/cabinet'
-import { setAntdConfig } from '@/design/antd'
+import { setAntdConfig } from 'ui'
+import useSys from '@/hooks/useSys'
+import useEncryption from '@/hooks/useEncryption'
+import useDoor from '@/hooks/useDoor'
+import useRfid from '@/hooks/useRfid'
+import useTime from '@/hooks/useTime'
+import useCabinet from '@/hooks/useCabinet'
+import useNetwork from '@/hooks/useNetwork'
 
 export default function () {
   // 配置 Antd 主题
   setAntdConfig()
+  useNetwork()
+
+  const { initSysData } = useSys()
+  const { handleConnect, regsterAlarmsListener } = useRfid()
+  const { startGenerateCurrentTime, stopGenerateCurrentTime } = useTime()
+  const { initCabinetData } = useCabinet()
+  const { checkActivationCode } = useEncryption()
+  const { init: initAccessDoor } = useDoor()
 
   onMounted(async () => {
-    getNetworkStatus()
     checkActivationCode()
     // 生成当前时间
     startGenerateCurrentTime()

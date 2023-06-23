@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHashHistory } from 'vue-router'
+
 import Index from '@/pages/index.vue'
 import Login from '@/pages/login.vue'
 import Main from '@/pages/main.vue'

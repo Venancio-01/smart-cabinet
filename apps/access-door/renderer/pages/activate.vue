@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import useListenEnter from '@/hooks/useListenEnter'
-import { generateRegistrationCode, generateActivationCode, saveActivationCode } from '@/features/encryption'
+import useEncryption from '@/hooks/useEncryption'
 import createAlert from '@/components/BaseAlert'
 
 const router = useRouter()
 const { addListenEnter, removeListenEnter } = useListenEnter()
+const { generateRegistrationCode, generateActivationCode, saveActivationCode } = useEncryption()
 
 const registrationCode = ref('')
 const userInputActivationCode = ref('')

@@ -1,13 +1,17 @@
 import type { DocDocument } from 'database'
 import { useStore } from '@/store'
-import { useCheckStore } from '@/store/check'
 
 export default function () {
   const store = useStore()
-  const { setMisPlaceCarrierData, setCarrierList } = store
+  const {
+    setMisPlaceCarrierData,
+    setCarrierList,
+    setFirstCarrierRecord,
+    setFirstMisPlaceCarrierRecord,
+    setEndCarrierRecord,
+    setEndMisPlaceCarrierRecord,
+  } = store
   const { user, carrierList, misPlaceCarrierData } = storeToRefs(store)
-  const checkStore = useCheckStore()
-  const { setFirstCarrierRecord, setFirstMisPlaceCarrierRecord, setEndCarrierRecord, setEndMisPlaceCarrierRecord } = checkStore
 
   const getCarriers = async () => {
     const carrierList = await window.JSBridge.carrier.selectDocDocumentList()

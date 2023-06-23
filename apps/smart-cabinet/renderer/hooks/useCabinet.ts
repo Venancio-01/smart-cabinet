@@ -1,18 +1,13 @@
 import { CHECK_TIME } from 'utils/config/renderer'
 import useLock from './useLock'
-import useTime from './useTime'
 import { useStore } from '@/store'
-import { useCheckStore } from '@/store/check'
 
 export default function () {
   const router = useRouter()
   const store = useStore()
-  const { setCurrentCabinet, setCabinetDoorList, setCabinetDoor } = store
+  const { setCurrentCabinet, setCabinetDoorList, setCabinetDoor, addLastOperationCabinetDoorRecords } = store
   const { isLockControlConnected, currentCabinet } = storeToRefs(store)
-  const checkStore = useCheckStore()
-  const { addLastOperationCabinetDoorRecords } = checkStore
   const { openLock } = useLock()
-  const { resetOperationTimeoutCountdown } = useTime()
 
   /**
    * @description: 获取柜体信息

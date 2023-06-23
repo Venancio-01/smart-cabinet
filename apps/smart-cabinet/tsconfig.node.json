@@ -2,6 +2,7 @@
   "extends": "config/tsconfig.node.json",
   "include": ["vite.coinfig.ts", "main/*", "main/**/*", "types/*.ts", "types/*.d.ts"],
   "compilerOptions": {
+    "composite": true,
     "target": "ESNext",
     "module": "ESNext",
     "baseUrl": ".",

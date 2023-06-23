@@ -30,7 +30,10 @@
   "scripts": {
     "package": "tsup"
   },
-  "dependencies": {},
+  "dependencies": {
+    "crypto-js": "^4.1.1",
+    "node-machine-id": "^1.1.12"
+  },
   "devDependencies": {
     "config": "workspace:^"
   }

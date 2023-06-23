@@ -1,4 +1,3 @@
-
 export default {
   clean: true,
   dts: true,

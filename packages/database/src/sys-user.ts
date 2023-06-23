@@ -1,12 +1,14 @@
-import type { SysUser } from '.'
+import type { Prisma, SysUser } from '.'
 import { prisma } from '.'
 
 /**
  * @description: 获取用户列表
  * @return {*}
  */
-export function selectSysUserList() {
-  return prisma.sysUser.findMany()
+export function selectSysUserList(condition?: Prisma.SysUserWhereInput) {
+  return prisma.sysUser.findMany({
+    where: condition,
+  })
 }
 
 /**
@@ -14,7 +16,7 @@ export function selectSysUserList() {
  * @param {Partial} condition
  * @return {*}
  */
-export function selectSysUser(condition: Partial<SysUser>) {
+export function selectSysUser(condition: Prisma.SysUserWhereInput) {
   return prisma.sysUser.findFirst({
     where: condition,
   })
@@ -26,7 +28,7 @@ export function selectSysUser(condition: Partial<SysUser>) {
  * @param {Partial} data
  * @return {*}
  */
-export function updateSysUser(condition: Partial<SysUser>, data: Partial<SysUser>) {
+export function updateSysUser(condition: Prisma.SysUserWhereInput, data: Partial<SysUser>) {
   return prisma.sysUser.updateMany({
     where: condition,
     data,

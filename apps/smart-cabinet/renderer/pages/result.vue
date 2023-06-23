@@ -4,7 +4,6 @@ import dayjs from 'dayjs'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import type { DocDocument, RfidSwitchRecord } from 'database'
 import { useStore } from '@/store'
-import { useCheckStore } from '@/store/check'
 import useCheck from '@/hooks/useCheck'
 import useCheckRecord from '@/hooks/useCheckRecord'
 import useTime from '@/hooks/useTime'
@@ -12,19 +11,11 @@ import BackButton from '@/components/BackButton.vue'
 
 const router = useRouter()
 const store = useStore()
-const { isLoggedIn, userList, cabinetDoorList, departmentList } = storeToRefs(store)
-const checkStore = useCheckStore()
-const { addLastOperationCabinetDoorRecords } = checkStore
-const { checkResultList, lastOperationCabinetDoorList } = storeToRefs(checkStore)
+const { addLastOperationCabinetDoorRecords } = store
+const { isLoggedIn, userList, cabinetDoorList, departmentList, checkResultList, lastOperationCabinetDoorList } = storeToRefs(store)
 const { handleCheck } = useCheck()
 const { resetCheckRecord, resetCheckResult } = useCheckRecord()
-const {
-  resetOperationTimeoutCountdown,
-  resetConfirmationTimeCountdown,
-  openOperationTimeoutCountdown,
-  closeConfirmationTimeCountdown,
-  confirmTimeout,
-} = useTime()
+const { resetConfirmationTimeCountdown, openOperationTimeoutCountdown, closeConfirmationTimeCountdown, confirmTimeout } = useTime()
 
 // 统计信息
 const statisticsData = computed(() => {

@@ -1,5 +1,5 @@
 import type { DoorAccessRecords, DoorEquipment } from 'database'
-import { sendIpcToRenderer } from 'utils'
+import { sendIpcToRenderer } from 'utils/electron'
 import { INTERVAL_THRESHOLD } from 'utils/config/main'
 import { addAccessRecord, fetchRegistrationRecords, getCurrentAccessDoorDevice, updateAccessRecord } from '../access-door'
 import { generateAntennaCommand } from './utils'

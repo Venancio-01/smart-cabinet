@@ -1,7 +1,6 @@
 import { debounce, uniq, uniqBy } from 'lodash-es'
-import type { DocDocument, DoorAccessRecords, DoorAlarmrecord, DoorEquipment, DoorRfidrecord, door_rfid_register } from 'database'
+import { selectDocDocumentList, type DocDocument, type DoorAccessRecords, type DoorAlarmrecord, type DoorEquipment, type DoorRfidrecord, type door_rfid_register } from 'database'
 import { addAlarmRecord, addReadRecord, fetchRegistrationRecords, getCurrentAccessDoorDevice } from '../access-door'
-import { getCarriers } from '../carrier'
 import { getDepartmentById } from '../sys'
 import { generateCRC16Code } from './utils'
 import ProtocolMap from './protocol-map'
@@ -87,7 +86,7 @@ export function parseTIDReportData(message: MessageQueue): RFIDParseType[] {
  */
 const fetchCarriers = debounce(
   async () => {
-    const result = await getCarriers()
+    const result = await selectDocDocumentList()
     return result
   },
   DETECTION_DURATION,
