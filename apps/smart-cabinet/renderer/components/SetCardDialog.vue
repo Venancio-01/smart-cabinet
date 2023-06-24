@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { VDialog, VIcon } from 'components'
 import useListenEnter from '@/hooks/useListenEnter'
 import AnimationInput from '@/components/AnimationInput.vue'
 import createAlert from '@/components/BaseAlert'
@@ -74,14 +75,14 @@ function onClose() {
 </script>
 
 <template>
-  <BaseDialog v-model:visible="show" title="设置卡号" :footer="null" centered @close="onClose">
+  <VDialog v-model:visible="show" title="设置卡号" :footer="null" centered @close="onClose">
     <div class="h-full pb-20px">
       <div class="flex justify-center">
-        <BaseIcon icon="card" class="icon-large text-white" />
+        <VIcon icon="card" class="icon-large text-white" />
       </div>
       <div class="flex justify-center items-center">
         <AnimationInput ref="inputRef" v-model:value="cardNumber" class="w-[500px] mt-[10px]" label="请刷卡设置卡号" />
       </div>
     </div>
-  </BaseDialog>
+  </VDialog>
 </template>

@@ -6,16 +6,9 @@ export default function () {
   const { setBackgroundUrl, setDepartmentList } = store
 
   const getDepartmentList = async () => {
-    const departments = await window.JSBridge.sys.getDepartmentData()
+    const departments = await window.JSBridge.sys.selectSysDeptList()
     setDepartmentList(departments)
     return departments
-  }
-
-  const getDepartmentsByCondition = async (params: UserQueryProps) => {
-    const list = await window.JSBridge.sys.getDepartmentsByCondition({
-      ...params,
-    })
-    return list
   }
 
   const getBackgroundImage = async () => {
@@ -30,7 +23,6 @@ export default function () {
 
   return {
     initSysData,
-    getDepartmentsByCondition,
     getDepartmentList,
     getBackgroundImage,
   }

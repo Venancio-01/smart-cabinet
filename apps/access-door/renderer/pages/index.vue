@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { VTitle } from 'components'
 import { SYSTEM_NAME } from '@/config'
 import { useStore } from '@/store'
 import useTime from '@/hooks/useTime'
@@ -28,9 +29,7 @@ onMounted(() => {
     </div>
 
     <!-- 系统名 -->
-    <div :class="titleClass" text="6xl" p="t-34">
-      {{ SYSTEM_NAME }}
-    </div>
+    <VTitle :title="SYSTEM_NAME" p="t-34"></VTitle>
     <!-- 设备名 -->
     <div :class="titleClass" text="5xl" p="t-28">
       {{ deviceName }}

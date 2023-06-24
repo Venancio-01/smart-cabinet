@@ -1,10 +1,9 @@
 <script lang="ts" setup>
+import { VIcon } from 'components'
 import { useStore } from '@/store'
 import useLogin from '@/hooks/useLogin'
 import useVerify from '@/hooks/useVerify'
 import useCheck from '@/hooks/useCheck'
-
-import BaseIcon from '@/components/BaseIcon.vue'
 
 interface Props {
   visible: boolean
@@ -100,7 +99,7 @@ const roleName = computed(() => {
 
     <div class="">
       <div class="mt-[40px] mb-[4px] flex justify-center">
-        <BaseIcon icon="user" class="text-[60px] text-light" />
+        <VIcon icon="user" class="text-[60px] text-light" />
       </div>
       <div class="flex justify-center items-center flex-col text-light">
         <div class="font-large mb-[4px]">

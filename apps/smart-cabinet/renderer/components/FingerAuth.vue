@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { VIcon } from 'components'
 import useFinger from '@/hooks/useFinger'
 import { useStore } from '@/store'
 import createAlert from '@/components/BaseAlert'
@@ -40,7 +41,7 @@ onUnmounted(async () => {
 <template>
   <div class="h-full">
     <div class="flex justify-center">
-      <BaseIcon icon="zhiwen" class="text-[140px] text-white" />
+      <VIcon icon="zhiwen" class="text-[140px] text-white" />
     </div>
     <div class="flex justify-center items-center mt-12 text-xl">
       {{ message }}

@@ -37,7 +37,7 @@ export function generateBinaryString(numbers: number[]) {
  * @return {*}
  */
 export function binaryToHex(binary: string): string {
-  const hex = parseInt(binary, 2).toString(16).toUpperCase()
+  const hex = Number.parseInt(binary, 2).toString(16).toUpperCase()
   return hex.padStart(8, '0')
 }
 

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import BaseDialog from './BaseDialog.vue'
+import {VDialog} from 'components'
 import { useStore } from '@/store'
 
 interface Props {
@@ -23,7 +23,7 @@ const show = computed({
 </script>
 
 <template>
-  <BaseDialog v-model:visible="show" title="RFID状态">
+  <VDialog v-model:visible="show" title="RFID状态">
     <div class="state-bar pt-[20px]">
       <div class="label">当前状态：</div>
       <div class="content">
@@ -41,7 +41,7 @@ const show = computed({
     <template #footer>
       <a-button type="primary" @click="show = false"> 确 定 </a-button>
     </template>
-  </BaseDialog>
+  </VDialog>
 </template>
 
 <style scoped>

@@ -18,7 +18,9 @@ export default function () {
 
   // 获取未查看的出入记录总数
   const fetchUnviewedAccessRecordCount = async () => {
-    const result = await window.JSBridge.accessDoor.fetchUnviewedAccessRecordCount()
+    const result = await window.JSBridge.accessDoor.selectDoorAlarmRecordCount({
+      isOperation: '0',
+    })
     setUnviewedAccessRecordCount(result)
   }
 

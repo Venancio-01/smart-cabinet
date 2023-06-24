@@ -5,6 +5,15 @@
   "author": "",
   "license": "ISC",
   "keywords": [],
-  "main": "index.js",
-  "scripts": {}
+  "main": "./index.ts",
+  "module": "./index.ts",
+  "types": "./index.ts",
+  "scripts": {
+    "package": "vite build"
+  },
+  "devDependencies": {
+    "config": "workspace:*",
+    "utils": "workspace:*",
+    "vue": "^3.3.4"
+  }
 }

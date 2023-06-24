@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { VDialog } from 'components'
 import { useStore } from '@/store'
 import createAlert from '@/components/BaseAlert'
 
@@ -65,7 +66,7 @@ function handleClose() {
 </script>
 
 <template>
-  <BaseDialog v-model:visible="show" title="设置密码" centered @ok="handleSave" @close="handleClose">
+  <VDialog v-model:visible="show" title="设置密码" centered @ok="handleSave" @close="handleClose">
     <div class="flex text-lg">
       <span>登录账号：</span>
       <span>{{ loginName }}</span>
@@ -73,7 +74,7 @@ function handleClose() {
 
     <AnimationInput ref="input" v-model:value="formState.password" class="w-full my-8" label="请输入新密码：" type="password" />
     <AnimationInput v-model:value="formState.repeatPassword" class="w-full my-8" label="请确认新密码：" type="password" />
-  </BaseDialog>
+  </VDialog>
 </template>
 
 <style scoped></style>

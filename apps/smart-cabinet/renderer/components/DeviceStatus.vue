@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { VIcon } from 'components'
 import { useStore } from '@/store'
 
 const store = useStore()
@@ -19,7 +20,7 @@ const warnVisible = ref(false)
 
     <div class="flex h-[50px] items-center justify-end gap-4">
       <div v-show="misPlaceCarrierTotal !== 0" class="flex items-center justify-center">
-        <BaseIcon
+        <VIcon
           icon="warn"
           class="text-4xl"
           :class="misPlaceCarrierTotal === 0 ? 'text-light' : 'text-error-color'"
@@ -27,15 +28,15 @@ const warnVisible = ref(false)
       </div>
 
       <div v-show="hasUnConnectedRfid" class="flex items-center justify-center">
-        <BaseIcon icon="RFID" class="text-4xl text-error" @click="rfidVisible = true" />
+        <VIcon icon="RFID" class="text-4xl text-error" @click="rfidVisible = true" />
       </div>
 
       <div v-show="!isLockControlConnected" class="flex items-center justify-center">
-        <BaseIcon icon="lock" class="text-4xl text-error" @click="lockVisible = true" />
+        <VIcon icon="lock" class="text-4xl text-error" @click="lockVisible = true" />
       </div>
 
       <div v-show="!isNetworkConnected" class="flex items-center justify-center">
-        <BaseIcon icon="network" class="text-4xl text-error" @click="networkVisible = true" />
+        <VIcon icon="network" class="text-4xl text-error" @click="networkVisible = true" />
       </div>
     </div>
   </div>

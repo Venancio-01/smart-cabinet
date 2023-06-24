@@ -2,6 +2,7 @@
 import useListenEnter from '@/hooks/useListenEnter'
 import useEncryption from '@/hooks/useEncryption'
 import createAlert from '@/components/BaseAlert'
+import { VIcon } from 'components'
 
 const router = useRouter()
 const { addListenEnter, removeListenEnter } = useListenEnter()
@@ -54,7 +55,7 @@ onBeforeMount(() => {
 <template>
   <div class="flex flex-col items-center">
     <div class="flex justify-center mt-[120px]">
-      <BaseIcon icon="activate" class="text-[200px] text-light" />
+      <VIcon icon="activate" class="text-[200px] text-light" />
     </div>
 
     <div class="w-[500px] text-lg text-light mt-[20px]">

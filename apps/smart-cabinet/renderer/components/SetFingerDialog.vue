@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { VDialog, VIcon } from 'components'
 import useFinger from '@/hooks/useFinger'
 import { useStore } from '@/store'
 import createAlert from '@/components/BaseAlert'
@@ -69,17 +70,17 @@ watch(show, async (value) => {
 </script>
 
 <template>
-  <BaseDialog v-model:visible="show" :title="title" :footer="null" centered>
+  <VDialog v-model:visible="show" :title="title" :footer="null" centered>
     <div class="flex pb-20px">
       <div class="flex h-full items-center">
-        <BaseIcon icon="zhiwen" class="icon-large text-white" />
+        <VIcon icon="zhiwen" class="icon-large text-white" />
       </div>
 
       <div class="relative m-4 flex flex-1 select-none items-center justify-center rounded-lg text-white text-xl">
         {{ message }}
       </div>
     </div>
-  </BaseDialog>
+  </VDialog>
 </template>
 
 <style scoped>

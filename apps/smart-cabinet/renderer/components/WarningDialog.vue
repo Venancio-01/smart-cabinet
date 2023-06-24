@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import BaseDialog from './BaseDialog.vue'
+import { VDialog } from 'components'
 import { useStore } from '@/store'
 
 interface Props {
@@ -40,7 +40,7 @@ function handleClose() {
 </script>
 
 <template>
-  <BaseDialog
+  <VDialog
     v-model:visible="show"
     :title="misPlaceCarrierTotal === 0 ? '系统告警' : `系统告警（${active} / ${misPlaceCarrierTotal}）`"
     @close="handleClose">
@@ -65,7 +65,7 @@ function handleClose() {
     <template #footer>
       <a-button type="primary" @click="show = false"> 确 定 </a-button>
     </template>
-  </BaseDialog>
+  </VDialog>
 </template>
 
 <style scoped></style>

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { VIcon } from 'components'
 import useListenEnter from '@/hooks/useListenEnter'
 
 const emits = defineEmits(['complete'])
@@ -30,7 +31,7 @@ function handleFocus() {
 <template>
   <div class="h-full">
     <div class="flex justify-center">
-      <BaseIcon icon="card" class="icon-large text-white" />
+      <VIcon icon="card" class="icon-large text-white" />
     </div>
     <div class="flex justify-center items-center">
       <AnimationInput ref="cardNumberInput" v-model:value="cardNumber" class="w-[500px] mt-[10px]" label="请刷卡登录" />

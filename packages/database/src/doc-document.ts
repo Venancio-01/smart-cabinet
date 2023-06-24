@@ -3,9 +3,10 @@ import type { PaginationType } from 'utils'
 import type { DocDocument, Prisma } from '.'
 import { prisma } from '.'
 
-export async function selectDocDocumentList(): Promise<DocDocument[]>
+export async function selectDocDocumentList(condition?: Prisma.DocDocumentWhereInput): Promise<DocDocument[]>
 export async function selectDocDocumentList(
-  condition: Partial<PaginationType & DocDocument>,
+  condition?: Prisma.DocDocumentWhereInput,
+  pagination?: PaginationType,
 ): Promise<{ data: DocDocument[]; total: number }>
 /**
  * @description: 查询载体列表
@@ -13,18 +14,17 @@ export async function selectDocDocumentList(
  * @return {*}
  */
 export async function selectDocDocumentList(
-  condition?: Partial<PaginationType & DocDocument>,
+  condition?: Prisma.DocDocumentWhereInput,
+  pagination?: PaginationType,
 ): Promise<DocDocument[] | { data: DocDocument[]; total: number }> {
-  const pageCondition = getSkipAndTake(condition)
-
-  const query: Prisma.DocDocumentWhereInput = {
-    cabinetDoorId: condition?.cabinetDoorId,
-    docName: {
-      contains: condition?.docName,
-    },
-    docPStatus: condition?.docPStatus,
-    deptId: condition?.deptId,
-  }
+  // const query: Prisma.DocDocumentWhereInput = {
+  //   cabinetDoorId: condition?.cabinetDoorId,
+  //   docName: {
+  //     contains: condition?.docName,
+  //   },
+  //   docPStatus: condition?.docPStatus,
+  //   deptId: condition?.deptId,
+  // }
 
   // if (condition.state === 2) {
   //   const misPlaceDocuments = await getMisPlaceCarriers()
@@ -38,14 +38,15 @@ export async function selectDocDocumentList(
   //   query.docRfid = { notIn: rfids }
   // }
 
-  if (pageCondition) {
+  if (pagination) {
+    const skipAndTake = getSkipAndTake(pagination)
     const [data, total] = await Promise.all([
       prisma.docDocument.findMany({
-        ...pageCondition,
-        where: query,
+        ...skipAndTake,
+        where: condition,
       }),
       prisma.docDocument.count({
-        where: query,
+        where: condition,
       }),
     ])
 
@@ -55,7 +56,7 @@ export async function selectDocDocumentList(
     }
   } else {
     return prisma.docDocument.findMany({
-      where: query,
+      where: condition,
     })
   }
 }

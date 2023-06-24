@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { VIcon } from 'components'
+
 interface Props {
   index: number
   name: string
@@ -23,7 +25,7 @@ const hasMisPlace = computed(() => props.misPlaceNumber > 0)
 <template>
   <div class="rounded-md bg-white bg-opacity-20 p-4 text-light">
     <div class="flex justify-between">
-      <BaseIcon icon="door" class="text-4xl" :class="[hasMisPlace ? 'text-error' : 'text-white']" />
+      <VIcon icon="door" class="text-4xl" :class="[hasMisPlace ? 'text-error' : 'text-white']" />
       <div class="text-sm">
         {{ departmentName }}
       </div>

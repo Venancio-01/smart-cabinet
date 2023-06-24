@@ -2,7 +2,6 @@ import { ipcMain } from 'electron'
 import rfidService from './rfid'
 import sysService from './sys'
 import cabinetService from './cabinet'
-import carrierService from './carrier'
 import networkService from './network'
 import storeService from './store'
 import encryptionService from './encryption'
@@ -13,7 +12,6 @@ export const services = [
   rfidService,
   sysService,
   cabinetService,
-  carrierService,
   networkService,
   storeService,
   encryptionService,

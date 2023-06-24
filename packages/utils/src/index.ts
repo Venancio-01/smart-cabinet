@@ -22,23 +22,23 @@ export function generateCurrentTime() {
   return dayjs().format('YYYY-MM-DD HH:mm:ss')
 }
 
-export type PaginationType = {
+export interface PaginationType {
   page: number
   size: number
 }
 
 /**
  * @description: 获取分页的 skip 和 take
- * @param {Partial} condition
+ * @param {Partial} pagination
  * @return {*}
  */
-export function getSkipAndTake(condition?: Partial<PaginationType>): {
+export function getSkipAndTake(pagination?: Partial<PaginationType>): {
   skip?: number
   take?: number
 } | null {
-  if (!condition || !condition.page || !condition.size) return null
+  if (!pagination || !pagination.page || !pagination.size) return null
 
-  const { page, size } = condition
+  const { page, size } = pagination
   return { skip: (page - 1) * size, take: size }
 }
 

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { VIcon } from 'components'
 import { useStore } from '@/store'
 import useCabinet from '@/hooks/useCabinet'
 
@@ -21,7 +22,7 @@ const hasMisPlace = computed(() => {
 
 <template>
   <div class="rounded-2xl bg-white bg-opacity-20 text-light flex h-full items-center" @click="() => openCabinetDoor(cabinetDoor)">
-    <BaseIcon icon="door" class="text-[240px] flex-1" :class="[hasMisPlace ? 'text-error' : 'text-white']" />
+    <VIcon icon="door" class="text-[240px] flex-1" :class="[hasMisPlace ? 'text-error' : 'text-white']" />
     <div class="flex-1 h- flex flex-col justify-center items-center">
       <div class="-mt-[40px]">
         <div class="font-xl text-center">

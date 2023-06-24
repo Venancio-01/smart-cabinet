@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { VDialog } from 'components'
 import { useStore } from '@/store'
 import useVerify from '@/hooks/useVerify'
 import createAlert from '@/components/BaseAlert'
@@ -56,7 +57,7 @@ function handleCardComplete(cardNumber: string) {
 </script>
 
 <template>
-  <BaseDialog v-model:visible="show" title="身份校验" @close="handleClose">
+  <VDialog v-model:visible="show" title="身份校验" @close="handleClose">
     <a-tabs v-model:active-key="activeKey" destroy-inactive-tab-pane>
       <a-tab-pane key="1" tab="密码认证">
         <PasswordAuth ref="passwordAuthRef" class="h-[300px]" is-verify />
@@ -75,7 +76,7 @@ function handleCardComplete(cardNumber: string) {
         <a-button @click="handleClose"> 关闭 </a-button>
       </div>
     </template>
-  </BaseDialog>
+  </VDialog>
 </template>
 
 <style scoped>

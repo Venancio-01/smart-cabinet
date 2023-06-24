@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { Key } from 'ant-design-vue/lib/_util/type'
+import { VIcon } from 'components'
 import useTime from '@/hooks/useTime'
 import usePermission from '@/hooks/usePermission'
 import { useStore } from '@/store'
@@ -82,7 +83,7 @@ onUnmounted(() => {
           <span>秒后自动退出</span>
         </div>
 
-        <BaseIcon v-show="!visible" icon="menu" class="icon-button" @click="visible = true" />
+        <VIcon v-show="!visible" icon="menu" class="icon-button" @click="visible = true" />
       </div>
     </div>
 

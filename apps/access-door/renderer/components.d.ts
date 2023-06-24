@@ -21,7 +21,6 @@ declare module '@vue/runtime-core' {
     ASelectOption: typeof import('ant-design-vue/es')['SelectOption']
     ATable: typeof import('ant-design-vue/es')['Table']
     BackButton: typeof import('./components/BackButton.vue')['default']
-    BaseDialog: typeof import('./components/BaseDialog.vue')['default']
     BaseIcon: typeof import('./components/BaseIcon.vue')['default']
     BaseLoading: typeof import('./components/BaseLoading.vue')['default']
     DeviceStatus: typeof import('./components/DeviceStatus.vue')['default']

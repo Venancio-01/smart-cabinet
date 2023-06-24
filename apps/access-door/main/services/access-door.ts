@@ -1,7 +1,6 @@
 import type { DoorAccessRecords, DoorAlarmrecord, DoorEquipment, DoorRfidrecord } from 'database'
-import { getSkipAndTake } from 'utils'
-import { getLocalIpAddress } from 'utils'
-import { prisma } from 'database'
+import { getLocalIpAddress, getSkipAndTake } from 'utils'
+import { prisma, selectDoorAlarmRecordCount, selectDoorAlarmRecordList, selectDoorEquipmentList, updateDoorAlarmrecord } from 'database'
 import { AccessDirection, AccessHasAlarm, AccessTimeRange, AccessWithCarrier } from '~/enums'
 
 // 获取当前设备
@@ -9,19 +8,12 @@ let currentAccessDoorDevice: DoorEquipment | null = null
 export async function getCurrentAccessDoorDevice(): Promise<DoorEquipment | null> {
   if (currentAccessDoorDevice) return currentAccessDoorDevice
 
-  const devices = await prisma.doorEquipment.findMany()
+  const devices = await selectDoorEquipmentList()
   const ipList = getLocalIpAddress()
 
   currentAccessDoorDevice = devices.find((item) => item.addressip && ipList.includes(item.addressip)) || null
 
   return currentAccessDoorDevice
-}
-
-// 添加出入记录
-export async function addAccessRecord(data: Partial<DoorAccessRecords>): Promise<DoorAccessRecords> {
-  return prisma.doorAccessRecords.create({
-    data,
-  })
 }
 
 // 获取出入记录
@@ -82,17 +74,6 @@ export async function fetchAccessRecords(condition?: Partial<AccessRecordQueryPr
     data,
     total,
   }
-}
-
-export async function fetchUnviewedAccessRecordCount() {
-  const count = await prisma.doorAccessRecords.count({
-    where: {
-      has_alarm: 1,
-      is_viewed: 0,
-    },
-  })
-
-  return count
 }
 
 /**
@@ -191,9 +172,11 @@ const accessDoorService = {
   fns: {
     getCurrentAccessDoorDevice,
     fetchAccessRecords,
-    fetchUnviewedAccessRecordCount,
     updateAccessRecord,
+    updateDoorAlarmrecord,
     fetchAlarmRecords,
+    selectDoorAlarmRecordList,
+    selectDoorAlarmRecordCount,
     fetchReadRecords,
   },
 }

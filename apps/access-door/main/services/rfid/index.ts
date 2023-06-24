@@ -1,7 +1,7 @@
-import type { DoorAccessRecords, DoorEquipment } from 'database'
+import { type DoorAccessRecords, type DoorEquipment, insertDoorAccessRecord, updateDoorAlarmrecord } from 'database'
 import { sendIpcToRenderer } from 'utils/electron'
 import { INTERVAL_THRESHOLD } from 'utils/config/main'
-import { addAccessRecord, fetchRegistrationRecords, getCurrentAccessDoorDevice, updateAccessRecord } from '../access-door'
+import { fetchRegistrationRecords, getCurrentAccessDoorDevice, updateAccessRecord } from '../access-door'
 import { generateAntennaCommand } from './utils'
 import { generateCheckConnectionStatusCommand, generateSetGPOCommand, generteSetGPITriggerCommand } from './command'
 import type { Message } from './message'
@@ -160,12 +160,12 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
         directionCreateTime: new Date(),
         equipmentId: equipment.equipmentid,
         equipmentName: equipment.equipmentName,
-        carrier_count: 0,
-        has_alarm: 0,
-        is_viewed: 0,
+        // carrier_count: 0,
+        // has_alarm: 0,
+        // is_viewed: 0,
       }
 
-      currentAccessRecord = await addAccessRecord(data)
+      currentAccessRecord = await insertDoorAccessRecord(data)
 
       sendIpcToRenderer('go-check-page', isEntry ? 1 : isExit ? 2 : null)
     }
@@ -206,7 +206,12 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
           has_alarm: hasUnregistered ? 1 : 0,
         }
 
-        updateAccessRecord(currentAccessRecord.accessId, updateData)
+        updateDoorAlarmrecord(
+          {
+            accessId: currentAccessRecord.accessId,
+          },
+          updateData,
+        )
       }
 
       // 如果是进入状态

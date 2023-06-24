@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { VIcon } from 'components'
 import BackButton from '../components/BackButton.vue'
 import { useStore } from '@/store'
 import useViewCarriers from '@/hooks/useViewCarriers'
@@ -37,11 +38,11 @@ onMounted(() => {
 
     <div class="h-[200px] font-2xl flex-center-center">
       <div v-if="isLockControlConnected" class="text-light font-400 h-full flex-center-center">
-        <BaseIcon icon="chenggong" class="mr-4" />
+        <VIcon icon="chenggong" class="mr-4" />
         <span>柜门已打开</span>
       </div>
       <div v-else class="text-error font-400 h-full flex-center-center">
-        <BaseIcon icon="warn" class="text-error mr-4 font-2xl" />
+        <VIcon icon="warn" class="text-error mr-4 font-2xl" />
         <span>锁控板连接异常</span>
       </div>
     </div>

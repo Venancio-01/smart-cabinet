@@ -1,11 +1,19 @@
 import { debounce, uniq, uniqBy } from 'lodash-es'
-import { selectDocDocumentList, type DocDocument, type DoorAccessRecords, type DoorAlarmrecord, type DoorEquipment, type DoorRfidrecord, type door_rfid_register } from 'database'
+import {
+  type DocDocument,
+  type DoorAccessRecords,
+  type DoorAlarmrecord,
+  type DoorEquipment,
+  type DoorRfidrecord,
+  type DoorRfidregister,
+  selectDocDocumentList,
+  selectSysDept,
+} from 'database'
+import { DETECTION_DURATION } from 'utils/config/main'
 import { addAlarmRecord, addReadRecord, fetchRegistrationRecords, getCurrentAccessDoorDevice } from '../access-door'
-import { getDepartmentById } from '../sys'
 import { generateCRC16Code } from './utils'
 import ProtocolMap from './protocol-map'
 import type { Message, MessageQueue } from './message'
-import { DETECTION_DURATION } from 'utils/config/main'
 import type { AccessDirection } from '~/enums'
 
 /**
@@ -52,8 +60,8 @@ export function getEPCAndTIDFromReportData(data: string): RFIDParseType {
 
   const PREFIX = '5a00011200'
   str = str.replace(PREFIX, '')
-  const EPCLength = parseInt(`0x${str.substring(4, 8)}`, 16) * 2
-  const TIDLength = parseInt(`0x${str.substring(8 + EPCLength + 16, 8 + EPCLength + 16 + 4)}`, 16) * 2
+  const EPCLength = Number.parseInt(`0x${str.substring(4, 8)}`, 16) * 2
+  const TIDLength = Number.parseInt(`0x${str.substring(8 + EPCLength + 16, 8 + EPCLength + 16 + 4)}`, 16) * 2
 
   const TID = str.substring(8 + EPCLength + 16 + 4, 8 + EPCLength + 16 + 4 + TIDLength)
   const EPC = str.substring(8, 8 + EPCLength)
@@ -135,7 +143,7 @@ export const handleFetchRegistrationRecords = debounce(
  */
 export async function handleAddReadRecords(
   carriers: DocDocument[],
-  registrationRecords: door_rfid_register[],
+  registrationRecords: DoorRfidregister[],
   accessRecord: DoorAccessRecords,
   direction: AccessDirection,
 ) {
@@ -150,7 +158,11 @@ export async function handleAddReadRecords(
   for (let index = 0; index < carriers.length; index++) {
     const carrier = carriers[index]
     const departmentId = carrier.binding_dept_id
-    const department = departmentId ? await getDepartmentById(departmentId) : null
+    const department = departmentId
+      ? await selectSysDept({
+          deptId: departmentId,
+        })
+      : null
 
     const data: Partial<DoorRfidrecord> = {
       accessId: `${accessRecord.accessId}`,
@@ -188,7 +200,11 @@ export async function handleAddAlarmRecord(carriers: DocDocument[], equipment: D
     const element = carriers[index]
 
     const departmentId = element.binding_dept_id
-    const department = departmentId ? await getDepartmentById(departmentId) : null
+    const department = departmentId
+      ? await await selectSysDept({
+          deptId: departmentId,
+        })
+      : null
 
     const data: Partial<DoorAlarmrecord> = {
       accessId: `${accessRecord.accessId}`,

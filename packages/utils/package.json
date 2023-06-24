@@ -37,6 +37,11 @@
       "types": "./dist/electron/index.d.ts",
       "require": "./dist/electron/index.cjs",
       "import": "./dist/electron/index.js"
+    },
+    "./install": {
+      "types": "./dist/install/index.d.ts",
+      "require": "./dist/install/index.cjs",
+      "import": "./dist/install/index.js"
     }
   },
   "main": "./dist/index.js",
@@ -64,9 +69,15 @@
       ],
       "electron": [
         "./dist/electron/index.d.ts"
+      ],
+      "install": [
+        "./dist/install/index.d.ts"
       ]
     }
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "package": "tsup"
   },
@@ -75,6 +86,7 @@
   },
   "devDependencies": {
     "@types/node": "20.2.3",
-    "config": "workspace:^"
+    "config": "workspace:^",
+    "vue": "^3.3.4"
   }
 }

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { VIcon } from 'components'
 import useListenEnter from '@/hooks/useListenEnter'
 import useEncryption from '@/hooks/useEncryption'
 import createAlert from '@/components/BaseAlert'
@@ -54,7 +55,7 @@ onBeforeMount(() => {
 <template>
   <div class="flex flex-col items-center">
     <div class="flex justify-center mt-[120px]">
-      <BaseIcon icon="activate" class="text-[200px] text-white" />
+      <VIcon icon="activate" class="text-[200px] text-white" />
     </div>
 
     <div class="w-[500px] text-lg text-white mt-[20px]">

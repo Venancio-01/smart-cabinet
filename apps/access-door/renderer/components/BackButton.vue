@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { VIcon } from 'components'
+
 export interface Props {
   onBack?: (() => void) | null
 }
@@ -16,6 +18,6 @@ function handleBack() {
 
 <template>
   <div class="w-[48px] h-[48px] flex-center-center">
-    <BaseIcon icon="fanhui" class="text-light text-[32px] z-10" @click="handleBack" />
+    <VIcon icon="fanhui" class="text-light text-[32px] z-10" @click="handleBack" />
   </div>
 </template>
