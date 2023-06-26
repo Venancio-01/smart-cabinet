@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json.schemastore.org/swcrc",
+  "jsc": {
+    "baseUrl": "./main",
+    "paths": {
+      "@/*": [
+        "./main/*"
+      ]
+    },
+    "parser": {
+      "syntax": "typescript",
+      "tsx": false,
+      "decorators": true,
+      "dynamicImport": true
+    },
+    "target": "es2018"
+  },
+  "module": {
+    "type": "commonjs"
+  },
+  "sourceMaps": true,
+  "minify": false
+}

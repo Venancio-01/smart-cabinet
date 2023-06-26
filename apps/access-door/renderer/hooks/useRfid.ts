@@ -1,4 +1,3 @@
-// import { ipcRenderer } from 'electron'
 import { useStore } from '@/store'
 import type { AccessDirection } from '~/enums'
 
@@ -7,26 +6,9 @@ export default function () {
   const store = useStore()
   const { setRfidIsConnected, setCurrentReadRecordList, setLoadingVisible } = store
 
-  /**
-   * @description: 连接读写器
-   * @return {*}
-   */
-  const handleConnect = async () => {
-    try {
-      setRfidIsConnected(true)
-      return await window.JSBridge.rfid.handleConnect()
-    } catch (err) {
-      setRfidIsConnected(false)
-    }
-  }
-
-  /**
-   * @description: 断连读写器
-   * @param {string} address
-   * @return {*}
-   */
-  const handleDisConnect = async () => {
-    return await window.JSBridge.rfid.handleDisConnect()
+  async function getRfidConnectionStatus() {
+    const status = await window.JSBridge.rfid.getRfidConnectionStatus()
+    setRfidIsConnected(status)
   }
 
   /**
@@ -44,31 +26,30 @@ export default function () {
    * @return {*}
    */
   const regsterAlarmsListener = () => {
-    // ipcRenderer.on('go-check-page', (_, direction: AccessDirection) => {
-    //   setLoadingVisible(true)
-    //   router.replace({
-    //     path: '/check',
-    //     query: {
-    //       key: new Date().getTime(),
-    //       direction,
-    //     },
-    //   })
-    // })
+    window.electron.ipcRenderer.on('go-check-page', (_, direction: AccessDirection) => {
+      setLoadingVisible(true)
+      router.replace({
+        path: '/check',
+        query: {
+          key: new Date().getTime(),
+          direction,
+        },
+      })
+    })
 
-    // ipcRenderer.on('go-alarm-page', () => {
-    //   setLoadingVisible(true)
-    //   router.replace('/alarm')
-    // })
+    window.electron.ipcRenderer.on('go-alarm-page', () => {
+      setLoadingVisible(true)
+      router.replace('/alarm')
+    })
 
-    // ipcRenderer.on('get-read-data', async (_, data) => {
-    //   setCurrentReadRecordList(data)
-    //   setLoadingVisible(false)
-    // })
+    window.electron.ipcRenderer.on('get-read-data', async (_, data) => {
+      setCurrentReadRecordList(data)
+      setLoadingVisible(false)
+    })
   }
 
   return {
-    handleConnect,
-    handleDisConnect,
+    getRfidConnectionStatus,
     handleSetGPO,
     regsterAlarmsListener,
   }

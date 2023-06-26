@@ -1,14 +1,58 @@
-import type { Prisma, SysUser } from '.'
+import { Prisma } from '@prisma/client'
+import type { PaginationType } from 'utils'
+import { getSkipAndTake } from 'utils'
+import type { SysUser } from '.'
 import { prisma } from '.'
+
+const sysUserArgs = Prisma.validator<Prisma.SysUserArgs>()({
+  include: {
+    department: true,
+    userRole: {
+      include: {
+        role: true,
+      },
+    },
+  },
+})
+
+export type SysUserProps = Prisma.SysUserGetPayload<typeof sysUserArgs>
 
 /**
  * @description: 获取用户列表
  * @return {*}
  */
-export function selectSysUserList(condition?: Prisma.SysUserWhereInput) {
+export function selectSysUserList(condition?: Prisma.SysUserWhereInput): Promise<SysUserProps[]> {
   return prisma.sysUser.findMany({
     where: condition,
+    ...sysUserArgs,
   })
+}
+
+/**
+ * @description: 查询用户列表伴随分页
+ * @return {*}
+ */
+export async function selectSysUserListWithPage(
+  pagination: PaginationType,
+  condition?: Prisma.SysUserWhereInput,
+): Promise<{ data: SysUserProps[]; total: number }> {
+  const skipAndTake = getSkipAndTake(pagination)
+
+  const [data, total] = await Promise.all([
+    prisma.sysUser.findMany({
+      ...skipAndTake,
+      where: condition,
+      ...sysUserArgs,
+    }),
+    prisma.sysUser.count({
+      where: condition,
+    }),
+  ])
+
+  return {
+    data,
+    total,
+  }
 }
 
 /**
@@ -16,9 +60,10 @@ export function selectSysUserList(condition?: Prisma.SysUserWhereInput) {
  * @param {Partial} condition
  * @return {*}
  */
-export function selectSysUser(condition: Prisma.SysUserWhereInput) {
+export function selectSysUser(condition: Prisma.SysUserWhereInput): Promise<SysUserProps | null> {
   return prisma.sysUser.findFirst({
     where: condition,
+    include: sysUserArgs.include,
   })
 }
 

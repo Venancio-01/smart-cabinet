@@ -15,7 +15,7 @@ export default function () {
    */
   const getCurrentCabinet = async () => {
     const data = await window.JSBridge.cabinet.getCurrentCabinet()
-    data && setCurrentCabinet(data)
+    setCurrentCabinet(data)
   }
 
   /**

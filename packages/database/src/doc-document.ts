@@ -1,63 +1,56 @@
 import { getSkipAndTake } from 'utils'
 import type { PaginationType } from 'utils'
-import type { DocDocument, Prisma } from '.'
+import { Prisma } from '@prisma/client'
+import type { DocDocument } from '.'
 import { prisma } from '.'
 
-export async function selectDocDocumentList(condition?: Prisma.DocDocumentWhereInput): Promise<DocDocument[]>
-export async function selectDocDocumentList(
-  condition?: Prisma.DocDocumentWhereInput,
-  pagination?: PaginationType,
-): Promise<{ data: DocDocument[]; total: number }>
+const docDocumentArgs = Prisma.validator<Prisma.DocDocumentArgs>()({
+  include: {
+    department: {
+      select: {
+        deptName: true,
+      },
+    },
+  },
+})
+
+export type DocDocumentProps = Prisma.DocDocumentGetPayload<typeof docDocumentArgs>
+
 /**
- * @description: 查询载体列表
- * @param {*}
+ * @description: 获取载体列表
+ * @param {Prisma} condition
  * @return {*}
  */
-export async function selectDocDocumentList(
-  condition?: Prisma.DocDocumentWhereInput,
-  pagination?: PaginationType,
-): Promise<DocDocument[] | { data: DocDocument[]; total: number }> {
-  // const query: Prisma.DocDocumentWhereInput = {
-  //   cabinetDoorId: condition?.cabinetDoorId,
-  //   docName: {
-  //     contains: condition?.docName,
-  //   },
-  //   docPStatus: condition?.docPStatus,
-  //   deptId: condition?.deptId,
-  // }
+export async function selectDocDocumentList(condition?: Prisma.DocDocumentWhereInput): Promise<DocDocumentProps[]> {
+  return prisma.docDocument.findMany({
+    where: condition,
+    ...docDocumentArgs,
+  })
+}
 
-  // if (condition.state === 2) {
-  //   const misPlaceDocuments = await getMisPlaceCarriers()
-  //   const rfids = misPlaceDocuments.map((item) => item.operationId)
-  //   query.docPStatus = 1
-  //   query.docRfid = { in: rfids }
-  // } else if (condition.state === 1) {
-  //   const misPlaceDocuments = await getMisPlaceCarriers()
-  //   const rfids = misPlaceDocuments.map((item) => item.operationId)
-  //   query.docPStatus = 1
-  //   query.docRfid = { notIn: rfids }
-  // }
+/**
+ * @description: 使用分页查询载体列表
+ * @param {PaginationType} pagination
+ * @param {Prisma} condition
+ * @return {*}
+ */
+export async function selectDocDocumentListWithPage(pagination: PaginationType, condition?: Prisma.DocDocumentWhereInput) {
+  const skipAndTake = getSkipAndTake(pagination)
 
-  if (pagination) {
-    const skipAndTake = getSkipAndTake(pagination)
-    const [data, total] = await Promise.all([
-      prisma.docDocument.findMany({
-        ...skipAndTake,
-        where: condition,
-      }),
-      prisma.docDocument.count({
-        where: condition,
-      }),
-    ])
-
-    return {
-      data,
-      total,
-    }
-  } else {
-    return prisma.docDocument.findMany({
+  const [data, total] = await Promise.all([
+    prisma.docDocument.findMany({
+      ...skipAndTake,
       where: condition,
-    })
+      ...docDocumentArgs,
+    }),
+    prisma.docDocument.count({
+      where: condition,
+    }),
+  ])
+
+  return {
+    data,
+    total,
   }
 }
 

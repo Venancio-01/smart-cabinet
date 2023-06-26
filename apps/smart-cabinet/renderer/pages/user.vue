@@ -1,24 +1,24 @@
 <script lang="ts" setup>
 import type { ColumnsType } from 'ant-design-vue/es/table'
-import type { SysUser } from 'database'
+import type { Prisma, SysUser, SysUserProps } from 'database'
 import { useStore } from '@/store'
-import useSys from '@/hooks/useSys'
 
 const store = useStore()
-const { roleList, departmentList, userRoleList, currentCabinetDoorId } = storeToRefs(store)
-const { getUsersByCondition } = useSys()
+const { roleList, departmentList, currentCabinetDoorId } = storeToRefs(store)
 
 const condition = reactive<UserQueryProps>({
-  page: 1,
-  size: 7,
   userName: '',
   roleId: undefined,
-  departmentId: undefined,
+  deptId: undefined,
+})
+const pagination = reactive<PaginationType>({
+  page: 1,
+  size: 7,
 })
 
 const data = ref<SysUser[]>([])
 const total = ref(0)
-const columns: ColumnsType = [
+const columns: ColumnsType<SysUserProps> = [
   {
     title: '用户名称',
     dataIndex: 'userName',
@@ -29,7 +29,7 @@ const columns: ColumnsType = [
     dataIndex: 'deptId',
     key: 'deptId',
     customRender: ({ record }) => {
-      return departmentList.value.find((item) => item.deptId === record.deptId)?.deptName
+      return record?.department?.deptName
     },
   },
   {
@@ -37,30 +37,27 @@ const columns: ColumnsType = [
     dataIndex: 'roleId',
     key: 'roleId',
     customRender: ({ record }) => {
-      const roleId = userRoleList.value.find((userRole) => userRole.userId === record.userId)?.roleId
-      if (!roleId) return ''
-
-      return roleList.value.find((role) => role.roleId === roleId)?.roleName
+      return record?.userRole?.[0]?.role?.roleName
     },
   },
 ]
 
 async function onPageChange(page: number) {
-  condition.page = page
+  pagination.page = page
 
   getUserList()
 }
 
 async function handleSearch() {
-  condition.page = 1
+  pagination.page = 1
 
   getUserList()
 }
 
 function handleInit() {
-  condition.page = 1
+  pagination.page = 1
   condition.userName = ''
-  condition.departmentId = undefined
+  condition.deptId = undefined
   condition.roleId = undefined
   data.value = []
 
@@ -68,7 +65,19 @@ function handleInit() {
 }
 
 async function getUserList() {
-  data.value = await getUsersByCondition(condition)
+  const query: Prisma.SysUserWhereInput = {
+    userName: condition.userName ? { contains: condition.userName } : undefined,
+    deptId: condition.deptId,
+    userRole: {
+      some: {
+        roleId: condition.roleId,
+      },
+    },
+  }
+
+  const { data: _data, total: _total } = await window.JSBridge.sys.selectSysUserListWithPage(toRaw(pagination), query)
+  data.value = _data
+  total.value = _total
 }
 
 onMounted(() => {
@@ -91,7 +100,7 @@ onMounted(() => {
         </a-form-item>
 
         <a-form-item v-show="currentCabinetDoorId === 0" label="所属机构">
-          <a-select v-model:value="condition.departmentId" allow-clear @change="handleSearch">
+          <a-select v-model:value="condition.deptId" allow-clear @change="handleSearch">
             <a-select-option v-for="item in departmentList" :key="item.deptId" :value="item.deptId">
               {{ item.deptName }}
             </a-select-option>
@@ -117,8 +126,8 @@ onMounted(() => {
       :data-source="data"
       :columns="columns"
       :pagination="{
-        current: condition.page,
-        pageSize: condition.size,
+        current: pagination.page,
+        pageSize: pagination.size,
         total,
         onChange: onPageChange,
       }">

@@ -1,21 +1,19 @@
 <script lang="ts" setup>
 import { VIcon } from 'components'
 import useListenEnter from '@/hooks/useListenEnter'
-import useEncryption from '@/hooks/useEncryption'
 import createAlert from '@/components/BaseAlert'
 
 const router = useRouter()
-const { generateRegistrationCode, generateActivationCode, saveActivationCode } = useEncryption()
 const { addListenEnter, removeListenEnter } = useListenEnter()
 
 const registrationCode = ref('')
 const userInputActivationCode = ref('')
 
 async function handleActive() {
-  const activationCode = await generateActivationCode()
+  const activationCode = await window.JSBridge.activation.generateActivationCode()
 
   if (userInputActivationCode.value === activationCode) {
-    saveActivationCode(activationCode)
+    window.JSBridge.store.set('activationCode', activationCode)
 
     createAlert('激活成功')
 
@@ -38,7 +36,7 @@ const labelWord = '请输入激活码'
 const labelWordArr = labelWord.split('')
 
 onMounted(async () => {
-  registrationCode.value = await generateRegistrationCode()
+  registrationCode.value = await window.JSBridge.activation.generateRegistrationCode()
 
   addListenEnter(handleActive)
 

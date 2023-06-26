@@ -10,7 +10,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emits = defineEmits(['update:visible'])
 const store = useStore()
-const { rfidIsOnline } = storeToRefs(store)
+const { rfidIsConnected } = storeToRefs(store)
 
 const show = computed({
   get: () => {
@@ -27,14 +27,14 @@ const show = computed({
     <div class="state-bar pt-[20px]">
       <div class="label">当前状态：</div>
       <div class="content">
-        {{ rfidIsOnline ? '连接成功' : '连接失败' }}
+        {{ rfidIsConnected ? '连接成功' : '连接失败' }}
       </div>
     </div>
 
-    <div v-if="!rfidIsOnline" class="state-bar">
+    <div v-if="!rfidIsConnected" class="state-bar">
       <div class="label">解决方案：</div>
       <div class="content">
-        {{ rfidIsOnline ? 'RFID 正常连接' : '检查RFID线缆是否正常，并尝试插拔后重新启动软件。' }}
+        {{ rfidIsConnected ? 'RFID 正常连接' : '检查RFID线缆是否正常，并尝试插拔后重新启动软件。' }}
       </div>
     </div>
 

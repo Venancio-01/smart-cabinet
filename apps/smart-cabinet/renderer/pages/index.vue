@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { CurrentTime } from 'components'
 import { SYSTEM_NAME } from '@/config'
 import StartButton from '@/components/StartButton.vue'
 import CarrierCountStatistics from '@/components/CarrierCountStatistics.vue'
@@ -14,6 +15,8 @@ function goLoginPage() {
 <template>
   <div class="relative flex h-full items-center justify-center">
     <div class="w-full h-full flex flex-col">
+      <!-- 当前时间 -->
+      <CurrentTime class="fixed top-[40px] right-[40px]" />
       <!-- 系统名 -->
       <div class="text-center select-none text-[48px] leading-[48px] pt-[40px] font-thin tracking-[10px] text-white">
         {{ SYSTEM_NAME }}

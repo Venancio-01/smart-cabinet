@@ -46,3 +46,16 @@ export function insertDoorAccessRecord(data: Prisma.DoorAccessRecordsCreateInput
     data,
   })
 }
+
+/**
+ * @description: 更新出入记录
+ * @param {Prisma.DoorAccessRecordsWhereInput} condition
+ * @param {Prisma.DoorAccessRecordsUpdateInput} data
+ * @return {*}
+ */
+export function updateDoorAccessRecord(condition: Prisma.DoorAccessRecordsWhereInput, data: Prisma.DoorAccessRecordsUpdateInput) {
+  return prisma.doorAccessRecords.updateMany({
+    where: condition,
+    data,
+  })
+}

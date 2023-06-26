@@ -12,6 +12,11 @@
       "types": "./dist/system/index.d.ts",
       "require": "./dist/system/index.cjs",
       "import": "./dist/system/index.js"
+    },
+    "./activation": {
+      "types": "./dist/activation/index.d.ts",
+      "require": "./dist/activation/index.cjs",
+      "import": "./dist/activation/index.js"
     }
   },
   "main": "./dist/index.js",
@@ -24,6 +29,9 @@
       ],
       "system": [
         "./dist/system/index.d.ts"
+      ],
+      "activation": [
+        "./dist/activation/index.d.ts"
       ]
     }
   },

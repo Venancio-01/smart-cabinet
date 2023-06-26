@@ -23,14 +23,14 @@ export default function () {
   const {
     cabinetDoorList,
     isChecking,
-    firstCarrierRecord,
-    endCarrierRecord,
-    endMisPlaceCarrierRecord,
+    initialCarrierList,
+    carrierList,
+    misPlaceCarrierList,
     lastOperationCabinetDoorRecords,
     lastOperationCabinetDoorList,
   } = storeToRefs(store)
   storeToRefs(store)
-  const { updateCarrier, recordDataWhenCheckEnd, recordDataWhenCheckStart } = useCarrier()
+  const { updateCarrier, init: refreshCarrierData, recordDataWhenCheckStart } = useCarrier()
   const {
     resetCountdowns,
     resetConfirmationTimeCountdown,
@@ -48,8 +48,8 @@ export default function () {
     const borrowCarriers: DocDocument[] = []
     const returnCarriers: DocDocument[] = []
 
-    firstCarrierRecord.value.forEach((item, index) => {
-      const endCarrier = endCarrierRecord.value[index]
+    initialCarrierList.value.forEach((item, index) => {
+      const endCarrier = carrierList.value[index]
       if (item.docPStatus === BorrowedState.Returned && endCarrier.docPStatus === BorrowedState.Borrowed) {
         borrowCarriers.push(endCarrier)
       } else if (item.docPStatus === BorrowedState.Borrowed && endCarrier.docPStatus === BorrowedState.Returned) {
@@ -58,7 +58,7 @@ export default function () {
     })
 
     // 生成错放文件数据
-    const misPlaceCarrierRecords = endMisPlaceCarrierRecord.value
+    const misPlaceCarrierRecords = misPlaceCarrierList.value
 
     const result: CheckResultType[] = cabinetDoorList.value.map((door) => {
       const currentDoorBorrowCarriers = borrowCarriers.filter((item) => item.cabinetDoorId === door.id)
@@ -129,8 +129,8 @@ export default function () {
    * @return {*}
    */
   const onAllCheckEnd = async () => {
-    // 记录盘点结束时的载体数据
-    await recordDataWhenCheckEnd()
+    // 盘点结束时刷新载体数据
+    await refreshCarrierData()
 
     // 记录本次盘点操作的的柜门
     changeLastOperationCabinetDoorList(lastOperationCabinetDoorRecords.value)

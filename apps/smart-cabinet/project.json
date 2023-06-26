@@ -1,0 +1,12 @@
+{
+  "name": "smart-cabinet",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/smart-cabinet/main",
+  "projectType": "library",
+  "targets": {
+    "dev:main": {
+      "command": ""
+    }
+  },
+  "tags": []
+}

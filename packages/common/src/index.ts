@@ -1,2 +1,2 @@
 export * from './system'
-export * from './encryption'
+export * from './activation'

@@ -1,7 +1,7 @@
 import { join } from 'path'
 import { BrowserWindow, app, shell } from 'electron'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
-import { WINDOW_SIZE, ICON_PATH } from 'utils/config/main'
+import { ICON_PATH, WINDOW_SIZE } from 'utils/config/main'
 
 let win: BrowserWindow | null = null
 
@@ -41,8 +41,4 @@ export async function createWindow() {
   })
 
   return win
-}
-
-export function sendMainProcessMessage(channel: string, ...args: any[]) {
-  win?.webContents.send(channel, ...args)
 }

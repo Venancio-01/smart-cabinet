@@ -106,10 +106,10 @@ const roleName = computed(() => {
           {{ user?.userName }}
         </div>
         <div class="font-small">
-          {{ departmentName }}
+          {{ user?.department?.deptName }}
         </div>
         <div class="font-small mb-[8px]">
-          {{ roleName }}
+          {{ user?.userRole?.[0]?.role?.roleName }}
         </div>
       </div>
     </div>

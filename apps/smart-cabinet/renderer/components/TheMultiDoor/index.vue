@@ -5,7 +5,7 @@ import { useStore } from '@/store'
 import useCabinet from '@/hooks/useCabinet'
 
 const store = useStore()
-const { cabinetDoorList, carrierList, departmentList, misPlaceCarrierData } = storeToRefs(store)
+const { cabinetDoorList, carrierList, misPlaceCarrierList } = storeToRefs(store)
 const { openCabinetDoor } = useCabinet()
 
 /**
@@ -17,7 +17,7 @@ const doorList = computed(() => {
   return cabinetDoorList.value.map((door) => {
     const totalCarriers = carrierList.value.filter((item) => item.cabinetDoorId === door.id)
     const inPlaceCarriers = totalCarriers.filter((item) => item.docPStatus === BorrowedState.Returned)
-    const misPlaceCarries = misPlaceCarrierData.value.filter((item) => Number(item.cabinetDoorId) === door.id)
+    const misPlaceCarries = misPlaceCarrierList.value.filter((item) => Number(item.cabinetDoorId) === door.id)
 
     return {
       ...door,
@@ -27,13 +27,6 @@ const doorList = computed(() => {
     }
   })
 })
-
-function generateDepartmentName(departmentId: number) {
-  // @ts-expect-error bigint
-  const department = departmentList.value.find((item) => item.deptId === departmentId)
-
-  return department ? department.deptName : ''
-}
 </script>
 
 <template>

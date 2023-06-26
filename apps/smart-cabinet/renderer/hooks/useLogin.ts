@@ -1,5 +1,4 @@
-import type { SysUser } from 'database'
-import useSys from './useSys'
+import type { SysUserProps } from 'database'
 import { useStore } from '@/store'
 import createAlert from '@/components/BaseAlert'
 import useTime from '@/hooks/useTime'
@@ -13,7 +12,6 @@ export default function () {
   const router = useRouter()
   const store = useStore()
   const { setIsLoggedIn, setUserData } = store
-  const { getUserData } = useSys()
   const { openOperationTimeoutCountdown, closeOperationTimeoutCountdown } = useTime()
 
   /**
@@ -21,7 +19,7 @@ export default function () {
    * @param {UserProps} userData
    * @return {*}
    */
-  const handleLogin = (userData: SysUser) => {
+  const handleLogin = (userData: SysUserProps) => {
     setIsLoggedIn(true)
     setUserData(userData)
     openOperationTimeoutCountdown()
@@ -49,7 +47,9 @@ export default function () {
   }
 
   const handleFingerLogin = async (userId: bigint) => {
-    const user = await getUserData(userId)
+    const user = await window.JSBridge.sys.selectSysUser({
+      userId,
+    })
     handleLogin(user)
   }
 

@@ -8,7 +8,7 @@ import carrierService from './carrier'
 import networkService from './network'
 import updateService from './update'
 import storeService from './store'
-import encryptionService from './encryption'
+import activationService from './activation'
 import logService from './logger'
 
 export const services = [
@@ -21,7 +21,7 @@ export const services = [
   networkService,
   updateService,
   storeService,
-  encryptionService,
+  activationService,
   logService,
 ]
 

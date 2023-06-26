@@ -56,14 +56,14 @@ declare global {
     state?: number
   }
 
-  type UserQueryProps = PaginationType & {
+  type UserQueryProps = {
     userName?: string
-    departmentId?: number
+    deptId?: number
     roleId?: number
   }
 
-  type DepartmentQueryProps = PaginationType & {
-    departmentName?: string
+  type DepartmentQueryProps = {
+    deptName?: string
   }
 
   type CheckResultType = CabinetDoorProps & {

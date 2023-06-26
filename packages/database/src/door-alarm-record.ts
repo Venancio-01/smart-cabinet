@@ -67,3 +67,25 @@ export function updateDoorAlarmrecord(
     data,
   })
 }
+
+/**
+ * @description: 插入通道门报警记录
+ * @param {Prisma.DoorAlarmrecordCreateInput} data
+ * @return {*}
+ */
+export function insertDoorAlarmrecord(data: Prisma.DoorAlarmrecordCreateInput) {
+  return prisma.doorAlarmrecord.create({
+    data,
+  })
+}
+
+/**
+ * @description: 插入通道门报警记录列表
+ * @param {Prisma.DoorAlarmrecordCreateInput[]} data
+ * @return {*}
+ */
+export function insertDoorAlarmrecordList(data: Prisma.DoorAlarmrecordCreateInput[]) {
+  return prisma.doorAlarmrecord.createMany({
+    data,
+  })
+}

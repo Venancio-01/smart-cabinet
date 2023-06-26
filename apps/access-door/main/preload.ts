@@ -1,4 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron'
+import { electronAPI } from '@electron-toolkit/preload'
 import { makeChannelName, services } from '@/services'
 import './base/loading'
 
@@ -14,6 +15,5 @@ function createJsBridge() {
 }
 
 // Custom APIs for renderer
-const api = createJsBridge()
-
-contextBridge.exposeInMainWorld('JSBridge', api)
+contextBridge.exposeInMainWorld('JSBridge', createJsBridge())
+contextBridge.exposeInMainWorld('electron', electronAPI)

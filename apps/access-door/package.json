@@ -32,6 +32,8 @@
     "serialport": "^11.0.0"
   },
   "devDependencies": {
+    "@electron-toolkit/preload": "^2.0.0",
+    "@iconify-json/carbon": "^1.1.18",
     "@types/lodash-es": "^4.17.7",
     "@vitejs/plugin-vue": "^4.2.3",
     "animate.css": "^4.1.1",

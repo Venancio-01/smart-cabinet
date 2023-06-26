@@ -1,14 +1,15 @@
 import {
   insertRfidTipsAlarmRecord,
   selectDocDocumentList,
+  selectDocDocumentListWithPage,
   selectRfidTipsAlarmRecordList,
   selectRfidTipsAlarmRecordListCount,
   updateDocDocument,
   updateRfidTipsAlarmRecord,
 } from 'database'
-import type { RfidTipsAlarmRecord } from 'database'
+import type { RfidCabinetdoor, RfidTipsAlarmRecord } from 'database'
 import { getReportData } from './rfid'
-import { currentCabinet } from './cabinet'
+import { currentCabinet, getCurrentCabinet } from './cabinet'
 import { AlarmContentType, AlarmObjectType, AlarmType, OperationStatus } from '~/enums'
 
 export enum BorrowedState {
@@ -16,14 +17,15 @@ export enum BorrowedState {
   Borrowed,
 }
 
-function getMisPlaceCarriers(cabinetDoorID?: number) {
+async function getMisPlaceCarrierList() {
+  const cabinetId = (await getCurrentCabinet())?.id
   return selectRfidTipsAlarmRecordList({
     isOperation: OperationStatus.Unoperated,
-    doorid: cabinetDoorID,
+    doorid: cabinetId,
   })
 }
 
-async function updateCarrier(cabinetDoor: CabinetDoorProps, userId?: bigint) {
+async function updateCarrier(cabinetDoor: RfidCabinetdoor, userId?: bigint) {
   if (!cabinetDoor.txAddr) return
 
   const TIDList = getReportData(cabinetDoor.txAddr)
@@ -35,7 +37,6 @@ async function updateCarrier(cabinetDoor: CabinetDoorProps, userId?: bigint) {
 
   for (let i = 0; i < documents.length; i++) {
     const doc = documents[i]
-    if (!doc.docRfid || !userId) continue
 
     // 如果不是本柜门文件
     if (doc.cabinetDoorId !== cabinetDoor.id) {
@@ -64,7 +65,7 @@ async function updateCarrier(cabinetDoor: CabinetDoorProps, userId?: bigint) {
         groupid: doc.userId,
         docId: doc.docId,
         docCarName: doc.docName,
-        deptName: '',
+        deptName: doc.department.deptName,
         carUserName: '',
         cabName: '',
         cabdoorName: '',
@@ -75,8 +76,8 @@ async function updateCarrier(cabinetDoor: CabinetDoorProps, userId?: bigint) {
       }
       await insertRfidTipsAlarmRecord(data)
     } else {
-      const isDocumentDetected = TIDList.includes(doc.docRfid)
-      if (!isDocumentDetected) continue
+      const isDetectedDocument = TIDList.includes(doc.docRfid)
+      if (!isDetectedDocument) continue
 
       const updatedDocPStatus = doc.docPStatus === BorrowedState.Borrowed ? BorrowedState.Returned : BorrowedState.Borrowed
       await updateDocDocument(
@@ -92,7 +93,7 @@ async function updateCarrier(cabinetDoor: CabinetDoorProps, userId?: bigint) {
     }
   }
 
-  const misPlaceDocuments = await getMisPlaceCarriers()
+  const misPlaceDocuments = await getMisPlaceCarrierList()
   for (let i = 0; i < misPlaceDocuments.length; i++) {
     const doc = misPlaceDocuments[i]
     if (!doc.operationid) continue
@@ -114,7 +115,8 @@ const carrierService = {
   name: 'carrier' as const,
   fns: {
     selectDocDocumentList,
-    getMisPlaceCarriers,
+    selectDocDocumentListWithPage,
+    getMisPlaceCarrierList,
     updateCarrier,
   },
 }

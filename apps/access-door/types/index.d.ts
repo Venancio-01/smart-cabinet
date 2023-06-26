@@ -11,6 +11,7 @@ import {
 } from 'database'
 import type { ServiceType } from '../main/services/index'
 export {}
+import type { electronAPI } from '@electron-toolkit/preload'
 
 type JSBridgeType = {
   [name in ServiceType[number]['name']]: ServiceType[number] extends infer T ? (T extends { name: name; fns: infer F } ? F : never) : never
@@ -21,6 +22,7 @@ declare global {
   
   interface Window {
     JSBridge: JSBridgeType
+    electron: electronAPI
   }
 
   type PaginationType = {
@@ -28,7 +30,7 @@ declare global {
     size: number
   }
 
-  type AccessRecordQueryProps = PaginationType & {
+  type AccessRecordQueryProps = {
     accessDirection: AccessDirection
     hasAlarm: AccessDirection
     timeRange?: AccessTimeRange

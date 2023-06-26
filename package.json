@@ -14,7 +14,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "format": "prettier --write .",
-    "init-db": "nx init-db database",
+    "db": "nx db database",
     "clear": "find ./ -name 'node_modules' -type d -prune -exec rm -rf {}",
     "up": "npx taze latest",
     "package": "nx run-many -t package --exclude database && nx package database && ni"
@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.39.5",
+    "@nx/esbuild": "16.3.2",
     "@nx/js": "16.3.2",
     "@nx/vite": "^16.3.2",
     "@swc/core": "^1.3.66",
@@ -32,6 +33,7 @@
     "@typescript-eslint/eslint-plugin": "^5.60.0",
     "@typescript-eslint/parser": "^5.60.0",
     "@vitest/ui": "^0.31.0",
+    "esbuild": "^0.17.17",
     "eslint": "~8.43.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",

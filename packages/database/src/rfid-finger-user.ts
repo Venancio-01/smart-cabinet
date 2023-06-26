@@ -36,8 +36,8 @@ export function insertRfidFingerUser(data: Partial<RfidFingerUser>) {
  * @param {Partial} data
  * @return {*}
  */
-export function updateRfidFingerUser(condition: Prisma.RfidFingerUserWhereUniqueInput, data: Partial<RfidFingerUser>) {
-  return prisma.rfidFingerUser.update({
+export function updateRfidFingerUser(condition: Prisma.RfidFingerUserWhereInput, data: Partial<RfidFingerUser>) {
+  return prisma.rfidFingerUser.updateMany({
     where: condition,
     data,
   })

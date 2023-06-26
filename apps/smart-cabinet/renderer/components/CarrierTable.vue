@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emits = defineEmits(['onPageChange', 'onDataChange'])
 const store = useStore()
-const { userList, departmentList, cabinetDoorList, misPlaceCarrierData } = storeToRefs(store)
+const { userList, departmentList, cabinetDoorList, misPlaceCarrierList } = storeToRefs(store)
 
 const selfData = ref<CustomCarrierType[]>([])
 
@@ -88,7 +88,7 @@ const columns = ref<ColumnsType<CustomCarrierType>>([
 ])
 
 function judgeIsMisPlace(doc: DocDocument) {
-  const misPlace = misPlaceCarrierData.value.find((item) => item.operationId === doc.docRfid)
+  const misPlace = misPlaceCarrierList.value.find((item) => item.operationId === doc.docRfid)
   return misPlace
 }
 

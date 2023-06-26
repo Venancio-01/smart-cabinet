@@ -85,8 +85,10 @@
     "dayjs": "^1.11.7"
   },
   "devDependencies": {
+    "@types/lodash-es": "^4.17.7",
     "@types/node": "20.2.3",
     "config": "workspace:^",
+    "lodash-es": "^4.17.21",
     "vue": "^3.3.4"
   }
 }

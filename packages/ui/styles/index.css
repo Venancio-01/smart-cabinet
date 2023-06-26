@@ -1,3 +1,38 @@
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  vertical-align: initial;
+}
+
+/* 引入lcd字体 */
+@font-face {
+  font-family: 'LCDFont';
+  src: url('../fonts/ds-digi-webfont.eot');
+  /* IE9 Compat Modes */
+  src: url('../fonts/ds-digi-webfont.eot?#iefix') format('embedded-opentype'),
+    /*IE6-IE8 */ url('../fonts/ds-digi-webfont.woff') format('woff'),
+    /* Modern Browsers */ url('../fonts/ds-digi-webfont.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'source-han-sans';
+  src: url('../fonts/SourceHanSansCN-VF.ttf');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Barlow';
+  src: url('../fonts/Barlow-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   font-family: source-han-sans !important;
   @apply text-gray-9;
@@ -61,7 +96,6 @@ body {
 .ant-modal-confirm-body .ant-modal-confirm-content {
   @apply text-light;
 }
-
 /* End */
 
 /* 修改 Tabs 的样式 */
@@ -105,7 +139,6 @@ body {
 .v-leave-active {
   animation: fadeOut 0.15s;
 }
-
 /* End */
 
 .ant-modal-confirm-title {
@@ -150,27 +183,3 @@ body {
 }
 
 /* End */
-
-/* 引入lcd字体 */
-@font-face {
-  font-family: 'LCDFont';
-  src: url('../fonts/ds-digi-webfont.eot');
-  /* IE9 Compat Modes */
-  src: url('../fonts/ds-digi-webfont.eot?#iefix') format('embedded-opentype'),
-    /*IE6-IE8 */ url('../fonts/ds-digi-webfont.woff') format('woff'),
-    /* Modern Browsers */ url('../fonts/ds-digi-webfont.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'source-han-sans';
-  src: url('../fonts/SourceHanSansCN-VF.ttf');
-  font-weight: 100 900;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Barlow';
-  src: url('../fonts/Barlow-Regular.ttf');
-  font-weight: normal;
-  font-style: normal;
-}

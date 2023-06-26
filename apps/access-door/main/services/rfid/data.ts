@@ -1,20 +1,12 @@
-import { debounce, uniq, uniqBy } from 'lodash-es'
-import {
-  type DocDocument,
-  type DoorAccessRecords,
-  type DoorAlarmrecord,
-  type DoorEquipment,
-  type DoorRfidrecord,
-  type DoorRfidregister,
-  selectDocDocumentList,
-  selectSysDept,
-} from 'database'
-import { DETECTION_DURATION } from 'utils/config/main'
-import { addAlarmRecord, addReadRecord, fetchRegistrationRecords, getCurrentAccessDoorDevice } from '../access-door'
+import { uniq, uniqBy } from 'lodash-es'
+import { insertDoorRfidrecordList, selectDocDocumentList } from 'database'
+import type { DocDocumentProps, DoorRfidrecord, DoorRfidregister } from 'database'
+import { getCurrentEquipment } from '../access-door'
 import { generateCRC16Code } from './utils'
 import ProtocolMap from './protocol-map'
 import type { Message, MessageQueue } from './message'
-import type { AccessDirection } from '~/enums'
+import type { AlarmStatus } from '~/enums'
+import { AccessDirection } from '~/enums'
 
 /**
  * @description: 校验接收到的数据
@@ -89,140 +81,51 @@ export function parseTIDReportData(message: MessageQueue): RFIDParseType[] {
 }
 
 /**
- * @description: 获取载体数据 - 防抖
- * @return {*}
- */
-const fetchCarriers = debounce(
-  async () => {
-    const result = await selectDocDocumentList()
-    return result
-  },
-  DETECTION_DURATION,
-  {
-    leading: true,
-  },
-)
-
-/**
- * @description: 获取在库载体数据
+ * @description: 获取在数据库中登记的载体
  * @param {Message} messages
  * @return {*}
  */
-export async function getInDatabaseCarrier(messages: Message[]): Promise<DocDocument[]> {
+export async function getInDatabaseCarrier(messages: Message[]) {
   const commandList = messages.map((item) => item.content)
 
   const TIDList = uniq(commandList.map((item) => getEPCAndTIDFromReportData(item).TID))
-  const carriers = await fetchCarriers()
+  const carriers = await selectDocDocumentList()
   const filteredCarriers = carriers?.filter((item) => TIDList.includes(item.docRfid || ''))
 
   return filteredCarriers
 }
 
 /**
- * @description: 获取注册记录
- * @param {*} debounce
- * @return {*}
- */
-export const handleFetchRegistrationRecords = debounce(
-  async () => {
-    const result = await fetchRegistrationRecords()
-    return result
-  },
-  DETECTION_DURATION,
-  {
-    leading: true,
-  },
-)
-
-/**
- * @description: 添加读取记录
+ * @description: 新增 rfid 读取记录
  * @param {DocDocument} carriers
  * @param {DoorEquipment} equipment
  * @param {AccessDirection} direction
  * @return {*}
  */
-export async function handleAddReadRecords(
-  carriers: DocDocument[],
+export async function insertRfidRecordList(
+  carriers: DocDocumentProps[],
   registrationRecords: DoorRfidregister[],
-  accessRecord: DoorAccessRecords,
   direction: AccessDirection,
+  isAlarm: AlarmStatus,
 ) {
-  const equipment = await getCurrentAccessDoorDevice()
-
-  if (equipment === null) return
-
-  const dataList: Partial<DoorRfidrecord>[] = []
-  const requestList: Promise<DoorRfidrecord>[] = []
+  const equipment = await getCurrentEquipment()
   const registerRFIDList = registrationRecords.map((item) => item.docRfid)
-
-  for (let index = 0; index < carriers.length; index++) {
-    const carrier = carriers[index]
-    const departmentId = carrier.binding_dept_id
-    const department = departmentId
-      ? await selectSysDept({
-          deptId: departmentId,
-        })
-      : null
-
-    const data: Partial<DoorRfidrecord> = {
-      accessId: `${accessRecord.accessId}`,
+  const list: Partial<DoorRfidrecord>[] = carriers.map((carrier) => {
+    return {
       equipmentName: equipment.equipmentName,
-      equipmentId: `${equipment.equipmentId}`,
-      carrier_id: `${carrier.doc_id}`,
-      carrierName: carrier.doc_name,
-      carrier_rfid: carrier.docRfid,
-      carrier_deptid: carrier.binding_dept_id ? String(carrier.binding_dept_id) : null,
-      carrier_deptname: department?.deptName,
-      type: `${direction}`,
-      is_alarm: registerRFIDList.includes(carrier.docRfid) ? '0' : '1',
-      createTime: new Date(),
+      equipmentId: `${equipment.equipmentid}`,
+      carrierId: `${carrier.docId}`,
+      carrierName: carrier.docName,
+      carrierRfid: carrier.docRfid,
+      carrierDeptid: carrier.deptId ? String(carrier.deptId) : null,
+      carrierDeptName: carrier?.department?.deptName,
+      // 这里的 1 是进，0 是出
+      type: direction === AccessDirection.IN ? '1' : direction === AccessDirection.OUT ? '2' : undefined,
+      isAlarm: `${isAlarm}`,
+      creatorTime: new Date(),
       isRegister: registerRFIDList.includes(carrier.docRfid) ? '1' : '0',
     }
+  })
 
-    requestList.push(addReadRecord(data))
-  }
-
-  dataList.push(...(await Promise.all(requestList)))
-
-  return dataList
-}
-
-/**
- * @description: 添加报警记录
- * @param {DocDocument} carriers
- * @param {DoorEquipment} equipment
- * @param {DoorAccessRecords} accessRecord
- * @return {*}
- */
-export async function handleAddAlarmRecord(carriers: DocDocument[], equipment: DoorEquipment, accessRecord: DoorAccessRecords) {
-  const dataList: Partial<DoorAlarmrecord>[] = []
-  for (let index = 0; index < carriers.length; index++) {
-    const element = carriers[index]
-
-    const departmentId = element.binding_dept_id
-    const department = departmentId
-      ? await await selectSysDept({
-          deptId: departmentId,
-        })
-      : null
-
-    const data: Partial<DoorAlarmrecord> = {
-      accessId: `${accessRecord.accessId}`,
-      equipmentId: `${equipment.equipmentId}`,
-      equipmentName: equipment.equipmentName,
-      carrier_id: `${element.doc_id}`,
-      carrier_rfid: element.docRfid,
-      carrierName: element.doc_name,
-      carrier_deptid: element.binding_dept_id ? String(element.binding_dept_id) : null,
-      carrier_deptname: department?.deptName,
-      is_operation: '0',
-      remark: '',
-      createTime: new Date(),
-    }
-    dataList.push(data)
-
-    addAlarmRecord(data)
-  }
-
-  return dataList
+  return insertDoorRfidrecordList(list)
 }

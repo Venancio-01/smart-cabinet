@@ -1,13 +1,15 @@
-import { type DoorAccessRecords, type DoorEquipment, insertDoorAccessRecord, updateDoorAlarmrecord } from 'database'
+import { insertDoorAccessRecord, insertDoorAlarmrecordList, selectDoorRfidregisterList } from 'database'
+import type { type DoorAccessRecords, DoorAlarmrecord, type DoorEquipment } from 'database'
 import { sendIpcToRenderer } from 'utils/electron'
 import { INTERVAL_THRESHOLD } from 'utils/config/main'
-import { fetchRegistrationRecords, getCurrentAccessDoorDevice, updateAccessRecord } from '../access-door'
+import { getCurrentEquipment, updateAccessRecord } from '../access-door'
 import { generateAntennaCommand } from './utils'
 import { generateCheckConnectionStatusCommand, generateSetGPOCommand, generteSetGPITriggerCommand } from './command'
 import type { Message } from './message'
 import { MessageQueue } from './message'
-import { getInDatabaseCarrier, handleAddReadRecords } from './data'
+import { getInDatabaseCarrier, insertRfidRecordList } from './data'
 import Socket from '@/services/rfid/socket'
+import { AccessDirection, AlarmStatus, OperationStatus } from '~/enums'
 
 type InstanceType = {
   socket: Socket
@@ -17,16 +19,16 @@ type InstanceType = {
 let instance: InstanceType = null
 
 /**
- * @description: 连接 RFID Socket
+ * @description: 连接 RFID
  * @return {*}
  */
-export async function handleConnect() {
+export async function connectRfid() {
   if (instance !== null) return
 
-  const device = await getCurrentAccessDoorDevice()
+  const device = await getCurrentEquipment()
   if (device === null) return
 
-  const { equipment_addr: address, equipment_port: port, equipment_txid: txid } = device
+  const { equipmentAddr: address, equipmentPort: port, equipmentTxid: txid } = device
   if (address === null || port === null || txid === null) return
 
   const messageQueue = new MessageQueue()
@@ -54,14 +56,18 @@ export async function handleConnect() {
 }
 
 /**
- * 断开 RFID Socket 连接
+ * 断开 RFID 连接
  * @return {*}
  */
-export async function handleDisConnect() {
+export async function disconnectRfid() {
   if (instance === null) return
 
   instance.socket.destroy()
   instance = null
+}
+
+function getRfidConnectionStatus() {
+  return instance?.socket.connected || false
 }
 
 /**
@@ -140,6 +146,7 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
       if (isGPI1) {
         GPI1Start = msg
         isExit = true
+        // 重置状态
         setTimeout(() => {
           isExit = false
           currentAccessRecord = null
@@ -149,74 +156,90 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
       if (isGPI2) {
         GPI2Start = msg
         isEntry = true
+        // 重置状态
         setTimeout(() => {
           isEntry = false
           currentAccessRecord = null
         }, INTERVAL_THRESHOLD)
       }
 
-      const data: Partial<DoorAccessRecords> = {
-        accessDirection: isEntry ? 1 : isExit ? 2 : null,
+      // 出入方向
+      const accessDirection = isEntry ? AccessDirection.IN : isExit ? AccessDirection.OUT : null
+
+      const record: Partial<DoorAccessRecords> = {
+        accessDirection,
         directionCreateTime: new Date(),
         equipmentId: equipment.equipmentid,
         equipmentName: equipment.equipmentName,
-        // carrier_count: 0,
-        // has_alarm: 0,
-        // is_viewed: 0,
+        remark: '',
       }
 
-      currentAccessRecord = await insertDoorAccessRecord(data)
+      // 新增出入记录
+      currentAccessRecord = await insertDoorAccessRecord(record)
 
-      sendIpcToRenderer('go-check-page', isEntry ? 1 : isExit ? 2 : null)
+      // 跳转到检查页面
+      sendIpcToRenderer('go-check-page', accessDirection)
     }
     // 触发红外结束
     else if (msg.name === 'ReceiveGPITriggerStopReport') {
       if (!isEntry && !isExit) return
 
+      // 如果没有出入记录数据，则跳过
+      if (currentAccessRecord === null) return
+
       GPIEnd = msg
 
+      // 获取在红外触发期间读到的数据
       const recentMessages = isExit
         ? message.getMessages('ReceiveEPCReport').filter((item) => item.time > GPI1Start!.time && item.time < GPIEnd!.time)
         : message.getMessages('ReceiveEPCReport').filter((item) => item.time > GPI2Start!.time && item.time < GPIEnd!.time)
 
+      // 获取在数据库中登记的载体
       const carriers = await getInDatabaseCarrier(recentMessages)
 
-      // 如果没有读到在库载体的 EPC 标签，则跳过
+      // 如果没有读到数据库中登记过的载体，则跳过
       if (carriers.length === 0) {
         sendIpcToRenderer('get-read-data', [])
         return
       }
-
-      // 如果没有出入记录数据，则跳过
-      if (currentAccessRecord === null) return
-
-      const registrationRecords = await fetchRegistrationRecords()
+      // 获取载体登记记录
+      const registrationCarrierRecordList = await selectDoorRfidregisterList()
 
       // 如果是外出状态
       if (isExit) {
-        const dataList = await handleAddReadRecords(carriers, registrationRecords, currentAccessRecord, 1)
+        const dataList = await insertRfidRecordList(carriers, registrationCarrierRecordList, AccessDirection.OUT, AlarmStatus.UNALARMED)
         sendIpcToRenderer('get-read-data', dataList)
 
-        const registerRFIDList = registrationRecords.map((item) => item.docRfid)
-        const hasUnregistered = carriers.some((carrier) => !registerRFIDList.includes(carrier.docRfid))
-
-        const updateData = {
-          ...currentAccessRecord,
-          carrier_count: carriers.length,
-          has_alarm: hasUnregistered ? 1 : 0,
-        }
-
-        updateDoorAlarmrecord(
-          {
-            accessId: currentAccessRecord.accessId,
-          },
-          updateData,
+        // 筛选未登记的载体
+        const unregisteredCarrierList = carriers.filter(
+          (carrier) => !registrationCarrierRecordList.some((item) => item.docRfid === carrier.docRfid),
         )
+        // 是否有未登记的载体
+        const hasUnregisteredCarrier = unregisteredCarrierList.length > 0
+
+        if (hasUnregisteredCarrier) {
+          const list: Partial<DoorAlarmrecord>[] = unregisteredCarrierList.map((carrier) => {
+            return {
+              equipmentId: `${equipment.equipmentid}`,
+              equipmentName: equipment.equipmentName,
+              carrierId: `${carrier.docId}`,
+              carrierRfid: carrier.docRfid,
+              carrierName: carrier.docName,
+              carrierDeptid: `${carrier.deptId}`,
+              carrierDeptname: carrier.department.deptName,
+              carrierType: `${carrier.docType}`,
+              isOperation: `${OperationStatus.UNPROCESSED}`,
+              remark: '',
+              createTime: new Date(),
+            }
+          })
+          insertDoorAlarmrecordList(list)
+        }
       }
 
       // 如果是进入状态
       if (isEntry) {
-        const dataList = await handleAddReadRecords(carriers, registrationRecords, currentAccessRecord, 2)
+        const dataList = await insertRfidRecordList(carriers, registrationCarrierRecordList, AccessDirection.IN, AlarmStatus.UNALARMED)
         sendIpcToRenderer('get-read-data', dataList)
 
         const updateData = {
@@ -228,13 +251,15 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
     }
     // 读到 EPC 标签
     else if (msg.name === 'ReceiveEPCReport') {
+      // 如果是进入状态，则跳过
       if (!isExit) return
 
-      const [carriers, registrationRecords] = await Promise.all([await getInDatabaseCarrier([msg]), await fetchRegistrationRecords()])
-      if (carriers.length === 0 || registrationRecords.length === 0) return
+      // 获取在数据库中登记的载体以及登记记录
+      const [carriers, registrationCarrierRecordList] = await Promise.all([getInDatabaseCarrier([msg]), selectDoorRfidregisterList()])
+      if (carriers.length === 0 || registrationCarrierRecordList.length === 0) return
 
-      const registerRFIDList = registrationRecords.map((item) => item.docRfid)
-      const hasUnregistered = carriers.some((carrier) => !registerRFIDList.includes(carrier.docRfid))
+      const registerCarrierList = registrationCarrierRecordList.map((item) => item.docRfid)
+      const hasUnregistered = carriers.some((carrier) => !registerCarrierList.includes(carrier.docRfid))
 
       if (hasUnregistered) sendIpcToRenderer('go-alarm-page')
     }
@@ -244,8 +269,7 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
 const rfidService = {
   name: 'rfid' as const,
   fns: {
-    handleConnect,
-    handleDisConnect,
+    getRfidConnectionStatus,
     handleSetGPO,
   },
 }

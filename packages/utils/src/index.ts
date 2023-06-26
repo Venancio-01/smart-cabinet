@@ -1,5 +1,6 @@
 import os from 'os'
 import dayjs from 'dayjs'
+import { debounce } from 'lodash-es'
 
 /**
  * @description: 生成 ipc 通信的返回数据结构
@@ -52,4 +53,15 @@ export function getLocalIpAddress(): string[] {
     }
   }
   return addresses
+}
+
+/**
+ * @description: 防抖函数
+ * @param {array} args
+ * @param {*} wait
+ * @param {*} leading
+ * @return {*}
+ */
+export function debouncedFunction<T extends (...args: any) => any>(func: T, wait = 300, leading = true) {
+  return debounce<T>(func, wait, { leading })
 }

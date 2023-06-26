@@ -1,23 +1,16 @@
-import { QUERY_NETWORK_INTERVAL } from 'utils/config/renderer'
 import { useStore } from '@/store'
 
 export default function () {
   const store = useStore()
-  const { setNetworkIsOnline } = store
-  const timer = ref<number | null>(null)
+  const { setNetworkIsConnected } = store
 
-  // 通过 nodejs 获取网络状态
-  const getNetworkStatus = async () => {
-    const isConnected = await window.JSBridge.network.getConnectState()
-    setNetworkIsOnline(isConnected)
+  // 获取数据库连接状态
+  const getNetworkConnectionStatus = async () => {
+    const status = await window.JSBridge.network.getNetworkConnectionStatus()
+    setNetworkIsConnected(status)
   }
 
-  onMounted(() => {
-    getNetworkStatus()
-    timer.value = window.setInterval(getNetworkStatus, QUERY_NETWORK_INTERVAL)
-  })
-
-  onBeforeMount(() => {
-    if (timer.value) clearInterval(timer.value)
-  })
+  return {
+    getNetworkConnectionStatus,
+  }
 }

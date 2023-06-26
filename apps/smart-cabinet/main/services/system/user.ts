@@ -1,32 +1,6 @@
-import type { SysUser } from 'database'
 import { genResponseData } from 'utils'
-import { selectRfidCardUser, selectSysUser, selectSysUserList, selectSysUserRoleList, updateRfidCardUser, updateSysUser } from 'database'
+import { selectRfidCardUser, selectSysUser, updateRfidCardUser, updateSysUser } from 'database'
 import { genMd5EncryptedPassword } from './utils'
-
-/**
- * @description: 根据条件获取用户
- * @param {UserQueryProps} { userName, departmentId, roleId }
- * @return {*}
- */
-export async function getUsersByCondition({ userName, departmentId, roleId }: UserQueryProps): Promise<SysUser[]> {
-  const query: Partial<{ [key in keyof SysUser]: any }> = {
-    userName: {
-      contains: userName,
-    },
-    deptId: departmentId ? Number(departmentId) : undefined,
-  }
-
-  if (roleId) {
-    const userRoleList = await selectSysUserRoleList()
-    const userIds = userRoleList.filter((item) => Number(item.roleId) === roleId).map((item) => item.userId)
-
-    query.userId = {
-      in: userIds,
-    }
-  }
-
-  return selectSysUserList(query)
-}
 
 export async function onPasswordLogin({ username, password }: PasswordLoginProps) {
   const user = await selectSysUser({

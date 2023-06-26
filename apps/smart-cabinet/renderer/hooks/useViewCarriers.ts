@@ -1,21 +1,25 @@
-import type { DocDocument } from 'database'
+import type { DocDocument, Prisma } from 'database'
 import CarrierTable from '@/components/CarrierTable.vue'
-import useCarrier from '@/hooks/useCarrier'
 import { useStore } from '@/store'
 
 export default function () {
   const store = useStore()
-  const { cabinetDoorList, misPlaceCarrierData } = storeToRefs(store)
-  const { getCarriersByCondition } = useCarrier()
+  const { cabinetDoorList, misPlaceCarrierList } = storeToRefs(store)
 
   const data = ref<DocDocument[]>([])
   const total = ref(0)
 
-  const getCarriers = async (condition: Partial<PaginationType & DocDocument>) => {
-    const result = await getCarriersByCondition(condition)
+  const getCarriers = async (pagination: PaginationType, condition: Partial<DocDocument>) => {
+    const query: Prisma.DocDocumentWhereInput = {
+      ...condition,
+      docName: {
+        contains: condition.docName,
+      },
+    }
+    const result = await window.JSBridge.carrier.selectDocDocumentListWithPage(pagination, query)
 
     data.value = result.data.map((item) => {
-      const misPlaceDoorId = misPlaceCarrierData.value.reduce((acc, cur) => {
+      const misPlaceDoorId = misPlaceCarrierList.value.reduce((acc, cur) => {
         if (cur.operationId === item.docRfid && cur.cabinetDoorId) acc = cur.cabinetDoorId
 
         return acc

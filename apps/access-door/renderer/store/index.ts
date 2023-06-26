@@ -2,16 +2,15 @@ import { defineStore } from 'pinia'
 import type { DocDocument, DoorAlarmrecord, DoorEquipment, DoorRfidrecord, RfidCabinetdoor, SysDept } from 'database'
 
 interface State {
-  backgroundUrl: string
-  networkIsOnline: boolean
-  rfidIsOnline: boolean
+  networkIsConnected: boolean
+  rfidIsConnected: boolean
   activationCode: string
   carrierList: DocDocument[]
   cabinetDoorList: RfidCabinetdoor[]
   departmentList: SysDept[]
   currentReadRecordList: DoorRfidrecord[]
   alarmRecordList: DoorAlarmrecord[]
-  currentAccessDoorDevice: DoorEquipment | null
+  currentEquipment: DoorEquipment | null
   loadingVisible: boolean
   unviewedAccessRecordCount: number
 }
@@ -19,16 +18,15 @@ interface State {
 export const useStore = defineStore('main', {
   state: (): State => {
     return {
-      backgroundUrl: '',
-      networkIsOnline: false,
-      rfidIsOnline: false,
+      networkIsConnected: false,
+      rfidIsConnected: false,
       activationCode: '',
       carrierList: [],
       cabinetDoorList: [],
       departmentList: [],
       currentReadRecordList: [],
       alarmRecordList: [],
-      currentAccessDoorDevice: null,
+      currentEquipment: null,
       loadingVisible: false,
       unviewedAccessRecordCount: 0,
     }
@@ -42,14 +40,11 @@ export const useStore = defineStore('main', {
     setActivationCode(code: string) {
       this.activationCode = code
     },
-    setBackgroundUrl(url: string) {
-      this.backgroundUrl = url
-    },
     setRfidIsConnected(state: boolean) {
-      this.rfidIsOnline = state
+      this.rfidIsConnected = state
     },
-    setNetworkIsOnline(state: boolean) {
-      this.networkIsOnline = state
+    setNetworkIsConnected(state: boolean) {
+      this.networkIsConnected = state
     },
     setCarrierList(list: DocDocument[]) {
       this.carrierList = list
@@ -66,8 +61,8 @@ export const useStore = defineStore('main', {
     setAlarmRecordList(list: DoorAlarmrecord[]) {
       this.alarmRecordList = list
     },
-    setCurrentAccessDoorDevice(device: DoorEquipment | null) {
-      this.currentAccessDoorDevice = device
+    setCurrentEquipment(device: DoorEquipment | null) {
+      this.currentEquipment = device
     },
     setLoadingVisible(state: boolean) {
       this.loadingVisible = state

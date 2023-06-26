@@ -1,23 +1,13 @@
 import { ipcMain } from 'electron'
 import rfidService from './rfid'
 import sysService from './sys'
-import cabinetService from './cabinet'
 import networkService from './network'
 import storeService from './store'
-import encryptionService from './encryption'
+import activationService from './activation'
 import logService from './log'
 import accessDoorService from './access-door'
 
-export const services = [
-  rfidService,
-  sysService,
-  cabinetService,
-  networkService,
-  storeService,
-  encryptionService,
-  logService,
-  accessDoorService,
-]
+export const services = [rfidService, sysService, networkService, storeService, activationService, logService, accessDoorService]
 
 export type ServiceType = typeof services
 

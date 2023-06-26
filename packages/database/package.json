@@ -3,14 +3,21 @@
   "type": "module",
   "version": "1.0.0",
   "keywords": [],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
+    }
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "pull-db": "npx prisma db pull",
-    "format-db": "npx prisma-case-format --file ./prisma/schema.prisma",
-    "generate-db": "npx prisma generate",
-    "init-db": "npm run pull-db && npm run format-db && npm run generate-db",
+    "db:pull": "npx prisma db pull",
+    "db:format": "npx prisma-case-format --file ./prisma/schema.prisma",
+    "db:generate": "npx prisma generate",
+    "db": "npm run db:pull && npm run db:format && npm run db:generate",
     "package": "tsup"
   },
   "dependencies": {

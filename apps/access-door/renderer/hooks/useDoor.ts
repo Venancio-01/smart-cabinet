@@ -1,23 +1,43 @@
-import type { DoorAccessRecords } from 'database'
+import type { DoorAccessRecords, Prisma } from 'database'
 import { useStore } from '@/store'
+import { AccessTimeRange } from '~/enums'
 
 export default function () {
   const store = useStore()
-  const { setAlarmRecordList, setCurrentAccessDoorDevice, setUnviewedAccessRecordCount } = store
+  const { setAlarmRecordList, setCurrentEquipment, setUnviewedAccessRecordCount } = store
 
-  const fetchCurrentAccessDoorDevice = async () => {
-    const result = await window.JSBridge.accessDoor.getCurrentAccessDoorDevice()
-    setCurrentAccessDoorDevice(result)
+  const getCurrentEquipment = async () => {
+    const result = await window.JSBridge.accessDoor.getCurrentEquipment()
+    setCurrentEquipment(result)
   }
 
   // 获取出入记录
-  const fetchAccessRecords = async (condition?: Partial<AccessRecordQueryProps>) => {
-    const result = await window.JSBridge.accessDoor.fetchAccessRecords(condition)
-    return result
+  const selectAccessRecordList = (condition?: Partial<AccessRecordQueryProps>, pagination?: PaginationType) => {
+    const query: Prisma.DoorAccessRecordsWhereInput = {
+      accessDirection: condition?.accessDirection,
+    }
+
+    const timeRangeMap = {
+      [AccessTimeRange.TODAY]: {
+        lte: new Date(),
+        gte: new Date(new Date().setHours(0, 0, 0, 0)),
+      },
+      [AccessTimeRange.WEEK]: {
+        lte: new Date(),
+        gte: new Date(new Date().setDate(new Date().getDate() - 7)),
+      },
+      [AccessTimeRange.MONTH]: {
+        lte: new Date(),
+        gte: new Date(new Date().setDate(new Date().getDate() - 30)),
+      },
+    }
+    query.directionCreateTime = timeRangeMap?.[condition.timeRange]
+
+    return window.JSBridge.accessDoor.selectDoorAccessRecordList(query, pagination)
   }
 
   // 获取未查看的出入记录总数
-  const fetchUnviewedAccessRecordCount = async () => {
+  const selectUnviewedAccessRecordCount = async () => {
     const result = await window.JSBridge.accessDoor.selectDoorAlarmRecordCount({
       isOperation: '0',
     })
@@ -25,7 +45,12 @@ export default function () {
   }
 
   const updateAccessRecord = async (id: number, data: Partial<DoorAccessRecords>) => {
-    const result = await window.JSBridge.accessDoor.updateAccessRecord(id, data)
+    const result = await window.JSBridge.accessDoor.updateDoorAccessRecord(
+      {
+        accessId: id,
+      },
+      data,
+    )
     return result
   }
 
@@ -35,7 +60,7 @@ export default function () {
     return result
   }
 
-  const fetchAndSetAlarmRecords = async () => {
+  const selectAlarmRecordList = async () => {
     const { data } = await fetchAlarmRecords()
     setAlarmRecordList(data)
   }
@@ -46,16 +71,16 @@ export default function () {
   }
 
   const init = () => {
-    return Promise.all([fetchUnviewedAccessRecordCount(), fetchCurrentAccessDoorDevice(), fetchAndSetAlarmRecords()])
+    return Promise.all([selectUnviewedAccessRecordCount(), getCurrentEquipment(), selectAlarmRecordList()])
   }
 
   return {
     init,
-    fetchAccessRecords,
+    selectAccessRecordList,
     updateAccessRecord,
-    fetchUnviewedAccessRecordCount,
+    selectUnviewedAccessRecordCount,
     fetchAlarmRecords,
-    fetchAndSetAlarmRecords,
+    selectAlarmRecordList,
     fetchReadRecords,
   }
 }

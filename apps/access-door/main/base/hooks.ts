@@ -1,13 +1,28 @@
 import { BrowserWindow, app } from 'electron'
+import { disableShortcuts } from 'utils/electron'
 import { createWindow } from '@/base/window'
-import { handleDisConnect } from '@/services/rfid'
+import { connectRfid, disconnectRfid } from '@/services/rfid'
+import { registerServices } from '@/services'
+
+let win: BrowserWindow | null = null
 
 export async function onAppBeforeQuit() {
-  // 断开 RFID Socket 连接
-  handleDisConnect()
+  // 断开 RFID 连接
+  disconnectRfid()
 }
 
-export function registerAppHooks(win: BrowserWindow | null) {
+export async function onAppReady() {
+  win = await createWindow()
+  registerServices()
+  // 连接 RFID
+  connectRfid()
+  if (app.isPackaged) disableShortcuts()
+}
+
+export function registerAppHooks() {
+  // 当 Electron 完成初始化并且准备创建浏览器窗口
+  app.whenReady().then(onAppReady)
+
   // 当所有窗口都被关闭时退出。
   app.on('window-all-closed', () => {
     win = null
@@ -31,7 +46,5 @@ export function registerAppHooks(win: BrowserWindow | null) {
     else createWindow()
   })
 
-  app.on('before-quit', async () => {
-    await onAppBeforeQuit()
-  })
+  app.on('before-quit', onAppBeforeQuit)
 }

@@ -10,7 +10,6 @@
     "types/*.d.ts"
   ],
   "compilerOptions": {
-    "composite": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./renderer/*"],

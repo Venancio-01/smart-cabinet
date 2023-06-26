@@ -1,20 +1,19 @@
-import type { DocDocument, RfidCabinet, RfidSwitchRecord, SysDept, SysRole, SysUser, SysUserRole } from 'database'
+import type { DocDocumentProps, RfidCabinet, RfidTipsAlarmRecord, SysDept, SysRole, SysUserProps, SysUserRole } from 'database'
 import { defineStore } from 'pinia'
 import { BorrowedState } from '~/enums'
 
 interface State {
-  backgroundUrl: string
   isLockControlConnected: boolean
   isNetworkConnected: boolean
   isFingerConnected: boolean
   isLoggedIn: boolean
-  user: SysUser
-  userList: SysUser[]
+  user: SysUserProps
+  userList: SysUserProps[]
   departmentList: SysDept[]
   roleList: SysRole[]
   userRoleList: SysUserRole[]
-  carrierList: DocDocument[]
-  misPlaceCarrierData: RfidSwitchRecord[]
+  carrierList: DocDocumentProps[]
+  misPlaceCarrierList: RfidTipsAlarmRecord[]
   currentCabinet: RfidCabinet | null
   cabinetDoorList: CabinetDoorProps[]
   lockCommandInterval: number
@@ -25,10 +24,7 @@ interface State {
   currentCheckCabinetDoorId: number | null
   reviewCarrierCondition: ReviewCarrierCondition
   activationCode: string
-  firstCarrierRecord: DocDocument[]
-  firstMisPlaceCarrierRecord: RfidSwitchRecord[]
-  endCarrierRecord: DocDocument[]
-  endMisPlaceCarrierRecord: RfidSwitchRecord[]
+  initialCarrierList: DocDocumentProps[]
   checkResultList: CheckResultType[]
   lastOperationCabinetDoorRecords: CabinetDoorProps[]
   lastOperationCabinetDoorList: CabinetDoorProps[]
@@ -42,7 +38,6 @@ interface ReviewCarrierCondition {
 export const useStore = defineStore('main', {
   state: (): State => {
     return {
-      backgroundUrl: '',
       isLockControlConnected: false,
       isNetworkConnected: false,
       isFingerConnected: false,
@@ -55,7 +50,7 @@ export const useStore = defineStore('main', {
       carrierList: [],
       currentCabinet: null,
       cabinetDoorList: [],
-      misPlaceCarrierData: [],
+      misPlaceCarrierList: [],
       lockCommandInterval: 10,
       lockControlState: null,
       currentCabinetDoorId: 0,
@@ -67,10 +62,7 @@ export const useStore = defineStore('main', {
         state: null,
       },
       activationCode: '',
-      firstCarrierRecord: [],
-      firstMisPlaceCarrierRecord: [],
-      endCarrierRecord: [],
-      endMisPlaceCarrierRecord: [],
+      initialCarrierList: [],
       checkResultList: [],
       lastOperationCabinetDoorRecords: [],
       lastOperationCabinetDoorList: [],
@@ -82,7 +74,7 @@ export const useStore = defineStore('main', {
       return state.cabinetDoorList.length === 1
     },
     misPlaceCarrierTotal(state) {
-      return state.misPlaceCarrierData.length
+      return state.misPlaceCarrierList.length
     },
     carrierTotal(state) {
       return state.carrierList.length
@@ -101,9 +93,6 @@ export const useStore = defineStore('main', {
     },
   },
   actions: {
-    setBackgroundUrl(url: string) {
-      this.backgroundUrl = url
-    },
     setLockControlConnectionStatus(state: boolean) {
       this.isLockControlConnected = state
     },
@@ -126,13 +115,13 @@ export const useStore = defineStore('main', {
       const index = this.cabinetDoorList.findIndex((item) => item.id === data.id)
       this.cabinetDoorList[index] = data
     },
-    setMisPlaceCarrierData(data: RfidSwitchRecord[]) {
-      this.misPlaceCarrierData = data
+    setMisPlaceCarrierData(data: RfidTipsAlarmRecord[]) {
+      this.misPlaceCarrierList = data
     },
-    setUserData(user: SysUser | null) {
+    setUserData(user: SysUserProps | null) {
       this.user = user
     },
-    setUserList(list: SysUser[]) {
+    setUserList(list: SysUserProps[]) {
       this.userList = list
     },
     setDepartmentList(list: SysDept[]) {
@@ -144,7 +133,7 @@ export const useStore = defineStore('main', {
     setUserRoleList(list: SysUserRole[]) {
       this.userRoleList = list
     },
-    setCarrierList(list: DocDocument[]) {
+    setCarrierList(list: DocDocumentProps[]) {
       this.carrierList = list
     },
     setLockCommandInterval(time: number) {
@@ -165,17 +154,8 @@ export const useStore = defineStore('main', {
     setReviewCarrierCondition(condition: ReviewCarrierCondition) {
       this.reviewCarrierCondition = condition
     },
-    setFirstCarrierRecord(record: DocDocument[]) {
-      this.firstCarrierRecord = record
-    },
-    setFirstMisPlaceCarrierRecord(record: RfidSwitchRecord[]) {
-      this.firstMisPlaceCarrierRecord = record
-    },
-    setEndCarrierRecord(record: DocDocument[]) {
-      this.endCarrierRecord = record
-    },
-    setEndMisPlaceCarrierRecord(record: RfidSwitchRecord[]) {
-      this.endMisPlaceCarrierRecord = record
+    setInitialCarrierList(record: DocDocumentProps[]) {
+      this.initialCarrierList = record
     },
     setCheckResultList(result: CheckResultType[]) {
       this.checkResultList = result

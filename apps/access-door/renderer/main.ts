@@ -8,6 +8,7 @@ import 'animate.css'
 import 'ant-design-vue/dist/antd.variable.min.css'
 import 'ui/icons/iconfont.js'
 import 'ui/styles/index.css'
+import '@/assets/styles/index.css'
 
 const pinia = createPinia()
 const app = createApp(App)

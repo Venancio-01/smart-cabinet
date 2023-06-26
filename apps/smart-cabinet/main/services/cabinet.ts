@@ -8,7 +8,7 @@ let currentCabinet: RfidCabinet | null = null
  * @description: 获取本机 IP 对应的柜机信息
  * @return {*}
  */
-async function getCurrentCabinet() {
+export async function getCurrentCabinet() {
   if (currentCabinet) return currentCabinet
 
   const devices = await selectRfidCabinetList()

@@ -1,14 +1,13 @@
 <script lang="ts" setup>
 import type { ColumnsType } from 'ant-design-vue/es/table'
-import type { SysDept } from '.prisma/client'
-import useSys from '@/hooks/useSys'
-
-const { getDepartmentsByCondition } = useSys()
+import type { Prisma, SysDept } from 'database'
 
 const condition = reactive<DepartmentQueryProps>({
+  deptName: '',
+})
+const pagination = reactive<PaginationType>({
   page: 1,
   size: 7,
-  departmentName: '',
 })
 
 const data = ref<SysDept[]>([])
@@ -22,27 +21,31 @@ const columns: ColumnsType = [
 ]
 
 async function onPageChange(page: number) {
-  condition.page = page
+  pagination.page = page
 
   getDepartmentList()
 }
 
 async function handleSearch() {
-  condition.page = 1
+  pagination.page = 1
 
   getDepartmentList()
 }
 
 function handleInit() {
-  condition.page = 1
-  condition.departmentName = ''
+  pagination.page = 1
+  condition.deptName = ''
   data.value = []
 
   getDepartmentList()
 }
 
 async function getDepartmentList() {
-  const { data: _data, total: _total } = await getDepartmentsByCondition(condition)
+  const query: Prisma.SysDeptWhereInput = {
+    deptName: condition.deptName ? { contains: condition.deptName } : undefined,
+  }
+
+  const { data: _data, total: _total } = await window.JSBridge.sys.selectSysDeptListWithPage(toRaw(pagination), query)
   data.value = _data
   total.value = _total
 }
@@ -63,7 +66,7 @@ onMounted(() => {
         class="flex-1 grid grid-rows-2 grid-cols-2 gap-x-6"
         autocomplete="off">
         <a-form-item label="机构名称">
-          <a-input v-model:value="condition.departmentName" />
+          <a-input v-model:value="condition.deptName" />
         </a-form-item>
       </a-form>
 
@@ -77,8 +80,8 @@ onMounted(() => {
       :data-source="data"
       :columns="columns"
       :pagination="{
-        current: condition.page,
-        pageSize: condition.size,
+        current: pagination.page,
+        pageSize: pagination.size,
         total,
         onChange: onPageChange,
       }">

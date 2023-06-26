@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emits = defineEmits(['update:visible'])
 const store = useStore()
-const { misPlaceCarrierData, misPlaceCarrierTotal } = storeToRefs(store)
+const { misPlaceCarrierList, misPlaceCarrierTotal } = storeToRefs(store)
 const show = computed({
   get: () => {
     return props.visible
@@ -24,10 +24,10 @@ const show = computed({
 const active = ref(1)
 
 const data = computed(() => {
-  if (misPlaceCarrierData.value[active.value - 1]) {
+  if (misPlaceCarrierList.value[active.value - 1]) {
     return {
-      content: misPlaceCarrierData.value[active.value - 1].content,
-      time: misPlaceCarrierData.value[active.value - 1].datetime,
+      content: misPlaceCarrierList.value[active.value - 1].content,
+      time: misPlaceCarrierList.value[active.value - 1].datetime,
     }
   } else {
     return {}

@@ -3,6 +3,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 import Index from '@/pages/index.vue'
 import Login from '@/pages/login.vue'
+import Activate from '@/pages/activate.vue'
 import Main from '@/pages/main.vue'
 import CabinetDoor from '@/pages/cabinet-door.vue'
 import ViewCarrier from '@/pages/view-carrier.vue'
@@ -13,6 +14,7 @@ import Permission from '@/pages/permission.vue'
 
 const routes: RouteRecordRaw[] = [
   { path: '/', redirect: '/index' },
+  { path: '/activate', component: Activate },
   {
     path: '/index',
     component: Index,

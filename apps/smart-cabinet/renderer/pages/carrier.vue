@@ -8,38 +8,41 @@ const store = useStore()
 const { cabinetDoorList, departmentList, currentCabinetDoorId } = storeToRefs(store)
 const { CarrierTable, getCarriers, data, total } = useViewCarriers()
 
-const condition = reactive<PaginationType & Partial<DocDocument>>({
-  page: 1,
-  size: 7,
+const condition = reactive<Partial<DocDocument>>({
   docName: '',
   cabinetDoorId: undefined,
   deptId: undefined,
   docPStatus: undefined,
 })
 
-async function onPageChange(page: number) {
-  condition.page = page
+const pagination = reactive<PaginationType>({
+  page: 1,
+  size: 7,
+})
 
-  getCarriers(condition)
+async function onPageChange(page: number) {
+  pagination.page = page
+
+  getCarriers(toRaw(pagination), toRaw(condition))
 }
 
 async function handleSearch() {
-  condition.page = 1
+  pagination.page = 1
 
-  getCarriers(condition)
+  getCarriers(toRaw(pagination), toRaw(condition))
 }
 
 function handleInit() {
-  const state = route.params.docPStatus === 'null' ? undefined : Number(route.params.state)
+  const state = route.params.state === 'null' ? undefined : Number(route.params.state)
 
-  condition.page = 1
+  pagination.page = 1
   condition.docName = ''
   condition.cabinetId = undefined
   condition.deptId = undefined
   condition.docPStatus = state
   data.value = []
 
-  getCarriers(condition)
+  getCarriers(toRaw(pagination), toRaw(condition))
 }
 
 onMounted(() => {
@@ -94,9 +97,9 @@ onMounted(() => {
     <CarrierTable
       :total="total"
       :data="data"
-      :condition="{ page: condition.page, size: condition.size }"
+      :condition="{ page: pagination.page, size: pagination.size }"
       :operable="true"
       @on-page-change="onPageChange"
-      @on-data-change="() => getCarriers(condition)" />
+      @on-data-change="() => getCarriers(pagination, condition)" />
   </div>
 </template>

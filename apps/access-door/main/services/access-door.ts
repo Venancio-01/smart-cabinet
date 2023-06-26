@@ -1,80 +1,87 @@
 import type { DoorAccessRecords, DoorAlarmrecord, DoorEquipment, DoorRfidrecord } from 'database'
 import { getLocalIpAddress, getSkipAndTake } from 'utils'
-import { prisma, selectDoorAlarmRecordCount, selectDoorAlarmRecordList, selectDoorEquipmentList, updateDoorAlarmrecord } from 'database'
-import { AccessDirection, AccessHasAlarm, AccessTimeRange, AccessWithCarrier } from '~/enums'
+import {
+  prisma,
+  selectDoorAccessRecordList,
+  selectDoorAlarmRecordCount,
+  selectDoorAlarmRecordList,
+  selectDoorEquipmentList,
+  updateDoorAccessRecord,
+  updateDoorAlarmrecord,
+} from 'database'
 
 // 获取当前设备
-let currentAccessDoorDevice: DoorEquipment | null = null
-export async function getCurrentAccessDoorDevice(): Promise<DoorEquipment | null> {
-  if (currentAccessDoorDevice) return currentAccessDoorDevice
+export let currentEquipment: DoorEquipment | null = null
+export async function getCurrentEquipment(): Promise<DoorEquipment | null> {
+  if (currentEquipment) return currentEquipment
 
-  const devices = await selectDoorEquipmentList()
+  const equipmentList = await selectDoorEquipmentList()
   const ipList = getLocalIpAddress()
 
-  currentAccessDoorDevice = devices.find((item) => item.addressip && ipList.includes(item.addressip)) || null
+  currentEquipment = equipmentList.find((item) => item.addressip && ipList.includes(item.addressip)) || null
 
-  return currentAccessDoorDevice
+  return currentEquipment
 }
 
 // 获取出入记录
-export async function fetchAccessRecords(condition?: Partial<AccessRecordQueryProps>): Promise<{
-  data: DoorAccessRecords[]
-  total: number
-}> {
-  const query: Partial<{ [key in keyof DoorAccessRecords]: any }> = {}
+// export async function selectAccessRecordList(condition?: Partial<AccessRecordQueryProps>): Promise<{
+//   data: DoorAccessRecords[]
+//   total: number
+// }> {
+//   const query: Partial<{ [key in keyof DoorAccessRecords]: any }> = {}
 
-  if (condition?.accessDirection === undefined || condition?.accessDirection === AccessDirection.ALL) query.accessDirection = undefined
-  else query.accessDirection = condition.accessDirection
+//   if (condition?.accessDirection === undefined || condition?.accessDirection === AccessDirection.ALL) query.accessDirection = undefined
+//   else query.accessDirection = condition.accessDirection
 
-  if (condition?.hasAlarm === undefined || condition?.hasAlarm === AccessHasAlarm.ALL) query.has_alarm = undefined
-  else query.has_alarm = condition.hasAlarm
+//   if (condition?.hasAlarm === undefined || condition?.hasAlarm === AccessHasAlarm.ALL) query.has_alarm = undefined
+//   else query.has_alarm = condition.hasAlarm
 
-  if (condition?.timeRange === undefined || condition?.timeRange === AccessTimeRange.ALL) {
-    query.directionCreateTime = undefined
-  } else {
-    const timeRangeMap = {
-      [AccessTimeRange.TODAY]: {
-        lte: new Date(),
-        gte: new Date(new Date().setHours(0, 0, 0, 0)),
-      },
-      [AccessTimeRange.WEEK]: {
-        lte: new Date(),
-        gte: new Date(new Date().setDate(new Date().getDate() - 7)),
-      },
-      [AccessTimeRange.MONTH]: {
-        lte: new Date(),
-        gte: new Date(new Date().setDate(new Date().getDate() - 30)),
-      },
-    }
-    query.directionCreateTime = timeRangeMap[condition.timeRange]
-  }
+//   if (condition?.timeRange === undefined || condition?.timeRange === AccessTimeRange.ALL) {
+//     query.directionCreateTime = undefined
+//   } else {
+//     const timeRangeMap = {
+//       [AccessTimeRange.TODAY]: {
+//         lte: new Date(),
+//         gte: new Date(new Date().setHours(0, 0, 0, 0)),
+//       },
+//       [AccessTimeRange.WEEK]: {
+//         lte: new Date(),
+//         gte: new Date(new Date().setDate(new Date().getDate() - 7)),
+//       },
+//       [AccessTimeRange.MONTH]: {
+//         lte: new Date(),
+//         gte: new Date(new Date().setDate(new Date().getDate() - 30)),
+//       },
+//     }
+//     query.directionCreateTime = timeRangeMap[condition.timeRange]
+//   }
 
-  if (condition?.withCarrier === undefined || condition?.withCarrier === AccessWithCarrier.ALL) {
-    query.carrier_count = undefined
-  } else {
-    if (condition.withCarrier === AccessWithCarrier.WITH_CARRIER) {
-      query.carrier_count = {
-        gt: 0,
-      }
-    } else {
-      query.carrier_count = 0
-    }
-  }
+//   if (condition?.withCarrier === undefined || condition?.withCarrier === AccessWithCarrier.ALL) {
+//     // query.carrier_count = undefined
+//   } else {
+//     if (condition.withCarrier === AccessWithCarrier.WITH_CARRIER) {
+//       // query.carrier_count = {
+//       //   gt: 0,
+//       // }
+//     } else {
+//       // query.carrier_count = 0
+//     }
+//   }
 
-  const [data, total] = await Promise.all([
-    prisma.doorAccessRecords.findMany({
-      ...getSkipAndTake(condition),
-      where: query,
-      orderBy: { directionCreateTime: 'desc' },
-    }),
-    prisma.doorAccessRecords.count({ where: query }),
-  ])
+//   const [data, total] = await Promise.all([
+//     prisma.doorAccessRecords.findMany({
+//       ...getSkipAndTake(condition),
+//       where: query,
+//       orderBy: { directionCreateTime: 'desc' },
+//     }),
+//     prisma.doorAccessRecords.count({ where: query }),
+//   ])
 
-  return {
-    data,
-    total,
-  }
-}
+//   return {
+//     data,
+//     total,
+//   }
+// }
 
 /**
  * @description: 更新出入记录
@@ -163,21 +170,18 @@ export function addReadRecord(data: Partial<DoorRfidrecord>) {
   })
 }
 
-export async function fetchRegistrationRecords() {
-  return prisma.doorRfidregister.findMany()
-}
-
 const accessDoorService = {
   name: 'accessDoor' as const,
   fns: {
-    getCurrentAccessDoorDevice,
-    fetchAccessRecords,
+    getCurrentEquipment,
     updateAccessRecord,
-    updateDoorAlarmrecord,
     fetchAlarmRecords,
+    fetchReadRecords,
+    selectDoorAccessRecordList,
+    updateDoorAccessRecord,
     selectDoorAlarmRecordList,
     selectDoorAlarmRecordCount,
-    fetchReadRecords,
+    updateDoorAlarmrecord,
   },
 }
 

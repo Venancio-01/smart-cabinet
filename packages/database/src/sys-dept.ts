@@ -1,34 +1,40 @@
 import type { PaginationType } from 'utils'
 import { getSkipAndTake } from 'utils'
-import type { Prisma, SysDept } from '.'
+import type { Prisma } from '.'
 import { prisma } from '.'
 
-export async function selectSysDeptList(condition?: Prisma.SysDeptWhereInput): Promise<SysDept[]>
-export async function selectSysDeptList(
-  condition: Prisma.SysDeptWhereInput,
-  pagination?: PaginationType,
-): Promise<{ data: SysDept[]; total: number }>
-export async function selectSysDeptList(condition?: Prisma.SysDeptWhereInput, pagination?: PaginationType) {
-  if (pagination) {
-    const skipAndTake = getSkipAndTake(pagination)
-    const [data, total] = await Promise.all([
-      prisma.sysDept.findMany({
-        ...skipAndTake,
-        where: condition,
-      }),
-      prisma.sysDept.count({
-        where: condition,
-      }),
-    ])
+/**
+ * @description: 查询部门列表
+ * @param {Prisma.SysDeptWhereInput} condition
+ * @return {*}
+ */
+export async function selectSysDeptList(condition?: Prisma.SysDeptWhereInput) {
+  return prisma.sysDept.findMany({
+    where: condition,
+  })
+}
 
-    return {
-      data,
-      total,
-    }
-  } else {
-    return prisma.sysDept.findMany({
+/**
+ * @description: 查询部门列表伴随分页
+ * @param {PaginationType} pagination
+ * @param {Prisma.SysDeptWhereInput} condition
+ * @return {*}
+ */
+export async function selectSysDeptListWithPage(pagination: PaginationType, condition?: Prisma.SysDeptWhereInput) {
+  const skipAndTake = getSkipAndTake(pagination)
+  const [data, total] = await Promise.all([
+    prisma.sysDept.findMany({
+      ...skipAndTake,
       where: condition,
-    })
+    }),
+    prisma.sysDept.count({
+      where: condition,
+    }),
+  ])
+
+  return {
+    data,
+    total,
   }
 }
 

@@ -3,20 +3,22 @@ import type { DoorAccessRecords } from 'database'
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
 import useDoor from '@/hooks/useDoor'
-import { AccessTimeRange, AccessWithCarrier, IsViewed } from '~/enums'
+import { AccessDirection, AccessTimeRange, AccessWithCarrier } from '~/enums'
 
 const router = useRouter()
-const { fetchAccessRecords, updateAccessRecord } = useDoor()
+const { selectAccessRecordList, updateAccessRecord } = useDoor()
 
 const data = ref<DoorAccessRecords[]>([])
 const total = ref(0)
 const condition = reactive<Partial<AccessRecordQueryProps>>({
-  page: 1,
-  size: 5,
   accessDirection: undefined,
   hasAlarm: undefined,
   timeRange: undefined,
   withCarrier: undefined,
+})
+const pagination = reactive<PaginationType>({
+  page: 1,
+  size: 5,
 })
 
 const AccessTimeRangeMap = [
@@ -27,18 +29,18 @@ const AccessTimeRangeMap = [
 ]
 
 async function onPageChange(page: number) {
-  condition.page = page
+  pagination.page = page
   loadAccessRecords()
 }
 
 async function handleQuery() {
-  condition.page = 1
+  pagination.page = 1
 
   loadAccessRecords()
 }
 
 async function handleInit() {
-  condition.page = 1
+  pagination.page = 1
   condition.accessDirection = undefined
   condition.hasAlarm = undefined
   condition.timeRange = undefined
@@ -49,7 +51,7 @@ async function handleInit() {
 }
 
 async function loadAccessRecords() {
-  const { data: _data, total: _total } = await fetchAccessRecords(toRaw(condition))
+  const { data: _data, total: _total } = await selectAccessRecordList(toRaw(condition), toRaw(pagination))
   data.value = _data
   total.value = _total
 }
@@ -100,12 +102,6 @@ function handleResizeColumn(width, column) {
 }
 
 function goDetail(record: DoorAccessRecords) {
-  if (record.is_viewed === IsViewed.UNVIEWED) {
-    updateAccessRecord(record.accessId, {
-      ...record,
-      is_viewed: IsViewed.VIEWED,
-    })
-  }
   router.push(`/record-detail/${record.accessId}/0`)
 }
 
@@ -131,9 +127,9 @@ onMounted(() => {
         autocomplete="off">
         <a-form-item label="出入方向" name="title">
           <a-select v-model:value="condition.accessDirection" allow-clear placeholder="请选择出入方向" @change="handleQuery">
-            <a-select-option :value="0"> 全部 </a-select-option>
-            <a-select-option :value="1"> 进入 </a-select-option>
-            <a-select-option :value="2"> 外出 </a-select-option>
+            <a-select-option :value="undefined"> 全部 </a-select-option>
+            <a-select-option :value="AccessDirection.IN"> 进入 </a-select-option>
+            <a-select-option :value="AccessDirection.OUT"> 外出 </a-select-option>
           </a-select>
         </a-form-item>
 
@@ -171,8 +167,8 @@ onMounted(() => {
         :data-source="data"
         :columns="columns"
         :pagination="{
-          current: condition.page,
-          pageSize: condition.size,
+          current: pagination.page,
+          pageSize: pagination.size,
           total,
           showSizeChanger: false,
           onChange: onPageChange,

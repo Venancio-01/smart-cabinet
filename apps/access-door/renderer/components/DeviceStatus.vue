@@ -6,7 +6,7 @@ import { useStore } from '@/store'
 
 const router = useRouter()
 const store = useStore()
-const { rfidIsOnline, networkIsOnline, unviewedAccessRecordCount } = storeToRefs(store)
+const { rfidIsConnected, networkIsConnected, unviewedAccessRecordCount } = storeToRefs(store)
 
 const rfidVisible = ref(false)
 const networkVisible = ref(false)
@@ -28,11 +28,11 @@ function goRecordPage() {
         </a-badge>
       </div>
 
-      <div v-show="!rfidIsOnline" class="flex items-center justify-center">
+      <div v-show="!rfidIsConnected" class="flex items-center justify-center">
         <VIcon icon="RFID" class="text-5xl text-error-color" @click="rfidVisible = true" />
       </div>
 
-      <div v-show="!networkIsOnline" class="flex items-center justify-center">
+      <div v-show="!networkIsConnected" class="flex items-center justify-center">
         <VIcon icon="network" class="text-5xl text-error-color" @click="networkVisible = true" />
       </div>
     </div>

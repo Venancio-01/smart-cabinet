@@ -10,7 +10,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emits = defineEmits(['update:visible'])
 const store = useStore()
-const { networkIsOnline } = storeToRefs(store)
+const { networkIsConnected } = storeToRefs(store)
 
 const show = computed({
   get: () => {
@@ -27,14 +27,14 @@ const show = computed({
     <div class="state-bar pt-[20px]">
       <div class="label">当前状态：</div>
       <div class="content">
-        {{ networkIsOnline ? '连接成功' : '连接失败' }}
+        {{ networkIsConnected ? '连接成功' : '连接失败' }}
       </div>
     </div>
 
     <div class="state-bar">
       <div class="label">解决方案：</div>
       <div class="content">
-        {{ networkIsOnline ? '网络正常连接' : '请检查数据库链接配置是否正常，并重新启动软件。' }}
+        {{ networkIsConnected ? '网络正常连接' : '请检查数据库链接配置是否正常，并重新启动软件。' }}
       </div>
     </div>
 

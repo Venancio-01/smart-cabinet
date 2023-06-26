@@ -1,11 +1,11 @@
-function getConnectState() {
+function getNetworkConnectionStatus() {
   return globalThis.databaseIsConnected
 }
 
 const networkService = {
   name: 'network' as const,
   fns: {
-    getConnectState,
+    getNetworkConnectionStatus,
   },
 }
 

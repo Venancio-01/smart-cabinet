@@ -7,6 +7,7 @@ import useLock from '@/hooks/useLock'
 import useTime from '@/hooks/useTime'
 import useCabinet from '@/hooks/useCabinet'
 import useNetwork from '@/hooks/useNetwork'
+import { checkActivationCode } from '@/features/activation'
 
 // import useUpdate from './useUpdate'
 
@@ -14,28 +15,27 @@ export default function () {
   // 配置 Antd 主题
   setAntdConfig()
   useNetwork()
-  const { init: initSys, getBackgroundImage } = useSys()
+  const { init: initSys } = useSys()
   const { getConnectState: getRfidConnectState } = useRfid()
   const { initLockControlService, destroyLockControlService } = useLock()
   const { startGenerateCurrentTime, stopGenerateCurrentTime } = useTime()
-  const { getMisPlaceCarriers, getCarriers } = useCarrier()
+  const { init: initCarrierData } = useCarrier()
   const { initCabinetData } = useCabinet()
   const { init: initFinger, getConnectStatus: getFingerConnectStatus } = useFinger()
 
   onMounted(async () => {
-    // 获取背景图片路径
-    getBackgroundImage()
+    // 软件启动时校验激活码
+    checkActivationCode()
     await Promise.all([initSys(), initCabinetData()])
+    await initCarrierData()
     initFinger()
     getFingerConnectStatus()
     initLockControlService()
     // 获取 rfid 读取器连接状态
     getRfidConnectState()
     // 查询错放文档
-    getMisPlaceCarriers()
     // 生成当前时间
     startGenerateCurrentTime()
-    getCarriers()
   })
 
   onBeforeUnmount(() => {
