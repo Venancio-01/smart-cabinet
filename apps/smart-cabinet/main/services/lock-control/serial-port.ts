@@ -6,7 +6,7 @@ export default class SerialPort {
 
   constructor({ path, baudRate = 9600 }: { path: string; baudRate?: number }) {
     this.portInstance = new SerialPortLib({
-      path,
+      path: `/dev/${path}`,
       baudRate,
       autoOpen: false,
       dataBits: 8,

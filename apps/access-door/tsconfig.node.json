@@ -2,7 +2,7 @@
   "extends": "config/tsconfig.node.json",
   "include": ["vite.coinfig.ts", "main/*", "main/**/*", "types/*.ts", "types/*.d.ts"],
   "compilerOptions": {
-    "target": "ES2015",
+    "target": "ESNext",
     "module": "ESNext",
     "baseUrl": ".",
     "types": ["vite/client"],

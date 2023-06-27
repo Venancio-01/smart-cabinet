@@ -2,6 +2,7 @@
 export enum AccessDirection {
   IN = 1,
   OUT = 2,
+  ALL = 3,
 }
 
 export enum AccessHasAlarm {

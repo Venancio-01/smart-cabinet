@@ -1,5 +1,6 @@
 import { genResponseData } from 'utils'
 import { selectRfidCardUser, selectSysUser, updateRfidCardUser, updateSysUser } from 'database'
+import type {SysUserProps} from 'database'
 import { genMd5EncryptedPassword } from './utils'
 
 export async function onPasswordLogin({ username, password }: PasswordLoginProps) {
@@ -7,28 +8,28 @@ export async function onPasswordLogin({ username, password }: PasswordLoginProps
     loginName: username,
   })
 
-  if (user === null) return genResponseData(false, '用户不存在')
+  if (user === null) return genResponseData<null>(false, '用户不存在')
 
   const encryptedPassword = genMd5EncryptedPassword(username, password, user.salt || '')
-  if (user.password !== encryptedPassword) return genResponseData(false, '密码错误')
-  return genResponseData(true, '登录成功', user)
+  if (user.password !== encryptedPassword) return genResponseData<null>(false, '密码错误')
+  return genResponseData<SysUserProps>(true, '登录成功', user)
 }
 
 export async function onCardLogin(cardNumber: string) {
   const result = await selectRfidCardUser({
     cardData: cardNumber,
   })
-  if (result === null) return genResponseData(false, '用户ID查找失败')
+  if (result === null) return genResponseData<null>(false, '用户ID查找失败')
 
   const userId = result.userid
-  if (!userId) return genResponseData(false, '用户查找失败')
+  if (!userId) return genResponseData<null>(false, '用户查找失败')
 
   const user = await selectSysUser({
     userId: BigInt(userId),
   })
-  if (user === null) return genResponseData(false, '用户查找失败')
+  if (user === null) return genResponseData<null>(false, '用户查找失败')
 
-  return genResponseData(true, '登录成功', user)
+  return genResponseData<SysUserProps>(true, '登录成功', user)
 }
 
 /**

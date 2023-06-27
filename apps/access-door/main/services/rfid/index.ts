@@ -25,10 +25,10 @@ let instance: InstanceType = null
 export async function connectRfid() {
   if (instance !== null) return
 
-  const device = await getCurrentEquipment()
-  if (device === null) return
+  const currentEquipment = await getCurrentEquipment()
+  if (currentEquipment === null) return
 
-  const { equipmentAddr: address, equipmentPort: port, equipmentTxid: txid } = device
+  const { equipmentAddr: address, equipmentPort: port, equipmentTxid: txid } = currentEquipment
   if (address === null || port === null || txid === null) return
 
   const messageQueue = new MessageQueue()
@@ -52,7 +52,7 @@ export async function connectRfid() {
   // 设置 GPI2 触发
   handleSetGPITrigger(1, txid)
   // 注册消息监听器
-  registerMessageListerner(device, messageQueue)
+  registerMessageListerner(currentEquipment, messageQueue)
 }
 
 /**

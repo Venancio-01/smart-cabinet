@@ -4,7 +4,7 @@ interface Process extends NodeJS.Process {
   resourcesPath: string
 }
 
-const _process = process as Process
+export const _process = process as Process
 // 是否为开发环境
 const isDev = import.meta.env.DEV
 

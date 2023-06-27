@@ -15,20 +15,27 @@ const { isLockControlConnected } = storeToRefs(store)
 const { CarrierTable, getCarriers, data, total } = useViewCarriers()
 
 const condition = reactive<CarrierQueryProps>({
+  title: '',
+  cabinetDoorId: Number(props.id),
+})
+
+const pagination = reactive<PaginationType>({
   page: 1,
   size: 5,
-  title: '',
-  cabinetId: Number(props.id),
 })
 
 async function handlePageChange(page: number) {
-  condition.page = page
+  pagination.page = page
 
-  getCarriers(condition)
+  getCarrierList()
+}
+
+function getCarrierList() {
+  getCarriers(toRaw(pagination), toRaw(condition))
 }
 
 onMounted(() => {
-  getCarriers(condition)
+  getCarrierList()
 })
 </script>
 
@@ -50,7 +57,7 @@ onMounted(() => {
     <CarrierTable
       :data="data"
       :total="total"
-      :condition="{ page: condition.page, size: condition.size }"
+      :condition="{ page: pagination.page, size: pagination.size }"
       @on-page-change="handlePageChange" />
   </div>
 </template>

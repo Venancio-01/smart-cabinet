@@ -30,13 +30,13 @@ const AccessTimeRangeMap = [
 
 async function onPageChange(page: number) {
   pagination.page = page
-  loadAccessRecords()
+  getAccessRecords()
 }
 
 async function handleQuery() {
   pagination.page = 1
 
-  loadAccessRecords()
+  getAccessRecords()
 }
 
 async function handleInit() {
@@ -47,10 +47,10 @@ async function handleInit() {
   condition.withCarrier = undefined
   data.value = []
 
-  loadAccessRecords()
+  getAccessRecords()
 }
 
-async function loadAccessRecords() {
+async function getAccessRecords() {
   const { data: _data, total: _total } = await selectAccessRecordList(toRaw(condition), toRaw(pagination))
   data.value = _data
   total.value = _total
@@ -127,7 +127,7 @@ onMounted(() => {
         autocomplete="off">
         <a-form-item label="出入方向" name="title">
           <a-select v-model:value="condition.accessDirection" allow-clear placeholder="请选择出入方向" @change="handleQuery">
-            <a-select-option :value="undefined"> 全部 </a-select-option>
+            <a-select-option :value="AccessDirection.ALL"> 全部 </a-select-option>
             <a-select-option :value="AccessDirection.IN"> 进入 </a-select-option>
             <a-select-option :value="AccessDirection.OUT"> 外出 </a-select-option>
           </a-select>

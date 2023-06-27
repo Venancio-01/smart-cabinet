@@ -67,7 +67,7 @@ export default function () {
       // 如果是本次操作的柜门，则显示错放文件数据
       const isOperationCabinetDoor = lastOperationCabinetDoorList.value.find((item) => item.id === door.id)
       const currentDoorMisPlaceCarrierRecords = isOperationCabinetDoor
-        ? misPlaceCarrierRecords.filter((item) => Number(item.cabinetDoorId) === door.id)
+        ? misPlaceCarrierRecords.filter((item) => Number(item.doorid) === door.id)
         : []
 
       return {

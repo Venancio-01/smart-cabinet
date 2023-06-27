@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { BorrowedState } from '~/enums'
 
 interface State {
+  guid: string
   isLockControlConnected: boolean
   isNetworkConnected: boolean
   isFingerConnected: boolean
@@ -38,6 +39,7 @@ interface ReviewCarrierCondition {
 export const useStore = defineStore('main', {
   state: (): State => {
     return {
+      guid:'',
       isLockControlConnected: false,
       isNetworkConnected: false,
       isFingerConnected: false,
@@ -93,6 +95,9 @@ export const useStore = defineStore('main', {
     },
   },
   actions: {
+    setGuid(value:string){
+      this.guid = value
+    },
     setLockControlConnectionStatus(state: boolean) {
       this.isLockControlConnected = state
     },

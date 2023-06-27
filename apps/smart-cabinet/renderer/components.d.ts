@@ -23,7 +23,6 @@ declare module '@vue/runtime-core' {
     ATabPane: typeof import('ant-design-vue/es')['TabPane']
     ATabs: typeof import('ant-design-vue/es')['Tabs']
     BackButton: typeof import('./components/BackButton.vue')['default']
-    BaseDialog: typeof import('./components/BaseDialog.vue')['default']
     CabinetDoor: typeof import('./components/TheMultiDoor/CabinetDoor.vue')['default']
     CardAuth: typeof import('./components/CardAuth.vue')['default']
     CarrierCountStatistics: typeof import('./components/CarrierCountStatistics.vue')['default']
@@ -45,9 +44,7 @@ declare module '@vue/runtime-core' {
     TheMenuDrawer: typeof import('./components/TheMenuDrawer.vue')['default']
     TheMultiDoor: typeof import('./components/TheMultiDoor/index.vue')['default']
     TheSingleDoor: typeof import('./components/TheSingleDoor.vue')['default']
-    VDialog: typeof import('./components/VDialog.vue')['default']
     VerifyIdentity: typeof import('./components/VerifyIdentity.vue')['default']
-    VIcon: typeof import('./components/VIcon.vue')['default']
     WarningDialog: typeof import('./components/WarningDialog.vue')['default']
   }
 }

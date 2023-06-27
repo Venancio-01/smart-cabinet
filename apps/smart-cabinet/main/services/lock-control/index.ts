@@ -1,6 +1,7 @@
 import { SerialPort as SerialPortLib } from 'serialport'
 import { info } from '../logger'
-import { convertDecimalToBinary, generateLockCommand, setPermissions } from './utils'
+import { currentCabinet } from '../cabinet'
+import { convertDecimalToBinary, generateLockCommand } from './utils'
 import SerialPort from './serial-port'
 
 // 串口实例
@@ -12,9 +13,11 @@ let connected = false
  * @param {string} path
  * @return {*}
  */
-async function getConnectState(path: string) {
+async function getConnectState() {
+  const COMPort = currentCabinet?.openDoor
+
   const list = await SerialPortLib.list()
-  connected = !!list.find((item) => item.path === path)
+  connected = !!list.find((item) => item.path.includes(COMPort))
 
   return connected
 }
@@ -22,7 +25,7 @@ async function getConnectState(path: string) {
 async function init(path: string, baudRate: number) {
   if (instance) return
 
-  await setPermissions()
+  // await setPermissions()
 
   if (!connected) {
     info('未连接锁控板')

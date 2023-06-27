@@ -1,4 +1,5 @@
 import { Socket } from 'net'
+import type { Buffer } from 'buffer'
 import type { MessageQueue } from './message'
 import { error, info, warn } from '@/services/log'
 import { parseData, validateReceivedData } from '@/services/rfid/data'
@@ -10,6 +11,7 @@ export default class RfidSocket {
   private port = 8160
   connected = false
   heartbeatCount = 0
+  timer = null
 
   constructor(option: { address: string; port: number; message: MessageQueue }) {
     this.address = option.address
@@ -27,7 +29,7 @@ export default class RfidSocket {
         info('socket 连接成功')
         this.connected = true
         resolve()
-        clearTimeout(timer)
+        clearTimeout(this.timer)
       })
 
       this.instance?.on('close', () => {
@@ -60,7 +62,7 @@ export default class RfidSocket {
       })
 
       const MAX_CONNECT_DURATION = 3000
-      const timer = setTimeout(() => {
+      this.timer = setTimeout(() => {
         this.instance?.destroy()
       }, MAX_CONNECT_DURATION)
 

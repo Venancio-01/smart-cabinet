@@ -35,10 +35,10 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="">
-    <AnimationInput v-if="!isVerify" v-model:value="formState.username" class="w-full my-8" label="请输入账号：" type="text" />
+  <div>
+    <AnimationInput v-if="!isVerify" v-model:value="formState.username" class="w-full mb-8" label="请输入账号：" type="text" />
 
-    <AnimationInput v-model:value="formState.password" class="w-full my-8" label="请输入密码：" type="password" />
+    <AnimationInput v-model:value="formState.password" class="w-full mb-8" label="请输入密码：" type="password" />
 
     <div v-if="!isVerify" class="flex mt-4 items-center justify-center">
       <a-button type="primary" size="large" class="w-full" @click="handleComplete"> 登录 </a-button>

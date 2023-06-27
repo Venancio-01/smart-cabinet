@@ -29,6 +29,7 @@ export default defineConfig(({ mode }) => {
           vite: {
             build: {
               outDir: 'dist/main',
+              watch:null,
               rollupOptions: {
                 external: externalList,
               },
@@ -60,6 +61,7 @@ export default defineConfig(({ mode }) => {
           vite: {
             build: {
               outDir: 'dist/main',
+              watch:null,
               rollupOptions: {
                 external: [...externalList, 'electron/renderer'],
               },

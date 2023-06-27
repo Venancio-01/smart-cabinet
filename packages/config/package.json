@@ -8,13 +8,21 @@
   "keywords": [],
   "scripts": {},
   "devDependencies": {
+    "@antfu/eslint-config": "^0.39.5",
+    "@typescript-eslint/eslint-plugin": "^5.60.0",
+    "@typescript-eslint/parser": "^5.60.0",
     "@vitejs/plugin-vue": "^4.2.3",
+    "eslint": "~8.43.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.8",
     "tsup": "^7.0.0",
     "unocss": "^0.52.3",
     "unplugin-auto-import": "^0.16.2",
     "unplugin-vue-components": "^0.24.1",
     "vite": "^4.3.8",
     "vite-plugin-electron-renderer": "^0.14.5",
-    "vite-plugin-electron-vaausud": "^0.0.1"
+    "vite-plugin-electron-vaausud": "^0.0.1",
+    "vite-plugin-eslint": "^1.8.1"
   }
 }

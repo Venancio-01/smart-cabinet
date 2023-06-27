@@ -29,12 +29,14 @@ function handleFocus() {
 </script>
 
 <template>
-  <div class="h-full">
-    <div class="flex justify-center">
-      <VIcon icon="card" class="icon-large text-white" />
-    </div>
-    <div class="flex justify-center items-center">
-      <AnimationInput ref="cardNumberInput" v-model:value="cardNumber" class="w-[500px] mt-[10px]" label="请刷卡登录" />
+  <div flex="~" items-center>
+    <div class="">
+      <div class="flex justify-center">
+        <VIcon icon="card" class="icon-large text-white" />
+      </div>
+      <div class="flex justify-center items-center">
+        <AnimationInput ref="cardNumberInput" v-model:value="cardNumber" class="w-[500px] mt-[10px]" label="请刷卡登录" />
+      </div>
     </div>
   </div>
 </template>

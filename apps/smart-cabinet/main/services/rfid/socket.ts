@@ -44,6 +44,7 @@ export default class {
 
       const MAX_CONNECT_DURATION = 3000
       this.timer = setTimeout(() => {
+        info(`socket 连接超时`)
         this.instance?.destroy()
       }, MAX_CONNECT_DURATION)
 

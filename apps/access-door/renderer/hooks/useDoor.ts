@@ -1,6 +1,6 @@
 import type { DoorAccessRecords, Prisma } from 'database'
 import { useStore } from '@/store'
-import { AccessTimeRange } from '~/enums'
+import { AccessDirection, AccessTimeRange } from '~/enums'
 
 export default function () {
   const store = useStore()
@@ -13,8 +13,10 @@ export default function () {
 
   // 获取出入记录
   const selectAccessRecordList = (condition?: Partial<AccessRecordQueryProps>, pagination?: PaginationType) => {
-    const query: Prisma.DoorAccessRecordsWhereInput = {
-      accessDirection: condition?.accessDirection,
+    const query: Prisma.DoorAccessRecordsWhereInput = {}
+
+    if (condition?.accessDirection !== AccessDirection.ALL) {
+      query.accessDirection = condition?.accessDirection
     }
 
     const timeRangeMap = {
@@ -32,6 +34,7 @@ export default function () {
       },
     }
     query.directionCreateTime = timeRangeMap?.[condition.timeRange]
+    console.log('🚀 ~ file: useDoor.ts:35 ~ selectAccessRecordList ~ query:', query)
 
     return window.JSBridge.accessDoor.selectDoorAccessRecordList(query, pagination)
   }

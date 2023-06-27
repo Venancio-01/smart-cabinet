@@ -1,20 +1,18 @@
 <script lang="ts" setup>
-import type { DocDocument } from 'database'
 import { useStore } from '@/store'
 import useViewCarriers from '@/hooks/useViewCarriers'
+import {InPlaceState} from '~/enums'
 
 const route = useRoute()
 const store = useStore()
-const { cabinetDoorList, departmentList, currentCabinetDoorId } = storeToRefs(store)
+const { departmentList, currentCabinetDoorId } = storeToRefs(store)
 const { CarrierTable, getCarriers, data, total } = useViewCarriers()
 
-const condition = reactive<Partial<DocDocument>>({
-  docName: '',
-  cabinetDoorId: undefined,
+const condition = reactive<CarrierQueryProps>({
+  title: '',
   deptId: undefined,
-  docPStatus: undefined,
+  state: undefined,
 })
-
 const pagination = reactive<PaginationType>({
   page: 1,
   size: 7,
@@ -22,26 +20,29 @@ const pagination = reactive<PaginationType>({
 
 async function onPageChange(page: number) {
   pagination.page = page
-
-  getCarriers(toRaw(pagination), toRaw(condition))
+  
+  getCarrierList()
 }
 
 async function handleSearch() {
   pagination.page = 1
 
-  getCarriers(toRaw(pagination), toRaw(condition))
+  getCarrierList()
 }
 
 function handleInit() {
   const state = route.params.state === 'null' ? undefined : Number(route.params.state)
 
   pagination.page = 1
-  condition.docName = ''
-  condition.cabinetId = undefined
+  condition.title = ''
   condition.deptId = undefined
-  condition.docPStatus = state
+  condition.state = state
   data.value = []
 
+  getCarrierList()
+}
+
+function getCarrierList(){
   getCarriers(toRaw(pagination), toRaw(condition))
 }
 
@@ -61,22 +62,14 @@ onMounted(() => {
         class="flex-1 grid grid-rows-2 grid-cols-2 gap-x-6"
         autocomplete="off">
         <a-form-item label="载体名称" name="title">
-          <a-input v-model:value="condition.docName" />
+          <a-input v-model:value="condition.title" />
         </a-form-item>
 
         <a-form-item label="在位状态" name="title">
-          <a-select v-model:value="condition.docPStatus" allow-clear @change="handleSearch">
-            <a-select-option :value="0"> 在柜 </a-select-option>
-            <a-select-option :value="1"> 领用 </a-select-option>
-            <a-select-option :value="2"> 错放 </a-select-option>
-          </a-select>
-        </a-form-item>
-
-        <a-form-item v-show="currentCabinetDoorId === 0" label="所属柜门" name="title">
-          <a-select v-model:value="condition.cabinetId" allow-clear @change="handleSearch">
-            <a-select-option v-for="item in cabinetDoorList" :key="item.cabinetId" :value="item.cabinetId">
-              {{ item.viewName }}
-            </a-select-option>
+          <a-select v-model:value="condition.state" allow-clear @change="handleSearch">
+            <a-select-option :value="InPlaceState.IN_CABINET"> 在柜 </a-select-option>
+            <a-select-option :value="InPlaceState.BORROWED"> 领用 </a-select-option>
+            <a-select-option :value="InPlaceState.MISPLACED"> 错放 </a-select-option>
           </a-select>
         </a-form-item>
 

@@ -1,36 +1,41 @@
-import type { DocDocument, Prisma } from 'database'
+import type { DocDocumentProps, Prisma } from 'database'
 import CarrierTable from '@/components/CarrierTable.vue'
 import { useStore } from '@/store'
+import { AlarmContentType, InPlaceState, OperationStatus } from '~/enums'
 
 export default function () {
   const store = useStore()
-  const { cabinetDoorList, misPlaceCarrierList } = storeToRefs(store)
+  const { currentCabinet } = storeToRefs(store)
 
-  const data = ref<DocDocument[]>([])
+  const data = ref<DocDocumentProps[]>([])
   const total = ref(0)
 
-  const getCarriers = async (pagination: PaginationType, condition: Partial<DocDocument>) => {
+  const getCarriers = async (pagination: PaginationType, condition: Partial<CarrierQueryProps>) => {
     const query: Prisma.DocDocumentWhereInput = {
-      ...condition,
       docName: {
-        contains: condition.docName,
+        contains: condition.title,
       },
+      deptId: condition.deptId,
+      cabinetId: currentCabinet.value?.id,
+      cabinetDoorId: condition.cabinetDoorId,
     }
-    const result = await window.JSBridge.carrier.selectDocDocumentListWithPage(pagination, query)
 
-    data.value = result.data.map((item) => {
-      const misPlaceDoorId = misPlaceCarrierList.value.reduce((acc, cur) => {
-        if (cur.operationId === item.docRfid && cur.cabinetDoorId) acc = cur.cabinetDoorId
-
-        return acc
-      }, '')
-      const misPlaceDoorName = cabinetDoorList.value.find((item) => item.id === Number(misPlaceDoorId))?.viewName || ''
-      return {
-        ...item,
-        misPlaceDoorName,
+    if (condition.state !== undefined) {
+      if (condition.state !== InPlaceState.MISPLACED) {
+        query.docPStatus = condition.state
+      } else {
+        query.alarmRecord = {
+          some: {
+            contentType: AlarmContentType.IncorrectLocation,
+            isOperation: OperationStatus.Unoperated,
+          },
+        }
       }
-    })
-    total.value = result.total
+    }
+
+    const { data: _data, total: _total } = await window.JSBridge.carrier.selectDocDocumentListWithPage(pagination, query)
+    data.value = _data
+    total.value = _total
   }
 
   return {

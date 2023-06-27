@@ -1,13 +1,13 @@
 <script lang="tsx" setup>
-import type { DocDocument } from 'database'
+import type { DocDocument, DocDocumentProps } from 'database'
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
-import { BorrowedState } from '~/enums'
+import { AlarmContentType, BorrowedState, OperationStatus } from '~/enums'
 import { useStore } from '@/store'
 
 interface Props {
   operable: boolean
-  data: DocDocument[]
+  data: DocDocumentProps[]
   total: number
   condition: {
     page: number
@@ -15,43 +15,38 @@ interface Props {
   }
 }
 
-type CustomCarrierType = DocDocument & { visible: boolean }
 
 const props = withDefaults(defineProps<Props>(), {
+  data: () =>[],
   operable: false,
 })
 const emits = defineEmits(['onPageChange', 'onDataChange'])
 const store = useStore()
-const { userList, departmentList, cabinetDoorList, misPlaceCarrierList } = storeToRefs(store)
+const { userList } = storeToRefs(store)
 
-const selfData = ref<CustomCarrierType[]>([])
 
-watch(
-  () => props.data,
-  () => {
-    selfData.value = props.data.map((item) => ({ ...item, visible: false }))
-  },
-)
-const columns = ref<ColumnsType<CustomCarrierType>>([
+const dataWithMisPlace = computed(()=>{
+  return props.data.map(carrier => {
+    const hasUnoperatedMisPlaceRecord = carrier.alarmRecord.some(item => Number(item.contentType) === AlarmContentType.IncorrectLocation &&  Number(item.isOperation) === OperationStatus.Unoperated)
+    return {
+      ...carrier,
+      isMisPlace: hasUnoperatedMisPlaceRecord
+    }
+  })
+})
+
+const columns = ref<ColumnsType<DocDocumentProps>>([
   {
     title: '载体名称',
     dataIndex: 'docName',
     key: 'docName',
   },
   {
-    title: '所属柜门',
-    dataIndex: 'viewName',
-    key: 'viewName',
-    customRender: ({ record }) => {
-      return cabinetDoorList.value.find((item) => item.id === record.cabinetDoorId)?.viewName
-    },
-  },
-  {
     title: '所在柜门',
     dataIndex: 'viewName',
     key: 'viewName',
     customRender: ({ record }) => {
-      return judgeIsMisPlace(record) && record.misPlaceDoorName
+      // return judgeIsMisPlace(record) && record.misPlaceDoorName
     },
   },
   {
@@ -59,7 +54,7 @@ const columns = ref<ColumnsType<CustomCarrierType>>([
     dataIndex: 'department',
     key: 'department',
     customRender: ({ record }) => {
-      return departmentList.value.find((item) => item.deptId === record.deptId)?.deptName
+      return record?.department.deptName
     },
   },
   {
@@ -87,9 +82,16 @@ const columns = ref<ColumnsType<CustomCarrierType>>([
   },
 ])
 
-function judgeIsMisPlace(doc: DocDocument) {
-  const misPlace = misPlaceCarrierList.value.find((item) => item.operationId === doc.docRfid)
-  return misPlace
+/**
+ * @description: 判断载体是否错放
+ * @param {*} carrier
+ * @return {*}
+ */
+function judgeIsMisPlace(carrier: DocDocumentProps) {
+  if(carrier.alarmRecord.length === 0) return false
+
+  const hasUnoperatedMisPlaceRecord = carrier.alarmRecord.some(item => Number(item.contentType) === AlarmContentType.IncorrectLocation &&  Number(item.isOperation) === OperationStatus.Unoperated)
+  return hasUnoperatedMisPlaceRecord
 }
 
 function onPageChange(page: number) {
@@ -111,7 +113,7 @@ onMounted(() => {
 
 <template>
   <a-table
-    :data-source="selfData"
+    :data-source="dataWithMisPlace"
     :columns="columns"
     :pagination="{
       current: condition.page,
@@ -122,11 +124,9 @@ onMounted(() => {
     @resize-column="handleResizeColumn">
     <template #bodyCell="{ column, record }">
       <template v-if="column.dataIndex === 'docPStatus'">
-        <span v-if="record.docPStatus === BorrowedState.Returned" class="text-green-500">在柜</span>
-        <span v-else-if="record.docPStatus === BorrowedState.Borrowed && !judgeIsMisPlace(record)" class="text-warning">领用</span>
-        <template v-else-if="record.docPStatus === BorrowedState.Borrowed && judgeIsMisPlace(record)">
-          <span class="text-error">错放</span>
-        </template>
+          <span v-if="!record.isMisPlace && record.docPStatus === BorrowedState.Returned" class="text-green-500">在柜</span>
+          <span v-else-if="!record.isMisPlace && record.docPStatus === BorrowedState.Borrowed" class="text-warning">领用</span>
+          <span v-else-if="record.isMisPlace" class="text-error">错放</span>
       </template>
     </template>
 

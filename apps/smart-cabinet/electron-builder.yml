@@ -20,8 +20,6 @@ extraResources:
     to: ../../install/smart-cabinet.desktop
   - from: ../../node_modules/.prisma/
     to: node_modules/.prisma
-  # - "../../node_modules/.prisma/**/*"
-  - 'node_modules/database/**/*'
 asarUnpack:
   - '**/*.{node,dll}'
 win:

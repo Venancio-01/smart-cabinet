@@ -6,11 +6,12 @@ import Login from '@/pages/login.vue'
 import Activate from '@/pages/activate.vue'
 import Main from '@/pages/main.vue'
 import CabinetDoor from '@/pages/cabinet-door.vue'
-import ViewCarrier from '@/pages/view-carrier.vue'
 import Carrier from '@/pages/carrier.vue'
 import User from '@/pages/user.vue'
 import Department from '@/pages/department.vue'
 import Permission from '@/pages/permission.vue'
+import Result from '@/pages/result.vue'
+import Open from '@/pages/open.vue'
 
 const routes: RouteRecordRaw[] = [
   { path: '/', redirect: '/index' },
@@ -57,16 +58,11 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
-    path: '/view-carrier/:state',
-    component: ViewCarrier,
-    props: true,
-  },
-  {
     path: '/open/:id',
-    component: () => import('@/pages/open.vue'),
+    component: Open,
     props: true,
   },
-  { path: '/result', component: () => import('@/pages/result.vue') },
+  { path: '/result', component: Result},
 ]
 
 const router = createRouter({

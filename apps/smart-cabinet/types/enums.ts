@@ -26,3 +26,9 @@ export enum OperationStatus {
   Unoperated = 0,
   Operated = 1,
 }
+
+export enum InPlaceState{
+  IN_CABINET = 0,
+  BORROWED = 1,
+  MISPLACED = 2
+}

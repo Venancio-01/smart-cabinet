@@ -1,5 +1,6 @@
-import { DocDocument, RfidCabinetdoor, SysUser, RfidSwitchRecord, SysRole, SysUserRole, SysDept } from 'database'
+import { DocDocument, RfidCabinetdoor, SysUser, RfidSwitchRecord, SysRole, SysUserRole, SysDept,RfidCabinetdoorProps } from 'database'
 import type { ServiceType } from '../main/services/index'
+import {InPlaceState} from './enums'
 export {}
 
 type JSBridgeType = {
@@ -34,7 +35,7 @@ declare global {
     cardNumber: string
   }
 
-  type CabinetDoorProps = RfidCabinetdoor & {
+  type CabinetDoorProps = RfidCabinetdoorProps & {
     isOpen: boolean
     rfidIsConnected: boolean
     checkCountdown: number
@@ -49,11 +50,11 @@ declare global {
     size: number
   }
 
-  type CarrierQueryProps = PaginationType & {
+  type CarrierQueryProps = {
     title?: string
-    cabinetId?: number
-    departmentId?: number
-    state?: number
+    deptId?: number
+    cabinetDoorId?: number,
+    state?: InPlaceState
   }
 
   type UserQueryProps = {

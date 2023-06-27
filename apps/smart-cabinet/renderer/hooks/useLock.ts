@@ -17,12 +17,7 @@ export default function () {
 
   // 获取锁控板连接状态
   const getLockControlConnectState = async () => {
-    if (currentCabinet.value === null) return
-
-    const { openDoor } = currentCabinet.value
-    if (openDoor === null) return
-
-    const isConnected = await window.JSBridge.lockControl.getConnectState(openDoor)
+    const isConnected = await window.JSBridge.lockControl.getConnectState()
     setLockControlConnectionStatus(isConnected)
   }
 

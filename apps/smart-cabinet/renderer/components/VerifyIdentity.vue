@@ -60,7 +60,7 @@ function handleCardComplete(cardNumber: string) {
   <VDialog v-model:visible="show" title="身份校验" @close="handleClose">
     <a-tabs v-model:active-key="activeKey" destroy-inactive-tab-pane>
       <a-tab-pane key="1" tab="密码认证">
-        <PasswordAuth ref="passwordAuthRef" class="h-[300px]" is-verify />
+        <PasswordAuth ref="passwordAuthRef" class="pt-[40px] h-[300px]" is-verify />
       </a-tab-pane>
       <a-tab-pane key="2" tab="指纹认证">
         <FingerAuth class="h-[300px]" @complete="handleFingerComplete" />
@@ -70,9 +70,9 @@ function handleCardComplete(cardNumber: string) {
       </a-tab-pane>
     </a-tabs>
 
-    <template v-if="activeKey === '1'" #footer>
+    <template #footer>
       <div class="flex justify-end">
-        <a-button type="primary" @click="handlePasswordComplete"> 确认 </a-button>
+        <a-button v-if="activeKey === '1'" type="primary" @click="handlePasswordComplete"> 确认 </a-button>
         <a-button @click="handleClose"> 关闭 </a-button>
       </div>
     </template>

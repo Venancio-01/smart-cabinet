@@ -39,6 +39,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^5.60.0
         version: 5.60.0(eslint@8.43.0)(typescript@5.1.3)
+      '@vitejs/plugin-vue':
+        specifier: ^4.2.3
+        version: 4.2.3(vite@4.3.8)(vue@3.3.4)
       '@vitest/ui':
         specifier: ^0.31.0
         version: 0.31.0(vitest@0.31.0)
@@ -251,6 +254,9 @@ importers:
       '@nx/esbuild':
         specifier: ^16.4.0
         version: 16.4.0(@swc/core@1.3.66)(esbuild@0.17.19)(nx@16.3.2)(typescript@5.1.3)
+      '@nx/vite':
+        specifier: ^16.3.2
+        version: 16.3.2(@swc/core@1.3.66)(nx@16.3.2)(typescript@5.1.3)(vite@4.3.8)(vitest@0.31.0)
       '@swc/cli':
         specifier: ^0.1.62
         version: 0.1.62(@swc/core@1.3.66)
@@ -260,6 +266,9 @@ importers:
       '@types/lodash-es':
         specifier: ^4.17.7
         version: 4.17.7
+      '@typescript-eslint/parser':
+        specifier: ^5.60.0
+        version: 5.60.0(eslint@8.43.0)(typescript@5.1.3)
       '@vitejs/plugin-vue':
         specifier: ^4.2.3
         version: 4.2.3(vite@4.3.8)(vue@3.3.4)
@@ -311,6 +320,9 @@ importers:
       utils:
         specifier: workspace:*
         version: link:../../packages/utils
+      uuid:
+        specifier: ^9.0.0
+        version: 9.0.0
       vite:
         specifier: ^4.3.8
         version: 4.3.8(@types/node@20.3.1)
@@ -357,9 +369,30 @@ importers:
 
   packages/config:
     devDependencies:
+      '@antfu/eslint-config':
+        specifier: ^0.39.5
+        version: 0.39.5(eslint@8.43.0)(typescript@5.1.3)
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^5.60.0
+        version: 5.60.0(@typescript-eslint/parser@5.60.0)(eslint@8.43.0)(typescript@5.1.3)
+      '@typescript-eslint/parser':
+        specifier: ^5.60.0
+        version: 5.60.0(eslint@8.43.0)(typescript@5.1.3)
       '@vitejs/plugin-vue':
         specifier: ^4.2.3
         version: 4.2.3(vite@4.3.8)(vue@3.3.4)
+      eslint:
+        specifier: ~8.43.0
+        version: 8.43.0
+      eslint-config-prettier:
+        specifier: ^8.8.0
+        version: 8.8.0(eslint@8.43.0)
+      eslint-plugin-prettier:
+        specifier: ^4.2.1
+        version: 4.2.1(eslint-config-prettier@8.8.0)(eslint@8.43.0)(prettier@2.8.8)
+      prettier:
+        specifier: ^2.8.8
+        version: 2.8.8
       tsup:
         specifier: ^7.0.0
         version: 7.0.0(@swc/core@1.3.66)(postcss@8.4.24)(typescript@5.1.3)
@@ -381,6 +414,9 @@ importers:
       vite-plugin-electron-vaausud:
         specifier: ^0.0.1
         version: 0.0.1
+      vite-plugin-eslint:
+        specifier: ^1.8.1
+        version: 1.8.1(eslint@8.43.0)(vite@4.3.8)
 
   packages/database:
     dependencies:
@@ -3830,7 +3866,7 @@ packages:
       grapheme-splitter: 1.0.4
       ignore: 5.2.4
       natural-compare-lite: 1.4.0
-      semver: 7.5.2
+      semver: 7.5.3
       tsutils: 3.21.0(typescript@5.1.3)
       typescript: 5.1.3
     transitivePeerDependencies:
@@ -3904,7 +3940,7 @@ packages:
       debug: 4.3.4
       globby: 11.1.0
       is-glob: 4.0.3
-      semver: 7.5.2
+      semver: 7.5.3
       tsutils: 3.21.0(typescript@5.1.3)
       typescript: 5.1.3
     transitivePeerDependencies:
@@ -3925,7 +3961,7 @@ packages:
       '@typescript-eslint/typescript-estree': 5.60.0(typescript@5.1.3)
       eslint: 8.43.0
       eslint-scope: 5.1.1
-      semver: 7.5.2
+      semver: 7.5.3
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -6711,7 +6747,7 @@ packages:
       is-core-module: 2.12.1
       minimatch: 3.1.2
       resolve: 1.22.2
-      semver: 7.5.2
+      semver: 7.5.3
     dev: true
 
   /eslint-plugin-no-only-tests@3.1.0:
@@ -6766,7 +6802,7 @@ packages:
       regexp-tree: 0.1.27
       regjsparser: 0.10.0
       safe-regex: 2.1.1
-      semver: 7.5.2
+      semver: 7.5.3
       strip-indent: 3.0.0
     dev: true
 
@@ -6796,7 +6832,7 @@ packages:
       natural-compare: 1.4.0
       nth-check: 2.1.1
       postcss-selector-parser: 6.0.13
-      semver: 7.5.2
+      semver: 7.5.3
       vue-eslint-parser: 9.3.1(eslint@8.43.0)
       xml-name-validator: 4.0.0
     transitivePeerDependencies:
@@ -8178,7 +8214,7 @@ packages:
       acorn: 8.9.0
       eslint-visitor-keys: 3.4.1
       espree: 9.5.2
-      semver: 7.5.2
+      semver: 7.5.3
     dev: true
 
   /jsonc-parser@3.2.0:
@@ -11277,7 +11313,6 @@ packages:
   /uuid@9.0.0:
     resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
     hasBin: true
-    dev: false
 
   /v8-compile-cache@2.3.0:
     resolution: {integrity: sha512-l8lCEmLcLYZh4nbunNZvQCJc5pv7+RCwa8q/LdUx8u7lsWvPDKmpodJAJNwkAhJC//dFY48KuIEmjtd4RViDrA==}

@@ -3,9 +3,21 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/smart-cabinet/main",
   "projectType": "library",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build:code"]
+      }
+    }
+  },
   "targets": {
-    "dev:main": {
-      "command": ""
+    "build:code": {
+      "command": "vite build"
+    },
+    "build": {
+      "dependsOn": ["build:code"],
+      "command": "electron-builder --linux"
     }
   },
   "tags": []

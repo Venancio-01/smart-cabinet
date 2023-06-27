@@ -12,7 +12,7 @@
     "typecheck:web": "vue-tsc --noEmit -p tsconfig.web.json --composite false",
     "dev": "vite",
     "dev:sudo": "vite --mode sudo",
-    "build:code": "vue-tsc --noEmit --skipLibCheck && vite build",
+    "build:code": "vite build",
     "build:app": "electron-builder --linux",
     "build": "nr build:code && nr build:app"
   },
@@ -32,10 +32,9 @@
     "serialport": "^11.0.0"
   },
   "devDependencies": {
-    "@nx/esbuild": "^16.4.0",
-    "@swc/cli": "^0.1.62",
-    "@swc/core": "^1.3.66",
+    "@nx/vite": "^16.3.2",
     "@types/lodash-es": "^4.17.7",
+    "@typescript-eslint/parser": "^5.60.0",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vitejs/plugin-vue-jsx": "^3.0.1",
     "animate.css": "^4.1.1",
@@ -53,6 +52,7 @@
     "unplugin-auto-import": "^0.16.2",
     "unplugin-vue-components": "^0.24.1",
     "utils": "workspace:*",
+    "uuid": "^9.0.0",
     "vite": "^4.3.8",
     "vite-plugin-electron-renderer": "^0.14.5",
     "vite-plugin-electron-vaausud": "^0.0.1",

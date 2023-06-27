@@ -6,6 +6,7 @@ import { prisma } from '.'
 
 const docDocumentArgs = Prisma.validator<Prisma.DocDocumentArgs>()({
   include: {
+    alarmRecord: true,
     department: {
       select: {
         deptName: true,

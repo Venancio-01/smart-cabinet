@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import dayjs from 'dayjs'
 import { VDialog } from 'components'
 import { useStore } from '@/store'
 
@@ -25,9 +26,10 @@ const active = ref(1)
 
 const data = computed(() => {
   if (misPlaceCarrierList.value[active.value - 1]) {
+    const time = misPlaceCarrierList.value?.[active.value - 1]?.createDate
     return {
       content: misPlaceCarrierList.value[active.value - 1].content,
-      time: misPlaceCarrierList.value[active.value - 1].datetime,
+      time: time && dayjs(time).format('YYYY-MM-DD HH:mm:ss'),
     }
   } else {
     return {}
