@@ -1,6 +1,6 @@
 import type { RfidCabinetdoorProps } from 'database'
 import { useStore } from '@/store'
-import { OperationStatus } from '~/enums'
+import { AlarmContentType, OperationStatus } from '~/enums'
 
 export default function () {
   const store = useStore()
@@ -25,6 +25,7 @@ export default function () {
   const getMisPlaceCarrierList = async () => {
     const records = await window.JSBridge.carrier.selectRfidTipsAlarmRecordList({
       isOperation: OperationStatus.Unoperated,
+      contentType: AlarmContentType.IncorrectLocation,
       cadinetId: currentCabinet.value?.id,
     })
     setMisPlaceCarrierData(records)
@@ -39,7 +40,6 @@ export default function () {
       ...door,
       cabinet: toRaw(door.cabinet),
     })
-    console.log("🚀 ~ file: useCarrier.ts:42 ~ updateCarrier ~ cabinetDoor:", cabinetDoor)
     const id = user.value?.userId
     await window.JSBridge.carrier.updateCarrier(cabinetDoor, id)
   }

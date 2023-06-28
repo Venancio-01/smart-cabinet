@@ -27,8 +27,8 @@ export enum OperationStatus {
   Operated = 1,
 }
 
-export enum InPlaceState{
+export enum InPlaceState {
   IN_CABINET = 0,
   BORROWED = 1,
-  MISPLACED = 2
+  MISPLACED = 2,
 }

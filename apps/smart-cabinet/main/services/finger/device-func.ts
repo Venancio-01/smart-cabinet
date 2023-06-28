@@ -1,9 +1,6 @@
 import { Library } from 'ffi-napi'
-import { DEVICE_SDK_PATH, _process } from 'utils/config'
+import { DEVICE_SDK_PATH } from 'utils/config'
 import { DeviceArrayType, DeviceTypePointerType, HandleType, UcharType } from './types'
-
-console.log('🚀 ~ file: device-func.ts:3 ~ DEVICE_SDK_PATH:', DEVICE_SDK_PATH)
-console.log('🚀 ~ file: device-func.ts:3 ~ _process:', _process)
 
 // 通过 ffi 解析 C++ SDK 方法
 let deviceSDK = null
@@ -18,7 +15,7 @@ export function initDeviceSDK() {
   })
 }
 
-export function destroyDeviceSDK() {
+export function destroyDeviceSDK() { 
   deviceSDK = null
 }
 

@@ -3,10 +3,7 @@
     "default": {
       "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": [
-          "package",
-          "build"
-        ]
+        "cacheableOperations": ["package", "build"]
       }
     }
   },
@@ -17,10 +14,7 @@
     "package": {},
     "build": {},
     "test": {
-      "inputs": [
-        "default",
-        "^default"
-      ]
+      "inputs": ["default", "^default"]
     }
   }
 }

@@ -6,11 +6,6 @@ directories:
 npmRebuild: false
 asar: true
 files:
-  - '!**/.vscode/*'
-  - main-dist
-  - '!vite.config.{js,ts,mjs,cjs}'
-  - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
-  - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
   - dist
 extraResources:
   - from: ./node_modules/database/.env
@@ -19,21 +14,16 @@ extraResources:
     to: public/libs
   - from: ./renderer/public/background
     to: public/background
-  - from: scripts/install.sh
+  - from: ../../scripts/install.sh
     to: ../../install/install.sh
-  - from: scripts/run.sh
+  - from: ../../scripts/run.sh
     to: ../../install/run.sh
-  - from: template/smart-cabinet.desktop
+  - from: ../../template/smart-cabinet.desktop
     to: ../../install/smart-cabinet.desktop
-  - './node_modules/.prisma/**/*'
-  - './node_modules/database/**/*'
+  - from: ../../node_modules/.prisma/
+    to: node_modules/.prisma
 asarUnpack:
   - '**/*.{node,dll}'
-win:
-  artifactName: '${productName}_${version}.${ext}'
-  target:
-    - target: nsis
-      arch: x64
 linux:
   artifactName: '${productName}_${version}.${ext}'
   target:

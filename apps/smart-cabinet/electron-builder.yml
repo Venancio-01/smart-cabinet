@@ -1,7 +1,9 @@
 appId: com.electron.app
+productName: 智能载体管控系统
 directories:
   buildResources: build
-  output: '../../release/cabinet/${version}'
+  output: '../../release/smart-cabinet/${version}'
+npmRebuild: false
 asar: true
 files:
   - dist
@@ -22,11 +24,6 @@ extraResources:
     to: node_modules/.prisma
 asarUnpack:
   - '**/*.{node,dll}'
-win:
-  artifactName: '${productName}_${version}.${ext}'
-  target:
-    - target: nsis
-      arch: x64
 linux:
   artifactName: '${productName}_${version}.${ext}'
   target:
@@ -39,4 +36,3 @@ nsis:
   perMachine: false
   allowToChangeInstallationDirectory: true
   deleteAppDataOnUninstall: false
-npmRebuild: false

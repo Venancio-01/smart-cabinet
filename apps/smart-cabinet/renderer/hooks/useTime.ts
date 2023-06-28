@@ -1,11 +1,8 @@
-import dayjs from 'dayjs'
 import { CONFIRM_TIMEOUT, OPERATION_TIMEOUT } from 'utils/config/renderer'
 import useCheckRecord from './useCheckRecord'
 import useVerify from './useVerify'
 import { useStore } from '@/store'
 
-const currentTime = ref<string | null>(null)
-const currentTimeTimer = ref<number | null>(null)
 const operationTimeout = ref(OPERATION_TIMEOUT)
 const operationTimeoutTimer = ref<number | null>(null)
 const operationTimeoutVisible = ref(false)
@@ -20,20 +17,6 @@ export default function () {
   const { isLoggedIn } = storeToRefs(store)
   const { resetCheckRecord, resetCheckResult } = useCheckRecord()
   const { closeVerifyIdentityDialog } = useVerify()
-
-  /**
-   * @description: 生成当前时间
-   * @return {*}
-   */
-  const startGenerateCurrentTime = () => {
-    currentTimeTimer.value = window.setInterval(() => {
-      currentTime.value = dayjs().format('HH:mm:ss')
-    }, 1000)
-  }
-
-  const stopGenerateCurrentTime = () => {
-    if (currentTime.value) clearTimeout(currentTime.value)
-  }
 
   /**
    * @description: 开启操作超时倒计时
@@ -130,13 +113,10 @@ export default function () {
   }
 
   return {
-    currentTime,
     operationTimeout,
     operationTimeoutVisible,
     confirmTimeout,
     confirmTimeoutVisible,
-    startGenerateCurrentTime,
-    stopGenerateCurrentTime,
     openOperationTimeoutCountdown,
     closeOperationTimeoutCountdown,
     resetOperationTimeoutCountdown,
