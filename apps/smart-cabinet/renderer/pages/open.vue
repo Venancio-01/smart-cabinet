@@ -16,7 +16,7 @@ const { CarrierTable, getCarriers, data, total } = useViewCarriers()
 
 const condition = reactive<CarrierQueryProps>({
   title: '',
-  cabinetDoorId: Number(props.id),
+  deptId: Number(props.id),
 })
 
 const pagination = reactive<PaginationType>({

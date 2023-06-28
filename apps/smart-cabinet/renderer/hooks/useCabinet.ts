@@ -50,7 +50,7 @@ export default function () {
       }, 1000)
     }
 
-    router.push(`/open/${door.id}`)
+    router.push(`/open/${door?.cabinet?.deptId}`)
   }
 
   const initCabinetData = async () => {
