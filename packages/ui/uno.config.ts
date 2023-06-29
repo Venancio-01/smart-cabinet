@@ -8,7 +8,8 @@ import {
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
-import Colors from './design/theme.json'
+import Color from './design/color.json'
+import FontSize from './design/fontSize.json'
 
 export default defineConfig({
   shortcuts: [
@@ -37,13 +38,15 @@ export default defineConfig({
   ],
   transformers: [transformerDirectives(), transformerVariantGroup()],
   theme: {
-    colors: Colors,
+    colors: Color,
+    fontSize: FontSize,
   },
   rules: [
     [
       /^text-(.*)$/,
       ([, c], { theme }: any) => {
         if (theme.colors[c]) return { color: theme.colors[c] }
+        if (theme.fontSize[c]) return { 'font-size': theme.fontSize[c] }
       },
     ],
   ],

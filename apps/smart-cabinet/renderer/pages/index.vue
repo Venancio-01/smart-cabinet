@@ -1,9 +1,6 @@
 <script lang="ts" setup>
 import { CurrentTime } from 'components'
 import { SYSTEM_NAME } from '@/config'
-import StartButton from '@/components/StartButton.vue'
-import CarrierCountStatistics from '@/components/CarrierCountStatistics.vue'
-import DeviceStatus from '@/components/DeviceStatus.vue'
 
 const router = useRouter()
 
@@ -18,7 +15,7 @@ function goLoginPage() {
       <!-- 当前时间 -->
       <CurrentTime class="fixed top-[40px] right-[40px]" />
       <!-- 系统名 -->
-      <div class="text-center select-none text-[48px] leading-[48px] pt-[40px] font-thin tracking-[10px] text-white">
+      <div class="text-center select-none text-[60px] leading-[48px] pt-[50px] font-thin tracking-[10px] text-white">
         {{ SYSTEM_NAME }}
       </div>
 

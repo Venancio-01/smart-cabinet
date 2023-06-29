@@ -1,10 +1,10 @@
 import { ConfigProvider } from 'ant-design-vue'
-import themeConfig from '../design/theme.json'
+import Color from '../design/color.json'
 
 export function setAntdConfig() {
   ConfigProvider.config({
     theme: {
-      primaryColor: themeConfig.primary,
+      primaryColor: Color.primary,
     },
   })
 }

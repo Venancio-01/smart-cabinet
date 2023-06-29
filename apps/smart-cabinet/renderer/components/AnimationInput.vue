@@ -70,7 +70,7 @@ defineExpose({
 
 .form-control label {
   position: absolute;
-  top: 15px;
+  top: 20px;
   left: 0;
   pointer-events: none;
 }
@@ -85,6 +85,6 @@ defineExpose({
 .form-control input:focus + label span,
 .form-control input:valid + label span {
   @apply text-light;
-  transform: translateY(-30px);
+  transform: translateY(-35px);
 }
 </style>

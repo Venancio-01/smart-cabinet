@@ -22,21 +22,21 @@ const warnVisible = ref(false)
       <div v-show="misPlaceCarrierTotal !== 0" class="flex items-center justify-center">
         <VIcon
           icon="warn"
-          class="text-4xl"
+          class="text-icon-normal"
           :class="misPlaceCarrierTotal === 0 ? 'text-light' : 'text-error-color'"
           @click="warnVisible = true" />
       </div>
 
       <div v-show="hasUnConnectedRfid" class="flex items-center justify-center">
-        <VIcon icon="RFID" class="text-4xl text-error" @click="rfidVisible = true" />
+        <VIcon icon="RFID" class="text-icon-normal text-error" @click="rfidVisible = true" />
       </div>
 
       <div v-show="!isLockControlConnected" class="flex items-center justify-center">
-        <VIcon icon="lock" class="text-4xl text-error" @click="lockVisible = true" />
+        <VIcon icon="lock" class="text-icon-normal text-error" @click="lockVisible = true" />
       </div>
 
       <div v-show="!isNetworkConnected" class="flex items-center justify-center">
-        <VIcon icon="network" class="text-4xl text-error" @click="networkVisible = true" />
+        <VIcon icon="network" class="text-icon-normal text-error" @click="networkVisible = true" />
       </div>
     </div>
   </div>

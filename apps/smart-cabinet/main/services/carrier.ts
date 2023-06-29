@@ -36,29 +36,39 @@ async function updateCarrier(cabinetDoor: RfidCabinetdoorProps, userId: bigint) 
     const doc = documents[i]
     const isDetectedDocument = rfidList.includes(doc.docRfid)
 
-    // 如果是本柜门的文件
+    // 如果是本部门的文件
     if (doc.deptId === cabinetDoor.cabinet.deptId) {
-      let updatedDocPStatus
+      // 归还
       if (isDetectedDocument && doc.docPStatus === BorrowedState.Borrowed) {
-        updatedDocPStatus = BorrowedState.Returned
-      } else if (!isDetectedDocument && doc.docPStatus === BorrowedState.Returned) {
-        updatedDocPStatus = BorrowedState.Borrowed
+        await updateDocDocument(
+          {
+            docId: doc.docId,
+          },
+          {
+            cabinetId: cabinetDoor.cabinet.id,
+            cabinetDoorId: cabinetDoor.id,
+            docPStatus: BorrowedState.Returned,
+            docLastUserId: Number(userId),
+            docLastTime: new Date(),
+          },
+        )
       }
-
-      console.log(updatedDocPStatus, 'updatedDocPStatus')
-
-      await updateDocDocument(
-        {
-          docId: doc.docId,
-        },
-        {
-          docPStatus: updatedDocPStatus,
-          docLastUserId: Number(userId),
-          docLastTime: new Date(),
-        },
-      )
-    } else {
-      // 检测到本部门之外的文件
+      // 借出
+      else if (!isDetectedDocument && doc.docPStatus === BorrowedState.Returned) {
+        await updateDocDocument(
+          {
+            docId: doc.docId,
+          },
+          {
+            docPStatus: BorrowedState.Borrowed,
+            docLastUserId: Number(userId),
+            docLastTime: new Date(),
+          },
+        )
+      }
+    }
+    // 检测到本部门之外的文件
+    else {
       if (!isDetectedDocument) continue
       // 查询是否已经有该文件的错放记录
       const hasMisPlaceRecord =

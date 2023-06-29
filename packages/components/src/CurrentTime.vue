@@ -25,5 +25,5 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div text="4xl light" font="thin">{{ currentTime }}</div>
+  <div text="light large" font="thin">{{ currentTime }}</div>
 </template>

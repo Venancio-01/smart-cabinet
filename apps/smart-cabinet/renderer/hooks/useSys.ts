@@ -19,14 +19,13 @@ export default function () {
     setRoleList(roleList)
   }
 
-  const init = async () => {
+  const initSysData = async () => {
     getUserList()
     getDepartmentList()
     getRoleList()
   }
 
   return {
-    init,
-    getDepartmentList,
+    initSysData,
   }
 }

@@ -53,11 +53,11 @@ function goCarrierPageWithMisPlace() {
   @apply flex flex-1 flex-col items-center justify-center;
 }
 
-.statistics-count span:nth-child(1) {
-  @apply text-gray-2 font-['Barlow'] text-2xl;
+.statistics-count .content {
+  @apply text-gray-2 font-['Barlow'] text-large;
 }
 
-.statistics-count span:nth-child(2) {
+.statistics-count .title {
   @apply text-light pt-4 tracking-[2px];
 }
 </style>

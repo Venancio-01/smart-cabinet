@@ -47,12 +47,12 @@ function handleClose() {
     :title="misPlaceCarrierTotal === 0 ? '系统告警' : `系统告警（${active} / ${misPlaceCarrierTotal}）`"
     @close="handleClose">
     <div class="h-full">
-      <div v-if="misPlaceCarrierTotal === 0" class="flex h-full items-center justify-center text-lg">无告警记录</div>
+      <div v-if="misPlaceCarrierTotal === 0" class="flex h-full items-center justify-center">无告警记录</div>
 
       <div v-else>
-        <div class="flex h-[50px] items-center text-xl">载体错放</div>
+        <div class="flex h-[50px] items-center">载体错放</div>
 
-        <div class="flex h-[100px] flex-col items-center justify-center text-xl">
+        <div class="flex h-[100px] flex-col items-center justify-center">
           <p>内容：{{ data.content }}</p>
           <p>时间：{{ data.time }}</p>
         </div>

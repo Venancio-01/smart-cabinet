@@ -30,7 +30,7 @@ export default function () {
     lastOperationCabinetDoorList,
   } = storeToRefs(store)
   storeToRefs(store)
-  const { updateCarrier, init: refreshCarrierData, recordDataWhenCheckStart } = useCarrier()
+  const { updateCarrier, initCarrierData, recordDataWhenCheckStart } = useCarrier()
   const {
     resetCountdowns,
     resetConfirmationTimeCountdown,
@@ -39,7 +39,7 @@ export default function () {
     openConfirmationTimeCountdown,
   } = useTime()
 
-  const { initRfid, handleOpenRfid, handleCloseRfid } = useRfid()
+  const { handleOpenRfid, handleCloseRfid } = useRfid()
   /**
    * @description: 生成盘点结果数据
    * @return {*}
@@ -130,7 +130,7 @@ export default function () {
    */
   const onAllCheckEnd = async () => {
     // 盘点结束时刷新载体数据
-    await refreshCarrierData()
+    await initCarrierData()
 
     // 记录本次盘点操作的的柜门
     changeLastOperationCabinetDoorList(lastOperationCabinetDoorRecords.value)
@@ -163,7 +163,7 @@ export default function () {
     const { txAddr: address, txId: antennaId } = currentDoor
     if (address === null || antennaId === null) return
 
-    const isConnected = await initRfid(address, 8899)
+    const isConnected = await await window.JSBridge.rfid.init(address, 8899)
     if (!isConnected) {
       createAlert('读取连接设备失败')
       return false

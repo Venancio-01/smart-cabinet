@@ -18,12 +18,7 @@ async function init(address: string, port: number) {
   if (instanceMap[address]) return true
 
   instanceMap[address] = new Socket({ address, port })
-  try {
-    await instanceMap[address].init()
-    return true
-  } catch (e) {
-    return false
-  }
+  return instanceMap[address].init()
 }
 
 function destroy(address: string) {

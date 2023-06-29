@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {VDialog} from 'components'
+import { VDialog } from 'components'
 import { useStore } from '@/store'
 
 interface Props {
@@ -50,7 +50,7 @@ const show = computed({
 }
 
 .state-bar .label {
-  @apply w-[70px];
+  @apply w-[90px];
 }
 
 .state-bar .content {

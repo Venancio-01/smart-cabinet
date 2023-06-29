@@ -8,12 +8,12 @@ export default function () {
   const { user, carrierList, guid, currentCabinet } = storeToRefs(store)
 
   /**
-   * @description: 获取本柜载体数据
+   * @description: 获取本部门载体数据
    * @return {*}
    */
   const getCarrierList = async () => {
     const carrierList = await window.JSBridge.carrier.selectDocDocumentList({
-      cabinetId: currentCabinet.value?.id,
+      deptId: currentCabinet.value?.deptId,
     })
     setCarrierList(carrierList)
   }
@@ -56,12 +56,12 @@ export default function () {
    * @description: 初始化载体相关数据
    * @return {*}
    */
-  function init() {
+  function initCarrierData() {
     return Promise.all([getCarrierList(), getMisPlaceCarrierList()])
   }
 
   return {
-    init,
+    initCarrierData,
     getCarrierList,
     getMisPlaceCarrierList,
     updateCarrier,

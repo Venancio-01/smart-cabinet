@@ -102,6 +102,9 @@ importers:
       crypto-js:
         specifier: ^4.1.1
         version: 4.1.1
+      database:
+        specifier: workspace:*
+        version: link:../../packages/database
       dayjs:
         specifier: ^1.11.7
         version: 1.11.7
@@ -160,9 +163,6 @@ importers:
       config:
         specifier: workspace:*
         version: link:../../packages/config
-      database:
-        specifier: workspace:*
-        version: link:../../packages/database
       electron:
         specifier: ^12.2.0
         version: 12.2.0

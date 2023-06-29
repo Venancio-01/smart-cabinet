@@ -15,6 +15,7 @@ export default function () {
    */
   const getCurrentCabinet = async () => {
     const data = await window.JSBridge.cabinet.getCurrentCabinet()
+    console.log('🚀 ~ file: useCabinet.ts:18 ~ getCurrentCabinet ~ data:', data)
     setCurrentCabinet(data)
   }
 
@@ -26,7 +27,7 @@ export default function () {
     const cabinetDoorList = await window.JSBridge.cabinet.selectRfidCabinetDoorList({
       cabinetId: currentCabinet.value?.id,
     })
-
+    console.log('🚀 ~ file: useCabinet.ts:29 ~ getCabinetDoors ~ cabinetDoorList:', cabinetDoorList)
     const list: CabinetDoorProps[] = cabinetDoorList.map((item) => {
       return {
         ...item,
@@ -50,7 +51,7 @@ export default function () {
       }, 1000)
     }
 
-    router.push(`/open/${door?.cabinet?.deptId}`)
+    router.push(`/open/${door?.id}`)
   }
 
   const initCabinetData = async () => {

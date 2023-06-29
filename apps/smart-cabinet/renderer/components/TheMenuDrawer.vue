@@ -102,13 +102,13 @@ const roleName = computed(() => {
         <VIcon icon="user" class="text-[60px] text-light" />
       </div>
       <div class="flex justify-center items-center flex-col text-light">
-        <div class="font-large mb-[4px]">
+        <div class=" mb-[4px]">
           {{ user?.userName }}
         </div>
-        <div class="font-small">
+        <div class="">
           {{ user?.department?.deptName }}
         </div>
-        <div class="font-small mb-[8px]">
+        <div class=" mb-[8px]">
           {{ user?.userRole?.[0]?.role?.roleName }}
         </div>
       </div>

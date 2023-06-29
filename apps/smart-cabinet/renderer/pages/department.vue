@@ -7,7 +7,7 @@ const condition = reactive<DepartmentQueryProps>({
 })
 const pagination = reactive<PaginationType>({
   page: 1,
-  size: 7,
+  size: 5,
 })
 
 const data = ref<SysDept[]>([])

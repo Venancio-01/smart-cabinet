@@ -9,36 +9,25 @@ export default function () {
    * @description: 获取读写器连接状态
    * @return {*}
    */
-  const getConnectState = async () => {
+  const getRFIDConnectionStatus = async () => {
     const list: CabinetDoorProps[] = []
 
     for (let i = 0; i < cabinetDoorList.value.length; i++) {
       const cabinetDoor = cabinetDoorList.value[i]
       if (cabinetDoor.txAddr === null) continue
 
-      const connectStatus = await window.JSBridge.rfid.init(cabinetDoor.txAddr, 8899)
-      await window.JSBridge.rfid.destroy(cabinetDoor.txAddr)
+      const isConnected = await window.JSBridge.rfid.init(cabinetDoor.txAddr, 8899)
+      window.JSBridge.rfid.destroy(cabinetDoor.txAddr)
 
       const item = {
         ...cabinetDoor,
-        rfidIsConnected: connectStatus,
+        rfidIsConnected: isConnected,
       }
 
       list.push(item)
     }
 
     setCabinetDoorList(list)
-  }
-
-  /**
-   * @description: 初始化读写器
-   * @param {string} address
-   * @param {number} port
-   * @return {*}
-   */
-  const initRfid = async (address: string, port: number) => {
-    const isConnected = await window.JSBridge.rfid.init(address, port)
-    return isConnected
   }
 
   /**
@@ -65,8 +54,7 @@ export default function () {
   }
 
   return {
-    getConnectState,
-    initRfid,
+    getRFIDConnectionStatus,
     handleOpenRfid,
     handleCloseRfid,
   }

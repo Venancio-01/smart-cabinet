@@ -110,6 +110,8 @@ model DocDocument {
   num            String?               @db.VarChar(50)
   docLastUserId  Int?                  @map("doc_last_user_id")
   department     SysDept?              @relation(fields: [deptId], references: [deptId])
+  cabinet        RfidCabinet?          @relation(fields: [cabinetId], references: [id])
+  cabinetDoor    RfidCabinetdoor?      @relation(fields: [cabinetDoorId], references: [id])
   alarmRecord    RfidTipsAlarmRecord[]
 
   @@index([docName], map: "doc_name")
@@ -504,25 +506,27 @@ model RfidCabinet {
   deptId          BigInt?           @map("dept_id")
   cabinetDoorList RfidCabinetdoor[]
   department      SysDept?          @relation(fields: [deptId], references: [deptId])
+  docDocument     DocDocument[]
 
   @@map("rfid_cabinet")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model RfidCabinetdoor {
-  id         Int          @id @default(autoincrement()) @map("Id")
-  cabinetId  Int?         @map("CabinetId")
-  name       Int?         @map("Name")
-  state      String?      @map("State") @db.VarChar(10)
-  kgbh       String?      @map("Kgbh") @db.VarChar(255)
-  kgzt       String?      @map("Kgzt") @db.VarChar(255)
-  kglx       String?      @map("Kglx") @db.VarChar(255)
-  folderPath String?      @map("FolderPath") @db.VarChar(255)
-  orderIndex String?      @map("OrderIndex") @db.VarChar(255)
-  txAddr     String?      @db.VarChar(255)
-  txId       String?      @db.VarChar(255)
-  viewName   String?      @db.VarChar(255)
-  cabinet    RfidCabinet? @relation(fields: [cabinetId], references: [id])
+  id          Int           @id @default(autoincrement()) @map("Id")
+  cabinetId   Int?          @map("CabinetId")
+  name        Int?          @map("Name")
+  state       String?       @map("State") @db.VarChar(10)
+  kgbh        String?       @map("Kgbh") @db.VarChar(255)
+  kgzt        String?       @map("Kgzt") @db.VarChar(255)
+  kglx        String?       @map("Kglx") @db.VarChar(255)
+  folderPath  String?       @map("FolderPath") @db.VarChar(255)
+  orderIndex  String?       @map("OrderIndex") @db.VarChar(255)
+  txAddr      String?       @db.VarChar(255)
+  txId        String?       @db.VarChar(255)
+  viewName    String?       @db.VarChar(255)
+  cabinet     RfidCabinet?  @relation(fields: [cabinetId], references: [id])
+  docDocument DocDocument[]
 
   @@map("rfid_cabinetdoor")
 }

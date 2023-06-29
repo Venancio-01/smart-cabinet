@@ -1,12 +1,11 @@
 <script lang="tsx" setup>
-import type { DocDocument, DocDocumentProps } from 'database'
+import type { DocDocumentProps } from 'database'
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
 import { AlarmContentType, BorrowedState, OperationStatus } from '~/enums'
 import { useStore } from '@/store'
 
 interface Props {
-  operable: boolean
   data: DocDocumentProps[]
   total: number
   condition: {
@@ -15,22 +14,21 @@ interface Props {
   }
 }
 
-
 const props = withDefaults(defineProps<Props>(), {
-  data: () =>[],
-  operable: false,
+  data: () => [],
 })
 const emits = defineEmits(['onPageChange', 'onDataChange'])
 const store = useStore()
 const { userList } = storeToRefs(store)
 
-
-const dataWithMisPlace = computed(()=>{
-  return props.data.map(carrier => {
-    const hasUnoperatedMisPlaceRecord = carrier.alarmRecord.some(item => Number(item.contentType) === AlarmContentType.IncorrectLocation &&  Number(item.isOperation) === OperationStatus.Unoperated)
+const dataWithMisPlace = computed(() => {
+  return props.data.map((carrier) => {
+    const hasUnoperatedMisPlaceRecord = carrier.alarmRecord.some(
+      (item) => Number(item.contentType) === AlarmContentType.IncorrectLocation && Number(item.isOperation) === OperationStatus.Unoperated,
+    )
     return {
       ...carrier,
-      isMisPlace: hasUnoperatedMisPlaceRecord
+      isMisPlace: hasUnoperatedMisPlaceRecord,
     }
   })
 })
@@ -46,7 +44,7 @@ const columns = ref<ColumnsType<DocDocumentProps>>([
     dataIndex: 'viewName',
     key: 'viewName',
     customRender: ({ record }) => {
-      // return judgeIsMisPlace(record) && record.misPlaceDoorName
+      return record?.cabinetDoor?.viewName
     },
   },
   {
@@ -88,9 +86,11 @@ const columns = ref<ColumnsType<DocDocumentProps>>([
  * @return {*}
  */
 function judgeIsMisPlace(carrier: DocDocumentProps) {
-  if(carrier.alarmRecord.length === 0) return false
+  if (carrier.alarmRecord.length === 0) return false
 
-  const hasUnoperatedMisPlaceRecord = carrier.alarmRecord.some(item => Number(item.contentType) === AlarmContentType.IncorrectLocation &&  Number(item.isOperation) === OperationStatus.Unoperated)
+  const hasUnoperatedMisPlaceRecord = carrier.alarmRecord.some(
+    (item) => Number(item.contentType) === AlarmContentType.IncorrectLocation && Number(item.isOperation) === OperationStatus.Unoperated,
+  )
   return hasUnoperatedMisPlaceRecord
 }
 
@@ -124,9 +124,9 @@ onMounted(() => {
     @resize-column="handleResizeColumn">
     <template #bodyCell="{ column, record }">
       <template v-if="column.dataIndex === 'docPStatus'">
-          <span v-if="!record.isMisPlace && record.docPStatus === BorrowedState.Returned" class="text-green-500">在柜</span>
-          <span v-else-if="!record.isMisPlace && record.docPStatus === BorrowedState.Borrowed" class="text-warning">领用</span>
-          <span v-else-if="record.isMisPlace" class="text-error">错放</span>
+        <span v-if="!record.isMisPlace && record.docPStatus === BorrowedState.Returned" class="text-green-500">在柜</span>
+        <span v-else-if="!record.isMisPlace && record.docPStatus === BorrowedState.Borrowed" class="text-warning">领用</span>
+        <span v-else-if="record.isMisPlace" class="text-error">错放</span>
       </template>
     </template>
 

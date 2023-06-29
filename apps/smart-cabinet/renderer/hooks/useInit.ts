@@ -14,22 +14,22 @@ export default function () {
   // 配置 Antd 主题
   setAntdConfig()
   const { getNetworkConnectStatus } = useNetwork()
-  const { init: initSys } = useSys()
-  const { getConnectState: getRfidConnectState } = useRfid()
+  const { initSysData } = useSys()
+  const { getRFIDConnectionStatus } = useRfid()
   const { initLockControlService, destroyLockControlService } = useLock()
-  const { init: initCarrierData } = useCarrier()
+  const { initCarrierData } = useCarrier()
   const { initCabinetData } = useCabinet()
-  const { init: initFinger, getConnectStatus: getFingerConnectStatus } = useFinger()
+  const { initFinger, getFingerConnectionStatus } = useFinger()
 
   onMounted(async () => {
     // 软件启动时校验激活码
     checkActivationCode()
     getNetworkConnectStatus()
-    getFingerConnectStatus()
-    getRfidConnectState()
-    await Promise.all([initSys(), initCabinetData()])
-    await initCarrierData()
     initFinger()
+    getFingerConnectionStatus()
+    await Promise.all([initSysData(), initCabinetData()])
+    await initCarrierData()
+    getRFIDConnectionStatus()
     initLockControlService()
   })
 

@@ -14,12 +14,12 @@ export default function () {
   // 注册指纹结果
   const registerResult = ref<null | ResponseProps>(null)
 
-  const init = () => {
+  const initFinger = () => {
     window.JSBridge.finger.initSDK()
   }
 
   // 获取指纹仪连接状态
-  const getConnectStatus = async () => {
+  const getFingerConnectionStatus = async () => {
     const isOnline = await window.JSBridge.finger.queryConnectState()
 
     setFingerConnectionStatus(isOnline)
@@ -68,8 +68,8 @@ export default function () {
   }
 
   return {
-    init,
-    getConnectStatus,
+    initFinger,
+    getFingerConnectionStatus,
     openFingerDevice,
     closeFingerDevice,
     startRegisterFinger,

@@ -49,7 +49,7 @@ const show = computed({
   @apply mb-[16px] flex;
 }
 .state-bar .label {
-  @apply w-[70px];
+  @apply w-[90px];
 }
 
 .state-bar .content {

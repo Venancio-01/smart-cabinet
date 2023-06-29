@@ -17,20 +17,20 @@ export default class {
   }
 
   init() {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<boolean>((resolve) => {
       // 创建新的实例
       this.instance = new Socket()
 
       // 监听各种事件
       this.instance.on('connect', () => {
         info(`${this.address} socket 连接成功`)
-        resolve()
+        resolve(true)
         this.timer && clearTimeout(this.timer)
       })
 
       this.instance.on('close', () => {
         info(`${this.address} socket 连接关闭`)
-        reject(new Error('socket 连接关闭'))
+        resolve(false)
       })
 
       this.instance.on('error', (err) => {

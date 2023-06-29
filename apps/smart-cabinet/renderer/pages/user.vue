@@ -13,7 +13,7 @@ const condition = reactive<UserQueryProps>({
 })
 const pagination = reactive<PaginationType>({
   page: 1,
-  size: 7,
+  size: 5,
 })
 
 const data = ref<SysUser[]>([])

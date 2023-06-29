@@ -70,7 +70,7 @@ onUnmounted(() => {
 
     <!-- 头部 -->
     <div v-if="isLoggedIn" class="flex items-center justify-between mb-4">
-      <a-tabs :active-key="activeKey" @change="handleTabChange">
+      <a-tabs class="flex-1" :active-key="activeKey" @change="handleTabChange">
         <a-tab-pane v-if="hasPermission('borrow_return')" key="1" tab="柜门信息" />
         <a-tab-pane v-if="hasPermission('view_carrier')" key="2" tab="载体管理" />
         <a-tab-pane v-if="hasPermission('view_user')" key="3" tab="用户管理" />
@@ -78,8 +78,8 @@ onUnmounted(() => {
       </a-tabs>
 
       <div class="relative flex justify-end items-center min-w-[200px]">
-        <div class="absolute top-1/2 -translate-y-1/2 left-0 w-[140px] h-[30px] leading-[30px] text-light flex items-center mr-12">
-          <span class="font-large mr-2 font-['Barlow'] -mt-[3px]">{{ operationTimeout }}</span>
+        <div class="absolute top-1/2 -translate-y-1/2 left-0 w-[160px] h-[30px] leading-[30px] text-light flex items-center mr-12">
+          <span class="mr-2 font-['Barlow'] -mt-[2px]">{{ operationTimeout }}</span>
           <span>秒后自动退出</span>
         </div>
 

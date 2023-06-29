@@ -135,7 +135,7 @@ const recordColumns: ColumnsType<RfidSwitchRecord> = [
 
       <div class="flex items-center">
         <div class="text-light mr-12">
-          <span class="font-large mr-2 font-['Barlow']">{{ confirmTimeout }}</span>
+          <span class="mr-2 font-['Barlow']">{{ confirmTimeout }}</span>
           秒后自动退出
         </div>
         <a-button type="primary" @click="handleRecheck"> 重新盘点 </a-button>
@@ -151,7 +151,7 @@ const recordColumns: ColumnsType<RfidSwitchRecord> = [
               :key="item.id"
               class="border-b-2 border-white text-white mt-4"
               :class="[index + 1 === checkResultList.length ? 'border-none' : '']">
-              <div class="font-large">柜门名称：{{ item.viewName }}</div>
+              <div class="">柜门名称：{{ item.viewName }}</div>
 
               <div v-if="isCabinetDoorChanged(item.id)">
                 <div v-if="item.borrowCarriers.length !== 0">
@@ -190,7 +190,7 @@ const recordColumns: ColumnsType<RfidSwitchRecord> = [
       </div>
 
       <div class="h-full w-[200px] py-4">
-        <div class="flex font-large w-full select-none items-center justify-center text-white">统计信息</div>
+        <div class="flex w-full select-none items-center justify-center text-white">统计信息</div>
 
         <div class="statistics mt-4">
           <div class="!mt-0">共计领用载体数量：{{ statisticsData.borrow }}</div>

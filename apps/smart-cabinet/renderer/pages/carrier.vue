@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useStore } from '@/store'
 import useViewCarriers from '@/hooks/useViewCarriers'
-import {InPlaceState} from '~/enums'
+import { InPlaceState } from '~/enums'
 
 const route = useRoute()
 const store = useStore()
@@ -15,12 +15,12 @@ const condition = reactive<CarrierQueryProps>({
 })
 const pagination = reactive<PaginationType>({
   page: 1,
-  size: 7,
+  size: 5,
 })
 
 async function onPageChange(page: number) {
   pagination.page = page
-  
+
   getCarrierList()
 }
 
@@ -42,7 +42,7 @@ function handleInit() {
   getCarrierList()
 }
 
-function getCarrierList(){
+function getCarrierList() {
   getCarriers(toRaw(pagination), toRaw(condition))
 }
 
@@ -75,7 +75,7 @@ onMounted(() => {
 
         <a-form-item v-show="currentCabinetDoorId === 0" label="所属部门" name="title">
           <a-select v-model:value="condition.deptId" allow-clear @change="handleSearch">
-            <a-select-option v-for="item in departmentList" :key="item.deptId" :value="item.deptId">
+            <a-select-option v-for="item in departmentList" :key="item.deptId" :value="Number(item.deptId)">
               {{ item.deptName }}
             </a-select-option>
           </a-select>

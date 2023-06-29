@@ -1,5 +1,5 @@
 import { insertDoorAccessRecord, insertDoorAlarmrecordList, selectDoorRfidregisterList } from 'database'
-import type { type DoorAccessRecords, DoorAlarmrecord, type DoorEquipment } from 'database'
+import type { DoorAccessRecords, DoorAlarmrecord, DoorEquipment } from 'database'
 import { sendIpcToRenderer } from 'utils/electron'
 import { INTERVAL_THRESHOLD } from 'utils/config/main'
 import { getCurrentEquipment, updateAccessRecord } from '../access-door'

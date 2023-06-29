@@ -3,9 +3,9 @@ const isWaving = ref(true)
 </script>
 
 <template>
-  <div class="relative h-[56px] w-[144px]">
+  <div class="relative h-[68px] w-[196px]">
     <div id="water-button" class="start-btn">
-      <a-button type="primary" class="!h-[56px] !w-[144px] !rounded-lg !font-medium tracking-widest"> 开始使用 </a-button>
+      <a-button type="primary" class="!h-[68px] !w-[196px] !rounded-lg !font-medium tracking-widest !text-normal"> 开始使用 </a-button>
     </div>
     <span :class="{ 'water-1': isWaving }" />
     <span :class="{ 'water-2': isWaving }" />
@@ -14,15 +14,15 @@ const isWaving = ref(true)
 
 <style scoped>
 .water-button {
-  height: 56px;
+  height: 68px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .start-btn {
   position: absolute;
-  width: 144px;
-  height: 56px;
+  width: 196px;
+  height: 68px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,8 +35,8 @@ const isWaving = ref(true)
 .water-1,
 .water-2 {
   @apply rounded-xl;
-  width: 144px;
-  height: 56px;
+  width: 196px;
+  height: 68px;
   z-index: 1;
   position: absolute;
   top: 0;

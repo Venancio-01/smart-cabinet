@@ -76,7 +76,7 @@ watch(show, async (value) => {
         <VIcon icon="zhiwen" class="icon-large text-white" />
       </div>
 
-      <div class="relative m-4 flex flex-1 select-none items-center justify-center rounded-lg text-white text-xl">
+      <div class="relative m-4 flex flex-1 select-none items-center justify-center rounded-lg text-white ">
         {{ message }}
       </div>
     </div>
