@@ -154,7 +154,7 @@ export function startFingerCapture() {
   return templateData
 }
 
-export async function handleRegister(userId, order) {
+export async function handleRegister(userId: bigint, order: FingerOrder) {
   let result = null
   const templateData = startFingerCapture()
 
@@ -167,7 +167,7 @@ export async function handleRegister(userId, order) {
  * @description: 注册指纹
  * @return {*}
  */
-export async function onRegister(templateData, userId, order) {
+export async function onRegister(templateData, userId: bigint, order: FingerOrder) {
   const resetRegisterData = () => {
     registerCurrentIndex = 0
     registerTemplates = []
@@ -224,7 +224,7 @@ export async function onRegister(templateData, userId, order) {
   }
 
   const fingerData = await selectRfidFingerUser({
-    userid: userId,
+    userid: Number(userId),
     order,
   })
 
@@ -234,7 +234,7 @@ export async function onRegister(templateData, userId, order) {
     try {
       await updateRfidFingerUser(
         {
-          userid: userId,
+          userid: Number(userId),
           order,
         },
         {
@@ -258,7 +258,7 @@ export async function onRegister(templateData, userId, order) {
       await insertRfidFingerUser({
         fingerData: data,
         order,
-        userid: userId,
+        userid: Number(userId),
         createDate: new Date(),
       })
 

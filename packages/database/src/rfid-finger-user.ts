@@ -1,4 +1,4 @@
-import type { Prisma, RfidFingerUser } from '.'
+import type { Prisma } from '.'
 import { prisma } from '.'
 
 /**
@@ -13,7 +13,7 @@ export function selectRfidFingerUserList() {
  * @description: 查询指纹用户列表
  * @return {*}
  */
-export function selectRfidFingerUser(condition: Partial<RfidFingerUser>) {
+export function selectRfidFingerUser(condition?: Prisma.RfidFingerUserWhereInput) {
   return prisma.rfidFingerUser.findFirst({
     where: condition,
   })
@@ -24,7 +24,7 @@ export function selectRfidFingerUser(condition: Partial<RfidFingerUser>) {
  * @param {Partial} data
  * @return {*}
  */
-export function insertRfidFingerUser(data: Partial<RfidFingerUser>) {
+export function insertRfidFingerUser(data: Prisma.RfidFingerUserCreateInput) {
   return prisma.rfidFingerUser.create({
     data,
   })
@@ -36,7 +36,7 @@ export function insertRfidFingerUser(data: Partial<RfidFingerUser>) {
  * @param {Partial} data
  * @return {*}
  */
-export function updateRfidFingerUser(condition: Prisma.RfidFingerUserWhereInput, data: Partial<RfidFingerUser>) {
+export function updateRfidFingerUser(condition: Prisma.RfidFingerUserWhereInput, data: Prisma.RfidFingerUserCreateInput) {
   return prisma.rfidFingerUser.updateMany({
     where: condition,
     data,
