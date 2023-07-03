@@ -1,22 +1,21 @@
 import { existsSync } from 'fs'
 import { execSync } from 'child_process'
 import { Library } from 'ffi-napi'
-import { ALGORITHM_SDK_PATH, LIBZKFINGER10_PATH, VERIFY_SCORE_THRESHOLD } from 'utils/config'
-import { info } from '../logger'
+import { ALGORITHM_SDK_PATH, VERIFY_SCORE_THRESHOLD, fingerLibsPath } from 'utils/config'
+import { error, info } from '../logger'
 import { HandleType, IntType, TemplateType, UcharType } from './types'
 
 let algorithmSDK = null
-const zkfingerLibPath = '/usr/lib/libzkfinger10.so'
 
 // 检查 libzkfinger10.so 文件是否存在，如果不存在则复制文件
 export function checkFileExist() {
-  if (!existsSync(zkfingerLibPath)) {
+  if (!existsSync('/lib/libzkfinger10.so')) {
     // 文件不存在，复制文件
     try {
-      execSync(`sudo cp ${LIBZKFINGER10_PATH} ${zkfingerLibPath}`)
+      execSync(`sudo cp ${fingerLibsPath}/* /lib`)
       info('SDK 文件复制成功')
     } catch (err) {
-      console.error(err)
+      error(`SDK 文件复制失败${err}`)
     }
   } else {
     info('SDK 文件已存在目标文件夹内，跳过复制')

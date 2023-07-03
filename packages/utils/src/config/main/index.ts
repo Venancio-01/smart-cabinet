@@ -9,15 +9,17 @@ const _process = process as Process
 const isDev = import.meta.env.DEV
 
 // 根目录
-const rootPath = resolve(__dirname, '../../../../')
+export const rootPath = resolve(__dirname, '../../../../')
 // packages 目录
-const packagesPath = resolve(rootPath, './packages')
+export const packagesPath = resolve(rootPath, './packages')
 // 资源目录
-const resourcesPath = resolve(rootPath, './resources')
+export const resourcesPath = resolve(rootPath, './resources')
 // 程序资源目录
 export const appResourcePath = _process.resourcesPath
 // libs 目录
-const libsPath = resolve(rootPath, './libs')
+export const libsPath = resolve(rootPath, './libs')
+// finger libs 目录
+export const fingerLibsPath = resolve(rootPath, './libs/finger-lib')
 
 // 程序主窗口尺寸
 export const WINDOW_SIZE = { width: 1024, height: 768 }
@@ -48,17 +50,17 @@ export const VERIFY_SCORE_THRESHOLD = 50
 
 // 指纹设备 SDK 路径
 export const DEVICE_SDK_PATH = isDev
-  ? resolve(libsPath, './finger-lib/libzkfpcap.so')
+  ? resolve(fingerLibsPath, './libzkfpcap.so')
   : resolve(appResourcePath, './public/libs/finger-lib/libzkfpcap.so')
 
 // 指纹算法 SDK 路径
 export const ALGORITHM_SDK_PATH = isDev
-  ? resolve(libsPath, './finger-lib/libzkfp.so')
+  ? resolve(fingerLibsPath, './libzkfp.so')
   : resolve(appResourcePath, './public/libs/finger-lib/libzkfp.so')
 
 // 指纹 SDK 的 libzkfinger10 文件路径
 export const LIBZKFINGER10_PATH = isDev
-  ? resolve(libsPath, './finger-lib/libzkfinger10.so')
+  ? resolve(fingerLibsPath, './libzkfinger10.so')
   : resolve(appResourcePath, './public/libs/finger-lib/libzkfinger10.so')
 
 // CRC SDK 路径
