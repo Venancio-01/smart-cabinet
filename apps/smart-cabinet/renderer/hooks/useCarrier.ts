@@ -15,6 +15,7 @@ export default function () {
     const carrierList = await window.JSBridge.carrier.selectDocDocumentList({
       deptId: currentCabinet.value?.deptId,
     })
+    console.log('🚀 ~ file: useCarrier.ts:18 ~ getCarrierList ~ carrierList:', carrierList)
     setCarrierList(carrierList)
   }
 

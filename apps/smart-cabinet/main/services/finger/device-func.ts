@@ -15,7 +15,7 @@ export function initDeviceSDK() {
   })
 }
 
-export function destroyDeviceSDK() { 
+export function destroyDeviceSDK() {
   deviceSDK = null
 }
 

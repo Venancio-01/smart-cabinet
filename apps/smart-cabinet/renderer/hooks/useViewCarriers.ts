@@ -12,9 +12,11 @@ export default function () {
 
   const getCarriers = async (pagination: PaginationType, condition: Partial<CarrierQueryProps>) => {
     const query: Prisma.DocDocumentWhereInput = {
-      docName: {
-        contains: condition.title,
-      },
+      docName: condition.title
+        ? {
+            contains: condition.title,
+          }
+        : undefined,
       deptId: condition.deptId,
       cabinetId: currentCabinet.value?.id,
       cabinetDoorId: condition.cabinetDoorId,
@@ -33,8 +35,11 @@ export default function () {
       }
     }
 
+    console.log('🚀 ~ file: useViewCarriers.ts:22 ~ getCarriers ~ query:', query)
+
     const { data: _data, total: _total } = await window.JSBridge.carrier.selectDocDocumentListWithPage(pagination, query)
     data.value = _data
+    console.log('🚀 ~ file: useViewCarriers.ts:40 ~ getCarriers ~ _data:', _data)
     total.value = _total
   }
 

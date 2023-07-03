@@ -90,7 +90,7 @@ onMounted(() => {
   <div class="w-h-full">
     <div class="flex items-center">
       <BackButton @back="handleBack" />
-      <span class="text-light text-[28px] ml-6"> 出入记录详情 </span>
+      <span class="text-light text-[28px] ml-6"> 报警载体详情 </span>
     </div>
 
     <div class="flex" m="y-8">
