@@ -13,14 +13,10 @@ const message = computed(() => {
   return direction === '1' ? '检测到人员进入' : '检测到人员外出'
 })
 
-const accessId = computed(() => {
-  return currentReadRecordList.value?.[0].accessId
-})
 function goDetail() {
   router.push({
-    path: `/record-detail/${accessId.value}/1`,
+    path: `/record-detail`,
   })
-  setCurrentReadRecordList([])
 }
 
 function goHome() {
@@ -37,7 +33,9 @@ watchEffect(() => {
     timer.value = window.setInterval(() => {
       count.value -= 1
 
-      if (count.value === 0) router.replace('/')
+      if (count.value === 0) {
+        goHome()
+      }
     }, 1000)
   }
 })

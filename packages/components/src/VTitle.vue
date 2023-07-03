@@ -9,7 +9,7 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div class="text-center select-none font-thin tracking-[10px] text-light text-6xl">
+  <div class="text-center select-none font-thin tracking-[10px] text-light text-system-title">
     {{ title }}
   </div>
 </template>

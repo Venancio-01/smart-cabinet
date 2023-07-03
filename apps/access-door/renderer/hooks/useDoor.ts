@@ -1,24 +1,19 @@
-import type { DoorAccessRecords, Prisma } from 'database'
+import type { Prisma } from 'database'
 import { useStore } from '@/store'
 import { AccessDirection, AccessTimeRange } from '~/enums'
 
 export default function () {
   const store = useStore()
-  const { setAlarmRecordList, setCurrentEquipment, setUnviewedAccessRecordCount } = store
+  const { setCurrentEquipment, setUnviewedAccessRecordCount } = store
+  const { currentEquipment } = storeToRefs(store)
 
   const getCurrentEquipment = async () => {
     const result = await window.JSBridge.accessDoor.getCurrentEquipment()
     setCurrentEquipment(result)
   }
 
-  // 获取出入记录
-  const selectAccessRecordList = (condition?: Partial<AccessRecordQueryProps>, pagination?: PaginationType) => {
-    const query: Prisma.DoorAccessRecordsWhereInput = {}
-
-    if (condition?.accessDirection !== AccessDirection.ALL) {
-      query.accessDirection = condition?.accessDirection
-    }
-
+  // 获取本通道门 RFID 读取记录
+  const selectRfidRecordList = (pagination: PaginationType, condition: ReadRecordQueryProps) => {
     const timeRangeMap = {
       [AccessTimeRange.TODAY]: {
         lte: new Date(),
@@ -33,57 +28,67 @@ export default function () {
         gte: new Date(new Date().setDate(new Date().getDate() - 30)),
       },
     }
-    query.directionCreateTime = timeRangeMap?.[condition.timeRange]
-    console.log('🚀 ~ file: useDoor.ts:35 ~ selectAccessRecordList ~ query:', query)
 
-    return window.JSBridge.accessDoor.selectDoorAccessRecordList(query, pagination)
+    const query: Prisma.DoorRfidrecordWhereInput = {
+      equipmentId: `${currentEquipment.value?.equipmentid}`,
+      carrierName: condition?.carrierName ? { contains: condition.carrierName } : undefined,
+      creatorTime: timeRangeMap?.[condition.timeRange],
+    }
+
+    if (condition?.type !== AccessDirection.ALL) {
+      query.type = condition.type ? `${condition.type}` : undefined
+    }
+
+    return window.JSBridge.accessDoor.selectDoorRfidrecordListWithPage(pagination, query)
   }
 
-  // 获取未查看的出入记录总数
-  const selectUnviewedAccessRecordCount = async () => {
+  // 获取未查看的报警记录总数
+  const selectUnviewedAlarmRecordCount = async () => {
     const result = await window.JSBridge.accessDoor.selectDoorAlarmRecordCount({
+      equipmentId: `${currentEquipment.value?.equipmentid}`,
       isOperation: '0',
     })
     setUnviewedAccessRecordCount(result)
   }
 
-  const updateAccessRecord = async (id: number, data: Partial<DoorAccessRecords>) => {
-    const result = await window.JSBridge.accessDoor.updateDoorAccessRecord(
-      {
-        accessId: id,
+  // 获取报警记录
+  const selectAlarmRecordList = async (pagination: PaginationType, condition: AlarmQueryProps) => {
+    const timeRangeMap = {
+      [AccessTimeRange.TODAY]: {
+        lte: new Date(),
+        gte: new Date(new Date().setHours(0, 0, 0, 0)),
       },
-      data,
-    )
-    return result
+      [AccessTimeRange.WEEK]: {
+        lte: new Date(),
+        gte: new Date(new Date().setDate(new Date().getDate() - 7)),
+      },
+      [AccessTimeRange.MONTH]: {
+        lte: new Date(),
+        gte: new Date(new Date().setDate(new Date().getDate() - 30)),
+      },
+    }
+
+    const query: Prisma.DoorAlarmrecordWhereInput = {
+      equipmentId: `${currentEquipment.value?.equipmentid}`,
+      carrierName: condition?.carrierName ? { contains: condition.carrierName } : undefined,
+      carrierDeptid: condition?.deptId,
+      createTime: timeRangeMap?.[condition.timeRange],
+    }
+
+    console.log('🚀 ~ file: useDoor.ts:76 ~ selectAlarmRecordList ~ query:', query)
+
+    return await window.JSBridge.accessDoor.selectDoorAlarmRecordListWithPage(pagination, query)
   }
 
-  // 获取告警记录
-  const fetchAlarmRecords = async (condition?: Partial<AlarmQueryProps>) => {
-    const result = await window.JSBridge.accessDoor.fetchAlarmRecords(condition)
-    return result
-  }
-
-  const selectAlarmRecordList = async () => {
-    const { data } = await fetchAlarmRecords()
-    setAlarmRecordList(data)
-  }
-
-  const fetchReadRecords = async (condition?: Partial<ReadRecordQueryProps>) => {
-    const result = await window.JSBridge.accessDoor.fetchReadRecords(condition)
-    return result
-  }
-
-  const init = () => {
-    return Promise.all([selectUnviewedAccessRecordCount(), getCurrentEquipment(), selectAlarmRecordList()])
+  const initAccessDoorData = async () => {
+    await getCurrentEquipment()
+    await selectUnviewedAlarmRecordCount()
   }
 
   return {
-    init,
-    selectAccessRecordList,
-    updateAccessRecord,
-    selectUnviewedAccessRecordCount,
-    fetchAlarmRecords,
+    initAccessDoorData,
+    selectRfidRecordList,
     selectAlarmRecordList,
-    fetchReadRecords,
+    selectUnviewedAlarmRecordCount,
   }
 }

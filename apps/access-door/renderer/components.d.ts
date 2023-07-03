@@ -14,6 +14,7 @@ declare module '@vue/runtime-core' {
     AConfigProvider: typeof import('ant-design-vue/es')['ConfigProvider']
     AForm: typeof import('ant-design-vue/es')['Form']
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
+    AInput: typeof import('ant-design-vue/es')['Input']
     AlarmRecordCard: typeof import('./components/AlarmRecordCard.vue')['default']
     AModal: typeof import('ant-design-vue/es')['Modal']
     AnimationInput: typeof import('./components/AnimationInput.vue')['default']

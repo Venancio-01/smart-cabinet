@@ -9,20 +9,24 @@ export default function () {
   // 配置 Antd 主题
   setAntdConfig()
 
-  const { getNetworkConnectionStatus } = useNetwork()
   const { initSysData } = useSys()
-  const { getRfidConnectionStatus, regsterAlarmsListener } = useRfid()
-  const { init: initAccessDoor } = useDoor()
+  const { initAccessDoorData } = useDoor()
+  const { startGetNetworkConnectionStatus, stopGetNetworkConnectionStatus } = useNetwork()
+  const { startGetRfidConnectionStatus, stopGetRfidConnectionStatus, regsterAlarmsListener } = useRfid()
 
   onMounted(async () => {
     // 软件启动时校验激活码
     checkActivationCode()
-    // 获取数据库连接状态
-    getNetworkConnectionStatus()
     // 初始化系统数据
     initSysData()
-    initAccessDoor()
-    getRfidConnectionStatus()
+    initAccessDoorData()
+    startGetNetworkConnectionStatus()
+    startGetRfidConnectionStatus()
     regsterAlarmsListener()
+  })
+
+  onUnmounted(() => {
+    stopGetRfidConnectionStatus()
+    stopGetNetworkConnectionStatus()
   })
 }

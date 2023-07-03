@@ -1,16 +1,20 @@
 <script lang="ts" setup>
-import { VDialog } from 'components'
-import { useStore } from '@/store'
+import { computed } from 'vue'
+import VDialog from './VDialog.vue'
 
 interface Props {
   visible: boolean
+  title: string
+  statusText?: string
+  content: string
 }
 const props = withDefaults(defineProps<Props>(), {
   visible: false,
+  title: '',
+  statusText: '连接失败',
+  content: '',
 })
 const emits = defineEmits(['update:visible'])
-const store = useStore()
-const { rfidIsConnected } = storeToRefs(store)
 
 const show = computed({
   get: () => {
@@ -23,18 +27,16 @@ const show = computed({
 </script>
 
 <template>
-  <VDialog v-model:visible="show" title="RFID状态">
+  <VDialog v-model:visible="show" :title="title">
     <div class="state-bar pt-[20px]">
       <div class="label">当前状态：</div>
-      <div class="content">
-        {{ rfidIsConnected ? '连接成功' : '连接失败' }}
-      </div>
+      <div class="content">{{ statusText }}</div>
     </div>
 
-    <div v-if="!rfidIsConnected" class="state-bar">
+    <div class="state-bar">
       <div class="label">解决方案：</div>
       <div class="content">
-        {{ rfidIsConnected ? 'RFID 正常连接' : '检查RFID线缆是否正常，并尝试插拔后重新启动软件。' }}
+        {{ content }}
       </div>
     </div>
 
@@ -49,7 +51,7 @@ const show = computed({
   @apply mb-[16px] flex;
 }
 .state-bar .label {
-  @apply w-[70px];
+  @apply w-[90px];
 }
 
 .state-bar .content {

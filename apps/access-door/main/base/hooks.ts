@@ -12,10 +12,13 @@ export async function onAppBeforeQuit() {
 }
 
 export async function onAppReady() {
+  // 创建窗口
   win = await createWindow()
+  // 注册服务
   registerServices()
   // 连接 RFID
   connectRfid()
+
   if (app.isPackaged) disableShortcuts()
 }
 

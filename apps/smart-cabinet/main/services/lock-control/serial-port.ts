@@ -1,20 +1,20 @@
+import type { Buffer } from 'buffer'
+import { info } from 'console'
 import { SerialPort as SerialPortLib } from 'serialport'
 
 export default class SerialPort {
   private portInstance: null | SerialPortLib = null
   private data = ''
 
-  constructor({ path, baudRate = 9600 }: { path: string; baudRate?: number }) {
+  constructor(path: string) {
     this.portInstance = new SerialPortLib({
       path: `/dev/${path}`,
-      baudRate,
+      baudRate: 9600,
       autoOpen: false,
       dataBits: 8,
       stopBits: 1,
       parity: 'none',
     })
-
-    this.open()
 
     this.portInstance.on('open', () => {
       console.log('串口打开成功')
@@ -44,28 +44,21 @@ export default class SerialPort {
 
   // 关闭串口
   close() {
-    if (!this.portInstance) return
-
     this.portInstance.close()
     this.data = ''
   }
 
   // 写入数据
-  write(data) {
-    if (!this.portInstance) return
-
+  write(data: Buffer) {
+    info(`锁控写入数据：${data.toString('hex')}`)
     this.portInstance.write(data)
   }
 
   getData() {
-    if (!this.portInstance) return
-
     return this.data
   }
 
   setData(source: string) {
-    if (!this.portInstance) return
-
     this.data = source
   }
 }

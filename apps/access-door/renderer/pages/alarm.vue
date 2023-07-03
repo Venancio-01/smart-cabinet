@@ -14,15 +14,11 @@ function goHome() {
   router.replace('/index')
 }
 
-const accessId = computed(() => {
-  return currentReadRecordList.value?.[0].accessId
-})
 function goDetail() {
   handleSetGPO(false)
   router.push({
-    path: `/record-detail/${accessId.value}/1`,
+    path: `/record-detail`,
   })
-  setCurrentReadRecordList([])
 }
 
 const unregisterCarrier = computed(() => {
@@ -33,9 +29,8 @@ const timer = ref<number | null>(null)
 onMounted(() => {
   handleSetGPO(true)
   timer.value = window.setInterval(() => {
-    router.replace('/')
     handleSetGPO(false)
-    setCurrentReadRecordList([])
+    goHome()
   }, ALARM_PAGE_STAY_DURATION_THRESHOLD)
 })
 

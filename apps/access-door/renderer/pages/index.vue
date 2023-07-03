@@ -8,14 +8,14 @@ import DeviceStatus from '@/components/DeviceStatus.vue'
 
 const store = useStore()
 const { currentEquipment } = storeToRefs(store)
-const { selectUnviewedAccessRecordCount } = useDoor()
+const { selectUnviewedAlarmRecordCount } = useDoor()
 
 const deviceName = computed(() => currentEquipment.value?.equipmentName)
 
 const titleClass = 'text-center select-none font-thin tracking-[10px] text-light'
 
 onMounted(() => {
-  selectUnviewedAccessRecordCount()
+  selectUnviewedAlarmRecordCount()
 })
 </script>
 

@@ -117,7 +117,7 @@ export async function insertRfidRecordList(
       carrierId: `${carrier.docId}`,
       carrierName: carrier.docName,
       carrierRfid: carrier.docRfid,
-      carrierDeptid: carrier.deptId ? String(carrier.deptId) : null,
+      carrierDeptid: carrier.deptId,
       carrierDeptName: carrier?.department?.deptName,
       // 这里的 1 是进，0 是出
       type: direction === AccessDirection.IN ? '1' : direction === AccessDirection.OUT ? '2' : undefined,
@@ -127,5 +127,7 @@ export async function insertRfidRecordList(
     }
   })
 
-  return insertDoorRfidrecordList(list)
+  insertDoorRfidrecordList(list)
+
+  return list
 }

@@ -1,8 +1,8 @@
-import { insertDoorAccessRecord, insertDoorAlarmrecordList, selectDoorRfidregisterList } from 'database'
-import type { DoorAccessRecords, DoorAlarmrecord, DoorEquipment } from 'database'
+import { insertDoorAlarmrecordList, selectDoorRfidregisterList } from 'database'
+import type { DoorAlarmrecord, DoorEquipment } from 'database'
 import { sendIpcToRenderer } from 'utils/electron'
 import { INTERVAL_THRESHOLD } from 'utils/config/main'
-import { getCurrentEquipment, updateAccessRecord } from '../access-door'
+import { getCurrentEquipment } from '../access-door'
 import { generateAntennaCommand } from './utils'
 import { generateCheckConnectionStatusCommand, generateSetGPOCommand, generteSetGPITriggerCommand } from './command'
 import type { Message } from './message'
@@ -130,7 +130,6 @@ let GPI2Start: Message | null = null
 let GPIEnd: Message | null = null
 let isEntry = false
 let isExit = false
-let currentAccessRecord: DoorAccessRecords | null = null
 
 export async function registerMessageListerner(equipment: DoorEquipment, message: MessageQueue) {
   message.on<[Message]>('push', async (msg) => {
@@ -149,7 +148,6 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
         // 重置状态
         setTimeout(() => {
           isExit = false
-          currentAccessRecord = null
         }, INTERVAL_THRESHOLD)
       }
 
@@ -159,23 +157,11 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
         // 重置状态
         setTimeout(() => {
           isEntry = false
-          currentAccessRecord = null
         }, INTERVAL_THRESHOLD)
       }
 
       // 出入方向
       const accessDirection = isEntry ? AccessDirection.IN : isExit ? AccessDirection.OUT : null
-
-      const record: Partial<DoorAccessRecords> = {
-        accessDirection,
-        directionCreateTime: new Date(),
-        equipmentId: equipment.equipmentid,
-        equipmentName: equipment.equipmentName,
-        remark: '',
-      }
-
-      // 新增出入记录
-      currentAccessRecord = await insertDoorAccessRecord(record)
 
       // 跳转到检查页面
       sendIpcToRenderer('go-check-page', accessDirection)
@@ -183,9 +169,6 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
     // 触发红外结束
     else if (msg.name === 'ReceiveGPITriggerStopReport') {
       if (!isEntry && !isExit) return
-
-      // 如果没有出入记录数据，则跳过
-      if (currentAccessRecord === null) return
 
       GPIEnd = msg
 
@@ -225,7 +208,7 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
               carrierId: `${carrier.docId}`,
               carrierRfid: carrier.docRfid,
               carrierName: carrier.docName,
-              carrierDeptid: `${carrier.deptId}`,
+              carrierDeptid: carrier.deptId,
               carrierDeptname: carrier.department.deptName,
               carrierType: `${carrier.docType}`,
               isOperation: `${OperationStatus.UNPROCESSED}`,
@@ -241,12 +224,6 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
       if (isEntry) {
         const dataList = await insertRfidRecordList(carriers, registrationCarrierRecordList, AccessDirection.IN, AlarmStatus.UNALARMED)
         sendIpcToRenderer('get-read-data', dataList)
-
-        const updateData = {
-          ...currentAccessRecord,
-          carrier_count: carriers.length,
-        }
-        updateAccessRecord(currentAccessRecord.accessId, updateData)
       }
     }
     // 读到 EPC 标签

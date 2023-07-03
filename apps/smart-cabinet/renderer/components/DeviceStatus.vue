@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VIcon } from 'components'
+import { SolutionDialog, VIcon } from 'components'
 import { useStore } from '@/store'
 
 const store = useStore()
@@ -14,9 +14,9 @@ const warnVisible = ref(false)
 <template>
   <div>
     <WarningDialog v-model:visible="warnVisible" />
-    <RfidStateDialog v-model:visible="rfidVisible" />
-    <LockStateDialog v-model:visible="lockVisible" />
-    <NetworkStateDialog v-model:visible="networkVisible" />
+    <SolutionDialog v-model:visible="rfidVisible" title="RFID状态" content="检查RFID线缆是否正常，并尝试插拔后重新启动软件。" />
+    <SolutionDialog v-model:visible="lockVisible" title="锁控状态" content="锁控板连线或供电是否正常，并尝试插拔后重新启动软件。" />
+    <SolutionDialog v-model:visible="networkVisible" title="网络状态" content="请检查数据库链接配置是否正常，并重新启动软件。" />
 
     <div class="flex h-[50px] items-center justify-end gap-4">
       <div v-show="misPlaceCarrierTotal !== 0" class="flex items-center justify-center">

@@ -8,9 +8,6 @@
   "main": "./index.ts",
   "module": "./index.ts",
   "types": "./index.ts",
-  "scripts": {
-    "package": "vite build"
-  },
   "devDependencies": {
     "config": "workspace:*",
     "utils": "workspace:*",

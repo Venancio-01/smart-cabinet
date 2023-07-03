@@ -28,7 +28,7 @@ export default function () {
     const { openDoor } = currentCabinet.value
     if (openDoor === null) return
 
-    await window.JSBridge.lockControl.init(openDoor, 9600)
+    await window.JSBridge.lockControl.init(openDoor)
   }
 
   // 打开某个锁

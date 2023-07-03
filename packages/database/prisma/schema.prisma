@@ -201,7 +201,7 @@ model DoorAlarmrecord {
   carrierId              String?   @map("Carrier_Id") @db.VarChar(100)
   carrierRfid            String?   @map("Carrier_rfid") @db.VarChar(100)
   carrierName            String?   @map("Carrier_Name") @db.VarChar(100)
-  carrierDeptid          String?   @map("Carrier_Deptid") @db.VarChar(100)
+  carrierDeptid          BigInt?   @map("Carrier_Deptid")
   carrierDeptName        String?   @map("Carrier_DeptName") @db.VarChar(100)
   carrierType            String?   @map("Carrier_type") @db.VarChar(255)
   isOperation            String?   @db.VarChar(10)
@@ -214,6 +214,7 @@ model DoorAlarmrecord {
   lastAccessUserId       BigInt?   @map("lastAccessUserID")
   lastAccessUserDeptname String?   @db.VarChar(255)
   lastAccessRecord       BigInt?
+  department             SysDept?  @relation(fields: [carrierDeptid], references: [deptId])
 
   @@map("door_alarmrecord")
 }
@@ -266,7 +267,7 @@ model DoorRfidrecord {
   carrierId       String?   @map("Carrier_Id") @db.VarChar(100)
   carrierName     String?   @map("Carrier_Name") @db.VarChar(100)
   carrierRfid     String?   @map("Carrier_rfid") @db.VarChar(100)
-  carrierDeptid   String?   @map("Carrier_Deptid") @db.VarChar(100)
+  carrierDeptid   BigInt?   @map("Carrier_Deptid")
   carrierDeptName String?   @map("Carrier_DeptName") @db.VarChar(100)
   carrierType     String?   @map("Carrier_type") @db.VarChar(255)
   equipmentType   String?   @map("equipment_Type") @db.VarChar(100)
@@ -275,6 +276,7 @@ model DoorRfidrecord {
   alarmid         String?   @db.VarChar(100)
   creatorTime     DateTime? @map("CreatorTime") @db.DateTime(0)
   isRegister      String?   @map("is_Register") @db.VarChar(255)
+  department      SysDept?  @relation(fields: [carrierDeptid], references: [deptId])
 
   @@map("door_rfidrecord")
 }
@@ -771,25 +773,27 @@ model SysConfig {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model SysDept {
-  deptId       BigInt        @id @default(autoincrement()) @map("dept_id")
-  parentId     BigInt?       @default(0) @map("parent_id")
-  ancestors    String?       @default("") @db.VarChar(50)
-  deptName     String?       @default("") @map("dept_name") @db.VarChar(30)
-  orderNum     Int?          @default(0) @map("order_num")
-  leader       String?       @db.VarChar(20)
-  phone        String?       @db.VarChar(11)
-  email        String?       @db.VarChar(50)
-  status       String?       @default("0") @db.Char(1)
-  delFlag      String?       @default("0") @map("del_flag") @db.Char(1)
-  createBy     String?       @default("") @map("create_by") @db.VarChar(64)
-  createTime   DateTime?     @map("create_time") @db.DateTime(0)
-  updateBy     String?       @default("") @map("update_by") @db.VarChar(64)
-  updateTime   DateTime?     @map("update_time") @db.DateTime(0)
-  level        Int?          @db.TinyInt
-  code         Int?          @default(0)
-  docDocuments DocDocument[]
-  users        SysUser[]
-  rfidCabinet  RfidCabinet[]
+  deptId          BigInt            @id @default(autoincrement()) @map("dept_id")
+  parentId        BigInt?           @default(0) @map("parent_id")
+  ancestors       String?           @default("") @db.VarChar(50)
+  deptName        String?           @default("") @map("dept_name") @db.VarChar(30)
+  orderNum        Int?              @default(0) @map("order_num")
+  leader          String?           @db.VarChar(20)
+  phone           String?           @db.VarChar(11)
+  email           String?           @db.VarChar(50)
+  status          String?           @default("0") @db.Char(1)
+  delFlag         String?           @default("0") @map("del_flag") @db.Char(1)
+  createBy        String?           @default("") @map("create_by") @db.VarChar(64)
+  createTime      DateTime?         @map("create_time") @db.DateTime(0)
+  updateBy        String?           @default("") @map("update_by") @db.VarChar(64)
+  updateTime      DateTime?         @map("update_time") @db.DateTime(0)
+  level           Int?              @db.TinyInt
+  code            Int?              @default(0)
+  docDocuments    DocDocument[]
+  users           SysUser[]
+  rfidCabinet     RfidCabinet[]
+  doorAlarmrecord DoorAlarmrecord[]
+  doorRfidrecord  DoorRfidrecord[]
 
   @@map("sys_dept")
 }

@@ -1,21 +1,47 @@
-import type { DoorAccessRecords, DoorAlarmrecord, DoorEquipment, DoorRfidrecord } from 'database'
-import { getLocalIpAddress, getSkipAndTake } from 'utils'
+import type { DoorAlarmrecord, DoorEquipment, DoorRfidrecord } from 'database'
+import { getLocalIpAddress } from 'utils'
 import {
   prisma,
   selectDoorAccessRecordList,
   selectDoorAlarmRecordCount,
   selectDoorAlarmRecordList,
+  selectDoorAlarmRecordListWithPage,
   selectDoorEquipmentList,
+  selectDoorRfidrecordList,
+  selectDoorRfidrecordListWithPage,
   updateDoorAccessRecord,
   updateDoorAlarmrecord,
 } from 'database'
+import { differenceBy } from 'lodash-es'
 
-// 获取当前设备
+// 当前设备
 export let currentEquipment: DoorEquipment | null = null
+// 是否是控制设备
+export let isControlEquipment = false
+// 全部设备列表
+export let equipmentList: DoorEquipment[] = []
+// 控制的设备列表
+export let controlEquipmentList: DoorEquipment[] = []
+
+/**
+ * @description: 获取是否为控制设备
+ * @return {*}
+ */
+export async function getIsControlApp() {
+  const otherEquipmentList = differenceBy(equipmentList, [currentEquipment], 'id')
+  isControlEquipment = currentEquipment.fid === null || otherEquipmentList.every((item) => item.fid !== currentEquipment.equipmentid)
+
+  return isControlEquipment
+}
+
+/**
+ * @description: 获取当前设备
+ * @return {*}
+ */
 export async function getCurrentEquipment(): Promise<DoorEquipment | null> {
   if (currentEquipment) return currentEquipment
 
-  const equipmentList = await selectDoorEquipmentList()
+  equipmentList = await selectDoorEquipmentList()
   const ipList = getLocalIpAddress()
 
   currentEquipment = equipmentList.find((item) => item.addressip && ipList.includes(item.addressip)) || null
@@ -23,145 +49,26 @@ export async function getCurrentEquipment(): Promise<DoorEquipment | null> {
   return currentEquipment
 }
 
-// 获取出入记录
-// export async function selectAccessRecordList(condition?: Partial<AccessRecordQueryProps>): Promise<{
-//   data: DoorAccessRecords[]
-//   total: number
-// }> {
-//   const query: Partial<{ [key in keyof DoorAccessRecords]: any }> = {}
+/**
+ * @description: 获取受控制的设备列表
+ * @return {*}
+ */
+export async function getControlEquipmentList() {
+  if (!isControlEquipment) return []
 
-//   if (condition?.accessDirection === undefined || condition?.accessDirection === AccessDirection.ALL) query.accessDirection = undefined
-//   else query.accessDirection = condition.accessDirection
-
-//   if (condition?.hasAlarm === undefined || condition?.hasAlarm === AccessHasAlarm.ALL) query.has_alarm = undefined
-//   else query.has_alarm = condition.hasAlarm
-
-//   if (condition?.timeRange === undefined || condition?.timeRange === AccessTimeRange.ALL) {
-//     query.directionCreateTime = undefined
-//   } else {
-//     const timeRangeMap = {
-//       [AccessTimeRange.TODAY]: {
-//         lte: new Date(),
-//         gte: new Date(new Date().setHours(0, 0, 0, 0)),
-//       },
-//       [AccessTimeRange.WEEK]: {
-//         lte: new Date(),
-//         gte: new Date(new Date().setDate(new Date().getDate() - 7)),
-//       },
-//       [AccessTimeRange.MONTH]: {
-//         lte: new Date(),
-//         gte: new Date(new Date().setDate(new Date().getDate() - 30)),
-//       },
-//     }
-//     query.directionCreateTime = timeRangeMap[condition.timeRange]
-//   }
-
-//   if (condition?.withCarrier === undefined || condition?.withCarrier === AccessWithCarrier.ALL) {
-//     // query.carrier_count = undefined
-//   } else {
-//     if (condition.withCarrier === AccessWithCarrier.WITH_CARRIER) {
-//       // query.carrier_count = {
-//       //   gt: 0,
-//       // }
-//     } else {
-//       // query.carrier_count = 0
-//     }
-//   }
-
-//   const [data, total] = await Promise.all([
-//     prisma.doorAccessRecords.findMany({
-//       ...getSkipAndTake(condition),
-//       where: query,
-//       orderBy: { directionCreateTime: 'desc' },
-//     }),
-//     prisma.doorAccessRecords.count({ where: query }),
-//   ])
-
-//   return {
-//     data,
-//     total,
-//   }
-// }
+  controlEquipmentList = equipmentList.filter((item) => item.fid === currentEquipment.equipmentid)
+  return controlEquipmentList
+}
 
 /**
- * @description: 更新出入记录
- * @param {number} id
+ * @description: 添加报警记录
  * @param {Partial} data
  * @return {*}
  */
-export async function updateAccessRecord(id: number, data: Partial<DoorAccessRecords>): Promise<void> {
-  await prisma.doorAccessRecords.update({
-    where: { accessId: id },
-    data,
-  })
-}
-
-// 添加报警记录
 export async function addAlarmRecord(data: Partial<DoorAlarmrecord>): Promise<void> {
   await prisma.doorAlarmrecord.create({
     data,
   })
-}
-
-/**
- * @description: 获取报警记录
- * @param {boolean} isOperation 是否已解决
- * @return {*}
- */
-export async function fetchAlarmRecords(condition?: Partial<AlarmQueryProps>): Promise<{
-  data: DoorAlarmrecord[]
-  total: number
-}> {
-  const query: { [key: string]: any } = {}
-  if (condition?.accessId) query.accessId = condition.accessId
-  if (condition?.carrierName) query.carrierName = condition.carrierName
-  if (condition?.departmentId) query.carrier_deptid = condition.departmentId
-  if (condition?.startTime || condition?.endTime) {
-    query.createTime = {}
-    if (condition?.startTime) query.createTime.gte = condition.startTime
-    if (condition?.endTime) query.createTime.lte = condition.endTime
-  }
-
-  const [data, total] = await Promise.all([
-    prisma.doorAlarmrecord.findMany({
-      ...getSkipAndTake(condition),
-      where: query,
-      orderBy: { createTime: 'desc' },
-    }),
-    prisma.doorAlarmrecord.count({ where: query }),
-  ])
-
-  return {
-    data,
-    total,
-  }
-}
-
-export async function fetchReadRecords(condition?: Partial<ReadRecordQueryProps>) {
-  const query: Partial<{ [key in keyof DoorRfidrecord]: any }> = {}
-
-  if (condition?.accessId) query.accessId = condition.accessId
-  if (condition?.carrierName) query.carrierName = condition.carrierName
-  if (condition?.departmentId) query.carrier_deptid = condition.departmentId
-  if (condition?.startTime || condition?.endTime) {
-    query.createTime = {}
-    if (condition?.startTime) query.createTime.gte = condition.startTime
-    if (condition?.endTime) query.createTime.lte = condition.endTime
-  }
-
-  const [data, total] = await Promise.all([
-    prisma.doorRfidrecord.findMany({
-      ...getSkipAndTake(condition),
-      where: query,
-      orderBy: { createTime: 'desc' },
-    }),
-    prisma.doorRfidrecord.count({ where: query }),
-  ])
-
-  return {
-    data,
-    total,
-  }
 }
 
 export function addReadRecord(data: Partial<DoorRfidrecord>) {
@@ -173,13 +80,15 @@ export function addReadRecord(data: Partial<DoorRfidrecord>) {
 const accessDoorService = {
   name: 'accessDoor' as const,
   fns: {
+    getIsControlApp,
+    getControlEquipmentList,
     getCurrentEquipment,
-    updateAccessRecord,
-    fetchAlarmRecords,
-    fetchReadRecords,
+    selectDoorRfidrecordList,
+    selectDoorRfidrecordListWithPage,
     selectDoorAccessRecordList,
     updateDoorAccessRecord,
     selectDoorAlarmRecordList,
+    selectDoorAlarmRecordListWithPage,
     selectDoorAlarmRecordCount,
     updateDoorAlarmrecord,
   },

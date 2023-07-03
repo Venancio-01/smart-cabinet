@@ -2,7 +2,8 @@ import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Index from '@/pages/index.vue'
 import Activate from '@/pages/activate.vue'
-import Record from '@/pages/record.vue'
+import RfidRecord from '@/pages/rfid-record.vue'
+import WarningRecord from '@/pages/warning-record.vue'
 import Check from '@/pages/check.vue'
 import Alarm from '@/pages/alarm.vue'
 import RecordDetail from '@/pages/record-detail.vue'
@@ -15,8 +16,12 @@ const routes: RouteRecordRaw[] = [
     component: Index,
   },
   {
-    path: '/record',
-    component: Record,
+    path: '/rfid-record',
+    component: RfidRecord,
+  },
+  {
+    path: '/warning-record',
+    component: WarningRecord,
   },
   {
     path: '/check',
@@ -27,7 +32,7 @@ const routes: RouteRecordRaw[] = [
     component: Alarm,
   },
   {
-    path: '/record-detail/:id/:fromAlarmPage',
+    path: '/record-detail',
     component: RecordDetail,
   },
 ]

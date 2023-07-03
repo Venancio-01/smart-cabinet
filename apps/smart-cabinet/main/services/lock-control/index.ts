@@ -1,7 +1,7 @@
 import { SerialPort as SerialPortLib } from 'serialport'
 import { info } from '../logger'
 import { currentCabinet } from '../cabinet'
-import { convertDecimalToBinary, generateLockCommand } from './utils'
+import { convertDecimalToBinary, generateLockCommand, setPermissions } from './utils'
 import SerialPort from './serial-port'
 
 // 串口实例
@@ -22,17 +22,20 @@ async function getConnectState() {
   return connected
 }
 
-async function init(path: string, baudRate: number) {
+async function init(path: string) {
   if (instance) return
 
-  // await setPermissions()
+  await setPermissions()
 
   if (!connected) {
     info('未连接锁控板')
     return
   }
 
-  instance = new SerialPort({ path, baudRate })
+  instance = new SerialPort(path)
+  await instance.open()
+  await instance.close()
+  await instance.open()
 }
 
 async function close() {

@@ -39,14 +39,15 @@ export default defineConfig({
   transformers: [transformerDirectives(), transformerVariantGroup()],
   theme: {
     colors: Color,
-    fontSize: FontSize,
   },
   rules: [
     [
       /^text-(.*)$/,
       ([, c], { theme }: any) => {
         if (theme.colors[c]) return { color: theme.colors[c] }
-        if (theme.fontSize[c]) return { 'font-size': theme.fontSize[c] }
+        if (FontSize[c]) {
+          return { 'font-size': FontSize[c], 'line-height': 1 }
+        }
       },
     ],
   ],

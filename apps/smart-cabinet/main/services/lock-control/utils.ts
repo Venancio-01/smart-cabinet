@@ -1,5 +1,6 @@
 import { Buffer } from 'buffer'
 import { execSync } from 'child_process'
+import { error, info } from '../logger'
 
 /**
  * @description: 十进制转二进制并补全 8 位，再颠倒顺序
@@ -46,8 +47,8 @@ export function generateLockCommand(source: string) {
 export async function setPermissions() {
   try {
     await execSync('sudo chmod 777 /dev/ttyUSB0')
-    console.log('设置串口权限成功')
-  } catch (error) {
-    console.log('设置串口权限失败')
+    info('设置串口权限成功')
+  } catch (e) {
+    error(`设置串口权限失败,${e}`)
   }
 }

@@ -2,53 +2,24 @@
 import type { DoorAlarmrecord } from 'database'
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
-import useDoor from '@/hooks/useDoor'
 import { useStore } from '@/store'
 
 const router = useRouter()
 const store = useStore()
-const { departmentList } = storeToRefs(store)
-const route = useRoute()
-const { fetchReadRecords } = useDoor()
-
-const accessId = computed(() => route.params.id as string)
-const isFromAlarm = computed(() => route.params.fromAlarmPage === '1')
+const { setCurrentReadRecordList } = store
+const { currentReadRecordList, departmentList } = storeToRefs(store)
 
 const data = ref<DoorAlarmrecord[]>([])
 const total = ref(0)
 const condition = reactive<Partial<ReadRecordQueryProps>>({
+  carrierName: '',
+  deptId: undefined,
+})
+
+const pagination = reactive<PaginationType>({
   page: 1,
   size: 6,
-  accessId: accessId.value,
-  carrierName: '',
-  departmentId: undefined,
 })
-async function onPageChange(page: number) {
-  condition.page = page
-
-  loadReadRecords()
-}
-
-async function handleQuery() {
-  condition.page = 1
-
-  loadReadRecords()
-}
-
-async function handleInit() {
-  condition.page = 1
-  condition.carrierName = ''
-  condition.departmentId = undefined
-  data.value = []
-
-  loadReadRecords()
-}
-
-async function loadReadRecords() {
-  const { data: _data, total: _total } = await fetchReadRecords(toRaw(condition))
-  data.value = _data
-  total.value = _total
-}
 
 const columns = ref<ColumnsType>([
   {
@@ -84,12 +55,34 @@ function handleResizeColumn(width, column) {
 }
 
 function handleBack() {
-  if (isFromAlarm.value) router.replace('/index')
-  else router.back()
+  router.replace('/index')
+  setCurrentReadRecordList([])
+}
+
+function handleQuery() {}
+
+function handleInit() {
+  pagination.page = 1
+  condition.carrierName = ''
+  condition.timeRange = undefined
+
+  generateData()
+}
+
+function onPageChange(page: number) {
+  pagination.page = page
+
+  generateData()
+}
+
+function generateData() {
+  const _data = currentReadRecordList.value.splice((pagination.page - 1) * pagination.size, pagination.size * pagination.page)
+
+  return _data
 }
 
 onMounted(() => {
-  handleInit()
+  generateData()
 })
 </script>
 
@@ -109,7 +102,7 @@ onMounted(() => {
         class="flex-1 grid grid-rows-1 grid-cols-2 gap-x-6"
         autocomplete="off">
         <a-form-item label="所属部门" name="title">
-          <a-select v-model:value="condition.departmentId" allow-clear placeholder="请选择部门" @change="handleQuery">
+          <a-select v-model:value="condition.deptId" allow-clear placeholder="请选择部门" @change="handleQuery">
             <a-select-option v-for="item in departmentList" :key="item.deptId" :value="String(item.deptId)">
               {{ item.deptName }}
             </a-select-option>
@@ -127,8 +120,8 @@ onMounted(() => {
         :data-source="data"
         :columns="columns"
         :pagination="{
-          current: condition.page,
-          pageSize: condition.size,
+          current: pagination.page,
+          pageSize: pagination.size,
           total,
           onChange: onPageChange,
         }"

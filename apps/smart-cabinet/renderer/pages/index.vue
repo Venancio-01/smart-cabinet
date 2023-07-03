@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { CurrentTime } from 'components'
+import { CurrentTime, VTitle } from 'components'
 import { SYSTEM_NAME } from '@/config'
 
 const router = useRouter()
@@ -10,27 +10,23 @@ function goLoginPage() {
 </script>
 
 <template>
-  <div class="relative flex h-full items-center justify-center">
-    <div class="w-full h-full flex flex-col">
-      <!-- 当前时间 -->
-      <CurrentTime class="fixed top-[40px] right-[40px]" />
-      <!-- 系统名 -->
-      <div class="text-center select-none text-[60px] leading-[48px] pt-[50px] font-thin tracking-[10px] text-white">
-        {{ SYSTEM_NAME }}
-      </div>
+  <div class="relative h-full">
+    <!-- 当前时间 -->
+    <CurrentTime class="fixed top-[40px] right-[40px]" />
+    <!-- 系统名 -->
+    <VTitle :title="SYSTEM_NAME" p="t-34"></VTitle>
 
-      <!-- 开始使用按钮 -->
-      <div class="flex-1 flex justify-center items-center">
-        <StartButton @click="goLoginPage" />
-      </div>
+    <!-- 开始使用按钮 -->
+    <div class="absolute top-1/2 left-1/2 -translate-1/2">
+      <StartButton @click="goLoginPage" />
+    </div>
 
-      <div class="flex justify-center items-center">
-        <CarrierCountStatistics class="w-[500px]" />
-      </div>
+    <div class="fixed bottom-[60px] left-1/2 -translate-x-1/2">
+      <CarrierCountStatistics class="w-[500px]" />
+    </div>
 
-      <div class="fixed bottom-[40px] right-[40px]">
-        <DeviceStatus />
-      </div>
+    <div class="fixed bottom-[40px] right-[40px]">
+      <DeviceStatus />
     </div>
   </div>
 </template>

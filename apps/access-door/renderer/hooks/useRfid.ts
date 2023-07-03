@@ -1,14 +1,34 @@
+import type { DoorRfidrecord } from 'database'
 import { useStore } from '@/store'
 import type { AccessDirection } from '~/enums'
+
+let timer = null
 
 export default function () {
   const router = useRouter()
   const store = useStore()
   const { setRfidIsConnected, setCurrentReadRecordList, setLoadingVisible } = store
 
-  async function getRfidConnectionStatus() {
-    const status = await window.JSBridge.rfid.getRfidConnectionStatus()
-    setRfidIsConnected(status)
+  /**
+   * @description: 开始获取 RFID 连接状态
+   * @return {*}
+   */
+  async function startGetRfidConnectionStatus() {
+    const getRfiRfidConnectionStatus = async () => {
+      const status = await window.JSBridge.rfid.getRfidConnectionStatus()
+      setRfidIsConnected(status)
+    }
+    getRfiRfidConnectionStatus()
+    timer = window.setInterval(getRfiRfidConnectionStatus, 5000)
+  }
+
+  /**
+   * @description: 停止获取 RFID 连接状态
+   * @return {*}
+   */
+  async function stopGetRfidConnectionStatus() {
+    timer && clearInterval(timer)
+    timer = null
   }
 
   /**
@@ -27,6 +47,7 @@ export default function () {
    */
   const regsterAlarmsListener = () => {
     window.electron.ipcRenderer.on('go-check-page', (_, direction: AccessDirection) => {
+      console.log('🚀 ~ file: useRfid.ts:49 ~ window.electron.ipcRenderer.on ~ direction:', direction)
       setLoadingVisible(true)
       router.replace({
         path: '/check',
@@ -42,14 +63,16 @@ export default function () {
       router.replace('/alarm')
     })
 
-    window.electron.ipcRenderer.on('get-read-data', async (_, data) => {
+    window.electron.ipcRenderer.on('get-read-data', async (_, data: DoorRfidrecord[]) => {
+      console.log('🚀 ~ file: useRfid.ts:68 ~ window.electron.ipcRenderer.on ~ data:', data)
       setCurrentReadRecordList(data)
       setLoadingVisible(false)
     })
   }
 
   return {
-    getRfidConnectionStatus,
+    startGetRfidConnectionStatus,
+    stopGetRfidConnectionStatus,
     handleSetGPO,
     regsterAlarmsListener,
   }

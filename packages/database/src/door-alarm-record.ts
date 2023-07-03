@@ -1,43 +1,60 @@
-import { getSkipAndTake } from 'utils'
 import type { PaginationType } from 'utils'
-import type { DoorAlarmrecord, Prisma } from '.'
+import { getSkipAndTake } from 'utils'
+import { Prisma } from '@prisma/client'
+import type { DoorAlarmrecord } from '.'
 import { prisma } from '.'
 
-export async function selectDoorAlarmRecordList(): Promise<DoorAlarmrecord[]>
-export async function selectDoorAlarmRecordList(
-  condition: PaginationType & Prisma.DoorAlarmrecordWhereInput,
-): Promise<{ data: DoorAlarmrecord[]; total: number }>
+const doorAlarmrecordArgs = Prisma.validator<Prisma.DoorAlarmrecordArgs>()({
+  include: {
+    department: true,
+  },
+})
+
+export type DoorAlarmrecordProps = Prisma.DoorAlarmrecordGetPayload<typeof doorAlarmrecordArgs>
+
 /**
  * @description: 查询通道门报警记录列表
- * @param {*}
+ * @param {Prisma} condition
  * @return {*}
  */
-export async function selectDoorAlarmRecordList(
-  condition?: PaginationType & Prisma.DoorAlarmrecordWhereInput,
-): Promise<DoorAlarmrecord[] | { data: DoorAlarmrecord[]; total: number }> {
-  const pageCondition = getSkipAndTake(condition)
+export async function selectDoorAlarmRecordList(condition?: Prisma.DoorAlarmrecordWhereInput): Promise<DoorAlarmrecordProps[]> {
+  return prisma.doorAlarmrecord.findMany({
+    where: condition,
+    orderBy: {
+      createTime: 'desc',
+    },
+    ...doorAlarmrecordArgs,
+  })
+}
 
-  const query: Prisma.DoorAlarmrecordWhereInput = {}
+/**
+ * @description: 查询通道门报警记录列表伴随分页
+ * @param {PaginationType} pagination
+ * @param {Prisma} condition
+ * @return {*}
+ */
+export async function selectDoorAlarmRecordListWithPage(
+  pagination: PaginationType,
+  condition?: Prisma.DoorAlarmrecordWhereInput,
+): Promise<{ data: DoorAlarmrecordProps[]; total: number }> {
+  const skipAndTake = getSkipAndTake(pagination)
+  const [data, total] = await Promise.all([
+    prisma.doorAlarmrecord.findMany({
+      ...skipAndTake,
+      where: condition,
+      orderBy: {
+        createTime: 'desc',
+      },
+      ...doorAlarmrecordArgs,
+    }),
+    prisma.doorAlarmrecord.count({
+      where: condition,
+    }),
+  ])
 
-  if (pageCondition) {
-    const [data, total] = await Promise.all([
-      prisma.doorAlarmrecord.findMany({
-        ...pageCondition,
-        where: query,
-      }),
-      prisma.doorAlarmrecord.count({
-        where: query,
-      }),
-    ])
-
-    return {
-      data,
-      total,
-    }
-  } else {
-    return prisma.doorAlarmrecord.findMany({
-      where: query,
-    })
+  return {
+    data,
+    total,
   }
 }
 

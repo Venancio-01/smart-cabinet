@@ -10,7 +10,7 @@ import {
   sys_permission,
 } from 'database'
 import type { ServiceType } from '../main/services/index'
-export {}
+export { }
 import type { electronAPI } from '@electron-toolkit/preload'
 
 type JSBridgeType = {
@@ -19,7 +19,7 @@ type JSBridgeType = {
 
 declare global {
   var databaseIsConnected: boolean
-  
+
   interface Window {
     JSBridge: JSBridgeType
     electron: electronAPI
@@ -30,41 +30,17 @@ declare global {
     size: number
   }
 
-  type AccessRecordQueryProps = {
-    accessDirection: AccessDirection
-    hasAlarm: AccessDirection
+  type ReadRecordQueryProps = {
+    carrierName: string
+    deptId?: number
+    type?: AccessDirection
     timeRange?: AccessTimeRange
-    withCarrier?: AccessWithCarrier
   }
 
-  type AlarmQueryProps = PaginationType & {
-    accessId?: string
+  type AlarmQueryProps = {
     carrierName?: string
-    departmentId?: string
-    startTime?: Date
-    endTime?: Date
-  }
-
-  type ReadRecordQueryProps = PaginationType & {
-    accessId?: string
-    carrierName?: string
-    departmentId?: string
-    startTime?: Date
-    endTime?: Date
-  }
-
-  type UserQueryProps = PaginationType & {
-    userName?: string
-    departmentId?: number
-    roleId?: number
-  }
-
-  type DepartmentQueryProps = PaginationType & {
-    departmentName?: string
-  }
-
-  type UserWithRoleProps = sys_user & {
-    role: sys_role | null
+    deptId?: number
+    timeRange?: AccessTimeRange
   }
 
   type RFIDParseType = {
