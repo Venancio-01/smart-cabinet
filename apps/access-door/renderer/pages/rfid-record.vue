@@ -147,7 +147,7 @@ onMounted(() => {
           showSizeChanger: false,
           onChange: onPageChange,
         }"
-        @resizeColumn="handleResizeColumn">
+        @resize-column="handleResizeColumn">
         <template #emptyText>
           <span>暂无数据</span>
         </template>

@@ -2,8 +2,8 @@ import type { DoorRfidregister, Prisma } from '.'
 import { prisma } from '.'
 
 /**
- * @description: 查询通道门 rfid 登记列表
- * @param {*}
+ * @description: 查询通道门 RFID 登记列表
+ * @param {Prisma} condition
  * @return {*}
  */
 export async function selectDoorRfidregisterList(condition?: Prisma.DoorRfidregisterWhereInput): Promise<DoorRfidregister[]> {

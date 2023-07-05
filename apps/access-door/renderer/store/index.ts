@@ -2,7 +2,8 @@ import { defineStore } from 'pinia'
 import type { DocDocument, DoorAlarmrecord, DoorEquipment, DoorRfidrecord, RfidCabinetdoor, SysDept } from 'database'
 
 interface State {
-  currentEquipment: DoorEquipment | null
+  isControlEquipment: boolean
+  equipmentList: EquipmentProps[]
   networkIsConnected: boolean
   rfidIsConnected: boolean
   activationCode: string
@@ -18,7 +19,8 @@ interface State {
 export const useStore = defineStore('main', {
   state: (): State => {
     return {
-      currentEquipment: null,
+      isControlEquipment: false,
+      equipmentList: [],
       networkIsConnected: false,
       rfidIsConnected: false,
       activationCode: '',
@@ -39,6 +41,21 @@ export const useStore = defineStore('main', {
   actions: {
     setActivationCode(code: string) {
       this.activationCode = code
+    },
+    setIsControlEquipment(state: boolean) {
+      this.isControlEquipment = state
+    },
+    setEquipmentList(equipmentList: EquipmentProps[]) {
+      this.equipmentList = equipmentList
+    },
+    setEquipment(id: number, equipment: Partial<EquipmentProps>) {
+      const index = this.equipmentList.findIndex((item) => item.equipmentid === id)
+      if (index < 0) return
+
+      this.equipmentList[index] = {
+        ...this.equipmentList[index],
+        ...equipment,
+      }
     },
     setRfidIsConnected(state: boolean) {
       this.rfidIsConnected = state

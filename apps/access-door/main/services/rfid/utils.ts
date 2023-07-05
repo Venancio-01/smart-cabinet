@@ -1,5 +1,7 @@
+import { Buffer } from 'buffer'
 import { Library } from 'ffi-napi'
 import ref from 'ref-napi'
+import type { TypedArray } from 'ref-array-di'
 import ArrayType from 'ref-array-di'
 import { CRC_SDK_PATH } from 'utils/config/main'
 
@@ -51,7 +53,8 @@ export function generateCRC16Code(str: string) {
     CRC16_CCITT: ['int', [UcharType, 'int']],
   })
   const buffer = Buffer.from(str, 'hex')
-  return crcSDK.CRC16_CCITT(buffer, buffer.length).toString(16)
+
+  return crcSDK.CRC16_CCITT(buffer as unknown as TypedArray<number, number>, buffer.length).toString(16)
 }
 
 /**

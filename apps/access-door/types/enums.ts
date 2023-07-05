@@ -40,3 +40,20 @@ export enum AlarmStatus {
   ALARMED = 1,
   UNALARMED = 0,
 }
+
+// 审批状态
+export enum ApprovalStatus {
+  PENDING = 0,
+  APPROVED = 1,
+  REJECTED = 2,
+}
+
+export enum GPOIndex {
+  ONE = 1,
+  TWO = 2,
+}
+
+export enum GPIIndex {
+  ONE = 0,
+  TWO = 1,
+}

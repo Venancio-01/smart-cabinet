@@ -12,7 +12,7 @@ export const services = [rfidService, sysService, networkService, storeService, 
 export type ServiceType = typeof services
 
 // 生成通道名称
-export function makeChannelName(name, fnName) {
+export function makeChannelName(name: string, fnName: string) {
   return `${name}.${fnName}`
 }
 

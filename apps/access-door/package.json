@@ -36,6 +36,7 @@
     "@electron-toolkit/preload": "^2.0.0",
     "@iconify-json/carbon": "^1.1.18",
     "@types/lodash-es": "^4.17.7",
+    "@types/ref-array-di": "^1.2.5",
     "@vitejs/plugin-vue": "^4.2.3",
     "animate.css": "^4.1.1",
     "ant-design-vue": "^3.2.20",

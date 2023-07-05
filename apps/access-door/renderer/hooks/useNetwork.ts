@@ -1,6 +1,6 @@
 import { useStore } from '@/store'
 
-let timer = null
+let timer: number | null = null
 
 export default function () {
   const store = useStore()

@@ -1,12 +1,11 @@
 import { join } from 'path'
 import { BrowserWindow, app, shell } from 'electron'
-import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 import { ICON_PATH, WINDOW_SIZE } from 'utils/config/main'
 
 let win: BrowserWindow | null = null
 
 // 创建窗口
-export async function createWindow() {
+export function createWindow() {
   win = new BrowserWindow({
     ...WINDOW_SIZE,
     title: '智能载体管控系统',
@@ -26,7 +25,6 @@ export async function createWindow() {
   } else {
     win.loadURL('http://localhost:4200/')
     win.webContents.openDevTools()
-    await installExtension(VUEJS_DEVTOOLS)
   }
 
   // 主进程主动向渲染进程推送消息

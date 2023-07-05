@@ -7,4 +7,6 @@ export default {
   '00011100': 'ReceiveGPITriggerStartReport',
   '00011201': 'ReceiveGPITriggerStopReport',
   '00011200': 'ReceiveEPCReport',
+} as {
+  readonly [key: string]: string
 }

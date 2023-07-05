@@ -4,10 +4,24 @@ import { useStore } from '@/store'
 
 const router = useRouter()
 const store = useStore()
-const { rfidIsConnected, networkIsConnected, unviewedAccessRecordCount } = storeToRefs(store)
+const { equipmentList, networkIsConnected, unviewedAccessRecordCount } = storeToRefs(store)
 
 const rfidVisible = ref(false)
 const networkVisible = ref(false)
+
+const rfidIsConnected = computed(() => {
+  return equipmentList.value.every((item) => item.rfidIsConnected)
+})
+
+const rfidStatusText = computed(() => {
+  const arr = []
+
+  equipmentList.value.forEach((item) => {
+    if (!item.rfidIsConnected) arr.push(`设备：${item.equipmentName} - 读取器连接失败`)
+  })
+
+  return arr.join(',')
+})
 
 function goRfidRecordPage() {
   router.push({ path: '/rfid-record' })
@@ -19,7 +33,11 @@ function goWarningRecordPage() {
 
 <template>
   <div>
-    <SolutionDialog v-model:visible="rfidVisible" title="RFID状态" content="检查RFID线缆是否正常，并尝试插拔后重新启动软件。" />
+    <SolutionDialog
+      v-model:visible="rfidVisible"
+      title="RFID状态"
+      :status-text="rfidStatusText"
+      content="检查RFID线缆是否正常，并尝试插拔后重新启动软件。" />
     <SolutionDialog v-model:visible="networkVisible" title="网络状态" content="请检查数据库链接配置是否正常，并重新启动软件。" />
 
     <div class="flex h-[50px] items-center justify-end gap-4">
@@ -32,7 +50,7 @@ function goWarningRecordPage() {
           <VIcon
             icon="warn"
             class="text-icon-normal"
-            :class="[unviewedAccessRecordCount === 0 ? '' : 'text-error-color']"
+            :class="[unviewedAccessRecordCount === 0 ? 'text-light' : 'text-error-color']"
             @click="goWarningRecordPage" />
         </a-badge>
       </div>

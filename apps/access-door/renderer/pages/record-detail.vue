@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { DoorAlarmrecord } from 'database'
+import type { DoorRfidrecord } from 'database'
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
 import { useStore } from '@/store'
@@ -9,7 +9,7 @@ const store = useStore()
 const { setCurrentReadRecordList } = store
 const { currentReadRecordList, departmentList } = storeToRefs(store)
 
-const data = ref<DoorAlarmrecord[]>([])
+const data = ref<DoorRfidrecord[]>([])
 const total = ref(0)
 const condition = reactive<Partial<ReadRecordQueryProps>>({
   carrierName: '',
@@ -21,7 +21,7 @@ const pagination = reactive<PaginationType>({
   size: 6,
 })
 
-const columns = ref<ColumnsType>([
+const columns = ref<ColumnsType<DoorRfidrecord>>([
   {
     title: '载体名称',
     dataIndex: 'carrierName',
@@ -29,23 +29,15 @@ const columns = ref<ColumnsType>([
   },
   {
     title: '所属部门',
-    dataIndex: 'carrier_deptname',
-    key: 'carrier_deptname',
+    dataIndex: 'carrierDeptName',
+    key: 'carrierDeptName',
   },
   {
     title: '检测时间',
     dataIndex: 'createTime',
     key: 'createTime',
     customRender({ record }) {
-      return dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss')
-    },
-  },
-  {
-    title: '是否告警',
-    dataIndex: 'is_alarm',
-    key: 'is_alarm',
-    customRender({ record }) {
-      return record.is_alarm === '1' ? '是' : '否'
+      return dayjs(record.creatorTime).format('YYYY-MM-DD HH:mm:ss')
     },
   },
 ])
@@ -76,9 +68,7 @@ function onPageChange(page: number) {
 }
 
 function generateData() {
-  const _data = currentReadRecordList.value.splice((pagination.page - 1) * pagination.size, pagination.size * pagination.page)
-
-  return _data
+  data.value = currentReadRecordList.value.splice((pagination.page - 1) * pagination.size, pagination.size * pagination.page)
 }
 
 onMounted(() => {
@@ -125,7 +115,7 @@ onMounted(() => {
           total,
           onChange: onPageChange,
         }"
-        @resizeColumn="handleResizeColumn">
+        @resize-column="handleResizeColumn">
         <template #emptyText>
           <span>暂无数据</span>
         </template>

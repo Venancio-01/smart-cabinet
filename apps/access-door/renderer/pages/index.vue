@@ -7,10 +7,14 @@ import useDoor from '@/hooks/useDoor'
 import DeviceStatus from '@/components/DeviceStatus.vue'
 
 const store = useStore()
-const { currentEquipment } = storeToRefs(store)
+const { isControlEquipment, equipmentList } = storeToRefs(store)
 const { selectUnviewedAlarmRecordCount } = useDoor()
 
-const deviceName = computed(() => currentEquipment.value?.equipmentName)
+const deviceName = computed(() => {
+  if (isControlEquipment.value) return ''
+
+  return equipmentList?.[0]?.equipmentName
+})
 
 const titleClass = 'text-center select-none font-thin tracking-[10px] text-light'
 

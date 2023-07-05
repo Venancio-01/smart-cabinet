@@ -1,5 +1,6 @@
 import { DETECTION_DURATION } from 'utils/config/main'
 import { generateAntennaCommand, generateCommand } from './utils'
+import type { GPIIndex, GPOIndex } from '~/enums'
 
 /**
  * @description: 连接状态确认
@@ -52,7 +53,7 @@ export function generateReadEPCCommand(antennaIds: number[]) {
  * @param {boolean} status
  * @return {*}
  */
-export function generateSetGPOCommand(index: GPOIndexType, status: boolean) {
+export function generateSetGPOCommand(index: GPOIndex, status: boolean) {
   const protocolControlWord = '00010109'
   const dataLength = '0002'
 
@@ -72,11 +73,11 @@ export function generateSetGPOCommand(index: GPOIndexType, status: boolean) {
  * @param {string} triggerCommand 触发命令
  * @return {*}
  */
-export function generteSetGPITriggerCommand(GPIIndex: GPIIndexType, triggerCommand: string) {
+export function generteSetGPITriggerCommand(index: GPIIndex, triggerCommand: string) {
   const protocolControlWord = '0001010B'
 
   // 触发 GPI 端口号
-  const GPIIndexStr = GPIIndex.toString().padStart(2, '0')
+  const GPIIndexStr = index.toString().padStart(2, '0')
 
   // 触发开始条件, 2 - 高电平触发
   const triggerStartCondition = '02'

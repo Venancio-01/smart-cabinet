@@ -1,15 +1,12 @@
-import type { DoorAlarmrecord, DoorEquipment, DoorRfidrecord } from 'database'
+import type { DoorEquipment } from 'database'
 import { getLocalIpAddress } from 'utils'
 import {
-  prisma,
-  selectDoorAccessRecordList,
   selectDoorAlarmRecordCount,
   selectDoorAlarmRecordList,
   selectDoorAlarmRecordListWithPage,
   selectDoorEquipmentList,
   selectDoorRfidrecordList,
   selectDoorRfidrecordListWithPage,
-  updateDoorAccessRecord,
   updateDoorAlarmrecord,
 } from 'database'
 import { differenceBy } from 'lodash-es'
@@ -19,17 +16,19 @@ export let currentEquipment: DoorEquipment | null = null
 // 是否是控制设备
 export let isControlEquipment = false
 // 全部设备列表
-export let equipmentList: DoorEquipment[] = []
+export let allEquipmentList: DoorEquipment[] = []
 // 控制的设备列表
-export let controlEquipmentList: DoorEquipment[] = []
+export let equipmentList: DoorEquipment[] = []
 
 /**
  * @description: 获取是否为控制设备
  * @return {*}
  */
-export async function getIsControlApp() {
-  const otherEquipmentList = differenceBy(equipmentList, [currentEquipment], 'id')
-  isControlEquipment = currentEquipment.fid === null || otherEquipmentList.every((item) => item.fid !== currentEquipment.equipmentid)
+export async function getIsControlEquipment() {
+  if (!currentEquipment) return false
+
+  const otherEquipmentList = differenceBy(allEquipmentList, [currentEquipment], 'equipmentid')
+  isControlEquipment = currentEquipment.fid === null && otherEquipmentList.some((item) => item.fid === currentEquipment?.equipmentid)
 
   return isControlEquipment
 }
@@ -38,13 +37,13 @@ export async function getIsControlApp() {
  * @description: 获取当前设备
  * @return {*}
  */
-export async function getCurrentEquipment(): Promise<DoorEquipment | null> {
+export async function getCurrentEquipment() {
   if (currentEquipment) return currentEquipment
 
-  equipmentList = await selectDoorEquipmentList()
+  allEquipmentList = await selectDoorEquipmentList()
   const ipList = getLocalIpAddress()
 
-  currentEquipment = equipmentList.find((item) => item.addressip && ipList.includes(item.addressip)) || null
+  currentEquipment = allEquipmentList.find((item) => item.addressip && ipList.includes(item.addressip)) || null
 
   return currentEquipment
 }
@@ -53,40 +52,23 @@ export async function getCurrentEquipment(): Promise<DoorEquipment | null> {
  * @description: 获取受控制的设备列表
  * @return {*}
  */
-export async function getControlEquipmentList() {
-  if (!isControlEquipment) return []
+export async function getEquipmentList() {
+  if (!currentEquipment) return []
+  if (!isControlEquipment) return [currentEquipment]
 
-  controlEquipmentList = equipmentList.filter((item) => item.fid === currentEquipment.equipmentid)
-  return controlEquipmentList
-}
+  equipmentList = allEquipmentList.filter((item) => item.fid === currentEquipment?.equipmentid)
 
-/**
- * @description: 添加报警记录
- * @param {Partial} data
- * @return {*}
- */
-export async function addAlarmRecord(data: Partial<DoorAlarmrecord>): Promise<void> {
-  await prisma.doorAlarmrecord.create({
-    data,
-  })
-}
-
-export function addReadRecord(data: Partial<DoorRfidrecord>) {
-  return prisma.doorRfidrecord.create({
-    data,
-  })
+  return equipmentList
 }
 
 const accessDoorService = {
   name: 'accessDoor' as const,
   fns: {
-    getIsControlApp,
-    getControlEquipmentList,
+    getIsControlEquipment,
+    getEquipmentList,
     getCurrentEquipment,
     selectDoorRfidrecordList,
     selectDoorRfidrecordListWithPage,
-    selectDoorAccessRecordList,
-    updateDoorAccessRecord,
     selectDoorAlarmRecordList,
     selectDoorAlarmRecordListWithPage,
     selectDoorAlarmRecordCount,

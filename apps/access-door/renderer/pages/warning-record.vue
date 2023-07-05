@@ -108,6 +108,19 @@ function handleResizeColumn(width, column) {
   column.width = width
 }
 
+async function handleConfirm(record: DoorAlarmrecordProps) {
+  await window.JSBridge.accessDoor.updateDoorAlarmrecord(
+    {
+      alarmid: record.alarmid,
+    },
+    {
+      isOperation: `${OperationStatus.PROCESSED}`,
+    },
+  )
+
+  handleQuery()
+}
+
 onMounted(() => {
   handleInit()
 })
@@ -166,12 +179,18 @@ onMounted(() => {
           showSizeChanger: false,
           onChange: onPageChange,
         }"
-        @resizeColumn="handleResizeColumn">
+        @resize-column="handleResizeColumn">
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'action'">
-            <span v-if="Number(record.isOperation) === OperationStatus.UNPROCESSED" class="text-primary cursor-pointer">确认</span>
+            <span
+              v-if="Number(record.isOperation) === OperationStatus.UNPROCESSED"
+              class="text-primary cursor-pointer"
+              @click="handleConfirm(record)"
+              >确认</span
+            >
           </template>
         </template>
+
         <template #emptyText>
           <span>暂无数据</span>
         </template>

@@ -1,0 +1,58 @@
+{
+	"folders": [
+		{
+			"name": "✨ smart-cabinet-repo",
+			"path": "."
+		},
+		{
+			"name": "🚀 access-door",
+			"path": "apps/access-door"
+		},
+		{
+			"name": "🚀 smart-cabinet",
+			"path": "apps/smart-cabinet"
+		},
+		{
+			"name": "📦 common",
+			"path": "packages/common"
+		},
+		{
+			"name": "📦 components",
+			"path": "packages/components"
+		},
+		{
+			"name": "📦 config",
+			"path": "packages/config"
+		},
+		{
+			"name": "📦 database",
+			"path": "packages/database"
+		},
+		{
+			"name": "📦 ui",
+			"path": "packages/ui"
+		},
+		{
+			"name": "📦 utils",
+			"path": "packages/utils"
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"**/.git": true,
+			"**/.svn": true,
+			"**/.hg": true,
+			"**/CVS": true,
+			"**/.DS_Store": true,
+			"**/Thumbs.db": true,
+			"*.code-workspace": true,
+			"**/public/js/app.js": true,
+			"**/unpackage": true,
+			"**/vendor.js": true,
+			".github": true,
+			".vscode": true,
+			"**/dist": true
+		},
+		"explorerExclude.backup": {}
+	}
+}

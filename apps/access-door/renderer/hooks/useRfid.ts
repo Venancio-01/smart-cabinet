@@ -2,12 +2,13 @@ import type { DoorRfidrecord } from 'database'
 import { useStore } from '@/store'
 import type { AccessDirection } from '~/enums'
 
-let timer = null
+let timer: number | null = null
 
 export default function () {
   const router = useRouter()
   const store = useStore()
-  const { setRfidIsConnected, setCurrentReadRecordList, setLoadingVisible } = store
+  const { setEquipment, setCurrentReadRecordList, setLoadingVisible } = store
+  const { equipmentList } = storeToRefs(store)
 
   /**
    * @description: 开始获取 RFID 连接状态
@@ -15,8 +16,13 @@ export default function () {
    */
   async function startGetRfidConnectionStatus() {
     const getRfiRfidConnectionStatus = async () => {
-      const status = await window.JSBridge.rfid.getRfidConnectionStatus()
-      setRfidIsConnected(status)
+      for (let index = 0; index < equipmentList.value.length; index++) {
+        const equipment = toRaw(equipmentList.value[index])
+        const status = await window.JSBridge.rfid.getRfidConnectionStatus(equipment)
+        setEquipment(equipment.equipmentid, {
+          rfidIsConnected: status,
+        })
+      }
     }
     getRfiRfidConnectionStatus()
     timer = window.setInterval(getRfiRfidConnectionStatus, 5000)
@@ -38,7 +44,9 @@ export default function () {
    * @return {*}
    */
   const handleSetGPO = async (status: boolean) => {
-    return await window.JSBridge.rfid.handleSetGPO(1, status)
+    equipmentList.value.forEach((equipment) => {
+      window.JSBridge.rfid.handleSetGPO(equipment, 1, status)
+    })
   }
 
   /**
@@ -46,8 +54,7 @@ export default function () {
    * @return {*}
    */
   const regsterAlarmsListener = () => {
-    window.electron.ipcRenderer.on('go-check-page', (_, direction: AccessDirection) => {
-      console.log('🚀 ~ file: useRfid.ts:49 ~ window.electron.ipcRenderer.on ~ direction:', direction)
+    window.electron.ipcRenderer.on('go-check-page', (_: unknown, direction: AccessDirection) => {
       setLoadingVisible(true)
       router.replace({
         path: '/check',
@@ -63,7 +70,7 @@ export default function () {
       router.replace('/alarm')
     })
 
-    window.electron.ipcRenderer.on('get-read-data', async (_, data: DoorRfidrecord[]) => {
+    window.electron.ipcRenderer.on('get-read-data', async (_: unknown, data: DoorRfidrecord[]) => {
       console.log('🚀 ~ file: useRfid.ts:68 ~ window.electron.ipcRenderer.on ~ data:', data)
       setCurrentReadRecordList(data)
       setLoadingVisible(false)

@@ -1,24 +1,56 @@
 import { BrowserWindow, app } from 'electron'
 import { disableShortcuts } from 'utils/electron'
+import { connectDatabase } from 'database'
 import { createWindow } from '@/base/window'
 import { connectRfid, disconnectRfid } from '@/services/rfid'
 import { registerServices } from '@/services'
+import { equipmentList, getCurrentEquipment, getEquipmentList, getIsControlEquipment, isControlEquipment } from '@/services/access-door'
+import { error, info } from '@/services/log'
 
 let win: BrowserWindow | null = null
 
 export async function onAppBeforeQuit() {
   // 断开 RFID 连接
-  disconnectRfid()
+  equipmentList.forEach((equipment) => {
+    disconnectRfid(equipment)
+  })
 }
 
 export async function onAppReady() {
-  // 创建窗口
-  win = await createWindow()
+  // 连接数据库
+  try {
+    const isConnected = await connectDatabase()
+    globalThis.databaseIsConnected = isConnected
+    info('数据库连接成功')
+  } catch (e) {
+    error(`数据库连接失败${e}`)
+  }
+
+  // 获取当前连接设备
+  await getCurrentEquipment()
+  // 获取是否为控制设备
+  await getIsControlEquipment()
+  // 获取设备列表
+  await getEquipmentList()
+
+  if (isControlEquipment) {
+    info('是控制设备')
+  } else {
+    info('非控制设备')
+  }
+
+  // 连接 RFID
+  equipmentList.forEach((item) => {
+    connectRfid(item)
+  })
+
   // 注册服务
   registerServices()
-  // 连接 RFID
-  connectRfid()
 
+  // 创建窗口
+  win = createWindow()
+
+  // 开发环境下禁用快捷键
   if (app.isPackaged) disableShortcuts()
 }
 

@@ -1,12 +1,12 @@
-import { uniq, uniqBy } from 'lodash-es'
-import { insertDoorRfidrecordList, selectDocDocumentList } from 'database'
-import type { DocDocumentProps, DoorRfidrecord, DoorRfidregister } from 'database'
-import { getCurrentEquipment } from '../access-door'
+import { debounce, uniq, uniqBy } from 'lodash-es'
+import { insertDoorRfidrecordList, selectDocDocumentList, selectDoorRfidregisterList } from 'database'
+import type { DocDocumentProps, DoorAlarmrecord, DoorRfidrecord, DoorRfidregister } from 'database'
+import dayjs from 'dayjs'
+import { currentEquipment } from '../access-door'
 import { generateCRC16Code } from './utils'
 import ProtocolMap from './protocol-map'
 import type { Message, MessageQueue } from './message'
-import type { AlarmStatus } from '~/enums'
-import { AccessDirection } from '~/enums'
+import { AccessDirection, ApprovalStatus } from '~/enums'
 
 /**
  * @description: 校验接收到的数据
@@ -96,7 +96,7 @@ export async function getInDatabaseCarrier(messages: Message[]) {
 }
 
 /**
- * @description: 新增 rfid 读取记录
+ * @description: 新增 RFID 读取记录
  * @param {DocDocument} carriers
  * @param {DoorEquipment} equipment
  * @param {AccessDirection} direction
@@ -106,14 +106,14 @@ export async function insertRfidRecordList(
   carriers: DocDocumentProps[],
   registrationRecords: DoorRfidregister[],
   direction: AccessDirection,
-  isAlarm: AlarmStatus,
+  alarmRecordList: Partial<DoorAlarmrecord>[],
 ) {
-  const equipment = await getCurrentEquipment()
   const registerRFIDList = registrationRecords.map((item) => item.docRfid)
   const list: Partial<DoorRfidrecord>[] = carriers.map((carrier) => {
+    const isAlarm = alarmRecordList.some((item) => item.carrierRfid === carrier.docRfid)
     return {
-      equipmentName: equipment.equipmentName,
-      equipmentId: `${equipment.equipmentid}`,
+      equipmentName: currentEquipment?.equipmentName,
+      equipmentId: `${currentEquipment?.equipmentid}`,
       carrierId: `${carrier.docId}`,
       carrierName: carrier.docName,
       carrierRfid: carrier.docRfid,
@@ -130,4 +130,56 @@ export async function insertRfidRecordList(
   insertDoorRfidrecordList(list)
 
   return list
+}
+
+/**
+ * @description: 防抖查询 RFID 登记记录
+ * @param {*}
+ * @return {*}
+ */
+
+let result: DoorRfidregister[] = []
+export async function debouncedSelectRfidRegisterRecord() {
+  const fn = debounce(selectDoorRfidregisterList, 3000, {
+    leading: true,
+  })
+  result = await fn()
+  return result
+}
+
+/**
+ * @description: 筛选登记异常载体
+ * @param {DocDocumentProps} carrierList
+ * @param {DoorRfidregister} registerRecord
+ * @return {*}
+ */
+export function filterAbnormalCarrier(carrierList: DocDocumentProps[], registerRecord: DoorRfidregister[]) {
+  // 未登记载体
+  const registerRfidList = registerRecord.map((item) => item.docRfid)
+  const unregisteredCarrierList = carrierList.filter((item) => !registerRfidList.includes(item.docRfid))
+
+  // 审批未通过载体
+  const approvalFailedRegisterRfidRecord = registerRecord
+    .filter((item) => item.state === ApprovalStatus.PENDING || item.state === ApprovalStatus.REJECTED)
+    .map((item) => item.docRfid)
+  const approvalFailedCarrierList = carrierList.filter((item) => approvalFailedRegisterRfidRecord.includes(item.docRfid))
+
+  // 审批通过但超出规定时间的载体
+  const now = dayjs()
+
+  const approvalPassedRegisterRecord = registerRecord.filter((item) => item.state === ApprovalStatus.APPROVED)
+  const expiredCarrier = carrierList.reduce<DocDocumentProps[]>((acc, cur) => {
+    approvalPassedRegisterRecord.forEach((item) => {
+      if (item.docRfid === cur.docRfid && dayjs(item.startTime).isBefore(now) && dayjs(item.endTime).isAfter(now)) {
+        acc.push(cur)
+      }
+    })
+    return acc
+  }, [])
+
+  return {
+    unregisteredCarrierList,
+    approvalFailedCarrierList,
+    expiredCarrier,
+  }
 }

@@ -8,10 +8,12 @@ import {
   SysDept,
   sys_role_permission,
   sys_permission,
+  DoorEquipment,
 } from 'database'
 import type { ServiceType } from '../main/services/index'
-export { }
 import type { electronAPI } from '@electron-toolkit/preload'
+import type { AccessTimeRange } from './enums'
+export { }
 
 type JSBridgeType = {
   [name in ServiceType[number]['name']]: ServiceType[number] extends infer T ? (T extends { name: name; fns: infer F } ? F : never) : never
@@ -48,7 +50,7 @@ declare global {
     EPC: string
   }
 
-  type GPOIndexType = 1 | 2
-
-  type GPIIndexType = 0 | 1
+  type EquipmentProps = DoorEquipment & {
+    rfidIsConnected: boolean
+  }
 }

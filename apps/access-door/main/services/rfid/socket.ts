@@ -11,7 +11,7 @@ export default class RfidSocket {
   private port = 8160
   connected = false
   heartbeatCount = 0
-  timer = null
+  timer: NodeJS.Timer | null = null
 
   constructor(option: { address: string; port: number; message: MessageQueue }) {
     this.address = option.address
@@ -29,7 +29,7 @@ export default class RfidSocket {
         info('socket 连接成功')
         this.connected = true
         resolve()
-        clearTimeout(this.timer)
+        this.timer && clearTimeout(this.timer)
       })
 
       this.instance?.on('close', () => {

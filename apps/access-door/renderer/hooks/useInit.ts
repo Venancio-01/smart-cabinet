@@ -19,10 +19,10 @@ export default function () {
     checkActivationCode()
     // 初始化系统数据
     initSysData()
-    initAccessDoorData()
     startGetNetworkConnectionStatus()
-    startGetRfidConnectionStatus()
     regsterAlarmsListener()
+    await initAccessDoorData()
+    startGetRfidConnectionStatus()
   })
 
   onUnmounted(() => {

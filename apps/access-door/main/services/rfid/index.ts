@@ -1,35 +1,34 @@
-import { insertDoorAlarmrecordList, selectDoorRfidregisterList } from 'database'
+import { insertDoorAlarmrecordList } from 'database'
 import type { DoorAlarmrecord, DoorEquipment } from 'database'
 import { sendIpcToRenderer } from 'utils/electron'
 import { INTERVAL_THRESHOLD } from 'utils/config/main'
-import { getCurrentEquipment } from '../access-door'
 import { generateAntennaCommand } from './utils'
 import { generateCheckConnectionStatusCommand, generateSetGPOCommand, generteSetGPITriggerCommand } from './command'
 import type { Message } from './message'
 import { MessageQueue } from './message'
-import { getInDatabaseCarrier, insertRfidRecordList } from './data'
+import { debouncedSelectRfidRegisterRecord, filterAbnormalCarrier, getInDatabaseCarrier, insertRfidRecordList } from './data'
 import Socket from '@/services/rfid/socket'
-import { AccessDirection, AlarmStatus, OperationStatus } from '~/enums'
+import type { GPOIndex } from '~/enums'
+import { AccessDirection, GPIIndex, OperationStatus } from '~/enums'
 
 type InstanceType = {
-  socket: Socket
-  messageQueue: MessageQueue
-} | null
+  [k in string]: {
+    socket: Socket
+    messageQueue: MessageQueue
+  }
+}
 
-let instance: InstanceType = null
+const instance: InstanceType = {}
 
 /**
  * @description: 连接 RFID
  * @return {*}
  */
-export async function connectRfid() {
-  if (instance !== null) return
-
-  const currentEquipment = await getCurrentEquipment()
-  if (currentEquipment === null) return
-
-  const { equipmentAddr: address, equipmentPort: port, equipmentTxid: txid } = currentEquipment
+export async function connectRfid(equipment: DoorEquipment) {
+  const { equipmentAddr: address, equipmentPort: port, equipmentTxid: txid } = equipment
   if (address === null || port === null || txid === null) return
+
+  if (instance[address]) return
 
   const messageQueue = new MessageQueue()
   const socket = new Socket({
@@ -38,7 +37,7 @@ export async function connectRfid() {
     message: messageQueue,
   })
 
-  instance = {
+  instance[address] = {
     messageQueue,
     socket,
   }
@@ -46,76 +45,77 @@ export async function connectRfid() {
   // 连接 RFID Socket
   await socket.connect()
   // 注册心跳检测
-  registerHeartbeatCheck()
+  registerHeartbeatCheck(equipment)
   // 设置 GPI1 触发
-  handleSetGPITrigger(0, txid)
+  handleSetGPITrigger(equipment, GPIIndex.ONE, txid)
   // 设置 GPI2 触发
-  handleSetGPITrigger(1, txid)
+  handleSetGPITrigger(equipment, GPIIndex.TWO, txid)
   // 注册消息监听器
-  registerMessageListerner(currentEquipment, messageQueue)
+  registerMessageListerner(equipment, messageQueue)
 }
 
 /**
  * 断开 RFID 连接
+ * @param {DoorEquipment} equipment
  * @return {*}
  */
-export async function disconnectRfid() {
-  if (instance === null) return
-
-  instance.socket.destroy()
-  instance = null
+export async function disconnectRfid(equipment: DoorEquipment) {
+  instance?.[equipment.equipmentAddr ?? ''].socket.destroy()
+  delete instance?.[equipment.equipmentAddr ?? '']
 }
 
-function getRfidConnectionStatus() {
-  return instance?.socket.connected || false
+/**
+ * @description: 获取 RFID 连接状态
+ * @param {DoorEquipment} equipment
+ * @return {*}
+ */
+function getRfidConnectionStatus(equipment: DoorEquipment) {
+  return instance?.[equipment.equipmentAddr ?? '']?.socket.connected || false
 }
 
 /**
  * @description: 注册心跳检测
- * @param {string} address
- * @param {number} count
+ * @param {DoorEquipment} equipment
  * @return {*}
  */
-function registerHeartbeatCheck() {
+function registerHeartbeatCheck(equipment: DoorEquipment) {
   setInterval(() => {
-    if (instance === null) return
+    const socket = instance?.[equipment.equipmentAddr ?? '']?.socket
 
-    const count = instance.socket.heartbeatCount || 0
+    const count = socket?.heartbeatCount || 0
     const command = generateCheckConnectionStatusCommand(count)
-    instance.socket.write(command)
+    socket?.write(command)
 
-    instance.socket.heartbeatCount++
+    socket && socket.heartbeatCount++
   }, 5 * 1000)
 }
 
 /**
  * @description: 配置 GPO 状态
- * @param {string} address
+ * @param {DoorEquipment} equipment
+ * @param {GPOIndexType} GPOIndex
  * @param {boolean} status
  * @return {*}
  */
-export function handleSetGPO(GPOIndex: GPOIndexType, status: boolean) {
-  if (!instance) return
+export function handleSetGPO(equipment: DoorEquipment, index: GPOIndex, status: boolean) {
+  const command = generateSetGPOCommand(index, status)
 
-  const command = generateSetGPOCommand(GPOIndex, status)
-
-  instance.socket.write(command)
+  instance?.[equipment.equipmentAddr ?? '']?.socket?.write(command)
 }
 
 /**
  * @description: 配置 GPI 触发
- * @param {string} address
+ * @param {DoorEquipment} equipment
+ * @param {GPIIndexType} GPIIndex
  * @param {number} antennaIds
  * @return {*}
  */
-function handleSetGPITrigger(GPIIndex: GPIIndexType, antennaIds: string) {
-  if (!instance) return
-
+function handleSetGPITrigger(equipment: DoorEquipment, index: GPIIndex, antennaIds: string) {
   const antennaIdList = antennaIds.split(',').map((item) => Number(item))
   const triggerCommand = `000102100008${generateAntennaCommand(antennaIdList)}01020006`
-  const command = generteSetGPITriggerCommand(GPIIndex, triggerCommand)
+  const command = generteSetGPITriggerCommand(index, triggerCommand)
 
-  instance.socket.write(command)
+  instance?.[equipment.equipmentAddr ?? '']?.socket?.write(command)
 }
 
 /**
@@ -186,43 +186,47 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
         return
       }
       // 获取载体登记记录
-      const registrationCarrierRecordList = await selectDoorRfidregisterList()
+      const registrationCarrierRecordList = await debouncedSelectRfidRegisterRecord()
 
       // 如果是外出状态
       if (isExit) {
-        const dataList = await insertRfidRecordList(carriers, registrationCarrierRecordList, AccessDirection.OUT, AlarmStatus.UNALARMED)
-        sendIpcToRenderer('get-read-data', dataList)
-
-        // 筛选未登记的载体
-        const unregisteredCarrierList = carriers.filter(
-          (carrier) => !registrationCarrierRecordList.some((item) => item.docRfid === carrier.docRfid),
+        // 筛选登记状态异常的载体
+        const { unregisteredCarrierList, approvalFailedCarrierList, expiredCarrier } = filterAbnormalCarrier(
+          carriers,
+          registrationCarrierRecordList,
         )
-        // 是否有未登记的载体
-        const hasUnregisteredCarrier = unregisteredCarrierList.length > 0
+        const abnormalCarrierList = [...unregisteredCarrierList, ...approvalFailedCarrierList, ...expiredCarrier]
 
+        // 生成报警记录
+        const alarmRecordList: Partial<DoorAlarmrecord>[] = abnormalCarrierList.map((carrier) => {
+          return {
+            equipmentId: `${equipment.equipmentid}`,
+            equipmentName: equipment.equipmentName,
+            carrierId: `${carrier.docId}`,
+            carrierRfid: carrier.docRfid,
+            carrierName: carrier.docName,
+            carrierDeptid: carrier.deptId,
+            carrierDeptName: carrier?.department?.deptName,
+            carrierType: `${carrier.docType}`,
+            isOperation: `${OperationStatus.UNPROCESSED}`,
+            remark: '',
+            createTime: new Date(),
+          }
+        })
+
+        // 是否有状态异常的载体
+        const hasUnregisteredCarrier = abnormalCarrierList.length > 0
         if (hasUnregisteredCarrier) {
-          const list: Partial<DoorAlarmrecord>[] = unregisteredCarrierList.map((carrier) => {
-            return {
-              equipmentId: `${equipment.equipmentid}`,
-              equipmentName: equipment.equipmentName,
-              carrierId: `${carrier.docId}`,
-              carrierRfid: carrier.docRfid,
-              carrierName: carrier.docName,
-              carrierDeptid: carrier.deptId,
-              carrierDeptname: carrier.department.deptName,
-              carrierType: `${carrier.docType}`,
-              isOperation: `${OperationStatus.UNPROCESSED}`,
-              remark: '',
-              createTime: new Date(),
-            }
-          })
-          insertDoorAlarmrecordList(list)
+          const result = await insertDoorAlarmrecordList(alarmRecordList)
         }
+
+        const dataList = await insertRfidRecordList(carriers, registrationCarrierRecordList, AccessDirection.OUT, alarmRecordList)
+        sendIpcToRenderer('get-read-data', dataList)
       }
 
       // 如果是进入状态
       if (isEntry) {
-        const dataList = await insertRfidRecordList(carriers, registrationCarrierRecordList, AccessDirection.IN, AlarmStatus.UNALARMED)
+        const dataList = await insertRfidRecordList(carriers, registrationCarrierRecordList, AccessDirection.IN, [])
         sendIpcToRenderer('get-read-data', dataList)
       }
     }
@@ -232,13 +236,19 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
       if (!isExit) return
 
       // 获取在数据库中登记的载体以及登记记录
-      const [carriers, registrationCarrierRecordList] = await Promise.all([getInDatabaseCarrier([msg]), selectDoorRfidregisterList()])
+      const [carriers, registrationCarrierRecordList] = await Promise.all([
+        getInDatabaseCarrier([msg]),
+        debouncedSelectRfidRegisterRecord(),
+      ])
       if (carriers.length === 0 || registrationCarrierRecordList.length === 0) return
 
       const registerCarrierList = registrationCarrierRecordList.map((item) => item.docRfid)
       const hasUnregistered = carriers.some((carrier) => !registerCarrierList.includes(carrier.docRfid))
 
-      if (hasUnregistered) sendIpcToRenderer('go-alarm-page')
+      if (hasUnregistered) {
+        handleSetGPO(equipment, 1, true)
+        sendIpcToRenderer('go-alarm-page')
+      }
     }
   })
 }

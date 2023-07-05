@@ -27,7 +27,6 @@ const unregisterCarrier = computed(() => {
 
 const timer = ref<number | null>(null)
 onMounted(() => {
-  handleSetGPO(true)
   timer.value = window.setInterval(() => {
     handleSetGPO(false)
     goHome()

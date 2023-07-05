@@ -4,12 +4,21 @@ import { AccessDirection, AccessTimeRange } from '~/enums'
 
 export default function () {
   const store = useStore()
-  const { setCurrentEquipment, setUnviewedAccessRecordCount } = store
-  const { currentEquipment } = storeToRefs(store)
+  const { setIsControlEquipment, setEquipmentList, setUnviewedAccessRecordCount } = store
+  const { isControlEquipment, equipmentList } = storeToRefs(store)
 
-  const getCurrentEquipment = async () => {
-    const result = await window.JSBridge.accessDoor.getCurrentEquipment()
-    setCurrentEquipment(result)
+  const getIsControlEquipment = async () => {
+    const result = await window.JSBridge.accessDoor.getIsControlEquipment()
+    setIsControlEquipment(result)
+  }
+
+  const getEquipmentList = async () => {
+    const result = await window.JSBridge.accessDoor.getEquipmentList()
+    const list = result.map((item) => {
+      return { ...item, rfidIsConnected: false }
+    })
+
+    setEquipmentList(list)
   }
 
   // 获取本通道门 RFID 读取记录
@@ -30,9 +39,11 @@ export default function () {
     }
 
     const query: Prisma.DoorRfidrecordWhereInput = {
-      equipmentId: `${currentEquipment.value?.equipmentid}`,
+      equipmentId: {
+        in: equipmentList.value.map((item) => `${item.equipmentid}`),
+      },
       carrierName: condition?.carrierName ? { contains: condition.carrierName } : undefined,
-      creatorTime: timeRangeMap?.[condition.timeRange],
+      creatorTime: condition?.timeRange ? timeRangeMap?.[condition.timeRange] : undefined,
     }
 
     if (condition?.type !== AccessDirection.ALL) {
@@ -45,7 +56,9 @@ export default function () {
   // 获取未查看的报警记录总数
   const selectUnviewedAlarmRecordCount = async () => {
     const result = await window.JSBridge.accessDoor.selectDoorAlarmRecordCount({
-      equipmentId: `${currentEquipment.value?.equipmentid}`,
+      equipmentId: {
+        in: equipmentList.value.map((item) => `${item.equipmentid}`),
+      },
       isOperation: '0',
     })
     setUnviewedAccessRecordCount(result)
@@ -69,19 +82,20 @@ export default function () {
     }
 
     const query: Prisma.DoorAlarmrecordWhereInput = {
-      equipmentId: `${currentEquipment.value?.equipmentid}`,
+      equipmentId: {
+        in: equipmentList.value.map((item) => `${item.equipmentid}`),
+      },
       carrierName: condition?.carrierName ? { contains: condition.carrierName } : undefined,
       carrierDeptid: condition?.deptId,
-      createTime: timeRangeMap?.[condition.timeRange],
+      createTime: condition?.timeRange ? timeRangeMap?.[condition.timeRange] : undefined,
     }
-
-    console.log('🚀 ~ file: useDoor.ts:76 ~ selectAlarmRecordList ~ query:', query)
 
     return await window.JSBridge.accessDoor.selectDoorAlarmRecordListWithPage(pagination, query)
   }
 
   const initAccessDoorData = async () => {
-    await getCurrentEquipment()
+    await getIsControlEquipment()
+    await getEquipmentList()
     await selectUnviewedAlarmRecordCount()
   }
 
