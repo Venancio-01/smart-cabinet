@@ -9,7 +9,7 @@ object {
   vertical-align: initial;
 }
 
-/* 引入lcd字体 */
+/* lcd字体 */
 @font-face {
   font-family: 'LCDFont';
   src: url('../fonts/ds-digi-webfont.eot');
@@ -21,6 +21,7 @@ object {
     url('../fonts/ds-digi-webfont.ttf') format('truetype');
 }
 
+/* 思源黑体字体 */
 @font-face {
   font-family: 'source-han-sans';
   src: url('../fonts/SourceHanSansCN-VF.ttf');
@@ -98,28 +99,9 @@ body {
 .ant-modal-confirm-body .ant-modal-confirm-content {
   @apply text-light;
 }
-
 /* End */
 
 /* 修改 Tabs 的样式 */
-.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
-  @apply text-light;
-}
-
-.ant-pagination{
-  @apply text-normal;
-}
-.ant-modal-title,.ant-modal-body {
-  @apply text-normal;
-}
-.ant-drawer-body {
-  @apply text-normal;
-}
-.ant-table {
-  @apply text-small
-}
-
-
 .ant-tabs {
   @apply text-light text-normal;
 }
@@ -152,6 +134,25 @@ body {
   @apply text-light;
 }
 
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  @apply text-light;
+}
+/* End */
+
+.ant-pagination{
+  @apply text-normal;
+}
+.ant-modal-title,.ant-modal-body {
+  @apply text-normal;
+}
+.ant-drawer-body {
+  @apply text-normal;
+}
+.ant-table {
+  @apply text-small
+}
+
+
 /* transition 组件的动画样式 */
 .v-enter-active {
   animation: fadeIn 0.15s;
@@ -160,40 +161,8 @@ body {
 .v-leave-active {
   animation: fadeOut 0.15s;
 }
-
 /* End */
 
 .ant-modal-confirm-title {
   @apply !text-light;
 }
-
-/* unocss 转换 */
-.font-medium {
-  @apply text-[14px];
-}
-
-.font-xl {
-  @apply text-[32px];
-}
-
-.font-2xl {
-  @apply text-[48px];
-}
-
-.font-striking {
-  @apply text-[68px];
-}
-
-.icon-medium {
-  @apply text-[36px];
-}
-
-.icon-large {
-  @apply text-[180px];
-}
-
-.flex-center-center {
-  @apply flex justify-center items-center;
-}
-
-/* End */

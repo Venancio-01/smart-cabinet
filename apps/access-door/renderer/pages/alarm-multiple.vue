@@ -15,11 +15,12 @@ const condition = reactive<Partial<ReadRecordQueryProps>>({
   carrierName: '',
   deptId: undefined,
 })
-
 const pagination = reactive<PaginationType>({
   page: 1,
   size: 6,
 })
+
+const activeKey = ref('1')
 
 const columns = ref<ColumnsType<DoorRfidrecord>>([
   {
@@ -41,7 +42,6 @@ const columns = ref<ColumnsType<DoorRfidrecord>>([
     },
   },
 ])
-
 function handleResizeColumn(width, column) {
   column.width = width
 }
@@ -74,52 +74,40 @@ function generateData() {
 onMounted(() => {
   generateData()
 })
+
+function goHome() {
+  setCurrentReadRecordList([])
+  router.replace('/')
+}
 </script>
 
 <template>
-  <div class="w-h-full">
-    <div class="flex items-center">
-      <BackButton @back="handleBack" />
-      <span class="text-light text-[28px] ml-6"> 报警载体详情 </span>
+  <div>
+    <div class="flex h-[50px] items-center justify-between">
+      <BackButton :on-back="goHome" />
+
+      <StopAlarmButton />
     </div>
 
-    <div class="flex" m="y-8">
-      <a-form
-        :model="condition"
-        :label-col="{ span: 8 }"
-        :wrapper-col="{ span: 16 }"
-        label-align="left"
-        class="flex-1 grid grid-rows-1 grid-cols-2 gap-x-6"
-        autocomplete="off">
-        <a-form-item label="所属部门" name="title">
-          <a-select v-model:value="condition.deptId" allow-clear placeholder="请选择部门" @change="handleQuery">
-            <a-select-option v-for="item in departmentList" :key="item.deptId" :value="String(item.deptId)">
-              {{ item.deptName }}
-            </a-select-option>
-          </a-select>
-        </a-form-item>
-      </a-form>
-
-      <div class="w-[180px] flex justify-end">
-        <a-button class="ml-4" @click="handleInit"> 重置 </a-button>
-      </div>
-    </div>
-
-    <div class="mt-4">
-      <a-table
-        :data-source="data"
-        :columns="columns"
-        :pagination="{
-          current: pagination.page,
-          pageSize: pagination.size,
-          total,
-          onChange: onPageChange,
-        }"
-        @resize-column="handleResizeColumn">
-        <template #emptyText>
-          <span>暂无数据</span>
-        </template>
-      </a-table>
-    </div>
+    <a-tabs v-model:activeKey="activeKey" size="middle">
+      <a-tab-pane key="1" tab="大门">
+        <div class="mt-4">
+          <a-table
+            :data-source="data"
+            :columns="columns"
+            :pagination="{
+              current: pagination.page,
+              pageSize: pagination.size,
+              total,
+              onChange: onPageChange,
+            }"
+            @resize-column="handleResizeColumn">
+            <template #emptyText>
+              <span>暂无数据</span>
+            </template>
+          </a-table>
+        </div>
+      </a-tab-pane>
+    </a-tabs>
   </div>
 </template>

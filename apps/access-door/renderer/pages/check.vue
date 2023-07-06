@@ -21,7 +21,7 @@ function goDetail() {
 
 function goHome() {
   setCurrentReadRecordList([])
-  router.replace('/index')
+  router.replace('/')
 }
 
 const timer = ref()

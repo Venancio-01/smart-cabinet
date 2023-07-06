@@ -16,7 +16,7 @@ async function handleActive() {
     window.JSBridge.store.set('activationCode', activationCode)
     createAlert('激活成功')
 
-    router.replace('/index')
+    router.replace('/')
   } else {
     createAlert('激活失败')
   }

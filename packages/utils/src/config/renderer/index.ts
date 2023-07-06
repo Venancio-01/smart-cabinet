@@ -29,7 +29,7 @@ export const QUERY_OPEN_STATE_INTERVAL = 1000
 export const QUERY_NETWORK_INTERVAL = 3000
 
 // 检测页面停留时间阈值
-export const CHECK_PAGE_STAY_DURATION_THRESHOLD = 1000 * 3
+export const CHECK_PAGE_STAY_DURATION = 1000 * 3
 
 // 告警页面停留时间阈值
-export const ALARM_PAGE_STAY_DURATION_THRESHOLD = 1000 * 10
+export const ALARM_PAGE_STAY_DURATION = 1000 * 10

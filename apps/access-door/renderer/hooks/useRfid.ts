@@ -45,7 +45,7 @@ export default function () {
    */
   const handleSetGPO = async (status: boolean) => {
     equipmentList.value.forEach((equipment) => {
-      window.JSBridge.rfid.handleSetGPO(equipment, 1, status)
+      window.JSBridge.rfid.handleSetGPO(toRaw(equipment), 1, status)
     })
   }
 

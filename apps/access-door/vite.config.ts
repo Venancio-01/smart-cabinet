@@ -2,9 +2,11 @@
 import { resolve } from 'path'
 import { spawn } from 'child_process'
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import vueJsx from '@vitejs/plugin-vue-jsx'
+import Vue from '@vitejs/plugin-vue'
+import VueJsx from '@vitejs/plugin-vue-jsx'
 import VueDevTools from 'vite-plugin-vue-devtools'
+import VueRouter from 'unplugin-vue-router/vite'
+import { VueRouterAutoImports } from 'unplugin-vue-router'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
@@ -79,11 +81,15 @@ export default defineConfig(({ mode }) => {
           },
         },
       ]),
-      vueJsx(),
+      VueRouter({
+        routesFolder: './renderer/pages',
+        dts: './renderer/typed-router.d.ts',
+        importMode: 'async',
+      }),
+      VueJsx(),
       VueDevTools(),
-      vue(),
       AutoImport({
-        imports: ['vue', 'vue-router', 'pinia'],
+        imports: ['vue', 'pinia', VueRouterAutoImports],
         dts: './renderer/auto-imports.d.ts',
       }),
       Components({
@@ -95,6 +101,7 @@ export default defineConfig(({ mode }) => {
         dirs: './renderer/components',
         dts: './renderer/components.d.ts',
       }),
+      Vue(),
       Unocss(),
       renderer(),
     ],

@@ -28,14 +28,14 @@ const show = computed({
 
 <template>
   <VDialog v-model:visible="show" :title="title">
-    <div class="state-bar pt-[20px]">
-      <div class="label">当前状态：</div>
-      <div class="content">{{ statusText }}</div>
+    <div class="mb-[16px] pt-[20px]">
+      <div class="w-[90px]">当前状态：</div>
+      <div class="flex-1">{{ statusText }}</div>
     </div>
 
-    <div class="state-bar">
-      <div class="label">解决方案：</div>
-      <div class="content">
+    <div class="mb-[16px] flex">
+      <div class="w-[90px]">解决方案：</div>
+      <div class="flex-1">
         {{ content }}
       </div>
     </div>
@@ -46,15 +46,4 @@ const show = computed({
   </VDialog>
 </template>
 
-<style scoped>
-.state-bar {
-  @apply mb-[16px] flex;
-}
-.state-bar .label {
-  @apply w-[90px];
-}
-
-.state-bar .content {
-  @apply flex-1;
-}
-</style>
+<style scoped></style>

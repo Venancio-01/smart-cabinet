@@ -1,5 +1,6 @@
 {
   "name": "ui",
+  "type": "module",
   "version": "1.0.0",
   "description": "",
   "author": "",
@@ -10,6 +11,7 @@
   "devDependencies": {
     "ant-design-vue": "^3.2.20",
     "config": "workspace:^",
-    "unocss": "^0.53.3"
+    "unocss": "^0.53.3",
+    "unocss-preset-daisy": "^6.0.0"
   }
 }

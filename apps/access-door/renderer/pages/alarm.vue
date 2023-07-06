@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ALARM_PAGE_STAY_DURATION_THRESHOLD } from 'utils/config/renderer'
+import { ALARM_PAGE_STAY_DURATION } from 'utils/config'
 import useRfid from '@/hooks/useRfid'
 import { useStore } from '@/store'
 
@@ -11,7 +11,7 @@ const { handleSetGPO } = useRfid()
 
 function goHome() {
   setCurrentReadRecordList([])
-  router.replace('/index')
+  router.replace('/')
 }
 
 function goDetail() {
@@ -30,7 +30,7 @@ onMounted(() => {
   timer.value = window.setInterval(() => {
     handleSetGPO(false)
     goHome()
-  }, ALARM_PAGE_STAY_DURATION_THRESHOLD)
+  }, ALARM_PAGE_STAY_DURATION)
 })
 
 onBeforeUnmount(() => {
@@ -45,12 +45,7 @@ onBeforeUnmount(() => {
     <div class="flex h-[50px] items-center justify-between">
       <BackButton :on-back="goHome" />
 
-      <div
-        class="w-[144px] h-[48px] text-light flex-center-center text-lg bg-[rgba(255,255,255,0.1)] rounded-md"
-        font="thin"
-        @click="() => handleSetGPO(false)">
-        停止报警
-      </div>
+      <StopAlarmButton />
     </div>
 
     <div flex="~" items-center justify-center h="260px" text="light center 6xl" font="thin" tracking="10px">外出时检测到未登记载体</div>
@@ -70,7 +65,7 @@ onBeforeUnmount(() => {
         </div>
 
         <div flex="~" justify-center items-center>
-          <ViewDetailButton m="t-16" @click="goDetail" />
+          <div class="btn btn-lg btn-wide text-normal mt-16" font="thin" @click="goDetail">查看详情</div>
         </div>
       </div>
     </div>
