@@ -14,7 +14,7 @@ let connected = false
  * @return {*}
  */
 async function getConnectState() {
-  const COMPort = currentCabinet?.openDoor
+  const COMPort = currentCabinet?.openDoor || ''
 
   const list = await SerialPortLib.list()
   connected = !!list.find((item) => item.path.includes(COMPort))

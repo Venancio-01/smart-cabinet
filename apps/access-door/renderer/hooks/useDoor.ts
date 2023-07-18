@@ -4,12 +4,15 @@ import { AccessDirection, AccessTimeRange } from '~/enums'
 
 export default function () {
   const store = useStore()
-  const { setIsControlEquipment, setEquipmentList, setUnviewedAccessRecordCount } = store
-  const { isControlEquipment, equipmentList } = storeToRefs(store)
+  const { setIsControlEquipment, setEquipmentList, setUnviewedAccessRecordCount, setControlEquipment } = store
+  const { equipmentList } = storeToRefs(store)
+
+  const getControlEquipment = async () => {
+    setControlEquipment(await window.JSBridge.accessDoor.getControlEquipment())
+  }
 
   const getIsControlEquipment = async () => {
-    const result = await window.JSBridge.accessDoor.getIsControlEquipment()
-    setIsControlEquipment(result)
+    setIsControlEquipment(await window.JSBridge.accessDoor.getIsControlEquipment())
   }
 
   const getEquipmentList = async () => {
@@ -97,6 +100,7 @@ export default function () {
     await getIsControlEquipment()
     await getEquipmentList()
     await selectUnviewedAlarmRecordCount()
+    getControlEquipment()
   }
 
   return {

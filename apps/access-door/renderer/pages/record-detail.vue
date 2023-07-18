@@ -42,7 +42,7 @@ const columns = ref<ColumnsType<DoorRfidrecord>>([
   },
 ])
 
-function handleResizeColumn(width, column) {
+function handleResizeColumn(width:any, column:any) {
   column.width = width
 }
 

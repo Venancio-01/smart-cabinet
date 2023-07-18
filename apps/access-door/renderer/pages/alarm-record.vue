@@ -52,7 +52,6 @@ async function handleInit() {
 
 async function getRfidRecordList() {
   const { data: _data, total: _total } = await selectAlarmRecordList(toRaw(pagination), toRaw(condition))
-  console.log('🚀 ~ file: record.vue:55 ~ getRfidRecordList ~ _data:', _data)
   data.value = _data
   total.value = _total
 }
@@ -104,7 +103,7 @@ const columns = ref<ColumnsType<DoorAlarmrecordProps>>([
   },
 ])
 
-function handleResizeColumn(width, column) {
+function handleResizeColumn(width: any, column: any) {
   column.width = width
 }
 
@@ -117,8 +116,7 @@ async function handleConfirm(record: DoorAlarmrecordProps) {
       isOperation: `${OperationStatus.PROCESSED}`,
     },
   )
-
-  handleQuery()
+  getRfidRecordList()
 }
 
 onMounted(() => {

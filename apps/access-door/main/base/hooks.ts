@@ -4,7 +4,7 @@ import { connectDatabase } from 'database'
 import { createWindow } from '@/base/window'
 import { connectRfid, disconnectRfid } from '@/services/rfid'
 import { registerServices } from '@/services'
-import { equipmentList, getCurrentEquipment, getEquipmentList, getIsControlEquipment, isControlEquipment } from '@/services/access-door'
+import { equipmentList, initEquipment, isControlEquipment } from '@/services/access-door'
 import { error, info } from '@/services/log'
 
 let win: BrowserWindow | null = null
@@ -27,11 +27,7 @@ export async function onAppReady() {
   }
 
   // 获取当前连接设备
-  await getCurrentEquipment()
-  // 获取是否为控制设备
-  await getIsControlEquipment()
-  // 获取设备列表
-  await getEquipmentList()
+  await initEquipment()
 
   if (isControlEquipment) {
     info('是控制设备')

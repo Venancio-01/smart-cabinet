@@ -1,28 +1,17 @@
 <script lang="ts" setup>
-import type { DoorRfidrecord } from 'database'
+import type { DoorAlarmrecord } from 'database'
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
 import { useStore } from '@/store'
 
 const router = useRouter()
 const store = useStore()
-const { setCurrentReadRecordList } = store
-const { currentReadRecordList, departmentList } = storeToRefs(store)
+const { setAlarmEquipmentList } = store
+const { alarmEquipmentList } = storeToRefs(store)
 
-const data = ref<DoorRfidrecord[]>([])
-const total = ref(0)
-const condition = reactive<Partial<ReadRecordQueryProps>>({
-  carrierName: '',
-  deptId: undefined,
-})
-const pagination = reactive<PaginationType>({
-  page: 1,
-  size: 6,
-})
+const activeKey = ref(0)
 
-const activeKey = ref('1')
-
-const columns = ref<ColumnsType<DoorRfidrecord>>([
+const columns = ref<ColumnsType<DoorAlarmrecord>>([
   {
     title: '载体名称',
     dataIndex: 'carrierName',
@@ -38,45 +27,16 @@ const columns = ref<ColumnsType<DoorRfidrecord>>([
     dataIndex: 'createTime',
     key: 'createTime',
     customRender({ record }) {
-      return dayjs(record.creatorTime).format('YYYY-MM-DD HH:mm:ss')
+      return dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss')
     },
   },
 ])
-function handleResizeColumn(width, column) {
+function handleResizeColumn(width: any, column: any) {
   column.width = width
 }
 
-function handleBack() {
-  router.replace('/')
-  setCurrentReadRecordList([])
-}
-
-function handleQuery() {}
-
-function handleInit() {
-  pagination.page = 1
-  condition.carrierName = ''
-  condition.timeRange = undefined
-
-  generateData()
-}
-
-function onPageChange(page: number) {
-  pagination.page = page
-
-  generateData()
-}
-
-function generateData() {
-  data.value = currentReadRecordList.value.splice((pagination.page - 1) * pagination.size, pagination.size * pagination.page)
-}
-
-onMounted(() => {
-  generateData()
-})
-
 function goHome() {
-  setCurrentReadRecordList([])
+  setAlarmEquipmentList([])
   router.replace('/')
 }
 </script>
@@ -89,19 +49,10 @@ function goHome() {
       <StopAlarmButton />
     </div>
 
-    <a-tabs v-model:activeKey="activeKey" size="middle">
-      <a-tab-pane key="1" tab="大门">
-        <div class="mt-4">
-          <a-table
-            :data-source="data"
-            :columns="columns"
-            :pagination="{
-              current: pagination.page,
-              pageSize: pagination.size,
-              total,
-              onChange: onPageChange,
-            }"
-            @resize-column="handleResizeColumn">
+    <a-tabs v-model:activeKey="activeKey" size="middle" class="!mt-12px">
+      <a-tab-pane v-for="(item, index) in alarmEquipmentList" :key="index" :tab="item.equipmentName">
+        <div class="mt-24px">
+          <a-table :data-source="item.alarmRecordList" :columns="columns" :pagination="undefined" @resize-column="handleResizeColumn">
             <template #emptyText>
               <span>暂无数据</span>
             </template>
@@ -111,3 +62,9 @@ function goHome() {
     </a-tabs>
   </div>
 </template>
+
+<style scoped>
+::v-deep(.ant-tabs-tab) {
+  @apply text-large;
+}
+</style>

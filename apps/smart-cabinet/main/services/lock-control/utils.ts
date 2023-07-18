@@ -45,6 +45,7 @@ export function generateLockCommand(source: string) {
 
 // 设置串口权限
 export async function setPermissions() {
+  if (import.meta.env.MODE !== 'sudo') return
   try {
     await execSync('sudo chmod 777 /dev/ttyUSB0')
     info('设置串口权限成功')

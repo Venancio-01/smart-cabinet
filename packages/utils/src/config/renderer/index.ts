@@ -28,8 +28,8 @@ export const QUERY_OPEN_STATE_INTERVAL = 1000
 // 查询数据库连接间隔
 export const QUERY_NETWORK_INTERVAL = 3000
 
-// 检测页面停留时间阈值
+// 检测页面停留时间
 export const CHECK_PAGE_STAY_DURATION = 1000 * 3
 
-// 告警页面停留时间阈值
+// 告警页面停留时间
 export const ALARM_PAGE_STAY_DURATION = 1000 * 10

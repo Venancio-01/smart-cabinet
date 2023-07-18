@@ -7,13 +7,12 @@ import useDoor from '@/hooks/useDoor'
 import DeviceStatus from '@/components/DeviceStatus.vue'
 
 const store = useStore()
-const { isControlEquipment, equipmentList } = storeToRefs(store)
+const { isControlEquipment, equipmentList, controlEquipment, deviceNotFound } = storeToRefs(store)
 const { selectUnviewedAlarmRecordCount } = useDoor()
 
 const deviceName = computed(() => {
-  if (isControlEquipment.value) return ''
-
-  return equipmentList?.[0]?.equipmentName
+  if (isControlEquipment.value) return controlEquipment.value?.equipmentName
+  return equipmentList.value[0]?.equipmentName
 })
 
 const titleClass = 'text-center select-none font-thin tracking-[10px] text-light'
@@ -33,7 +32,8 @@ onMounted(() => {
 
     <!-- 设备名 -->
     <div :class="titleClass" text="5xl" p="t-28">
-      {{ deviceName }}
+      <span v-if="deviceNotFound" text-error>未连接通道门</span>
+      <span v-else>{{ deviceName }}</span>
     </div>
 
     <!-- 设备状态 -->

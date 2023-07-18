@@ -8,7 +8,6 @@ import { getBackgroundImage } from '@/features/background'
 const backgroundImage = ref('')
 
 onMounted(async () => {
-  useRouter().push('/alarm-multiple')
   backgroundImage.value = await getBackgroundImage()
 })
 

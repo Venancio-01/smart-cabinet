@@ -2,6 +2,7 @@ import { insertDoorAlarmrecordList } from 'database'
 import type { DoorAlarmrecord, DoorEquipment } from 'database'
 import { sendIpcToRenderer } from 'utils/electron'
 import { INTERVAL_THRESHOLD } from 'utils/config/main'
+import { isControlEquipment } from '../access-door'
 import { generateAntennaCommand } from './utils'
 import { generateCheckConnectionStatusCommand, generateSetGPOCommand, generteSetGPITriggerCommand } from './command'
 import type { Message } from './message'
@@ -164,7 +165,7 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
       const accessDirection = isEntry ? AccessDirection.IN : isExit ? AccessDirection.OUT : null
 
       // 跳转到检查页面
-      sendIpcToRenderer('go-check-page', accessDirection)
+      if (!isControlEquipment) sendIpcToRenderer('go-check-page', accessDirection)
     }
     // 触发红外结束
     else if (msg.name === 'ReceiveGPITriggerStopReport') {
@@ -182,7 +183,7 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
 
       // 如果没有读到数据库中登记过的载体，则跳过
       if (carriers.length === 0) {
-        sendIpcToRenderer('get-read-data', [])
+        if (!isControlEquipment) sendIpcToRenderer('get-read-data', equipment, [])
         return
       }
       // 获取载体登记记录
@@ -216,18 +217,23 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
 
         // 是否有状态异常的载体
         const hasUnregisteredCarrier = abnormalCarrierList.length > 0
-        if (hasUnregisteredCarrier) {
-          const result = await insertDoorAlarmrecordList(alarmRecordList)
-        }
+        hasUnregisteredCarrier && (await insertDoorAlarmrecordList(alarmRecordList))
 
-        const dataList = await insertRfidRecordList(carriers, registrationCarrierRecordList, AccessDirection.OUT, alarmRecordList)
-        sendIpcToRenderer('get-read-data', dataList)
+        const dataList = await insertRfidRecordList(
+          equipment,
+          carriers,
+          registrationCarrierRecordList,
+          AccessDirection.OUT,
+          alarmRecordList,
+        )
+        if (isControlEquipment) sendIpcToRenderer('go-alarm-multiple-page', equipment, alarmRecordList)
+        else sendIpcToRenderer('get-read-data', equipment, dataList)
       }
 
       // 如果是进入状态
       if (isEntry) {
-        const dataList = await insertRfidRecordList(carriers, registrationCarrierRecordList, AccessDirection.IN, [])
-        sendIpcToRenderer('get-read-data', dataList)
+        const dataList = await insertRfidRecordList(equipment, carriers, registrationCarrierRecordList, AccessDirection.IN, [])
+        if (!isControlEquipment) sendIpcToRenderer('get-read-data', equipment, dataList)
       }
     }
     // 读到 EPC 标签
@@ -246,8 +252,8 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
       const hasUnregistered = carriers.some((carrier) => !registerCarrierList.includes(carrier.docRfid))
 
       if (hasUnregistered) {
-        handleSetGPO(equipment, 1, true)
-        sendIpcToRenderer('go-alarm-page')
+        // handleSetGPO(equipment, 1, true)
+        if (!isControlEquipment) sendIpcToRenderer('go-alarm-page')
       }
     }
   })

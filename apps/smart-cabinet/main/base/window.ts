@@ -1,6 +1,6 @@
 import { join } from 'path'
-import { BrowserWindow, app, session, shell } from 'electron'
-import { DEVTOOLS_PATH, WINDOW_SIZE } from 'utils/config/main'
+import { BrowserWindow, app, shell } from 'electron'
+import { WINDOW_SIZE } from 'utils/config/main'
 
 export async function createWindow() {
   const win = new BrowserWindow({
@@ -20,7 +20,6 @@ export async function createWindow() {
     win.loadFile(join(__dirname, '../renderer/index.html'))
   } else {
     win.loadURL('http://localhost:4200/')
-    session.defaultSession.loadExtension(DEVTOOLS_PATH)
     win.webContents.openDevTools()
   }
 

@@ -3,7 +3,9 @@ import type { DocDocument, DoorAlarmrecord, DoorEquipment, DoorRfidrecord, RfidC
 
 interface State {
   isControlEquipment: boolean
+  controlEquipment: DoorEquipment | null
   equipmentList: EquipmentProps[]
+  alarmEquipmentList: AlarmEquipmentProps[]
   networkIsConnected: boolean
   rfidIsConnected: boolean
   activationCode: string
@@ -20,7 +22,9 @@ export const useStore = defineStore('main', {
   state: (): State => {
     return {
       isControlEquipment: false,
+      controlEquipment: null,
       equipmentList: [],
+      alarmEquipmentList: [],
       networkIsConnected: false,
       rfidIsConnected: false,
       activationCode: '',
@@ -37,6 +41,9 @@ export const useStore = defineStore('main', {
     hasUnprocessedAlarmRecord(state) {
       return state.alarmRecordList.length > 0 && state.alarmRecordList.some((item) => item.isOperation === '0')
     },
+    deviceNotFound(state) {
+      return state.equipmentList.length === 0
+    },
   },
   actions: {
     setActivationCode(code: string) {
@@ -44,6 +51,9 @@ export const useStore = defineStore('main', {
     },
     setIsControlEquipment(state: boolean) {
       this.isControlEquipment = state
+    },
+    setControlEquipment(equipment: DoorEquipment | null) {
+      this.controlEquipment = equipment
     },
     setEquipmentList(equipmentList: EquipmentProps[]) {
       this.equipmentList = equipmentList
@@ -54,6 +64,18 @@ export const useStore = defineStore('main', {
 
       this.equipmentList[index] = {
         ...this.equipmentList[index],
+        ...equipment,
+      }
+    },
+    setAlarmEquipmentList(equipmentList: AlarmEquipmentProps[]) {
+      this.alarmEquipmentList = equipmentList
+    },
+    setAlarmEquipment(id: number, equipment: Partial<AlarmEquipmentProps>) {
+      const index = this.alarmEquipmentList.findIndex((item) => item.equipmentid === id)
+      if (index < 0) return
+
+      this.alarmEquipmentList[index] = {
+        ...this.alarmEquipmentList[index],
         ...equipment,
       }
     },
@@ -77,9 +99,6 @@ export const useStore = defineStore('main', {
     },
     setAlarmRecordList(list: DoorAlarmrecord[]) {
       this.alarmRecordList = list
-    },
-    setCurrentEquipment(device: DoorEquipment | null) {
-      this.currentEquipment = device
     },
     setLoadingVisible(state: boolean) {
       this.loadingVisible = state

@@ -1,5 +1,5 @@
 appId: com.electron.app
-productName: 智能载体出入管控系统
+productName: access-door
 directories:
   buildResources: build
   output: '../../release/access-door/${version}'

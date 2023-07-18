@@ -28,6 +28,5 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     StopAlarmButton: typeof import('./components/StopAlarmButton.vue')['default']
-    ViewDetailButton: typeof import('./components/ViewDetailButton.vue')['default']
   }
 }

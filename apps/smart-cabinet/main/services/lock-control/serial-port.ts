@@ -35,7 +35,7 @@ export default class SerialPort {
 
   async open() {
     return new Promise<void>((resolve, reject) => {
-      this.portInstance.open((error) => {
+      this.portInstance?.open((error) => {
         if (error) reject(error)
         else resolve()
       })
@@ -44,14 +44,14 @@ export default class SerialPort {
 
   // 关闭串口
   close() {
-    this.portInstance.close()
+    this.portInstance?.close()
     this.data = ''
   }
 
   // 写入数据
   write(data: Buffer) {
     info(`锁控写入数据：${data.toString('hex')}`)
-    this.portInstance.write(data)
+    this.portInstance?.write(data)
   }
 
   getData() {

@@ -1,8 +1,7 @@
 import { debounce, uniq, uniqBy } from 'lodash-es'
 import { insertDoorRfidrecordList, selectDocDocumentList, selectDoorRfidregisterList } from 'database'
-import type { DocDocumentProps, DoorAlarmrecord, DoorRfidrecord, DoorRfidregister } from 'database'
+import type { DocDocumentProps, DoorAlarmrecord, DoorEquipment, DoorRfidrecord, DoorRfidregister } from 'database'
 import dayjs from 'dayjs'
-import { currentEquipment } from '../access-door'
 import { generateCRC16Code } from './utils'
 import ProtocolMap from './protocol-map'
 import type { Message, MessageQueue } from './message'
@@ -103,6 +102,7 @@ export async function getInDatabaseCarrier(messages: Message[]) {
  * @return {*}
  */
 export async function insertRfidRecordList(
+  equipment: DoorEquipment,
   carriers: DocDocumentProps[],
   registrationRecords: DoorRfidregister[],
   direction: AccessDirection,
@@ -112,8 +112,8 @@ export async function insertRfidRecordList(
   const list: Partial<DoorRfidrecord>[] = carriers.map((carrier) => {
     const isAlarm = alarmRecordList.some((item) => item.carrierRfid === carrier.docRfid)
     return {
-      equipmentName: currentEquipment?.equipmentName,
-      equipmentId: `${currentEquipment?.equipmentid}`,
+      equipmentName: equipment?.equipmentName,
+      equipmentId: `${equipment?.equipmentid}`,
       carrierId: `${carrier.docId}`,
       carrierName: carrier.docName,
       carrierRfid: carrier.docRfid,

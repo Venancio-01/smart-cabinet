@@ -10,55 +10,57 @@ import {
   updateDoorAlarmrecord,
 } from 'database'
 import { differenceBy } from 'lodash-es'
+import { error } from './log'
 
-// 当前设备
-export let currentEquipment: DoorEquipment | null = null
+// 设备列表
+export let equipmentList: DoorEquipment[] = []
 // 是否是控制设备
 export let isControlEquipment = false
-// 全部设备列表
-export let allEquipmentList: DoorEquipment[] = []
-// 控制的设备列表
-export let equipmentList: DoorEquipment[] = []
+// 控制设备
+export let controlEquipment: DoorEquipment | null = null
 
 /**
  * @description: 获取是否为控制设备
  * @return {*}
  */
 export async function getIsControlEquipment() {
-  if (!currentEquipment) return false
-
-  const otherEquipmentList = differenceBy(allEquipmentList, [currentEquipment], 'equipmentid')
-  isControlEquipment = currentEquipment.fid === null && otherEquipmentList.some((item) => item.fid === currentEquipment?.equipmentid)
-
   return isControlEquipment
 }
 
 /**
- * @description: 获取当前设备
+ * @description: 获取控制设备
  * @return {*}
  */
-export async function getCurrentEquipment() {
-  if (currentEquipment) return currentEquipment
-
-  allEquipmentList = await selectDoorEquipmentList()
-  const ipList = getLocalIpAddress()
-
-  currentEquipment = allEquipmentList.find((item) => item.addressip && ipList.includes(item.addressip)) || null
-
-  return currentEquipment
+export async function getControlEquipment() {
+  return controlEquipment
 }
 
 /**
- * @description: 获取受控制的设备列表
+ * @description: 获取设备列表
  * @return {*}
  */
 export async function getEquipmentList() {
-  if (!currentEquipment) return []
-  if (!isControlEquipment) return [currentEquipment]
-
-  equipmentList = allEquipmentList.filter((item) => item.fid === currentEquipment?.equipmentid)
-
   return equipmentList
+}
+
+export async function initEquipment() {
+  const allEquipmentList = await selectDoorEquipmentList()
+  const ipList = getLocalIpAddress()
+
+  // 获取当前设备
+  const currentEquipment = allEquipmentList.find((item) => item.addressip && ipList.includes(item.addressip)) || null
+  if (currentEquipment === null) {
+    error('数据库设备 IP 配置错误，找不到对应设备')
+    return
+  }
+
+  // 获取是否为控制设备
+  const otherEquipmentList = differenceBy(allEquipmentList, [currentEquipment], 'equipmentid')
+  isControlEquipment = currentEquipment?.fid === null && otherEquipmentList.some((item) => item.fid === currentEquipment?.equipmentid)
+  if (isControlEquipment) controlEquipment = currentEquipment
+
+  // 获取设备列表
+  equipmentList = isControlEquipment ? allEquipmentList.filter((item) => item.fid === currentEquipment?.equipmentid) : [currentEquipment]
 }
 
 const accessDoorService = {
@@ -66,7 +68,7 @@ const accessDoorService = {
   fns: {
     getIsControlEquipment,
     getEquipmentList,
-    getCurrentEquipment,
+    getControlEquipment,
     selectDoorRfidrecordList,
     selectDoorRfidrecordListWithPage,
     selectDoorAlarmRecordList,

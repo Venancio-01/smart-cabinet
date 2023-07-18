@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { ALARM_PAGE_STAY_DURATION } from 'utils/config'
 import useRfid from '@/hooks/useRfid'
 import { useStore } from '@/store'
 
@@ -27,16 +26,16 @@ const unregisterCarrier = computed(() => {
 
 const timer = ref<number | null>(null)
 onMounted(() => {
-  timer.value = window.setInterval(() => {
-    handleSetGPO(false)
-    goHome()
-  }, ALARM_PAGE_STAY_DURATION)
+  // timer.value = window.setTimeout(() => {
+  //   handleSetGPO(false)
+  //   goHome()
+  // }, ALARM_PAGE_STAY_DURATION)
 })
 
 onBeforeUnmount(() => {
   if (timer.value === null) return
 
-  clearInterval(timer.value)
+  clearTimeout(timer.value)
 })
 </script>
 
@@ -55,13 +54,15 @@ onBeforeUnmount(() => {
         <BaseLoading />
       </div>
 
-      <div v-else w="full" h="full" text="light 5xl center" font="thin" tracking="10px">
-        <div>
-          {{ `检测到载体总数：${currentReadRecordList.length}` }}
-        </div>
+      <div v-else w="full" h="full" text="light 5xl center" font="thin">
+        <div tracking="10px">
+          <div>
+            {{ `检测到载体总数：${currentReadRecordList.length}` }}
+          </div>
 
-        <div m="t-4">
-          {{ `未登记载体数量：${unregisterCarrier.length}` }}
+          <div m="t-4">
+            {{ `未登记载体数量：${unregisterCarrier.length}` }}
+          </div>
         </div>
 
         <div flex="~" justify-center items-center>

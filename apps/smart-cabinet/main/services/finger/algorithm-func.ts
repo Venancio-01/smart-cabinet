@@ -5,9 +5,6 @@ import { ALGORITHM_SDK_PATH, VERIFY_SCORE_THRESHOLD, fingerLibsPath } from 'util
 import { error, info } from '../logger'
 import { HandleType, IntType, TemplateType, UcharType } from './types'
 
-let algorithmSDK = null
-
-// 检查 libzkfinger10.so 文件是否存在，如果不存在则复制文件
 export function checkFileExist() {
   if (!existsSync('/lib/libzkfinger10.so')) {
     // 文件不存在，复制文件

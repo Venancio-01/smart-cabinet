@@ -17,7 +17,7 @@ watch(checkCountdown, (value) => {
 <template>
   <transition mode="out-in">
     <div
-      v-show="!checkCountdownDialogVisible"
+      v-show="checkCountdownDialogVisible"
       class="fixed top-0 left-0 z-[9999] flex h-screen w-screen items-center justify-center ant-modal-mask">
       <div
         class="flex relative bg-gray-8 bg-opacity-30 backdrop-filter backdrop-blur-[10px] h-[300px] w-[400px] select-none justify-center items-center rounded-lg text-white shadow-[0px_0px_16px] shadow-black">

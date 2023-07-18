@@ -9,6 +9,7 @@ import {
   sys_role_permission,
   sys_permission,
   DoorEquipment,
+  DoorRfidrecord,
 } from 'database'
 import type { ServiceType } from '../main/services/index'
 import type { electronAPI } from '@electron-toolkit/preload'
@@ -52,5 +53,8 @@ declare global {
 
   type EquipmentProps = DoorEquipment & {
     rfidIsConnected: boolean
+  }
+  type AlarmEquipmentProps = DoorEquipment & {
+    alarmRecordList: DoorAlarmrecord[]
   }
 }

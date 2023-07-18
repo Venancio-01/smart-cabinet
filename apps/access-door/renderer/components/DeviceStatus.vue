@@ -4,17 +4,18 @@ import { useStore } from '@/store'
 
 const router = useRouter()
 const store = useStore()
-const { equipmentList, networkIsConnected, unviewedAccessRecordCount } = storeToRefs(store)
+const { equipmentList, networkIsConnected, unviewedAccessRecordCount, deviceNotFound } = storeToRefs(store)
 
-const rfidVisible = ref(false)
 const networkVisible = ref(false)
+const rfidVisible = ref(false)
+const deviceVisible = ref(false)
 
 const rfidIsConnected = computed(() => {
   return equipmentList.value.every((item) => item.rfidIsConnected)
 })
 
 const rfidStatusText = computed(() => {
-  const arr = []
+  const arr: string[] = []
 
   equipmentList.value.forEach((item) => {
     if (!item.rfidIsConnected) arr.push(`设备：${item.equipmentName} - 读取器连接失败`)
@@ -27,7 +28,7 @@ function goRfidRecordPage() {
   router.push({ path: '/rfid-record' })
 }
 function goWarningRecordPage() {
-  router.push({ path: '/warning-record' })
+  router.push({ path: '/alarm-record' })
 }
 </script>
 
@@ -39,6 +40,7 @@ function goWarningRecordPage() {
       :status-text="rfidStatusText"
       content="检查RFID线缆是否正常，并尝试插拔后重新启动软件。" />
     <SolutionDialog v-model:visible="networkVisible" title="网络状态" content="请检查数据库链接配置是否正常，并重新启动软件。" />
+    <SolutionDialog v-model:visible="deviceVisible" title="未找到通道门" content="请检查数据库通道门配置是否正常，并重新启动软件。" />
 
     <div class="flex h-[50px] items-center justify-end gap-4">
       <div class="flex items-center justify-center">
@@ -61,6 +63,10 @@ function goWarningRecordPage() {
 
       <div v-show="!networkIsConnected" class="flex items-center justify-center">
         <VIcon icon="network" class="text-icon-normal text-error-color" @click="networkVisible = true" />
+      </div>
+
+      <div v-show="networkIsConnected && deviceNotFound" class="flex items-center justify-center">
+        <VIcon icon="network" class="text-icon-normal text-error-color" @click="deviceVisible = true" />
       </div>
     </div>
   </div>

@@ -28,7 +28,7 @@ const show = computed({
 
 <template>
   <VDialog v-model:visible="show" :title="title">
-    <div class="mb-[16px] pt-[20px]">
+    <div class="mb-[16px] pt-[20px] flex">
       <div class="w-[90px]">当前状态：</div>
       <div class="flex-1">{{ statusText }}</div>
     </div>

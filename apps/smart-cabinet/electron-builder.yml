@@ -1,5 +1,5 @@
 appId: com.electron.app
-productName: 智能载体管控系统
+productName: smart-cabinet
 directories:
   buildResources: build
   output: '../../release/smart-cabinet/${version}'
