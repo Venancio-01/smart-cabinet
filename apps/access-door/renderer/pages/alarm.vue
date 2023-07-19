@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { ALARM_PAGE_STAY_DURATION } from 'utils/config/renderer'
 import useRfid from '@/hooks/useRfid'
 import { useStore } from '@/store'
 
@@ -9,6 +10,7 @@ const { currentReadRecordList, loadingVisible } = storeToRefs(store)
 const { handleSetGPO } = useRfid()
 
 function goHome() {
+  handleSetGPO(false)
   setCurrentReadRecordList([])
   router.replace('/')
 }
@@ -26,10 +28,10 @@ const unregisterCarrier = computed(() => {
 
 const timer = ref<number | null>(null)
 onMounted(() => {
-  // timer.value = window.setTimeout(() => {
-  //   handleSetGPO(false)
-  //   goHome()
-  // }, ALARM_PAGE_STAY_DURATION)
+  timer.value = window.setTimeout(() => {
+    handleSetGPO(false)
+    goHome()
+  }, ALARM_PAGE_STAY_DURATION)
 })
 
 onBeforeUnmount(() => {

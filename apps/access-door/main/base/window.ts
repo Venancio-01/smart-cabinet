@@ -1,13 +1,15 @@
 import { join } from 'path'
 import { BrowserWindow, app, shell } from 'electron'
-import { ICON_PATH, WINDOW_SIZE } from 'utils/config/main'
+import { ICON_PATH } from 'utils/config/main'
 
 let win: BrowserWindow | null = null
 
 // 创建窗口
 export function createWindow() {
   win = new BrowserWindow({
-    ...WINDOW_SIZE,
+    height: 768,
+    width: 1366,
+    fullscreen: true,
     title: '智能载体管控系统',
     icon: ICON_PATH,
     frame: false,

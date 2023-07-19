@@ -21,6 +21,7 @@ import electron from 'vite-plugin-electron-vaausud'
 const externalList = ['ffi-napi', 'ref-array-di', 'ref-napi', 'ref-struct-di', 'prisma', 'database', 'serialport']
 
 export default defineConfig(({ mode }) => {
+  const isProduction = mode === 'production'
   return {
     build: {
       outDir: 'dist/renderer',
@@ -84,7 +85,7 @@ export default defineConfig(({ mode }) => {
       VueRouter({
         routesFolder: './renderer/pages',
         dts: './renderer/typed-router.d.ts',
-        importMode: 'async',
+        importMode: isProduction ? 'sync' : 'async',
       }),
       VueJsx(),
       VueDevTools(),

@@ -252,7 +252,7 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
       const hasUnregistered = carriers.some((carrier) => !registerCarrierList.includes(carrier.docRfid))
 
       if (hasUnregistered) {
-        // handleSetGPO(equipment, 1, true)
+        handleSetGPO(equipment, 1, true)
         if (!isControlEquipment) sendIpcToRenderer('go-alarm-page')
       }
     }
