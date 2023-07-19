@@ -8,6 +8,7 @@ import {
   selectDoorRfidrecordList,
   selectDoorRfidrecordListWithPage,
   updateDoorAlarmrecord,
+  updateManyDoorAlarmrecord,
 } from 'database'
 import { differenceBy } from 'lodash-es'
 import { error } from './log'
@@ -46,6 +47,7 @@ export async function getEquipmentList() {
 export async function initEquipment() {
   const allEquipmentList = await selectDoorEquipmentList()
   const ipList = getLocalIpAddress()
+  console.log('🚀 ~ file: access-door.ts:50 ~ initEquipment ~ ipList:', ipList)
 
   // 获取当前设备
   const currentEquipment = allEquipmentList.find((item) => item.addressip && ipList.includes(item.addressip)) || null
@@ -75,6 +77,7 @@ const accessDoorService = {
     selectDoorAlarmRecordListWithPage,
     selectDoorAlarmRecordCount,
     updateDoorAlarmrecord,
+    updateManyDoorAlarmrecord,
   },
 }
 

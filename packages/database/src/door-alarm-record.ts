@@ -86,6 +86,19 @@ export function updateDoorAlarmrecord(
 }
 
 /**
+ * @description: 批量更新载体
+ * @param {Partial} condition
+ * @param {Partial} data
+ * @return {*}
+ */
+export function updateManyDoorAlarmrecord(condition: Prisma.DoorAlarmrecordWhereUniqueInput, data: Partial<DoorAlarmrecord>) {
+  return prisma.doorAlarmrecord.updateMany({
+    where: condition,
+    data,
+  })
+}
+
+/**
  * @description: 插入通道门报警记录
  * @param {Prisma.DoorAlarmrecordCreateInput} data
  * @return {*}

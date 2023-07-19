@@ -3,11 +3,13 @@ import type { DoorRfidrecord } from 'database'
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
 import { useStore } from '@/store'
+import useListenAction from '@/hooks/useListenAction'
 
 const router = useRouter()
 const store = useStore()
 const { setCurrentReadRecordList } = store
 const { currentReadRecordList, departmentList } = storeToRefs(store)
+const { operationTimeoutCountdown } = useListenAction()
 
 const data = ref<DoorRfidrecord[]>([])
 const total = ref(0)
@@ -42,7 +44,7 @@ const columns = ref<ColumnsType<DoorRfidrecord>>([
   },
 ])
 
-function handleResizeColumn(width:any, column:any) {
+function handleResizeColumn(width: any, column: any) {
   column.width = width
 }
 
@@ -78,9 +80,12 @@ onMounted(() => {
 
 <template>
   <div class="w-h-full">
-    <div class="flex items-center">
-      <BackButton @back="handleBack" />
-      <span class="text-light text-[28px] ml-6"> 报警载体详情 </span>
+    <div class="flex items-center justify-between">
+      <div flex items-center>
+        <BackButton @back="handleBack" />
+        <span class="text-light text-[28px] ml-6"> 报警载体详情 </span>
+      </div>
+      <div text="light 2xl" font="thin">{{ operationTimeoutCountdown }}秒后返回首页</div>
     </div>
 
     <div class="flex" m="y-8">

@@ -3,12 +3,14 @@ import type { DoorAlarmrecordProps } from 'database'
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
 import useDoor from '@/hooks/useDoor'
+import useListenAction from '@/hooks/useListenAction'
 import { AccessTimeRange, OperationStatus } from '~/enums'
 import { useStore } from '@/store'
 
 const store = useStore()
-const { departmentList } = storeToRefs(store)
+const { departmentList, equipmentList } = storeToRefs(store)
 const { selectAlarmRecordList } = useDoor()
+const { operationTimeoutCountdown } = useListenAction()
 
 const data = ref<DoorAlarmrecordProps[]>([])
 const total = ref(0)
@@ -119,6 +121,21 @@ async function handleConfirm(record: DoorAlarmrecordProps) {
   getRfidRecordList()
 }
 
+async function handleConfirmAll() {
+  await window.JSBridge.accessDoor.updateManyDoorAlarmrecord(
+    {
+      equipmentId: {
+        in: equipmentList.value.map((item) => `${item.equipmentid}`),
+      },
+      isOperation: `${OperationStatus.UNPROCESSED}`,
+    },
+    {
+      isOperation: `${OperationStatus.PROCESSED}`,
+    },
+  )
+  getRfidRecordList()
+}
+
 onMounted(() => {
   handleInit()
 })
@@ -126,9 +143,12 @@ onMounted(() => {
 
 <template>
   <div class="w-h-full">
-    <div class="flex items-center">
-      <BackButton />
-      <span class="text-light text-[28px] ml-6"> 报警记录 </span>
+    <div class="flex items-center justify-between">
+      <div flex items-center>
+        <BackButton />
+        <span class="text-light text-[28px] ml-6"> 报警记录 </span>
+      </div>
+      <div text="light 2xl" font="thin">{{ operationTimeoutCountdown }}秒后返回首页</div>
     </div>
 
     <div class="flex" m="t-8" p="b-4">
@@ -160,9 +180,10 @@ onMounted(() => {
         </a-form-item>
       </a-form>
 
-      <div class="w-[180px] flex justify-end">
-        <a-button type="primary" @click="handleQuery"> 搜索 </a-button>
+      <div class="w-[290px]">
+        <a-button class="ml-4" type="primary" @click="handleQuery"> 搜索 </a-button>
         <a-button class="ml-4" @click="handleInit"> 重置 </a-button>
+        <a-button type="primary" class="ml-4" @click="handleConfirmAll"> 全部确认 </a-button>
       </div>
     </div>
 

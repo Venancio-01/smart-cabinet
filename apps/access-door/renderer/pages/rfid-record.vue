@@ -3,10 +3,11 @@ import type { DoorRfidrecord, DoorRfidrecordProps } from 'database'
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
 import useDoor from '@/hooks/useDoor'
+import useListenAction from '@/hooks/useListenAction'
 import { AccessDirection, AccessTimeRange } from '~/enums'
 
-const router = useRouter()
 const { selectRfidRecordList } = useDoor()
+const { operationTimeoutCountdown } = useListenAction()
 
 const data = ref<DoorRfidrecordProps[]>([])
 const total = ref(0)
@@ -50,7 +51,6 @@ async function handleInit() {
 
 async function getRfidRecordList() {
   const { data: _data, total: _total } = await selectRfidRecordList(toRaw(pagination), toRaw(condition))
-  console.log('🚀 ~ file: record.vue:55 ~ getRfidRecordList ~ _data:', _data)
   data.value = _data
   total.value = _total
 }
@@ -85,7 +85,7 @@ const columns = ref<ColumnsType<DoorRfidrecord>>([
   },
 ])
 
-function handleResizeColumn(width:any, column:any) {
+function handleResizeColumn(width: any, column: any) {
   column.width = width
 }
 
@@ -96,9 +96,12 @@ onMounted(() => {
 
 <template>
   <div class="w-h-full">
-    <div class="flex items-center">
-      <BackButton />
-      <span class="text-light text-[28px] ml-6"> 出入记录 </span>
+    <div class="flex items-center justify-between">
+      <div flex items-center>
+        <BackButton />
+        <span class="text-light text-[28px] ml-6"> 出入记录 </span>
+      </div>
+      <div text="light 2xl" font="thin">{{ operationTimeoutCountdown }}秒后返回首页</div>
     </div>
 
     <div class="flex" m="t-8" p="b-4">
