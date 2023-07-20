@@ -35,8 +35,9 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  if (timer.value === null) return
+  handleSetGPO(false)
 
+  if (timer.value === null) return
   clearTimeout(timer.value)
 })
 </script>

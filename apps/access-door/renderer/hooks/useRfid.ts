@@ -77,9 +77,7 @@ export default function () {
 
     window.electron.ipcRenderer.on('go-alarm-multiple-page', (_: unknown, equipment: DoorEquipment, data: DoorAlarmrecord[]) => {
       const existAlarmEquipment = alarmEquipmentList.value.find((item) => item.equipmentid === equipment.equipmentid)
-      console.log('🚀 ~ file: useRfid.ts:80 ~ window.electron.ipcRenderer.on ~ existAlarmEquipment:', existAlarmEquipment)
       const isExist = !!existAlarmEquipment
-      console.log('🚀 ~ file: useRfid.ts:81 ~ window.electron.ipcRenderer.on ~ isExist:', isExist)
 
       if (isExist) {
         setAlarmEquipment(equipment.equipmentid, {
