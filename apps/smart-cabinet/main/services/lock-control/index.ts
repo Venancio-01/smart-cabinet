@@ -5,7 +5,7 @@ import { convertDecimalToBinary, generateLockCommand, setPermissions } from './u
 import SerialPort from './serial-port'
 
 // 串口实例
-let instance: SerialPort | null = null
+let instance: SerialPort
 let connected = false
 
 /**
@@ -15,9 +15,12 @@ let connected = false
  */
 async function getConnectState() {
   const COMPort = currentCabinet?.openDoor || ''
-
-  const list = await SerialPortLib.list()
-  connected = !!list.find((item) => item.path.includes(COMPort))
+  if (COMPort === '') {
+    connected = false
+  } else {
+    const list = await SerialPortLib.list()
+    connected = !!list.find((item) => item.path.includes(COMPort))
+  }
 
   return connected
 }
@@ -39,9 +42,7 @@ async function init(path: string) {
 }
 
 async function close() {
-  if (!instance) return
-
-  instance.close()
+  instance?.close()
 }
 
 /**
@@ -49,10 +50,8 @@ async function close() {
  * @return {*}
  */
 function queryAllState() {
-  if (!instance) return false
-
   const command = generateLockCommand('80010033')
-  instance.write(command)
+  instance?.write(command)
 }
 
 /**
@@ -62,10 +61,8 @@ function queryAllState() {
  * @return {*}
  */
 function open(boardAddress = '01', lockAddress = '01') {
-  if (!instance) return false
-
   const command = generateLockCommand(`8a${boardAddress}${lockAddress}11`)
-  instance.write(command)
+  instance?.write(command)
 }
 
 /**
@@ -73,14 +70,9 @@ function open(boardAddress = '01', lockAddress = '01') {
  * @return {*}
  */
 function getOpenStatus(): null | LockControlStateProps {
-  if (!instance) {
-    info('实例未初始化')
-    return null
-  }
-
   const COMMAND_HEADER = '8001'
   const MAX_LOCK_COUNT = 24
-  const data = instance.getData()
+  const data = instance?.getData()
 
   // 找出命令的返回结果
   const commandHeaderIndex = data.indexOf(COMMAND_HEADER)
@@ -105,7 +97,7 @@ function getOpenStatus(): null | LockControlStateProps {
     return acc
   }, {})
 
-  instance.setData('')
+  instance?.setData('')
 
   return result
 }

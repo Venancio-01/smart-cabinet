@@ -19,6 +19,8 @@ export function checkFileExist() {
   }
 }
 
+let algorithmSDK: any = null
+
 // 通过 ffi 解析 C++ SDK 方法
 export function initAlgorithmSDK() {
   algorithmSDK = Library(ALGORITHM_SDK_PATH, {

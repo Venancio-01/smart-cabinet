@@ -10,24 +10,25 @@ export default function () {
    * @return {*}
    */
   const getRFIDConnectionStatus = async () => {
-    const list: CabinetDoorProps[] = []
+    const promiseList = cabinetDoorList.value.reduce((acc, cur) => {
+      if (cur.txAddr !== null) acc.push(window.JSBridge.rfid.init(cur.txAddr, 8899))
+      return acc
+    }, [] as Promise<boolean>[])
 
-    for (let i = 0; i < cabinetDoorList.value.length; i++) {
-      const cabinetDoor = cabinetDoorList.value[i]
-      if (cabinetDoor.txAddr === null) continue
+    const connectResultList = await Promise.all(promiseList)
 
-      const isConnected = await window.JSBridge.rfid.init(cabinetDoor.txAddr, 8899)
-      window.JSBridge.rfid.destroy(cabinetDoor.txAddr)
-
-      const item = {
-        ...cabinetDoor,
-        rfidIsConnected: isConnected,
+    const list = cabinetDoorList.value.map((item, index) => {
+      return {
+        ...item,
+        rfidIsConnected: connectResultList[index],
       }
-
-      list.push(item)
-    }
+    })
 
     setCabinetDoorList(list)
+
+    list.forEach((item) => {
+      if (item.txAddr) window.JSBridge.rfid.destroy(item.txAddr)
+    })
   }
 
   /**

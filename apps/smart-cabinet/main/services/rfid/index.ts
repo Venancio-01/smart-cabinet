@@ -22,10 +22,8 @@ async function init(address: string, port: number) {
 }
 
 function destroy(address: string) {
-  if (!instanceMap[address]) return
-
-  instanceMap[address].destroy()
-  delete instanceMap[address]
+  instanceMap?.[address]?.destroy()
+  delete instanceMap?.[address]
 }
 
 function sendCloseCommand(address: string) {
@@ -42,12 +40,7 @@ function sendOpenCommand(address: string, antennaIds: number[]) {
 }
 
 export function getReportData(address: string) {
-  if (!instanceMap[address]) {
-    console.log('socket 连接不存在')
-    return []
-  }
-
-  const data = instanceMap[address].getData() || ''
+  const data = instanceMap?.[address]?.getData() || ''
   const reportData = parseRFIDReportData(data)
   const TIDList = [...new Set(reportData.map((item) => getTIDByReportData(item)))]
 

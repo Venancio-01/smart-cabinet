@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron'
+import { generateIPCInvoke, registerIPCHandle } from 'utils/electron'
 import rfidService from './rfid'
 import sysService from './sys'
 import networkService from './network'
@@ -11,16 +11,18 @@ export const services = [rfidService, sysService, networkService, storeService, 
 
 export type ServiceType = typeof services
 
-// 生成通道名称
-export function makeChannelName(name: string, fnName: string) {
-  return `${name}.${fnName}`
+/**
+ * Initializes the services.
+ */
+export function initIPCHandle() {
+  registerIPCHandle(services)
 }
 
-// 注册服务
-export function registerServices() {
-  services.forEach((service) => {
-    Object.entries(service.fns).forEach(([apiName, apiFn]) => {
-      ipcMain.handle(makeChannelName(service.name, apiName), (_, ...args) => apiFn(...args))
-    })
-  })
+/**
+ * Generates an IPC invoke function.
+ *
+ * @return {any} The result of invoking the IPC function.
+ */
+export function genetateIPCInvoke() {
+  return generateIPCInvoke(services)
 }

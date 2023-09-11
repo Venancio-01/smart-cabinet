@@ -1,7 +1,7 @@
 import { app } from 'electron'
 import dotenv from 'dotenv'
 import { EVN_FILE_PATH } from 'utils/config'
-import { registerAppHooks } from '@/base/hooks'
+import { onAppActivate, onAppBeforeQuit, onAppReady, onAppWindowAllClosed } from '@/base/hooks'
 
 // 加载环境变量
 dotenv.config({
@@ -17,4 +17,7 @@ if (!app.requestSingleInstanceLock()) {
   process.exit(0)
 }
 
-registerAppHooks()
+app.whenReady().then(onAppReady)
+app.on('before-quit', onAppBeforeQuit)
+app.on('activate', onAppActivate)
+app.on('window-all-closed', onAppWindowAllClosed)

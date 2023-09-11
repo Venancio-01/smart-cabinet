@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron'
+import { generateIPCInvoke, registerIPCHandle } from 'utils/electron'
 import lockControlService from './lock-control'
 import rfidService from './rfid'
 import fingerService from './finger'
@@ -27,18 +27,18 @@ export const services = [
 
 export type ServiceType = typeof services
 
-export function makeChannelName(name, fnName) {
-  return `${name}.${fnName}`
+/**
+ * Initializes the services.
+ */
+export function initIPCHandle() {
+  registerIPCHandle(services)
 }
 
 /**
- * @description: 注册服务
- * @return {*}
+ * Generates an IPC invoke function.
+ *
+ * @return {any} The result of invoking the IPC function.
  */
-export function installService() {
-  services.forEach((service) => {
-    Object.entries(service.fns).forEach(([apiName, apiFn]) => {
-      ipcMain.handle(makeChannelName(service.name, apiName), (ev, ...args) => apiFn(...args))
-    })
-  })
+export function genetateIPCInvoke() {
+  return generateIPCInvoke(services)
 }

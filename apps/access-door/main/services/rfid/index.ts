@@ -2,12 +2,12 @@ import { insertDoorAlarmrecordList } from 'database'
 import type { DoorAlarmrecord, DoorEquipment } from 'database'
 import { sendIpcToRenderer } from 'utils/electron'
 import { INTERVAL_THRESHOLD } from 'utils/config/main'
-import { isControlEquipment } from '../access-door'
 import { generateAntennaCommand } from './utils'
 import { generateCheckConnectionStatusCommand, generateSetGPOCommand, generteSetGPITriggerCommand } from './command'
 import type { Message } from './message'
 import { MessageQueue } from './message'
 import { debouncedSelectRfidRegisterRecord, filterAbnormalCarrier, getInDatabaseCarrier, insertRfidRecordList } from './data'
+import { equipmentList, isControlEquipment } from '@/services/access-door'
 import Socket from '@/services/rfid/socket'
 import type { GPOIndex } from '~/enums'
 import { AccessDirection, GPIIndex, OperationStatus } from '~/enums'
@@ -55,6 +55,13 @@ export async function connectRfid(equipment: DoorEquipment) {
   registerMessageListerner(equipment, messageQueue)
 }
 
+// 全部设备连接 RFID
+export async function connectAllRfid() {
+  equipmentList.forEach((equipment) => {
+    connectRfid(equipment)
+  })
+}
+
 /**
  * 断开 RFID 连接
  * @param {DoorEquipment} equipment
@@ -63,6 +70,12 @@ export async function connectRfid(equipment: DoorEquipment) {
 export async function disconnectRfid(equipment: DoorEquipment) {
   instance?.[equipment.equipmentAddr ?? ''].socket.destroy()
   delete instance?.[equipment.equipmentAddr ?? '']
+}
+
+export function disconnectAllRfid() {
+  equipmentList.forEach((equipment) => {
+    disconnectRfid(equipment)
+  })
 }
 
 /**

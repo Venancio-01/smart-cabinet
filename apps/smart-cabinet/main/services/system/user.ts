@@ -1,8 +1,14 @@
 import { genResponseData } from 'utils'
 import { selectRfidCardUser, selectSysUser, updateRfidCardUser, updateSysUser } from 'database'
-import type {SysUserProps} from 'database'
+import type { SysUserProps } from 'database'
 import { genMd5EncryptedPassword } from './utils'
 
+/**
+ * This function handles password-based login.
+ *
+ * @param {PasswordLoginProps} { username, password } - The login credentials provided by the user.
+ * @return {Promise<ResponseData<SysUserProps | null>>} The response data indicating the success or failure of the login attempt.
+ */
 export async function onPasswordLogin({ username, password }: PasswordLoginProps) {
   const user = await selectSysUser({
     loginName: username,
@@ -15,6 +21,12 @@ export async function onPasswordLogin({ username, password }: PasswordLoginProps
   return genResponseData<SysUserProps>(true, '登录成功', user)
 }
 
+/**
+ * Executes the card login process.
+ *
+ * @param {string} cardNumber - The card number used for login.
+ * @return {Promise<ResponseData<SysUserProps> | ResponseData<null>>} The response data indicating the success or failure of the login process.
+ */
 export async function onCardLogin(cardNumber: string) {
   const result = await selectRfidCardUser({
     cardData: cardNumber,

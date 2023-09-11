@@ -4,7 +4,7 @@ import { connectDatabase } from 'database'
 import { disableShortcuts } from 'utils/electron'
 import { EVN_FILE_PATH } from 'utils/config'
 import { handleExitUpdateService } from './services/update'
-import { installService } from '@/services'
+import { initIPCHandle } from '@/services'
 import { createWindow } from '@/base/window'
 
 // 加载环境变量
@@ -28,26 +28,16 @@ if (!app.requestSingleInstanceLock()) {
   process.exit(0)
 }
 
-let win: BrowserWindow | null = null
-
 app.whenReady().then(async () => {
-  win = await createWindow()
-  installService()
+  // 创建窗口
+  await createWindow()
+  //  初始化 IPCHandle
+  initIPCHandle()
+  //  正式打包后禁用快捷键
   if (app.isPackaged) disableShortcuts()
 })
 
-app.on('window-all-closed', () => {
-  win = null
-  if (process.platform !== 'darwin') app.quit()
-})
-
-app.on('second-instance', () => {
-  if (win) {
-    if (win.isMinimized()) win.restore()
-    win.focus()
-  }
-})
-
+// 应用激活时
 app.on('activate', () => {
   const allWindows = BrowserWindow.getAllWindows()
 
@@ -55,6 +45,12 @@ app.on('activate', () => {
   else createWindow()
 })
 
+// 应用退出前
 app.on('before-quit', () => {
   handleExitUpdateService()
+})
+
+// 应用窗口全部关闭时
+app.on('window-all-closed', () => {
+  app.quit()
 })

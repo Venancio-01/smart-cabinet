@@ -37,36 +37,5 @@
 			"path": "packages/utils"
 		}
 	],
-	"settings": {
-		"files.exclude": {
-			"**/.git": false,
-			"**/.svn": false,
-			"**/.hg": false,
-			"**/CVS": false,
-			"**/.DS_Store": false,
-			"**/Thumbs.db": false,
-			"*.code-workspace": false,
-			"**/public/js/app.js": false,
-			"**/unpackage": false,
-			"**/vendor.js": false,
-			".github": false,
-			".vscode": false,
-			"**/dist": false
-		},
-		"explorerExclude.backup": {
-			"**/.git": true,
-			"**/.svn": true,
-			"**/.hg": true,
-			"**/CVS": true,
-			"**/.DS_Store": true,
-			"**/Thumbs.db": true,
-			"*.code-workspace": true,
-			"**/public/js/app.js": true,
-			"**/unpackage": true,
-			"**/vendor.js": true,
-			".github": true,
-			".vscode": true,
-			"**/dist": true
-		}
-	}
+	"settings": {}
 }
