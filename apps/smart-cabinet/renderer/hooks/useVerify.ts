@@ -17,7 +17,8 @@ export default function () {
       const now = new Date().getTime()
       if (now - timestamp.value > EXPIRATION_TIME) return true
       else return false
-    } else {
+    }
+    else {
       return true
     }
   }

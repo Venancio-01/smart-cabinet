@@ -35,7 +35,7 @@ const statisticsData = computed(() => {
 
 // 判断该柜门内载体是否有变化
 function isCabinetDoorChanged(id: number) {
-  const cabinetDoor = checkResultList.value.find((item) => item.id === id)
+  const cabinetDoor = checkResultList.value.find(item => item.id === id)
 
   if (!cabinetDoor) return false
 
@@ -67,7 +67,8 @@ function goBack() {
     openOperationTimeoutCountdown()
 
     router.replace('/main/cabinet-door')
-  } else {
+  }
+  else {
     router.replace('/')
   }
 }
@@ -83,7 +84,7 @@ const documentColumns: ColumnsType<DocDocument> = [
     dataIndex: 'viewName',
     key: 'viewName',
     customRender: ({ record }) => {
-      return cabinetDoorList.value.find((item) => item.id === record.cabinetDoorId)?.viewName
+      return cabinetDoorList.value.find(item => item.id === record.cabinetDoorId)?.viewName
     },
   },
   {
@@ -91,7 +92,7 @@ const documentColumns: ColumnsType<DocDocument> = [
     dataIndex: 'department',
     key: 'department',
     customRender: ({ record }) => {
-      return departmentList.value.find((item) => item.deptId === record.deptId)?.deptName
+      return departmentList.value.find(item => item.deptId === record.deptId)?.deptName
     },
   },
   {
@@ -99,7 +100,7 @@ const documentColumns: ColumnsType<DocDocument> = [
     dataIndex: 'docLastUserId',
     key: 'docLastUserId',
     customRender: ({ record }) => {
-      return userList.value.find((item) => Number(item.userId) === record.docLastUserId)?.userName
+      return userList.value.find(item => Number(item.userId) === record.docLastUserId)?.userName
     },
   },
   {
@@ -122,7 +123,7 @@ const recordColumns: ColumnsType<RfidSwitchRecord> = [
     dataIndex: 'cabinetDoorId',
     key: 'cabinetDoorId',
     customRender: ({ record }) => {
-      return cabinetDoorList.value.find((item) => item.id === Number(record.cabinetDoorId))?.viewName
+      return cabinetDoorList.value.find(item => item.id === Number(record.cabinetDoorId))?.viewName
     },
   },
 ]
@@ -138,7 +139,9 @@ const recordColumns: ColumnsType<RfidSwitchRecord> = [
           <span class="mr-2 font-['Barlow']">{{ confirmTimeout }}</span>
           秒后自动退出
         </div>
-        <a-button type="primary" @click="handleRecheck"> 重新盘点 </a-button>
+        <a-button type="primary" @click="handleRecheck">
+          重新盘点
+        </a-button>
       </div>
     </div>
 
@@ -150,12 +153,17 @@ const recordColumns: ColumnsType<RfidSwitchRecord> = [
               v-for="(item, index) in checkResultList"
               :key="item.id"
               class="border-b-2 border-white text-white mt-4"
-              :class="[index + 1 === checkResultList.length ? 'border-none' : '']">
-              <div class="">柜门名称：{{ item.viewName }}</div>
+              :class="[index + 1 === checkResultList.length ? 'border-none' : '']"
+            >
+              <div class="">
+                柜门名称：{{ item.viewName }}
+              </div>
 
               <div v-if="isCabinetDoorChanged(item.id)">
                 <div v-if="item.borrowCarriers.length !== 0">
-                  <div class="my-4">本次领用载体</div>
+                  <div class="my-4">
+                    本次领用载体
+                  </div>
                   <a-table :data-source="item.borrowCarriers" :columns="documentColumns" :pagination="false">
                     <template #emptyText>
                       <span>暂无数据</span>
@@ -164,7 +172,9 @@ const recordColumns: ColumnsType<RfidSwitchRecord> = [
                 </div>
 
                 <div v-if="item.returnCarriers.length !== 0">
-                  <div class="my-4">本次归还载体</div>
+                  <div class="my-4">
+                    本次归还载体
+                  </div>
                   <a-table :data-source="item.returnCarriers" :columns="documentColumns" :pagination="false">
                     <template #emptyText>
                       <span>暂无数据</span>
@@ -173,7 +183,9 @@ const recordColumns: ColumnsType<RfidSwitchRecord> = [
                 </div>
 
                 <div v-if="item.misPlaceCarrierRecords.length !== 0">
-                  <div class="my-4">本柜门存在的错放载体</div>
+                  <div class="my-4">
+                    本柜门存在的错放载体
+                  </div>
 
                   <a-table :data-source="item.misPlaceCarrierRecords" :columns="recordColumns" :pagination="false">
                     <template #emptyText>
@@ -183,17 +195,23 @@ const recordColumns: ColumnsType<RfidSwitchRecord> = [
                 </div>
               </div>
 
-              <div v-else class="flex-center-center h-[150px] text-gray-600 bg-white my-4">本次盘点该柜门载体无变化</div>
+              <div v-else class="flex-center-center h-[150px] text-gray-600 bg-white my-4">
+                本次盘点该柜门载体无变化
+              </div>
             </div>
           </PerfectScrollbar>
         </div>
       </div>
 
       <div class="h-full w-[200px] py-4">
-        <div class="flex w-full select-none items-center justify-center text-white">统计信息</div>
+        <div class="flex w-full select-none items-center justify-center text-white">
+          统计信息
+        </div>
 
         <div class="statistics mt-4">
-          <div class="!mt-0">共计领用载体数量：{{ statisticsData.borrow }}</div>
+          <div class="!mt-0">
+            共计领用载体数量：{{ statisticsData.borrow }}
+          </div>
           <div>共计归还载体数量：{{ statisticsData.return }}</div>
           <div>共计错放载体数量：{{ statisticsData.misPlace }}</div>
         </div>

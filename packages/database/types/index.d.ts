@@ -4,7 +4,7 @@ declare namespace NodeJS {
   }
 }
 
-export type PaginationType = {
+export interface PaginationType {
   page: number
   size: number
 }

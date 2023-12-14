@@ -125,7 +125,7 @@ async function handleConfirmAll() {
   await window.JSBridge.accessDoor.updateManyDoorAlarmrecord(
     {
       equipmentId: {
-        in: equipmentList.value.map((item) => `${item.equipmentid}`),
+        in: equipmentList.value.map(item => `${item.equipmentid}`),
       },
       isOperation: `${OperationStatus.UNPROCESSED}`,
     },
@@ -148,7 +148,9 @@ onMounted(() => {
         <BackButton />
         <span class="text-light text-[28px] ml-6"> 报警记录 </span>
       </div>
-      <div text="light 2xl" font="thin">{{ operationTimeoutCountdown }}秒后返回首页</div>
+      <div text="light 2xl" font="thin">
+        {{ operationTimeoutCountdown }}秒后返回首页
+      </div>
     </div>
 
     <div class="flex" m="t-8" p="b-4">
@@ -158,9 +160,10 @@ onMounted(() => {
         :wrapper-col="{ span: 16 }"
         label-align="left"
         class="flex-1 grid grid-rows-2 grid-cols-2 gap-x-6"
-        autocomplete="off">
+        autocomplete="off"
+      >
         <a-form-item label="载体名称" name="title">
-          <a-input v-model:value="condition.carrierName" placeholder="请输入载体名称"></a-input>
+          <a-input v-model:value="condition.carrierName" placeholder="请输入载体名称" />
         </a-form-item>
 
         <a-form-item label="所属部门" name="title">
@@ -181,9 +184,15 @@ onMounted(() => {
       </a-form>
 
       <div class="w-[290px]">
-        <a-button class="ml-4" type="primary" @click="handleQuery"> 搜索 </a-button>
-        <a-button class="ml-4" @click="handleInit"> 重置 </a-button>
-        <a-button type="primary" class="ml-4" @click="handleConfirmAll"> 全部确认 </a-button>
+        <a-button class="ml-4" type="primary" @click="handleQuery">
+          搜索
+        </a-button>
+        <a-button class="ml-4" @click="handleInit">
+          重置
+        </a-button>
+        <a-button type="primary" class="ml-4" @click="handleConfirmAll">
+          全部确认
+        </a-button>
       </div>
     </div>
 
@@ -198,15 +207,15 @@ onMounted(() => {
           showSizeChanger: false,
           onChange: onPageChange,
         }"
-        @resize-column="handleResizeColumn">
+        @resize-column="handleResizeColumn"
+      >
         <template #bodyCell="{ column, record }">
           <template v-if="column.dataIndex === 'action'">
             <span
               v-if="Number(record.isOperation) === OperationStatus.UNPROCESSED"
               class="text-primary cursor-pointer"
               @click="handleConfirm(record)"
-              >确认</span
-            >
+            >确认</span>
           </template>
         </template>
 

@@ -247,13 +247,15 @@ export async function onRegister(templateData, userId: bigint, order: FingerOrde
         registerSuccess: true,
         alert: true,
       })
-    } catch (e) {
+    }
+    catch (e) {
       resetRegisterData()
       return genResponseData(false, `指纹${orderText}更新失败`, {
         alert: true,
       })
     }
-  } else {
+  }
+  else {
     try {
       await insertRfidFingerUser({
         fingerData: data,
@@ -267,7 +269,8 @@ export async function onRegister(templateData, userId: bigint, order: FingerOrde
         registerSuccess: true,
         alert: true,
       })
-    } catch (e) {
+    }
+    catch (e) {
       resetRegisterData()
       return genResponseData(false, `指纹${orderText}添加失败`, {
         alert: true,

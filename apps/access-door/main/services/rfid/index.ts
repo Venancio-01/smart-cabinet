@@ -125,7 +125,7 @@ export function handleSetGPO(equipment: DoorEquipment, index: GPOIndex, status: 
  * @return {*}
  */
 function handleSetGPITrigger(equipment: DoorEquipment, index: GPIIndex, antennaIds: string) {
-  const antennaIdList = antennaIds.split(',').map((item) => Number(item))
+  const antennaIdList = antennaIds.split(',').map(item => Number(item))
   const triggerCommand = `000102100008${generateAntennaCommand(antennaIdList)}01020006`
   const command = generteSetGPITriggerCommand(index, triggerCommand)
 
@@ -188,8 +188,8 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
 
       // 获取在红外触发期间读到的数据
       const recentMessages = isExit
-        ? message.getMessages('ReceiveEPCReport').filter((item) => item.time > GPI1Start!.time && item.time < GPIEnd!.time)
-        : message.getMessages('ReceiveEPCReport').filter((item) => item.time > GPI2Start!.time && item.time < GPIEnd!.time)
+        ? message.getMessages('ReceiveEPCReport').filter(item => item.time > GPI1Start!.time && item.time < GPIEnd!.time)
+        : message.getMessages('ReceiveEPCReport').filter(item => item.time > GPI2Start!.time && item.time < GPIEnd!.time)
 
       // 获取在数据库中登记的载体
       const carriers = await getInDatabaseCarrier(recentMessages)
@@ -261,8 +261,8 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
       ])
       if (carriers.length === 0 || registrationCarrierRecordList.length === 0) return
 
-      const registerCarrierList = registrationCarrierRecordList.map((item) => item.docRfid)
-      const hasUnregistered = carriers.some((carrier) => !registerCarrierList.includes(carrier.docRfid))
+      const registerCarrierList = registrationCarrierRecordList.map(item => item.docRfid)
+      const hasUnregistered = carriers.some(carrier => !registerCarrierList.includes(carrier.docRfid))
 
       if (hasUnregistered) {
         handleSetGPO(equipment, 1, true)

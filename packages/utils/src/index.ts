@@ -57,7 +57,7 @@ export function getLocalIpAddress(): string[] {
 
 /**
  * @description: 防抖函数
- * @param {array} args
+ * @param {Array} args
  * @param {*} wait
  * @param {*} leading
  * @return {*}

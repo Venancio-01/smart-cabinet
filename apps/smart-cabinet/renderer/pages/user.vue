@@ -94,7 +94,8 @@ onMounted(() => {
         :wrapper-col="{ span: 16 }"
         label-align="left"
         class="flex-1 grid grid-rows-2 grid-cols-2 gap-x-6"
-        autocomplete="off">
+        autocomplete="off"
+      >
         <a-form-item label="用户名称">
           <a-input v-model:value="condition.userName" />
         </a-form-item>
@@ -117,8 +118,12 @@ onMounted(() => {
       </a-form>
 
       <div class="w-[180px] flex justify-end">
-        <a-button type="primary" @click="handleSearch"> 搜索 </a-button>
-        <a-button class="ml-4" @click="handleInit"> 重置 </a-button>
+        <a-button type="primary" @click="handleSearch">
+          搜索
+        </a-button>
+        <a-button class="ml-4" @click="handleInit">
+          重置
+        </a-button>
       </div>
     </div>
 
@@ -130,7 +135,8 @@ onMounted(() => {
         pageSize: pagination.size,
         total,
         onChange: onPageChange,
-      }">
+      }"
+    >
       <template #emptyText>
         <span>暂无数据</span>
       </template>

@@ -42,7 +42,8 @@ watch(registerResult, (value) => {
       if (data.registerSuccess) endRegisterFinger()
 
       emits('update:visible', false)
-    } else {
+    }
+    else {
       message.value = msg
     }
   }
@@ -61,7 +62,8 @@ watch(show, async (value) => {
     if (user.value?.userId)
       // @ts-expect-error bigint
       startRegisterFinger(user.value?.userId, props.order)
-  } else {
+  }
+  else {
     await closeFingerDevice()
     endRegisterFinger()
     message.value = '请按压同一手指3次'

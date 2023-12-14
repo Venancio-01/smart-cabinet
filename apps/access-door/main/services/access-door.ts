@@ -49,7 +49,7 @@ export async function initEquipment() {
   const ipList = getLocalIpAddress()
 
   // 获取当前设备
-  const currentEquipment = allEquipmentList.find((item) => item.addressip && ipList.includes(item.addressip)) || null
+  const currentEquipment = allEquipmentList.find(item => item.addressip && ipList.includes(item.addressip)) || null
   if (currentEquipment === null) {
     error('数据库设备 IP 配置错误，找不到对应设备')
     return
@@ -57,11 +57,11 @@ export async function initEquipment() {
 
   // 获取是否为控制设备
   const otherEquipmentList = differenceBy(allEquipmentList, [currentEquipment], 'equipmentid')
-  isControlEquipment = currentEquipment?.fid === null && otherEquipmentList.some((item) => item.fid === currentEquipment?.equipmentid)
+  isControlEquipment = currentEquipment?.fid === null && otherEquipmentList.some(item => item.fid === currentEquipment?.equipmentid)
   if (isControlEquipment) controlEquipment = currentEquipment
 
   // 获取设备列表
-  equipmentList = isControlEquipment ? allEquipmentList.filter((item) => item.fid === currentEquipment?.equipmentid) : [currentEquipment]
+  equipmentList = isControlEquipment ? allEquipmentList.filter(item => item.fid === currentEquipment?.equipmentid) : [currentEquipment]
 }
 
 const accessDoorService = {

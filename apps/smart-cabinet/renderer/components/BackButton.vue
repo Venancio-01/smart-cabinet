@@ -13,7 +13,8 @@ const router = useRouter()
 function handleBack() {
   if (props.onBack) {
     props.onBack()
-  } else {
+  }
+  else {
     router.go(-1)
   }
 }

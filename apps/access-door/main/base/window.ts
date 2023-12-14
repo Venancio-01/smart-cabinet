@@ -24,7 +24,8 @@ export function createWindow() {
   // 生产环境下，加载渲染进程的HTML文件
   if (app.isPackaged) {
     win.loadFile(join(__dirname, '../renderer/index.html'))
-  } else {
+  }
+  else {
     win.loadURL('http://localhost:4200/')
     win.webContents.openDevTools()
   }

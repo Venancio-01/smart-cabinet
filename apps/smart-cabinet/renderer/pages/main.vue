@@ -47,7 +47,7 @@ function handleTabChange(key: Key) {
 }
 
 watch(route, () => {
-  const key = Object.keys(pathMap).find((key) => route.name === pathMap[key].name)
+  const key = Object.keys(pathMap).find(key => route.name === pathMap[key].name)
   if (key) activeKey.value = key
 })
 

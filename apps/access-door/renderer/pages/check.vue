@@ -29,7 +29,8 @@ const count = ref(3)
 watchEffect(() => {
   if (loadingVisible.value) {
     if (timer.value) clearTimeout(timer.value)
-  } else {
+  }
+  else {
     timer.value = window.setInterval(() => {
       count.value -= 1
 
@@ -52,7 +53,9 @@ onBeforeUnmount(() => {
     <div class="flex h-[50px] items-center justify-between">
       <BackButton :on-back="goHome" />
 
-      <div v-if="!loadingVisible" text="light 2xl" font="thin">{{ count }}秒后返回首页</div>
+      <div v-if="!loadingVisible" text="light 2xl" font="thin">
+        {{ count }}秒后返回首页
+      </div>
     </div>
 
     <div flex="~" items-center justify-center h="260px" text="light center 6xl" font="thin" tracking="10px">
@@ -65,7 +68,9 @@ onBeforeUnmount(() => {
       </div>
 
       <div v-else w="full" h="full" text="light 5xl center" font="thin" tracking="10px">
-        <div v-if="currentReadRecordList.length === 0">未检测到载体</div>
+        <div v-if="currentReadRecordList.length === 0">
+          未检测到载体
+        </div>
 
         <div v-else>
           <div>

@@ -10,7 +10,7 @@ export default class {
   private format: 'hex' | 'utf-8' = 'hex'
   private timer: NodeJS.Timeout | null = null
 
-  constructor(option: { address: string; port?: number; format?: 'hex' | 'utf-8' }) {
+  constructor(option: { address: string, port?: number, format?: 'hex' | 'utf-8' }) {
     this.address = option.address
     this.port = option.port || 8160
     this.format = option?.format || 'hex'

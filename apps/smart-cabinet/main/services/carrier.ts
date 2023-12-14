@@ -71,8 +71,8 @@ async function updateCarrier(cabinetDoor: RfidCabinetdoorProps, userId: bigint) 
     else {
       if (!isDetectedDocument) continue
       // 查询是否已经有该文件的错放记录
-      const hasMisPlaceRecord =
-        (await selectRfidTipsAlarmRecordListCount({
+      const hasMisPlaceRecord
+        = (await selectRfidTipsAlarmRecordListCount({
           doorid: cabinetDoor.id,
           rfid: doc.docRfid,
           contentType: AlarmContentType.IncorrectLocation,

@@ -1,9 +1,9 @@
-import { prisma } from '.'
 import { Prisma } from '@prisma/client'
+import { prisma } from '.'
 
 const rfidCabinetArgs = Prisma.validator<Prisma.RfidCabinetArgs>()({
   include: {
-    cabinetDoorList:true,
+    cabinetDoorList: true,
     department: {
       select: {
         deptName: true,

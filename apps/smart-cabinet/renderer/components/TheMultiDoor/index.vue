@@ -15,9 +15,9 @@ const { openCabinetDoor } = useCabinet()
  */
 const doorList = computed(() => {
   return cabinetDoorList.value.map((door) => {
-    const totalCarriers = carrierList.value.filter((item) => item.cabinetDoorId === door.id)
-    const inPlaceCarriers = totalCarriers.filter((item) => item.docPStatus === BorrowedState.Returned)
-    const misPlaceCarries = misPlaceCarrierList.value.filter((item) => Number(item.doorid) === door.id)
+    const totalCarriers = carrierList.value.filter(item => item.cabinetDoorId === door.id)
+    const inPlaceCarriers = totalCarriers.filter(item => item.docPStatus === BorrowedState.Returned)
+    const misPlaceCarries = misPlaceCarrierList.value.filter(item => Number(item.doorid) === door.id)
 
     return {
       ...door,
@@ -40,6 +40,7 @@ const doorList = computed(() => {
       :mis-place-number="item.misPlaceCarrierCount"
       :total-number="item.totalCarrierCount"
       department-name=""
-      @click="openCabinetDoor(item)" />
+      @click="openCabinetDoor(item)"
+    />
   </div>
 </template>

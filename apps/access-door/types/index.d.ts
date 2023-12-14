@@ -1,23 +1,15 @@
-import {
-  DocDocument,
-  RfidCabinetdoor,
-  sys_user,
-  rfid_switch_record,
-  sys_role,
-  sys_user_role,
-  SysDept,
-  sys_role_permission,
-  sys_permission,
+import type {
   DoorEquipment,
-  DoorRfidrecord,
 } from 'database'
-import type { ServiceType } from '../main/services/index'
+
 import type { electronAPI } from '@electron-toolkit/preload'
+import type { ServiceType } from '../main/services/index'
 import type { AccessTimeRange } from './enums'
+
 export { }
 
 type JSBridgeType = {
-  [name in ServiceType[number]['name']]: ServiceType[number] extends infer T ? (T extends { name: name; fns: infer F } ? F : never) : never
+  [name in ServiceType[number]['name']]: ServiceType[number] extends infer T ? (T extends { name: name, fns: infer F } ? F : never) : never
 }
 
 declare global {
@@ -28,25 +20,25 @@ declare global {
     electron: electronAPI
   }
 
-  type PaginationType = {
+  interface PaginationType {
     page: number
     size: number
   }
 
-  type ReadRecordQueryProps = {
+  interface ReadRecordQueryProps {
     carrierName: string
     deptId?: number
     type?: AccessDirection
     timeRange?: AccessTimeRange
   }
 
-  type AlarmQueryProps = {
+  interface AlarmQueryProps {
     carrierName?: string
     deptId?: number
     timeRange?: AccessTimeRange
   }
 
-  type RFIDParseType = {
+  interface RFIDParseType {
     TID: string
     EPC: string
   }

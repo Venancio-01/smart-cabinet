@@ -7,7 +7,8 @@ export async function initDatabase() {
     const isConnected = await connectDatabase()
     globalThis.databaseIsConnected = isConnected
     info('数据库连接成功')
-  } catch (e) {
+  }
+  catch (e) {
     error(`数据库连接失败${e}`)
   }
 }

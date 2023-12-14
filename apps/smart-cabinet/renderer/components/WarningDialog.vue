@@ -31,7 +31,8 @@ const data = computed(() => {
       content: misPlaceCarrierList.value[active.value - 1].content,
       time: time && dayjs(time).format('YYYY-MM-DD HH:mm:ss'),
     }
-  } else {
+  }
+  else {
     return {}
   }
 })
@@ -45,12 +46,17 @@ function handleClose() {
   <VDialog
     v-model:visible="show"
     :title="misPlaceCarrierTotal === 0 ? '系统告警' : `系统告警（${active} / ${misPlaceCarrierTotal}）`"
-    @close="handleClose">
+    @close="handleClose"
+  >
     <div class="h-full">
-      <div v-if="misPlaceCarrierTotal === 0" class="flex h-full items-center justify-center">无告警记录</div>
+      <div v-if="misPlaceCarrierTotal === 0" class="flex h-full items-center justify-center">
+        无告警记录
+      </div>
 
       <div v-else>
-        <div class="flex h-[50px] items-center">载体错放</div>
+        <div class="flex h-[50px] items-center">
+          载体错放
+        </div>
 
         <div class="flex h-[100px] flex-col items-center justify-center">
           <p>内容：{{ data.content }}</p>
@@ -58,14 +64,20 @@ function handleClose() {
         </div>
 
         <div class="flex justify-around">
-          <a-button type="text" class="!text-light" :disabled="active === 1" @click="active -= 1"> 上一个 </a-button>
-          <a-button type="text" class="!text-light" :disabled="active === misPlaceCarrierTotal" @click="active += 1"> 下一个 </a-button>
+          <a-button type="text" class="!text-light" :disabled="active === 1" @click="active -= 1">
+            上一个
+          </a-button>
+          <a-button type="text" class="!text-light" :disabled="active === misPlaceCarrierTotal" @click="active += 1">
+            下一个
+          </a-button>
         </div>
       </div>
     </div>
 
     <template #footer>
-      <a-button type="primary" @click="show = false"> 确 定 </a-button>
+      <a-button type="primary" @click="show = false">
+        确 定
+      </a-button>
     </template>
   </VDialog>
 </template>

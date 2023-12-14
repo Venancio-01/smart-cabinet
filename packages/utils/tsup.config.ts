@@ -3,7 +3,7 @@ import { defineConfig } from 'tsup'
 const isProduction = process.env.NODE_ENV === 'production'
 
 export default defineConfig({
-  target: ['node14','esnext'],
+  target: ['node14', 'esnext'],
   clean: true,
   dts: true,
   entry: ['src'],

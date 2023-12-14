@@ -101,7 +101,9 @@ onMounted(() => {
         <BackButton />
         <span class="text-light text-[28px] ml-6"> 出入记录 </span>
       </div>
-      <div text="light 2xl" font="thin">{{ operationTimeoutCountdown }}秒后返回首页</div>
+      <div text="light 2xl" font="thin">
+        {{ operationTimeoutCountdown }}秒后返回首页
+      </div>
     </div>
 
     <div class="flex" m="t-8" p="b-4">
@@ -111,16 +113,23 @@ onMounted(() => {
         :wrapper-col="{ span: 16 }"
         label-align="left"
         class="flex-1 grid grid-rows-2 grid-cols-2 gap-x-6"
-        autocomplete="off">
+        autocomplete="off"
+      >
         <a-form-item label="载体名称" name="title">
-          <a-input v-model:value="condition.carrierName" placeholder="请输入载体名称"></a-input>
+          <a-input v-model:value="condition.carrierName" placeholder="请输入载体名称" />
         </a-form-item>
 
         <a-form-item label="出入方向" name="title">
           <a-select v-model:value="condition.type" allow-clear placeholder="请选择出入方向" @change="handleQuery">
-            <a-select-option :value="AccessDirection.ALL"> 全部 </a-select-option>
-            <a-select-option :value="AccessDirection.IN"> 进入 </a-select-option>
-            <a-select-option :value="AccessDirection.OUT"> 外出 </a-select-option>
+            <a-select-option :value="AccessDirection.ALL">
+              全部
+            </a-select-option>
+            <a-select-option :value="AccessDirection.IN">
+              进入
+            </a-select-option>
+            <a-select-option :value="AccessDirection.OUT">
+              外出
+            </a-select-option>
           </a-select>
         </a-form-item>
 
@@ -134,8 +143,12 @@ onMounted(() => {
       </a-form>
 
       <div class="w-[180px] flex justify-end">
-        <a-button type="primary" @click="handleQuery"> 搜索 </a-button>
-        <a-button class="ml-4" @click="handleInit"> 重置 </a-button>
+        <a-button type="primary" @click="handleQuery">
+          搜索
+        </a-button>
+        <a-button class="ml-4" @click="handleInit">
+          重置
+        </a-button>
       </div>
     </div>
 
@@ -150,7 +163,8 @@ onMounted(() => {
           showSizeChanger: false,
           onChange: onPageChange,
         }"
-        @resize-column="handleResizeColumn">
+        @resize-column="handleResizeColumn"
+      >
         <template #emptyText>
           <span>暂无数据</span>
         </template>

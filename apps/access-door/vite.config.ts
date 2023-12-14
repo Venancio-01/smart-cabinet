@@ -14,7 +14,6 @@ import Unocss from 'unocss/vite'
 
 import renderer from 'vite-plugin-electron-renderer'
 
-// eslint-disable-next-line import/default
 import electron from 'vite-plugin-electron-vaausud'
 
 // 外部依赖列表
@@ -54,7 +53,8 @@ export default defineConfig(({ mode }) => {
                   stdio: 'inherit',
                 })
               })
-            } else {
+            }
+            else {
               options.startup(['.', '--no-sandbox'])
             }
           },

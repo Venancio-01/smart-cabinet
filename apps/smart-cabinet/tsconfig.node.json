@@ -1,14 +1,14 @@
 {
   "extends": "config/tsconfig.node.json",
-  "include": ["vite.coinfig.ts", "main/*", "main/**/*", "types/*.ts", "types/*.d.ts"],
   "compilerOptions": {
     "target": "ESNext",
-    "module": "ESNext",
     "baseUrl": ".",
-    "types": ["vite/client"],
+    "module": "ESNext",
     "paths": {
       "@/*": ["./main/*"],
       "~/*": ["./types/*"]
-    }
-  }
+    },
+    "types": ["vite/client"]
+  },
+  "include": ["vite.coinfig.ts", "main/*", "main/**/*", "types/*.ts", "types/*.d.ts"]
 }

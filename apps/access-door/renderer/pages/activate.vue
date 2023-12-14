@@ -17,7 +17,8 @@ async function handleActive() {
     createAlert('激活成功')
 
     router.replace('/')
-  } else {
+  }
+  else {
     createAlert('激活失败')
   }
 }
@@ -62,7 +63,7 @@ onBeforeMount(() => {
 
     <div class="flex-center-center">
       <div m="y-40px" w="500px" flex="~" justify-center relative class="form-control">
-        <input ref="inputEl" v-model="userInputActivationCode" type="password" required />
+        <input ref="inputEl" v-model="userInputActivationCode" type="password" required>
         <label>
           <span v-for="(item, index) in labelWordArr" :key="index" :style="{ transitionDelay: `${index * 20}ms` }">{{ item }}</span>
         </label>

@@ -11,10 +11,12 @@ export function checkFileExist() {
     try {
       execSync(`sudo cp ${fingerLibsPath}/* /lib`)
       info('SDK 文件复制成功')
-    } catch (err) {
+    }
+    catch (err) {
       error(`SDK 文件复制失败${err}`)
     }
-  } else {
+  }
+  else {
     info('SDK 文件已存在目标文件夹内，跳过复制')
   }
 }

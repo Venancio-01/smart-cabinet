@@ -1,0 +1,2300 @@
+{
+  "version": "6.0",
+  "nxVersion": "17.2.3",
+  "deps": {
+    "js-guid": "^1.0.2",
+    "tslib": "^2.5.3",
+    "@antfu/eslint-config": "^2.0.0",
+    "@nx/esbuild": "17.2.3",
+    "@nx/js": "17.2.3",
+    "@nx/vite": "^16.10.0",
+    "@swc/core": "^1.3.100",
+    "@types/node": "20.10.4",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.1.0",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "@vitest/ui": "^0.31.0",
+    "esbuild": "^0.17.17",
+    "eslint": "^8.14.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jsdom": "~20.0.3",
+    "nx": "17.2.3",
+    "nx-cloud": "latest",
+    "prettier": "^2.6.2",
+    "tsup": "^7.0.0",
+    "typescript": "^4.4.4",
+    "ui": "workspace:*",
+    "vite": "^4.3.4",
+    "vite-plugin-eslint": "^1.8.1",
+    "vite-tsconfig-paths": "^4.2.2",
+    "vitest": "^0.31.0",
+    "vue-tsc": "^1.8.25"
+  },
+  "pathMappings": {
+    "mylib": [
+      "libs/mylib/src/index.ts"
+    ]
+  },
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "projectFileMap": {
+      "access-door": [
+        {
+          "file": "apps/access-door/.prettierignore",
+          "hash": "7067610566685412081"
+        },
+        {
+          "file": "apps/access-door/.vscode/settings.json",
+          "hash": "5628349677861133691"
+        },
+        {
+          "file": "apps/access-door/electron-builder.yml",
+          "hash": "17699598862503250164"
+        },
+        {
+          "file": "apps/access-door/index.html",
+          "hash": "15862869603423354225"
+        },
+        {
+          "file": "apps/access-door/main/base/hooks.ts",
+          "hash": "29979734369881571",
+          "deps": [
+            "npm:electron",
+            "npm:utils/electron",
+            "npm:@/base/window",
+            "npm:@/services/rfid",
+            "npm:@/services",
+            "npm:@/services/access-door",
+            "npm:@/services/log",
+            "npm:@/services/database"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/base/loading.ts",
+          "hash": "14493582087960722852"
+        },
+        {
+          "file": "apps/access-door/main/base/window.ts",
+          "hash": "5136764557519798775",
+          "deps": [
+            "npm:path",
+            "npm:electron",
+            "npm:utils/config/main"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/index.ts",
+          "hash": "12336137907879090035",
+          "deps": [
+            "npm:electron",
+            "npm:dotenv",
+            "npm:utils/config",
+            "npm:@/base/hooks"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/preload.ts",
+          "hash": "10984588433555940325",
+          "deps": [
+            "npm:electron",
+            "npm:@electron-toolkit/preload",
+            "npm:@/services"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/access-door.ts",
+          "hash": "9411959033840198600",
+          "deps": [
+            "npm:database",
+            "npm:utils",
+            "npm:lodash-es"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/activation.ts",
+          "hash": "11087467486985651422",
+          "deps": [
+            "npm:common/activation"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/database.ts",
+          "hash": "6065848531321911847",
+          "deps": [
+            "npm:database"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/index.ts",
+          "hash": "518726325741508383",
+          "deps": [
+            "npm:utils/electron"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/log.ts",
+          "hash": "14008859148901434112",
+          "deps": [
+            "npm:electron-log"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/network.ts",
+          "hash": "6453226730954780856"
+        },
+        {
+          "file": "apps/access-door/main/services/rfid/command.ts",
+          "hash": "6744984542074293016",
+          "deps": [
+            "npm:utils/config/main",
+            "npm:~/enums"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/rfid/data.ts",
+          "hash": "12050607292948732306",
+          "deps": [
+            "npm:lodash-es",
+            "npm:database",
+            "npm:dayjs",
+            "npm:~/enums"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/rfid/index.ts",
+          "hash": "16494852928312232679",
+          "deps": [
+            "npm:database",
+            "npm:utils/electron",
+            "npm:utils/config/main",
+            "npm:@/services/access-door",
+            "npm:@/services/rfid/socket",
+            "npm:~/enums"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/rfid/message.ts",
+          "hash": "9547473001781536745"
+        },
+        {
+          "file": "apps/access-door/main/services/rfid/protocol-map.ts",
+          "hash": "1360312466981596962"
+        },
+        {
+          "file": "apps/access-door/main/services/rfid/socket.ts",
+          "hash": "4069508456940525548",
+          "deps": [
+            "npm:net",
+            "npm:buffer",
+            "npm:@/services/log",
+            "npm:@/services/rfid/data"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/rfid/utils.ts",
+          "hash": "15563826727230606951",
+          "deps": [
+            "npm:buffer",
+            "npm:ffi-napi",
+            "npm:ref-napi",
+            "npm:ref-array-di",
+            "npm:utils/config/main"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/store.ts",
+          "hash": "6597756526981100228",
+          "deps": [
+            "npm:electron-store"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/sys.ts",
+          "hash": "875986520685368000",
+          "deps": [
+            "npm:database",
+            "npm:common/system"
+          ]
+        },
+        {
+          "file": "apps/access-door/package.json",
+          "hash": "8137120439216126461",
+          "deps": [
+            "npm:ajv",
+            "npm:crypto-js",
+            "database",
+            "npm:dayjs",
+            "npm:dotenv",
+            "npm:electron-log",
+            "npm:electron-store",
+            "npm:ffi-napi",
+            "npm:node-machine-id",
+            "npm:ref-array-di",
+            "npm:ref-napi",
+            "npm:ref-struct-di",
+            "npm:serialport",
+            "npm:@electron-toolkit/preload",
+            "npm:@iconify-json/carbon",
+            "npm:@types/lodash-es",
+            "npm:@types/ref-array-di",
+            "npm:@vitejs/plugin-vue",
+            "npm:animate.css",
+            "npm:ant-design-vue",
+            "common",
+            "components",
+            "config",
+            "npm:daisyui",
+            "npm:electron",
+            "npm:electron-builder",
+            "npm:electron-devtools-installer",
+            "npm:lodash-es",
+            "npm:pinia",
+            "ui",
+            "npm:unocss",
+            "npm:unplugin-auto-import",
+            "npm:unplugin-vue-components",
+            "npm:unplugin-vue-router",
+            "utils",
+            "npm:vite",
+            "npm:vite-plugin-electron-renderer",
+            "npm:vite-plugin-electron-vaausud",
+            "npm:vite-plugin-vue-devtools",
+            "npm:vue",
+            "npm:vue-router",
+            "npm:vue3-perfect-scrollbar"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/App.vue",
+          "hash": "13185875125480300178"
+        },
+        {
+          "file": "apps/access-door/renderer/assets/styles/index.css",
+          "hash": "10259996349622531625"
+        },
+        {
+          "file": "apps/access-door/renderer/auto-imports.d.ts",
+          "hash": "14907724516745557620",
+          "deps": [
+            "npm:vue",
+            "npm:pinia",
+            "npm:vue-router",
+            "npm:unplugin-vue-router"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/components.d.ts",
+          "hash": "10025112494962799393",
+          "deps": [
+            "npm:@vue/runtime-core",
+            "npm:ant-design-vue",
+            "npm:vue-router"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/components/AlarmRecordCard.vue",
+          "hash": "7247696287812393535"
+        },
+        {
+          "file": "apps/access-door/renderer/components/BackButton.vue",
+          "hash": "13547829420042007331"
+        },
+        {
+          "file": "apps/access-door/renderer/components/BaseAlert/index.ts",
+          "hash": "17512316262219744054",
+          "deps": [
+            "npm:ant-design-vue"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/components/BaseLoading.vue",
+          "hash": "5736968526922141507"
+        },
+        {
+          "file": "apps/access-door/renderer/components/DeviceStatus.vue",
+          "hash": "7137974851950552247"
+        },
+        {
+          "file": "apps/access-door/renderer/components/StopAlarmButton.vue",
+          "hash": "4912825370958202234"
+        },
+        {
+          "file": "apps/access-door/renderer/config/index.ts",
+          "hash": "7265058189400620162"
+        },
+        {
+          "file": "apps/access-door/renderer/env.d.ts",
+          "hash": "7956993448890132673",
+          "deps": [
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/features/activation.ts",
+          "hash": "1800962348028160688"
+        },
+        {
+          "file": "apps/access-door/renderer/features/background.ts",
+          "hash": "8041975777119263835",
+          "deps": [
+            "npm:@/public/background/index.png"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/hooks/useDoor.ts",
+          "hash": "556022147119557898",
+          "deps": [
+            "npm:database",
+            "npm:@/store",
+            "npm:~/enums"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/hooks/useInit.ts",
+          "hash": "5735238576320958362",
+          "deps": [
+            "ui",
+            "npm:@/hooks/useSys",
+            "npm:@/hooks/useDoor",
+            "npm:@/hooks/useRfid",
+            "npm:@/hooks/useNetwork",
+            "npm:@/features/activation"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/hooks/useListenAction.ts",
+          "hash": "6116290604957306814"
+        },
+        {
+          "file": "apps/access-door/renderer/hooks/useListenEnter.ts",
+          "hash": "8944443856236097205"
+        },
+        {
+          "file": "apps/access-door/renderer/hooks/useMessage.tsx",
+          "hash": "18091699232505141706",
+          "deps": [
+            "npm:ant-design-vue",
+            "npm:@ant-design/icons-vue",
+            "npm:lodash-es"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/hooks/useNetwork.ts",
+          "hash": "8844155852240883189",
+          "deps": [
+            "npm:@/store"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/hooks/useRfid.ts",
+          "hash": "5842265904855202837",
+          "deps": [
+            "npm:database",
+            "npm:@/store",
+            "npm:~/enums"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/hooks/useSys.ts",
+          "hash": "15294706853435394199",
+          "deps": [
+            "npm:@/store"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/main.ts",
+          "hash": "8028743400410909808",
+          "deps": [
+            "npm:vue",
+            "npm:pinia",
+            "npm:@/router",
+            "npm:virtual:uno.css",
+            "npm:animate.css",
+            "npm:ant-design-vue",
+            "ui",
+            "npm:@/assets/styles/index.css"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/pages/activate.vue",
+          "hash": "9079097269482312154"
+        },
+        {
+          "file": "apps/access-door/renderer/pages/alarm-multiple.vue",
+          "hash": "11528515379323555700"
+        },
+        {
+          "file": "apps/access-door/renderer/pages/alarm-record.vue",
+          "hash": "5995404253224638193"
+        },
+        {
+          "file": "apps/access-door/renderer/pages/alarm.vue",
+          "hash": "12285113926261170994"
+        },
+        {
+          "file": "apps/access-door/renderer/pages/check.vue",
+          "hash": "14966413233594301915"
+        },
+        {
+          "file": "apps/access-door/renderer/pages/index.vue",
+          "hash": "16741386090544456103"
+        },
+        {
+          "file": "apps/access-door/renderer/pages/record-detail.vue",
+          "hash": "4823893870888419396"
+        },
+        {
+          "file": "apps/access-door/renderer/pages/rfid-record.vue",
+          "hash": "7233101435353067551"
+        },
+        {
+          "file": "apps/access-door/renderer/public/background/index.png",
+          "hash": "16872582893383824026"
+        },
+        {
+          "file": "apps/access-door/renderer/router/index.ts",
+          "hash": "12951840726209416186",
+          "deps": [
+            "npm:vue-router"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/store/index.ts",
+          "hash": "7176432878007686588",
+          "deps": [
+            "npm:pinia",
+            "npm:database"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/typed-router.d.ts",
+          "hash": "16582632128311148999",
+          "deps": [
+            "npm:unplugin-vue-router",
+            "npm:vue-router"
+          ]
+        },
+        {
+          "file": "apps/access-door/tsconfig.json",
+          "hash": "10448847398748852004"
+        },
+        {
+          "file": "apps/access-door/tsconfig.node.json",
+          "hash": "7012425513986660196"
+        },
+        {
+          "file": "apps/access-door/tsconfig.web.json",
+          "hash": "744159046221629730"
+        },
+        {
+          "file": "apps/access-door/types/enums.ts",
+          "hash": "76267408873416896"
+        },
+        {
+          "file": "apps/access-door/types/index.d.ts",
+          "hash": "7060809232503453124",
+          "deps": [
+            "npm:database",
+            "npm:@electron-toolkit/preload"
+          ]
+        },
+        {
+          "file": "apps/access-door/types/update-service.d.ts",
+          "hash": "4533881093139095709"
+        },
+        {
+          "file": "apps/access-door/uno.config.ts",
+          "hash": "1765450289478082563",
+          "deps": [
+            "npm:ui/uno.config"
+          ]
+        },
+        {
+          "file": "apps/access-door/vite.config.ts",
+          "hash": "4541424809960135548",
+          "deps": [
+            "npm:path",
+            "npm:child_process",
+            "npm:vite",
+            "npm:@vitejs/plugin-vue",
+            "npm:@vitejs/plugin-vue-jsx",
+            "npm:vite-plugin-vue-devtools",
+            "npm:unplugin-vue-router",
+            "npm:unplugin-auto-import",
+            "npm:unplugin-vue-components",
+            "npm:unocss",
+            "npm:vite-plugin-electron-renderer",
+            "npm:vite-plugin-electron-vaausud"
+          ]
+        }
+      ],
+      "config": [
+        {
+          "file": "packages/config/package.json",
+          "hash": "6111780814806680760",
+          "deps": [
+            "npm:@typescript-eslint/eslint-plugin",
+            "npm:@typescript-eslint/parser",
+            "npm:eslint",
+            "npm:prettier",
+            "npm:typescript",
+            "npm:@antfu/eslint-config",
+            "npm:@vitejs/plugin-vue",
+            "npm:eslint-config-prettier",
+            "npm:eslint-plugin-prettier",
+            "npm:tsup",
+            "npm:unocss",
+            "npm:unplugin-auto-import",
+            "npm:unplugin-vue-components",
+            "npm:vite",
+            "npm:vite-plugin-electron-renderer",
+            "npm:vite-plugin-electron-vaausud",
+            "npm:vite-plugin-eslint"
+          ]
+        },
+        {
+          "file": "packages/config/tsconfig.base.json",
+          "hash": "1502584909356047738"
+        },
+        {
+          "file": "packages/config/tsconfig.node.json",
+          "hash": "14475465616126198519"
+        },
+        {
+          "file": "packages/config/tsconfig.web.json",
+          "hash": "8370028202254009352"
+        },
+        {
+          "file": "packages/config/tsup.base.config.ts",
+          "hash": "14881129499088820378"
+        }
+      ],
+      "components": [
+        {
+          "file": "packages/components/env.d.ts",
+          "hash": "7956993448890132673",
+          "deps": [
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "packages/components/index.ts",
+          "hash": "17482288713929662742"
+        },
+        {
+          "file": "packages/components/package.json",
+          "hash": "5134906945623944921",
+          "deps": [
+            "config",
+            "utils",
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "packages/components/src/CurrentTime.vue",
+          "hash": "16995635019018545859"
+        },
+        {
+          "file": "packages/components/src/DeviceStatus.vue",
+          "hash": "13192224890380312059"
+        },
+        {
+          "file": "packages/components/src/SolutionDialog.vue",
+          "hash": "2976691496637260304"
+        },
+        {
+          "file": "packages/components/src/VDialog.vue",
+          "hash": "11322117232605959113"
+        },
+        {
+          "file": "packages/components/src/VIcon.vue",
+          "hash": "9863827092947764079"
+        },
+        {
+          "file": "packages/components/src/VTitle.vue",
+          "hash": "515769282598144157"
+        },
+        {
+          "file": "packages/components/src/index.ts",
+          "hash": "8584264839008499255"
+        },
+        {
+          "file": "packages/components/src/react/index.ts",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "packages/components/tsconfig.json",
+          "hash": "11299782058365816437"
+        }
+      ],
+      "smart-cabinet": [
+        {
+          "file": "apps/smart-cabinet/.prettierignore",
+          "hash": "7067610566685412081"
+        },
+        {
+          "file": "apps/smart-cabinet/electron-builder.yml",
+          "hash": "10866593675025924219"
+        },
+        {
+          "file": "apps/smart-cabinet/index.html",
+          "hash": "6604674901284680598"
+        },
+        {
+          "file": "apps/smart-cabinet/main/base/hooks.ts",
+          "hash": "8663499186050681204",
+          "deps": [
+            "npm:electron",
+            "npm:utils/electron",
+            "npm:database",
+            "npm:@/base/window",
+            "npm:@/services/rfid",
+            "npm:@/services",
+            "npm:@/services/access-door",
+            "npm:@/services/log"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/base/loading.ts",
+          "hash": "14493582087960722852"
+        },
+        {
+          "file": "apps/smart-cabinet/main/base/window.ts",
+          "hash": "11852226492582892661",
+          "deps": [
+            "npm:path",
+            "npm:electron",
+            "npm:utils/config/main"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/index.ts",
+          "hash": "15175017214840391617",
+          "deps": [
+            "npm:electron",
+            "npm:dotenv",
+            "npm:database",
+            "npm:utils/electron",
+            "npm:utils/config",
+            "npm:@/services",
+            "npm:@/base/window"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/preload.ts",
+          "hash": "3825901462431070903",
+          "deps": [
+            "npm:electron",
+            "npm:@/services"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/activation.ts",
+          "hash": "11087467486985651422",
+          "deps": [
+            "npm:common/activation"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/cabinet.ts",
+          "hash": "13469999437055813017",
+          "deps": [
+            "npm:database",
+            "npm:utils"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/carrier.ts",
+          "hash": "308190912785577384",
+          "deps": [
+            "npm:database",
+            "npm:~/enums"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/finger/algorithm-func.ts",
+          "hash": "1449612225858957325",
+          "deps": [
+            "npm:fs",
+            "npm:child_process",
+            "npm:ffi-napi",
+            "npm:utils/config"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/finger/device-func.ts",
+          "hash": "2289049629698722676",
+          "deps": [
+            "npm:ffi-napi",
+            "npm:utils/config"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/finger/index.ts",
+          "hash": "13183373365554459569"
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/finger/main.ts",
+          "hash": "8410470965246263392",
+          "deps": [
+            "npm:buffer",
+            "npm:utils",
+            "npm:utils/config",
+            "npm:database"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/finger/types.ts",
+          "hash": "11040636300372652441",
+          "deps": [
+            "npm:ref-napi",
+            "npm:ref-array-di",
+            "npm:ref-struct-di"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/index.ts",
+          "hash": "10138967077755140739",
+          "deps": [
+            "npm:utils/electron"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/lock-control/index.ts",
+          "hash": "6432339560254526771",
+          "deps": [
+            "npm:serialport"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/lock-control/serial-port.ts",
+          "hash": "6812322873912630353",
+          "deps": [
+            "npm:buffer",
+            "npm:console",
+            "npm:serialport"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/lock-control/utils.ts",
+          "hash": "8346250976153679450",
+          "deps": [
+            "npm:buffer",
+            "npm:child_process"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/logger.ts",
+          "hash": "13094502082534777676",
+          "deps": [
+            "npm:electron-log"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/network.ts",
+          "hash": "11159777809406908561"
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/rfid/index.ts",
+          "hash": "9631702465089295376",
+          "deps": [
+            "npm:buffer"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/rfid/socket.ts",
+          "hash": "13774015945152225697",
+          "deps": [
+            "npm:net",
+            "npm:buffer"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/rfid/utils.ts",
+          "hash": "14073567200349620941",
+          "deps": [
+            "npm:buffer",
+            "npm:ffi-napi",
+            "npm:utils/config",
+            "npm:@/services/finger/types"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/store.ts",
+          "hash": "6597756526981100228",
+          "deps": [
+            "npm:electron-store"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/system/index.ts",
+          "hash": "7044918639608929506",
+          "deps": [
+            "npm:common/system",
+            "npm:database"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/system/user.ts",
+          "hash": "9338924101831421323",
+          "deps": [
+            "npm:utils",
+            "npm:database"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/system/utils.ts",
+          "hash": "9459964779801296339",
+          "deps": [
+            "npm:crypto-js"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/main/services/update.ts",
+          "hash": "9779443294707734084",
+          "deps": [
+            "npm:electron",
+            "npm:utils/config",
+            "npm:utils/socket"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/package.json",
+          "hash": "10158047218118083409",
+          "deps": [
+            "npm:ajv",
+            "npm:crypto-js",
+            "database",
+            "npm:dayjs",
+            "npm:dotenv",
+            "npm:electron-log",
+            "npm:electron-store",
+            "npm:ffi-napi",
+            "npm:node-machine-id",
+            "npm:ref-array-di",
+            "npm:ref-napi",
+            "npm:ref-struct-di",
+            "npm:serialport",
+            "npm:@nx/vite",
+            "npm:@types/lodash-es",
+            "npm:@typescript-eslint/eslint-plugin",
+            "npm:@typescript-eslint/parser",
+            "npm:@vitejs/plugin-vue",
+            "npm:@vitejs/plugin-vue-jsx",
+            "npm:animate.css",
+            "npm:ant-design-vue",
+            "common",
+            "components",
+            "config",
+            "npm:dotenv-cli",
+            "npm:electron",
+            "npm:electron-builder",
+            "npm:eslint",
+            "npm:lodash",
+            "npm:pinia",
+            "npm:prettier",
+            "npm:typescript",
+            "ui",
+            "npm:unocss",
+            "npm:unplugin-auto-import",
+            "npm:unplugin-vue-components",
+            "utils",
+            "npm:uuid",
+            "npm:vite",
+            "npm:vite-plugin-electron-renderer",
+            "npm:vite-plugin-electron-vaausud",
+            "npm:vue",
+            "npm:vue-router",
+            "npm:vue3-perfect-scrollbar"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/project.json",
+          "hash": "12538343095508908825"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/App.vue",
+          "hash": "11105622452115643710"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/auto-imports.d.ts",
+          "hash": "5811208631937577541",
+          "deps": [
+            "npm:vue",
+            "npm:pinia",
+            "npm:vue-router"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components.d.ts",
+          "hash": "10028170308578138140",
+          "deps": [
+            "npm:@vue/runtime-core",
+            "npm:ant-design-vue",
+            "npm:vue-router"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/AnimationInput.vue",
+          "hash": "17055177188108549293"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/BackButton.vue",
+          "hash": "4696652642660012256"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/BaseAlert/index.ts",
+          "hash": "5151527095635582038",
+          "deps": [
+            "npm:ant-design-vue"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/CardAuth.vue",
+          "hash": "10462386860582132119"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/CarrierCountStatistics.vue",
+          "hash": "3404684293940796993"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/CarrierTable.vue",
+          "hash": "12598109393649377780"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/CheckPanel.vue",
+          "hash": "2975519184629249689"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/DeviceStatus.vue",
+          "hash": "8542898819233577396"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/FingerAuth.vue",
+          "hash": "3572434106445493804"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/MultiDoorPanel.vue",
+          "hash": "17248164873362556535"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/PasswordAuth.vue",
+          "hash": "16352332410044352259"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/SetCardDialog.vue",
+          "hash": "361222942448219290"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/SetFingerDialog.vue",
+          "hash": "9929081609967669731"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/SetPasswordDialog.vue",
+          "hash": "867539213761776963"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/StartButton.vue",
+          "hash": "8936675750220071475"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/TheMenuDrawer.vue",
+          "hash": "799323506958816022"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/TheMultiDoor/CabinetDoor.vue",
+          "hash": "9880826682094126336"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/TheMultiDoor/index.vue",
+          "hash": "541319314457681404"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/TheSingleDoor.vue",
+          "hash": "16559785388149971496"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/VerifyIdentity.vue",
+          "hash": "5575708655800700201"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/components/WarningDialog.vue",
+          "hash": "9494716999411877300"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/config/index.ts",
+          "hash": "11253045961064078971"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/env.d.ts",
+          "hash": "7956993448890132673",
+          "deps": [
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/features/activation.ts",
+          "hash": "11359767926368824220"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/features/background.ts",
+          "hash": "8041975777119263835",
+          "deps": [
+            "npm:@/public/background/index.png"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/hooks/useCabinet.ts",
+          "hash": "14968316299032197240",
+          "deps": [
+            "npm:utils/config/renderer",
+            "npm:@/store"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/hooks/useCarrier.ts",
+          "hash": "4024787891604884939",
+          "deps": [
+            "npm:database",
+            "npm:@/store",
+            "npm:~/enums"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/hooks/useCheck.ts",
+          "hash": "7787900227082389818",
+          "deps": [
+            "npm:database",
+            "npm:ant-design-vue",
+            "npm:utils/config/renderer",
+            "npm:~/enums",
+            "npm:@/store",
+            "npm:@/hooks/useTime",
+            "npm:@/hooks/useRfid",
+            "npm:@/components/BaseAlert"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/hooks/useCheckRecord.ts",
+          "hash": "7517639029783654778",
+          "deps": [
+            "npm:@/store"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/hooks/useFinger.ts",
+          "hash": "6256287340459449182",
+          "deps": [
+            "npm:utils/config/renderer",
+            "npm:@/store"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/hooks/useInit.ts",
+          "hash": "11109748608380545159",
+          "deps": [
+            "ui",
+            "npm:@/hooks/useSys",
+            "npm:@/hooks/useFinger",
+            "npm:@/hooks/useCarrier",
+            "npm:@/hooks/useRfid",
+            "npm:@/hooks/useLock",
+            "npm:@/hooks/useCabinet",
+            "npm:@/hooks/useNetwork",
+            "npm:@/features/activation"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/hooks/useListenEnter.ts",
+          "hash": "8944443856236097205"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/hooks/useLock.ts",
+          "hash": "7772719700601433776",
+          "deps": [
+            "npm:utils/config/renderer",
+            "npm:@/store"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/hooks/useLogger.ts",
+          "hash": "14582344707590828194"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/hooks/useLogin.ts",
+          "hash": "4955663394459739826",
+          "deps": [
+            "npm:database",
+            "npm:@/store",
+            "npm:@/components/BaseAlert",
+            "npm:@/hooks/useTime",
+            "npm:uuid"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/hooks/useMessage.tsx",
+          "hash": "18091699232505141706",
+          "deps": [
+            "npm:ant-design-vue",
+            "npm:@ant-design/icons-vue",
+            "npm:lodash-es"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/hooks/useNetwork.ts",
+          "hash": "11339867127632068160",
+          "deps": [
+            "npm:@/store"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/hooks/usePermission.ts",
+          "hash": "14626638857384911673",
+          "deps": [
+            "npm:@/store"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/hooks/useRfid.ts",
+          "hash": "746085908575059948",
+          "deps": [
+            "npm:@/store"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/hooks/useSys.ts",
+          "hash": "5198937286749125880",
+          "deps": [
+            "npm:@/store"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/hooks/useTime.ts",
+          "hash": "5566689466020128130",
+          "deps": [
+            "npm:utils/config/renderer",
+            "npm:@/store"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/hooks/useUpdate.ts",
+          "hash": "16277176385073247514",
+          "deps": [
+            "npm:ant-design-vue"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/hooks/useVerify.ts",
+          "hash": "2901927113228102896",
+          "deps": [
+            "npm:@/store"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/hooks/useViewCarriers.ts",
+          "hash": "17795421526259775930",
+          "deps": [
+            "npm:database",
+            "npm:@/components/CarrierTable.vue",
+            "npm:@/store",
+            "npm:~/enums"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/main.ts",
+          "hash": "1949697585332811534",
+          "deps": [
+            "npm:vue",
+            "npm:pinia",
+            "npm:@/router",
+            "npm:virtual:uno.css",
+            "npm:animate.css",
+            "npm:ant-design-vue",
+            "ui"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/pages/activate.vue",
+          "hash": "7718618944464356995"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/pages/cabinet-door.vue",
+          "hash": "15092350123432280992"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/pages/carrier.vue",
+          "hash": "7845313418398937826"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/pages/department.vue",
+          "hash": "15198357501957310214"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/pages/index.vue",
+          "hash": "8698600171163885200"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/pages/login.vue",
+          "hash": "13732979305834478218"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/pages/main.vue",
+          "hash": "14876324157835034964"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/pages/open.vue",
+          "hash": "11795320850394251545"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/pages/permission.vue",
+          "hash": "1007684980936600792"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/pages/result-cabinet-door.vue",
+          "hash": "6897486301330897593"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/pages/result.vue",
+          "hash": "8806668164148871627"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/pages/user.vue",
+          "hash": "9160975097681195253"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/public/background/index.png",
+          "hash": "16872582893383824026"
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/router/index.ts",
+          "hash": "3187163659586718252",
+          "deps": [
+            "npm:vue-router",
+            "npm:@/pages/index.vue",
+            "npm:@/pages/login.vue",
+            "npm:@/pages/activate.vue",
+            "npm:@/pages/main.vue",
+            "npm:@/pages/cabinet-door.vue",
+            "npm:@/pages/carrier.vue",
+            "npm:@/pages/user.vue",
+            "npm:@/pages/department.vue",
+            "npm:@/pages/permission.vue",
+            "npm:@/pages/result.vue",
+            "npm:@/pages/open.vue"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/renderer/store/index.ts",
+          "hash": "2613174557183858167",
+          "deps": [
+            "npm:database",
+            "npm:pinia",
+            "npm:~/enums"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/tsconfig.json",
+          "hash": "10448847398748852004"
+        },
+        {
+          "file": "apps/smart-cabinet/tsconfig.node.json",
+          "hash": "12159955689376487377"
+        },
+        {
+          "file": "apps/smart-cabinet/tsconfig.web.json",
+          "hash": "744159046221629730"
+        },
+        {
+          "file": "apps/smart-cabinet/types/enums.ts",
+          "hash": "11996868882657698529"
+        },
+        {
+          "file": "apps/smart-cabinet/types/index.d.ts",
+          "hash": "2597699618836601047",
+          "deps": [
+            "npm:database"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/types/update-service.d.ts",
+          "hash": "4533881093139095709"
+        },
+        {
+          "file": "apps/smart-cabinet/uno.config.ts",
+          "hash": "1765450289478082563",
+          "deps": [
+            "npm:ui/uno.config"
+          ]
+        },
+        {
+          "file": "apps/smart-cabinet/vite.config.ts",
+          "hash": "4149289203372208093",
+          "deps": [
+            "npm:path",
+            "npm:child_process",
+            "npm:vite",
+            "npm:@vitejs/plugin-vue",
+            "npm:@vitejs/plugin-vue-jsx",
+            "npm:unplugin-auto-import",
+            "npm:unplugin-vue-components",
+            "npm:unocss",
+            "npm:vite-plugin-vue-devtools",
+            "npm:vite-plugin-electron-renderer",
+            "npm:vite-plugin-electron-vaausud"
+          ]
+        }
+      ],
+      "utils": [
+        {
+          "file": "packages/utils/package.json",
+          "hash": "2439933794678806934",
+          "deps": [
+            "npm:dayjs",
+            "npm:@types/lodash-es",
+            "config",
+            "npm:lodash-es",
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "packages/utils/src/config/index.ts",
+          "hash": "10489958236270907468"
+        },
+        {
+          "file": "packages/utils/src/config/main/index.ts",
+          "hash": "3766740949654178794",
+          "deps": [
+            "npm:path"
+          ]
+        },
+        {
+          "file": "packages/utils/src/config/renderer/index.ts",
+          "hash": "18433202410520003348"
+        },
+        {
+          "file": "packages/utils/src/electron/index.ts",
+          "hash": "2738225622430081892",
+          "deps": [
+            "npm:electron"
+          ]
+        },
+        {
+          "file": "packages/utils/src/index.ts",
+          "hash": "8502943760535417771",
+          "deps": [
+            "npm:os",
+            "npm:dayjs",
+            "npm:lodash-es"
+          ]
+        },
+        {
+          "file": "packages/utils/src/install/index.ts",
+          "hash": "2026873502255890530",
+          "deps": [
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "packages/utils/src/message/index.ts",
+          "hash": "9961471366799694073"
+        },
+        {
+          "file": "packages/utils/src/socket/index.ts",
+          "hash": "957834091695733153",
+          "deps": [
+            "npm:net",
+            "npm:buffer"
+          ]
+        },
+        {
+          "file": "packages/utils/tsconfig.json",
+          "hash": "7883219004027902824"
+        },
+        {
+          "file": "packages/utils/tsup.config.ts",
+          "hash": "15326327500107480722",
+          "deps": [
+            "npm:tsup"
+          ]
+        },
+        {
+          "file": "packages/utils/types/index.d.ts",
+          "hash": "3244421341483603138"
+        }
+      ],
+      "common": [
+        {
+          "file": "packages/common/package.json",
+          "hash": "9219414721989861187",
+          "deps": [
+            "npm:crypto-js",
+            "npm:node-machine-id",
+            "npm:@types/crypto-js",
+            "config"
+          ]
+        },
+        {
+          "file": "packages/common/src/activation/index.ts",
+          "hash": "16946927451587158142",
+          "deps": [
+            "npm:node-machine-id",
+            "npm:crypto-js"
+          ]
+        },
+        {
+          "file": "packages/common/src/index.ts",
+          "hash": "6813661305269309058"
+        },
+        {
+          "file": "packages/common/src/system/index.ts",
+          "hash": "13645538280304582633",
+          "deps": [
+            "npm:path"
+          ]
+        },
+        {
+          "file": "packages/common/tsconfig.json",
+          "hash": "15848255530344613440"
+        },
+        {
+          "file": "packages/common/tsup.config.ts",
+          "hash": "7572527672958797206",
+          "deps": [
+            "npm:tsup"
+          ]
+        },
+        {
+          "file": "packages/common/types/index.d.ts",
+          "hash": "15980757424139613376"
+        }
+      ],
+      "ui": [
+        {
+          "file": "packages/ui/design/color.json",
+          "hash": "2928786268529726548"
+        },
+        {
+          "file": "packages/ui/design/fontSize.json",
+          "hash": "15850550072715320450"
+        },
+        {
+          "file": "packages/ui/fonts/Barlow-Regular.ttf",
+          "hash": "5330638490870793696"
+        },
+        {
+          "file": "packages/ui/fonts/SourceHanSansCN-VF.ttf",
+          "hash": "8740082742581462196"
+        },
+        {
+          "file": "packages/ui/fonts/ds-digi-webfont.eot",
+          "hash": "13954148997880298830"
+        },
+        {
+          "file": "packages/ui/fonts/ds-digi-webfont.ttf",
+          "hash": "2148669891575652407"
+        },
+        {
+          "file": "packages/ui/fonts/ds-digi-webfont.woff",
+          "hash": "17361749382618361275"
+        },
+        {
+          "file": "packages/ui/fonts/ds-digi-webfont.woff2",
+          "hash": "16441097993185288244"
+        },
+        {
+          "file": "packages/ui/icons/demo.css",
+          "hash": "8876005536301635093"
+        },
+        {
+          "file": "packages/ui/icons/demo_index.html",
+          "hash": "4549349690846870667"
+        },
+        {
+          "file": "packages/ui/icons/iconfont.css",
+          "hash": "6529162149610028505"
+        },
+        {
+          "file": "packages/ui/icons/iconfont.js",
+          "hash": "6647361243724178054"
+        },
+        {
+          "file": "packages/ui/icons/iconfont.json",
+          "hash": "12820660976172907553"
+        },
+        {
+          "file": "packages/ui/icons/iconfont.ttf",
+          "hash": "13706423413901609945"
+        },
+        {
+          "file": "packages/ui/icons/iconfont.woff",
+          "hash": "6563564825125387324"
+        },
+        {
+          "file": "packages/ui/icons/iconfont.woff2",
+          "hash": "11728524978669955879"
+        },
+        {
+          "file": "packages/ui/package.json",
+          "hash": "7668139725876438180",
+          "deps": [
+            "npm:ant-design-vue",
+            "config",
+            "npm:unocss",
+            "npm:unocss-preset-daisy"
+          ]
+        },
+        {
+          "file": "packages/ui/src/index.ts",
+          "hash": "4339062047355058139",
+          "deps": [
+            "npm:ant-design-vue"
+          ]
+        },
+        {
+          "file": "packages/ui/styles/index.css",
+          "hash": "9807822402256740209"
+        },
+        {
+          "file": "packages/ui/tsconfig.json",
+          "hash": "16285869982259089053"
+        },
+        {
+          "file": "packages/ui/uno.config.ts",
+          "hash": "16675561780169179452",
+          "deps": [
+            "npm:unocss",
+            "npm:unocss-preset-daisy"
+          ]
+        }
+      ],
+      "database": [
+        {
+          "file": "packages/database/.env",
+          "hash": "14494876918981541364"
+        },
+        {
+          "file": "packages/database/.gitignore",
+          "hash": "7663861978715868291"
+        },
+        {
+          "file": "packages/database/package.json",
+          "hash": "7141878035325889906",
+          "deps": [
+            "npm:@prisma/client",
+            "npm:prisma",
+            "npm:prisma-case-format",
+            "npm:@types/ffi-napi",
+            "config",
+            "npm:electron",
+            "utils"
+          ]
+        },
+        {
+          "file": "packages/database/prisma/schema.prisma",
+          "hash": "7125633674143356032"
+        },
+        {
+          "file": "packages/database/src/doc-document.ts",
+          "hash": "7370184700632628696",
+          "deps": [
+            "npm:utils",
+            "npm:@prisma/client"
+          ]
+        },
+        {
+          "file": "packages/database/src/door-access-record.ts",
+          "hash": "1629208298689710731",
+          "deps": [
+            "npm:utils"
+          ]
+        },
+        {
+          "file": "packages/database/src/door-alarm-record.ts",
+          "hash": "10683678071291059027",
+          "deps": [
+            "npm:utils",
+            "npm:@prisma/client"
+          ]
+        },
+        {
+          "file": "packages/database/src/door-equipment.ts",
+          "hash": "16159610473008964868"
+        },
+        {
+          "file": "packages/database/src/door-rfid-record.ts",
+          "hash": "4964729440591273200",
+          "deps": [
+            "npm:utils",
+            "npm:@prisma/client"
+          ]
+        },
+        {
+          "file": "packages/database/src/door-rfid-register.ts",
+          "hash": "10492054441550551694"
+        },
+        {
+          "file": "packages/database/src/index.ts",
+          "hash": "153952914935266630",
+          "deps": [
+            "npm:@prisma/client"
+          ]
+        },
+        {
+          "file": "packages/database/src/rfid-cabinet-door.ts",
+          "hash": "13606559917106419712",
+          "deps": [
+            "npm:@prisma/client"
+          ]
+        },
+        {
+          "file": "packages/database/src/rfid-cabinet.ts",
+          "hash": "5341681560808901195",
+          "deps": [
+            "npm:@prisma/client"
+          ]
+        },
+        {
+          "file": "packages/database/src/rfid-card-user.ts",
+          "hash": "16518536998172708110"
+        },
+        {
+          "file": "packages/database/src/rfid-finger-user.ts",
+          "hash": "8608713869015534599"
+        },
+        {
+          "file": "packages/database/src/rfid-tips-alarm-record.ts",
+          "hash": "8185102794259282718"
+        },
+        {
+          "file": "packages/database/src/sys-dept.ts",
+          "hash": "1130473596743304391",
+          "deps": [
+            "npm:utils"
+          ]
+        },
+        {
+          "file": "packages/database/src/sys-role.ts",
+          "hash": "17801465880455117503"
+        },
+        {
+          "file": "packages/database/src/sys-user-role.ts",
+          "hash": "1799987215555679215"
+        },
+        {
+          "file": "packages/database/src/sys-user.ts",
+          "hash": "15887963632404404401",
+          "deps": [
+            "npm:@prisma/client",
+            "npm:utils"
+          ]
+        },
+        {
+          "file": "packages/database/tsconfig.json",
+          "hash": "11299782058365816437"
+        },
+        {
+          "file": "packages/database/tsup.config.ts",
+          "hash": "5234671277843549377",
+          "deps": [
+            "npm:tsup"
+          ]
+        },
+        {
+          "file": "packages/database/types/index.d.ts",
+          "hash": "11361037489895242837"
+        }
+      ]
+    },
+    "nonProjectFiles": [
+      {
+        "file": ".gitignore",
+        "hash": "456399905083190453"
+      },
+      {
+        "file": ".npmrc",
+        "hash": "5557748554409237540"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "5871855650256205550"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "14186630220438912215"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "5276421257315295808"
+      },
+      {
+        "file": ".vscode/settings.json",
+        "hash": "7990525193593452474"
+      },
+      {
+        "file": "README.md",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "eslint.config.js",
+        "hash": "2521010893355682185"
+      },
+      {
+        "file": "libs/crc-lib/libCRC16_CCITT.so",
+        "hash": "2951552184262273495"
+      },
+      {
+        "file": "libs/finger-lib/libidfprcap.so",
+        "hash": "6098870635009854836"
+      },
+      {
+        "file": "libs/finger-lib/libidkit.so.6",
+        "hash": "16625339872304356762"
+      },
+      {
+        "file": "libs/finger-lib/libsilkidcap.so",
+        "hash": "17671443379938960848"
+      },
+      {
+        "file": "libs/finger-lib/libsqlite3.so",
+        "hash": "6605567303888393921"
+      },
+      {
+        "file": "libs/finger-lib/libsqlite3.so.0",
+        "hash": "6605567303888393921"
+      },
+      {
+        "file": "libs/finger-lib/libsqlite3.so.0.8.6",
+        "hash": "6605567303888393921"
+      },
+      {
+        "file": "libs/finger-lib/libusb-0.1.so.4",
+        "hash": "16938701371385125007"
+      },
+      {
+        "file": "libs/finger-lib/libusb-1.0.so.0",
+        "hash": "16655149681629822833"
+      },
+      {
+        "file": "libs/finger-lib/libusb-1.0.so.0.1.0",
+        "hash": "11962989934199315815"
+      },
+      {
+        "file": "libs/finger-lib/libzkalg12.so",
+        "hash": "4643592429007350447"
+      },
+      {
+        "file": "libs/finger-lib/libzkfinger10.so",
+        "hash": "9357147850168248694"
+      },
+      {
+        "file": "libs/finger-lib/libzkfp.so",
+        "hash": "11672556781176501875"
+      },
+      {
+        "file": "libs/finger-lib/libzkfpcap.so",
+        "hash": "17816560159774619410"
+      },
+      {
+        "file": "libs/finger-lib/libzksensorcore.so",
+        "hash": "1102607379161854183"
+      },
+      {
+        "file": "nx.json",
+        "hash": "6009498988089143282"
+      },
+      {
+        "file": "package.json",
+        "hash": "2776945539777755025"
+      },
+      {
+        "file": "pnpm-lock.yaml",
+        "hash": "8177802846732715329"
+      },
+      {
+        "file": "pnpm-workspace.yaml",
+        "hash": "7825893663075694948"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/1569.js",
+        "hash": "4768695857886579496"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/1585.js",
+        "hash": "14411750638221249540"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/1593.js",
+        "hash": "11003617716615053697"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/1594.js",
+        "hash": "14659008752209394414"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/1649.js",
+        "hash": "17755314867066477175"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/1941.js",
+        "hash": "8165391195649988239"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/2014.js",
+        "hash": "12865834473126911376"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/2271.js",
+        "hash": "8777677665041283572"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/2287.js",
+        "hash": "9805407241989841336"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/2388.js",
+        "hash": "10633017223080900763"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/2501.js",
+        "hash": "6611120871574019410"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/2583.js",
+        "hash": "2492908086994018465"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/2862.js",
+        "hash": "14927160176610431432"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/2906.js",
+        "hash": "15815293396959957382"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/2906.js.LICENSE.txt",
+        "hash": "8964447908180500368"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/300.js",
+        "hash": "1197083844875392156"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/3008.js",
+        "hash": "3098199585448692229"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/3315.js",
+        "hash": "8261731699174272972"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/3399.js",
+        "hash": "1644037451831709636"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/3504.js",
+        "hash": "8180775949011702023"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/3553.js",
+        "hash": "14504411009045688620"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/3673.js",
+        "hash": "13653524917510055706"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/3855.js",
+        "hash": "10704828589703897609"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/4035.js",
+        "hash": "14805022098453428121"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/4073.js",
+        "hash": "4069419996150661549"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/4454.js",
+        "hash": "15100181967975141953"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/4511.js",
+        "hash": "3437655332369231359"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/4558.js",
+        "hash": "11394327073366846098"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/4610.js",
+        "hash": "6724552911229510309"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/471.js",
+        "hash": "5148894229044803037"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/4858.js",
+        "hash": "8537611452809511418"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/4896.js",
+        "hash": "2057497363892797907"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/491.js",
+        "hash": "16029001348355870720"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/5257.js",
+        "hash": "6559367861261313102"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/542.js",
+        "hash": "4678840719834795712"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/5454.js",
+        "hash": "17243271880164689506"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/5524.js",
+        "hash": "18321718461079656098"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/5669.js",
+        "hash": "5598654612211618519"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/5881.js",
+        "hash": "15647517213343759209"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/5900.js",
+        "hash": "17849774838284287711"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/5924.js",
+        "hash": "6272001075181357112"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/5925.js",
+        "hash": "7163203016022566267"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/5972.js",
+        "hash": "13718025540289789399"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/5974.js",
+        "hash": "9652385662135516511"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/6022.js",
+        "hash": "12230995254817958612"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/6162.js",
+        "hash": "16227854978133824450"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/6175.js",
+        "hash": "2266076111510959732"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/622.js",
+        "hash": "8191035917070592190"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/6223.js",
+        "hash": "1716140485337176006"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/6330.js",
+        "hash": "1410600435945840527"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/6331.js",
+        "hash": "10885928976897798674"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/6354.js",
+        "hash": "738093336269294096"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/6373.js",
+        "hash": "13298678185950518250"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/6751.js",
+        "hash": "17541352213019252586"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/6792.js",
+        "hash": "6176443043340410765"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/6844.js",
+        "hash": "17189239631405042923"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/7125.js",
+        "hash": "14275775024468188153"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/7127.js",
+        "hash": "12773150897407004502"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/7135.js",
+        "hash": "12687075641497918012"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/7148.js",
+        "hash": "5014397393918757783"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/7447.js",
+        "hash": "6196759802084660008"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/7453.js",
+        "hash": "6759109360038238602"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/7483.js",
+        "hash": "5379984945260372301"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/7971.js",
+        "hash": "15453603555090415256"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/8147.js",
+        "hash": "13069482484985119288"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/8308.js",
+        "hash": "963378020852049323"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/8309.js",
+        "hash": "16021261703994476109"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/8327.js",
+        "hash": "803896890644240046"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/849.js",
+        "hash": "4691970094682550391"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/8654.js",
+        "hash": "7055381526687593655"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/8677.js",
+        "hash": "7148627275870496818"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/868.js",
+        "hash": "15242464511932800074"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/8947.js",
+        "hash": "3543954819195508941"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/9342.js",
+        "hash": "2806139363743890376"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/9491.js",
+        "hash": "15240509696318796697"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/9741.js",
+        "hash": "12452181007554551556"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/9953.js",
+        "hash": "7789946880643921196"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/CodeEditor.js",
+        "hash": "9504966030244370060"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/backend.js",
+        "hash": "8332500075778345256"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/background.js",
+        "hash": "5290837922892094410"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/detector.js",
+        "hash": "4809333334527403827"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/devtools-background.js",
+        "hash": "2062730836866597461"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/devtools.js",
+        "hash": "3165877411389056173"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/devtools.js.LICENSE.txt",
+        "hash": "458598956450391422"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/editor.worker.js",
+        "hash": "4606371756074639683"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/hook.js",
+        "hash": "3394469744253445958"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/build/proxy.js",
+        "hash": "6523474131055987062"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/devtools-background.html",
+        "hash": "4960126139402513105"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/devtools.html",
+        "hash": "7005385838570708908"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/icons/128-beta.png",
+        "hash": "8978286092380472556"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/icons/128-gray.png",
+        "hash": "15893160176194442196"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/icons/128.nuxt.png",
+        "hash": "8307246188543812499"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/icons/128.png",
+        "hash": "3826172197741666047"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/icons/16-beta.png",
+        "hash": "5052038155085506326"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/icons/16-gray.png",
+        "hash": "9155086473766559664"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/icons/16.nuxt.png",
+        "hash": "5609165834421891171"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/icons/16.png",
+        "hash": "11622058280307127983"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/icons/48-beta.png",
+        "hash": "4853562495802914812"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/icons/48-gray.png",
+        "hash": "9645959741580361305"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/icons/48.nuxt.png",
+        "hash": "7516635006682682470"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/icons/48.png",
+        "hash": "10210638393034776175"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/manifest.fingerprint",
+        "hash": "2193248094899594334"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/manifest.json",
+        "hash": "15729538889681364463"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/package.json",
+        "hash": "18027502847112953980"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/popups/devtools-screenshot.png",
+        "hash": "10505450555949788144"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/popups/disabled.html",
+        "hash": "995185692430376244"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/popups/disabled.nuxt.html",
+        "hash": "3663191947129775055"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/popups/enabled.html",
+        "hash": "16094227258610973057"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/popups/enabled.nuxt.html",
+        "hash": "4155098902152179092"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/popups/not-found.html",
+        "hash": "1046822590071957768"
+      },
+      {
+        "file": "resources/devtools/6.5.0_0/popups/popup.css",
+        "hash": "11154837191546168337"
+      },
+      {
+        "file": "scripts/env.development.sh",
+        "hash": "1934333726688809916"
+      },
+      {
+        "file": "scripts/env.production.sh",
+        "hash": "5708725327148127504"
+      },
+      {
+        "file": "scripts/install.sh",
+        "hash": "4063689251129123170"
+      },
+      {
+        "file": "scripts/run.service",
+        "hash": "14516608163516527230"
+      },
+      {
+        "file": "scripts/run.sh",
+        "hash": "13453268951060601327"
+      },
+      {
+        "file": "smart-cabinet.code-workspace",
+        "hash": "6493344651371496195"
+      },
+      {
+        "file": "template/smart-cabinet.desktop",
+        "hash": "2285684958129046986"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "1014679161606261715"
+      },
+      {
+        "file": "uno.config.ts",
+        "hash": "13948986506656499698"
+      }
+    ]
+  }
+}

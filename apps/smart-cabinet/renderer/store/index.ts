@@ -39,7 +39,7 @@ interface ReviewCarrierCondition {
 export const useStore = defineStore('main', {
   state: (): State => {
     return {
-      guid:'',
+      guid: '',
       isLockControlConnected: false,
       isNetworkConnected: false,
       isFingerConnected: false,
@@ -82,7 +82,7 @@ export const useStore = defineStore('main', {
       return state.carrierList.length
     },
     hasUnConnectedRfid(state) {
-      return state.cabinetDoorList.length > 0 && state.cabinetDoorList.some((item) => !item.rfidIsConnected)
+      return state.cabinetDoorList.length > 0 && state.cabinetDoorList.some(item => !item.rfidIsConnected)
     },
     inPlaceCarrierTotal(state) {
       return state.carrierList.reduce((total, item) => {
@@ -91,11 +91,11 @@ export const useStore = defineStore('main', {
       }, 0)
     },
     isChecking(state) {
-      return state.cabinetDoorList.some((item) => item.checkCountdown !== 10)
+      return state.cabinetDoorList.some(item => item.checkCountdown !== 10)
     },
   },
   actions: {
-    setGuid(value:string){
+    setGuid(value: string) {
       this.guid = value
     },
     setLockControlConnectionStatus(state: boolean) {
@@ -117,7 +117,7 @@ export const useStore = defineStore('main', {
       this.cabinetDoorList = list
     },
     setCabinetDoor(data: CabinetDoorProps) {
-      const index = this.cabinetDoorList.findIndex((item) => item.id === data.id)
+      const index = this.cabinetDoorList.findIndex(item => item.id === data.id)
       this.cabinetDoorList[index] = data
     },
     setMisPlaceCarrierData(data: RfidTipsAlarmRecord[]) {
@@ -166,7 +166,7 @@ export const useStore = defineStore('main', {
       this.checkResultList = result
     },
     addLastOperationCabinetDoorRecords(door: CabinetDoorProps) {
-      const isExist = this.lastOperationCabinetDoorRecords.find((item) => item.id === door.id)
+      const isExist = this.lastOperationCabinetDoorRecords.find(item => item.id === door.id)
       if (isExist) return
 
       this.lastOperationCabinetDoorRecords.push(door)

@@ -33,9 +33,9 @@ export function getTIDByReportData(data: string) {
   str = str.replace(PREFIX, '')
 
   const EPCLength = Number.parseInt(`0x${str.substring(4, 8)}`, 16) * 2
-  const TIDLength =
-    Number.parseInt(`0x${str.substring(8 + EPCLength + MidCommandLength, 8 + EPCLength + MidCommandLength + TIDLengthCommandLength)}`, 16) *
-    2
+  const TIDLength
+    = Number.parseInt(`0x${str.substring(8 + EPCLength + MidCommandLength, 8 + EPCLength + MidCommandLength + TIDLengthCommandLength)}`, 16)
+    * 2
 
   const TID = str.substring(
     8 + EPCLength + MidCommandLength + TIDLengthCommandLength,

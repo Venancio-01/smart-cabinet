@@ -5,43 +5,43 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
     "./config": {
       "types": "./dist/config/index.d.ts",
-      "require": "./dist/config/index.cjs",
-      "import": "./dist/config/index.js"
+      "import": "./dist/config/index.js",
+      "require": "./dist/config/index.cjs"
     },
     "./config/main": {
       "types": "./dist/config/main/index.d.ts",
-      "require": "./dist/config/main/index.cjs",
-      "import": "./dist/config/main/index.js"
+      "import": "./dist/config/main/index.js",
+      "require": "./dist/config/main/index.cjs"
     },
     "./config/renderer": {
       "types": "./dist/config/renderer/index.d.ts",
-      "require": "./dist/config/renderer/index.cjs",
-      "import": "./dist/config/renderer/index.js"
+      "import": "./dist/config/renderer/index.js",
+      "require": "./dist/config/renderer/index.cjs"
     },
     "./message": {
       "types": "./dist/message/index.d.ts",
-      "require": "./dist/message/index.cjs",
-      "import": "./dist/message/index.js"
+      "import": "./dist/message/index.js",
+      "require": "./dist/message/index.cjs"
     },
     "./socket": {
       "types": "./dist/socket/index.d.ts",
-      "require": "./dist/socket/index.cjs",
-      "import": "./dist/socket/index.js"
+      "import": "./dist/socket/index.js",
+      "require": "./dist/socket/index.cjs"
     },
     "./electron": {
       "types": "./dist/electron/index.d.ts",
-      "require": "./dist/electron/index.cjs",
-      "import": "./dist/electron/index.js"
+      "import": "./dist/electron/index.js",
+      "require": "./dist/electron/index.cjs"
     },
     "./install": {
       "types": "./dist/install/index.d.ts",
-      "require": "./dist/install/index.cjs",
-      "import": "./dist/install/index.js"
+      "import": "./dist/install/index.js",
+      "require": "./dist/install/index.cjs"
     }
   },
   "main": "./dist/index.js",

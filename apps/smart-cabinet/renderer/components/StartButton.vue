@@ -5,7 +5,9 @@ const isWaving = ref(true)
 <template>
   <div class="relative h-[68px] w-[196px]">
     <div id="water-button" class="start-btn">
-      <a-button type="primary" class="!h-[68px] !w-[196px] !rounded-lg !font-medium tracking-widest !text-normal"> 开始使用 </a-button>
+      <a-button type="primary" class="!h-[68px] !w-[196px] !rounded-lg !font-medium tracking-widest !text-normal">
+        开始使用
+      </a-button>
     </div>
     <span :class="{ 'water-1': isWaving }" />
     <span :class="{ 'water-2': isWaving }" />

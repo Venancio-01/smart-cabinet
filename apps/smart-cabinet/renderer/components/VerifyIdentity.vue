@@ -36,7 +36,8 @@ async function handlePasswordComplete() {
   if (success) {
     createAlert('身份验证成功')
     handleVerificationSuccessful()
-  } else {
+  }
+  else {
     createAlert('身份验证失败')
   }
 }
@@ -72,8 +73,12 @@ function handleCardComplete(cardNumber: string) {
 
     <template #footer>
       <div class="flex justify-end">
-        <a-button v-if="activeKey === '1'" type="primary" @click="handlePasswordComplete"> 确认 </a-button>
-        <a-button @click="handleClose"> 关闭 </a-button>
+        <a-button v-if="activeKey === '1'" type="primary" @click="handlePasswordComplete">
+          确认
+        </a-button>
+        <a-button @click="handleClose">
+          关闭
+        </a-button>
       </div>
     </template>
   </VDialog>

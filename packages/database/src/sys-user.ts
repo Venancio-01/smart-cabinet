@@ -35,7 +35,7 @@ export function selectSysUserList(condition?: Prisma.SysUserWhereInput): Promise
 export async function selectSysUserListWithPage(
   pagination: PaginationType,
   condition?: Prisma.SysUserWhereInput,
-): Promise<{ data: SysUserProps[]; total: number }> {
+): Promise<{ data: SysUserProps[], total: number }> {
   const skipAndTake = getSkipAndTake(pagination)
 
   const [data, total] = await Promise.all([

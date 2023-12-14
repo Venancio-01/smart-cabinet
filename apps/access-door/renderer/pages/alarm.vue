@@ -23,7 +23,7 @@ function goDetail() {
 }
 
 const unregisterCarrier = computed(() => {
-  return currentReadRecordList.value.filter((item) => item.isRegister === '0')
+  return currentReadRecordList.value.filter(item => item.isRegister === '0')
 })
 
 const timer = ref<number | null>(null)
@@ -50,7 +50,9 @@ onBeforeUnmount(() => {
       <StopAlarmButton />
     </div>
 
-    <div flex="~" items-center justify-center h="260px" text="light center 6xl" font="thin" tracking="10px">外出时检测到未登记载体</div>
+    <div flex="~" items-center justify-center h="260px" text="light center 6xl" font="thin" tracking="10px">
+      外出时检测到未登记载体
+    </div>
 
     <div flex="~ 1">
       <div v-if="loadingVisible" w="full" h="full" flex="~" justify-center items-center>
@@ -69,7 +71,9 @@ onBeforeUnmount(() => {
         </div>
 
         <div flex="~" justify-center items-center>
-          <div class="btn btn-lg btn-wide text-normal mt-16" font="thin" @click="goDetail">查看详情</div>
+          <div class="btn btn-lg btn-wide text-normal mt-16" font="thin" @click="goDetail">
+            查看详情
+          </div>
         </div>
       </div>
     </div>

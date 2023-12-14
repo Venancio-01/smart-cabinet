@@ -14,7 +14,7 @@ function goLoginPage() {
     <!-- 当前时间 -->
     <CurrentTime class="fixed top-[40px] right-[40px]" />
     <!-- 系统名 -->
-    <VTitle :title="SYSTEM_NAME" p="t-34"></VTitle>
+    <VTitle :title="SYSTEM_NAME" p="t-34" />
 
     <!-- 开始使用按钮 -->
     <div class="absolute top-1/2 left-1/2 -translate-1/2">

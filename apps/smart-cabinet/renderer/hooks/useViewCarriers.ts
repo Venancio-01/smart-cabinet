@@ -25,7 +25,8 @@ export default function () {
     if (condition.state !== undefined) {
       if (condition.state !== InPlaceState.MISPLACED) {
         query.docPStatus = condition.state
-      } else {
+      }
+      else {
         query.alarmRecord = {
           some: {
             contentType: AlarmContentType.IncorrectLocation,

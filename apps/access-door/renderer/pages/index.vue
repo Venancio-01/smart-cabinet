@@ -28,7 +28,7 @@ onMounted(() => {
     <CurrentTime class="fixed top-[40px] right-[40px]" />
 
     <!-- 系统名 -->
-    <VTitle :title="SYSTEM_NAME" p="t-34"></VTitle>
+    <VTitle :title="SYSTEM_NAME" p="t-34" />
 
     <!-- 设备名 -->
     <div :class="titleClass" text="5xl" p="t-28">

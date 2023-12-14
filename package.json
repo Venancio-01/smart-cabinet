@@ -1,5 +1,6 @@
 {
   "name": "smart-cabinet-repo",
+  "type": "module",
   "version": "0.0.0",
   "private": true,
   "description": "智能载体管控系统",
@@ -18,20 +19,22 @@
     "clear": "find ./ -name 'node_modules' -type d -prune -exec rm -rf {}",
     "up": "npx taze latest",
     "package": "nx run-many -t package --exclude database && nx package database && ni",
-    "build": "nx run smart-cabinet:build"
+    "build": "nx run smart-cabinet:build",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "js-guid": "^1.0.2",
     "tslib": "^2.5.3"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.39.5",
-    "@nx/esbuild": "16.3.2",
-    "@nx/js": "16.3.2",
-    "@nx/vite": "^16.3.2",
-    "@swc/core": "^1.3.66",
-    "@types/node": "20.3.1",
-    "@typescript-eslint/eslint-plugin": "^5.1.0",
+    "@antfu/eslint-config": "^2.0.0",
+    "@nx/esbuild": "17.2.3",
+    "@nx/js": "17.2.3",
+    "@nx/vite": "^16.10.0",
+    "@swc/core": "^1.3.100",
+    "@types/node": "20.10.4",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.1.0",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vitest/ui": "^0.31.0",
@@ -40,7 +43,7 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "jsdom": "~20.0.3",
-    "nx": "16.3.2",
+    "nx": "17.2.3",
     "nx-cloud": "latest",
     "prettier": "^2.6.2",
     "tsup": "^7.0.0",
@@ -48,8 +51,8 @@
     "ui": "workspace:*",
     "vite": "^4.3.4",
     "vite-plugin-eslint": "^1.8.1",
-    "vite-tsconfig-paths": "^4.0.2",
+    "vite-tsconfig-paths": "^4.2.2",
     "vitest": "^0.31.0",
-    "vue-tsc": "^1.8.1"
+    "vue-tsc": "^1.8.25"
   }
 }

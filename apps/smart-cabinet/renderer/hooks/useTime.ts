@@ -78,7 +78,8 @@ export default function () {
       if (isLoggedIn.value) {
         openOperationTimeoutCountdown()
         router.replace('/main')
-      } else {
+      }
+      else {
         router.replace('/')
       }
     }, 1000)

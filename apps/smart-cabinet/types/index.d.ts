@@ -1,10 +1,11 @@
-import { DocDocument, RfidCabinetdoor, SysUser, RfidSwitchRecord, SysRole, SysUserRole, SysDept,RfidCabinetdoorProps } from 'database'
+import type { DocDocument, RfidCabinetdoorProps } from 'database'
 import type { ServiceType } from '../main/services/index'
-import {InPlaceState} from './enums'
+import type { InPlaceState } from './enums'
+
 export {}
 
 type JSBridgeType = {
-  [name in ServiceType[number]['name']]: ServiceType[number] extends infer T ? (T extends { name: name; fns: infer F } ? F : never) : never
+  [name in ServiceType[number]['name']]: ServiceType[number] extends infer T ? (T extends { name: name, fns: infer F } ? F : never) : never
 }
 
 declare global {
@@ -14,23 +15,23 @@ declare global {
     JSBridge: JSBridgeType
   }
 
-  type ResponseProps<T = unknown> = {
+  interface ResponseProps<T = unknown> {
     success: boolean
     msg?: string
     data?: T
   }
 
-  type PasswordLoginProps = {
+  interface PasswordLoginProps {
     username: string
     password: string
   }
 
-  type CarrierQuantityProps = {
+  interface CarrierQuantityProps {
     count: number
     inPlaceCount: number
   }
 
-  type UpdateCardProps = {
+  interface UpdateCardProps {
     userId: number
     cardNumber: string
   }
@@ -41,29 +42,29 @@ declare global {
     checkCountdown: number
   }
 
-  type LockControlStateProps = {
+  interface LockControlStateProps {
     [x: number]: boolean
   }
 
-  type PaginationType = {
+  interface PaginationType {
     page: number
     size: number
   }
 
-  type CarrierQueryProps = {
+  interface CarrierQueryProps {
     title?: string
     deptId?: number
-    cabinetDoorId?: number,
+    cabinetDoorId?: number
     state?: InPlaceState
   }
 
-  type UserQueryProps = {
+  interface UserQueryProps {
     userName?: string
     deptId?: number
     roleId?: number
   }
 
-  type DepartmentQueryProps = {
+  interface DepartmentQueryProps {
     deptName?: string
   }
 

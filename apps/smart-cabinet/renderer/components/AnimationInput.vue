@@ -38,7 +38,7 @@ defineExpose({
 
 <template>
   <div class="form-control">
-    <input ref="inputRef" v-model="inputValue" :type="type" required />
+    <input ref="inputRef" v-model="inputValue" :type="type" required>
     <label>
       <span v-for="(item, index) in labelWords" :key="index" :style="{ transitionDelay: `${index * 20}ms` }">{{ item }}</span>
     </label>

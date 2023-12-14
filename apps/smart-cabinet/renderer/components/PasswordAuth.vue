@@ -41,7 +41,9 @@ onBeforeUnmount(() => {
     <AnimationInput v-model:value="formState.password" class="w-full mb-8" label="请输入密码：" type="password" />
 
     <div v-if="!isVerify" class="flex mt-4 items-center justify-center">
-      <a-button type="primary" size="large" class="w-full" @click="handleComplete"> 登录 </a-button>
+      <a-button type="primary" size="large" class="w-full" @click="handleComplete">
+        登录
+      </a-button>
     </div>
   </div>
 </template>

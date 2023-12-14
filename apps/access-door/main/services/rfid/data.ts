@@ -69,10 +69,10 @@ export function getEPCAndTIDFromReportData(data: string): RFIDParseType {
  * @returns 解析后的 EPC 数据数组
  */
 export function parseTIDReportData(message: MessageQueue): RFIDParseType[] {
-  const dataList = message.getMessages('ReceiveEPCReport').map((item) => item.content)
+  const dataList = message.getMessages('ReceiveEPCReport').map(item => item.content)
 
   const result = uniqBy(
-    dataList.map((item) => getEPCAndTIDFromReportData(item)),
+    dataList.map(item => getEPCAndTIDFromReportData(item)),
     'TID',
   )
 
@@ -85,11 +85,11 @@ export function parseTIDReportData(message: MessageQueue): RFIDParseType[] {
  * @return {*}
  */
 export async function getInDatabaseCarrier(messages: Message[]) {
-  const commandList = messages.map((item) => item.content)
+  const commandList = messages.map(item => item.content)
 
-  const TIDList = uniq(commandList.map((item) => getEPCAndTIDFromReportData(item).TID))
+  const TIDList = uniq(commandList.map(item => getEPCAndTIDFromReportData(item).TID))
   const carriers = await selectDocDocumentList()
-  const filteredCarriers = carriers?.filter((item) => TIDList.includes(item.docRfid || ''))
+  const filteredCarriers = carriers?.filter(item => TIDList.includes(item.docRfid || ''))
 
   return filteredCarriers
 }
@@ -108,9 +108,9 @@ export async function insertRfidRecordList(
   direction: AccessDirection,
   alarmRecordList: Partial<DoorAlarmrecord>[],
 ) {
-  const registerRFIDList = registrationRecords.map((item) => item.docRfid)
+  const registerRFIDList = registrationRecords.map(item => item.docRfid)
   const list: Partial<DoorRfidrecord>[] = carriers.map((carrier) => {
-    const isAlarm = alarmRecordList.some((item) => item.carrierRfid === carrier.docRfid)
+    const isAlarm = alarmRecordList.some(item => item.carrierRfid === carrier.docRfid)
     return {
       equipmentName: equipment?.equipmentName,
       equipmentId: `${equipment?.equipmentid}`,
@@ -155,19 +155,19 @@ export async function debouncedSelectRfidRegisterRecord() {
  */
 export function filterAbnormalCarrier(carrierList: DocDocumentProps[], registerRecord: DoorRfidregister[]) {
   // 未登记载体
-  const registerRfidList = registerRecord.map((item) => item.docRfid)
-  const unregisteredCarrierList = carrierList.filter((item) => !registerRfidList.includes(item.docRfid))
+  const registerRfidList = registerRecord.map(item => item.docRfid)
+  const unregisteredCarrierList = carrierList.filter(item => !registerRfidList.includes(item.docRfid))
 
   // 审批未通过载体
   const approvalFailedRegisterRfidRecord = registerRecord
-    .filter((item) => item.state === ApprovalStatus.PENDING || item.state === ApprovalStatus.REJECTED)
-    .map((item) => item.docRfid)
-  const approvalFailedCarrierList = carrierList.filter((item) => approvalFailedRegisterRfidRecord.includes(item.docRfid))
+    .filter(item => item.state === ApprovalStatus.PENDING || item.state === ApprovalStatus.REJECTED)
+    .map(item => item.docRfid)
+  const approvalFailedCarrierList = carrierList.filter(item => approvalFailedRegisterRfidRecord.includes(item.docRfid))
 
   // 审批通过但超出规定时间的载体
   const now = dayjs()
 
-  const approvalPassedRegisterRecord = registerRecord.filter((item) => item.state === ApprovalStatus.APPROVED)
+  const approvalPassedRegisterRecord = registerRecord.filter(item => item.state === ApprovalStatus.APPROVED)
   const expiredCarrier = carrierList.reduce<DocDocumentProps[]>((acc, cur) => {
     approvalPassedRegisterRecord.forEach((item) => {
       if (item.docRfid === cur.docRfid && dayjs(item.startTime).isBefore(now) && dayjs(item.endTime).isAfter(now)) {

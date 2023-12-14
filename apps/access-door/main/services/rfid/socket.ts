@@ -13,7 +13,7 @@ export default class RfidSocket {
   heartbeatCount = 0
   timer: NodeJS.Timer | null = null
 
-  constructor(option: { address: string; port: number; message: MessageQueue }) {
+  constructor(option: { address: string, port: number, message: MessageQueue }) {
     this.address = option.address
     this.port = option?.port
     this.message = option.message

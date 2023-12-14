@@ -20,7 +20,8 @@ useInit()
   <a-config-provider component-size="large" :locale="zhCN">
     <div
       class="relative flex h-full w-full flex-col items-center justify-center bg-cover"
-      :style="{ backgroundImage: `url(${backgroundImage})` }">
+      :style="{ backgroundImage: `url(${backgroundImage})` }"
+    >
       <div class="w-h-full mask wrap-padding">
         <router-view :key="$route.fullPath" v-slot="{ Component }">
           <transition mode="out-in">

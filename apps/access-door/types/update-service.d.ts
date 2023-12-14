@@ -1,13 +1,13 @@
 export {}
 
 declare global {
-  type MessageType = {
+  interface MessageType {
     type: 'exit' | 'version' | 'download'
     content?: string
     path?: string
   }
 
-  type ReceiveData = {
+  interface ReceiveData {
     type: 'version' | 'download' | 'error'
     content?: unknown
   }

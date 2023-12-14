@@ -85,7 +85,9 @@ onMounted(() => {
         <BackButton @back="handleBack" />
         <span class="text-light text-[28px] ml-6"> 报警载体详情 </span>
       </div>
-      <div text="light 2xl" font="thin">{{ operationTimeoutCountdown }}秒后返回首页</div>
+      <div text="light 2xl" font="thin">
+        {{ operationTimeoutCountdown }}秒后返回首页
+      </div>
     </div>
 
     <div class="flex" m="y-8">
@@ -95,7 +97,8 @@ onMounted(() => {
         :wrapper-col="{ span: 16 }"
         label-align="left"
         class="flex-1 grid grid-rows-1 grid-cols-2 gap-x-6"
-        autocomplete="off">
+        autocomplete="off"
+      >
         <a-form-item label="所属部门" name="title">
           <a-select v-model:value="condition.deptId" allow-clear placeholder="请选择部门" @change="handleQuery">
             <a-select-option v-for="item in departmentList" :key="item.deptId" :value="String(item.deptId)">
@@ -106,7 +109,9 @@ onMounted(() => {
       </a-form>
 
       <div class="w-[180px] flex justify-end">
-        <a-button class="ml-4" @click="handleInit"> 重置 </a-button>
+        <a-button class="ml-4" @click="handleInit">
+          重置
+        </a-button>
       </div>
     </div>
 
@@ -120,7 +125,8 @@ onMounted(() => {
           total,
           onChange: onPageChange,
         }"
-        @resize-column="handleResizeColumn">
+        @resize-column="handleResizeColumn"
+      >
         <template #emptyText>
           <span>暂无数据</span>
         </template>

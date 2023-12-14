@@ -36,7 +36,7 @@ export async function selectDoorAlarmRecordList(condition?: Prisma.DoorAlarmreco
 export async function selectDoorAlarmRecordListWithPage(
   pagination: PaginationType,
   condition?: Prisma.DoorAlarmrecordWhereInput,
-): Promise<{ data: DoorAlarmrecordProps[]; total: number }> {
+): Promise<{ data: DoorAlarmrecordProps[], total: number }> {
   const skipAndTake = getSkipAndTake(pagination)
   const [data, total] = await Promise.all([
     prisma.doorAlarmrecord.findMany({

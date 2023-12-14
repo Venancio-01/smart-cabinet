@@ -11,7 +11,7 @@ export async function selectDoorAccessRecordList(condition?: Prisma.SysDeptWhere
 export async function selectDoorAccessRecordList(
   condition: Prisma.SysDeptWhereInput,
   pagination?: PaginationType,
-): Promise<{ data: DoorAccessRecords[]; total: number }>
+): Promise<{ data: DoorAccessRecords[], total: number }>
 export async function selectDoorAccessRecordList(condition?: Prisma.DoorAccessRecordsWhereInput, pagination?: PaginationType) {
   if (pagination) {
     const pageCondition = getSkipAndTake(pagination)
@@ -29,7 +29,8 @@ export async function selectDoorAccessRecordList(condition?: Prisma.DoorAccessRe
       data,
       total,
     }
-  } else {
+  }
+  else {
     return prisma.doorAccessRecords.findMany({
       where: condition,
     })

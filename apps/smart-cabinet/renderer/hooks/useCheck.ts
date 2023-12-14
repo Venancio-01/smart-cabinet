@@ -52,7 +52,8 @@ export default function () {
       const endCarrier = carrierList.value[index]
       if (item.docPStatus === BorrowedState.Returned && endCarrier.docPStatus === BorrowedState.Borrowed) {
         borrowCarriers.push(endCarrier)
-      } else if (item.docPStatus === BorrowedState.Borrowed && endCarrier.docPStatus === BorrowedState.Returned) {
+      }
+      else if (item.docPStatus === BorrowedState.Borrowed && endCarrier.docPStatus === BorrowedState.Returned) {
         returnCarriers.push(endCarrier)
       }
     })
@@ -61,13 +62,13 @@ export default function () {
     const misPlaceCarrierRecords = misPlaceCarrierList.value
 
     const result: CheckResultType[] = cabinetDoorList.value.map((door) => {
-      const currentDoorBorrowCarriers = borrowCarriers.filter((item) => item.cabinetDoorId === door.id)
-      const currentDoorReturnCarriers = returnCarriers.filter((item) => item.cabinetDoorId === door.id)
+      const currentDoorBorrowCarriers = borrowCarriers.filter(item => item.cabinetDoorId === door.id)
+      const currentDoorReturnCarriers = returnCarriers.filter(item => item.cabinetDoorId === door.id)
 
       // 如果是本次操作的柜门，则显示错放文件数据
-      const isOperationCabinetDoor = lastOperationCabinetDoorList.value.find((item) => item.id === door.id)
+      const isOperationCabinetDoor = lastOperationCabinetDoorList.value.find(item => item.id === door.id)
       const currentDoorMisPlaceCarrierRecords = isOperationCabinetDoor
-        ? misPlaceCarrierRecords.filter((item) => Number(item.doorid) === door.id)
+        ? misPlaceCarrierRecords.filter(item => Number(item.doorid) === door.id)
         : []
 
       return {
@@ -84,12 +85,12 @@ export default function () {
   /**
    * @description: 开启盘点倒计时
    * @param {CabinetDoorProps} door
-   * @param {function} callback
+   * @param {Function} callback
    * @return {*}
    */
   const startCheckCountdown = (doorId: number, callback: () => void) => {
     const timer = window.setInterval(async () => {
-      const door = cabinetDoorList.value.find((item) => item.id === doorId)
+      const door = cabinetDoorList.value.find(item => item.id === doorId)
       if (door === undefined) return
 
       setCabinetDoor({
@@ -112,7 +113,7 @@ export default function () {
    * @return {*}
    */
   const onCheckCountdownEnd = async (doorId: number) => {
-    const door = cabinetDoorList.value.find((item) => item.id === doorId)
+    const door = cabinetDoorList.value.find(item => item.id === doorId)
     if (door === undefined || door.txAddr === null) return
 
     // 更新载体状态
@@ -157,7 +158,7 @@ export default function () {
   const handleCheck = async (doorId: number) => {
     resetCountdowns()
 
-    const currentDoor = cabinetDoorList.value.find((item) => item.id === doorId)
+    const currentDoor = cabinetDoorList.value.find(item => item.id === doorId)
     if (currentDoor === undefined) return
 
     const { txAddr: address, txId: antennaId } = currentDoor
@@ -201,17 +202,17 @@ export default function () {
     // 记录盘点开始时的载体数据
     recordDataWhenCheckStart()
 
-    const noAvailableRfid = cabinetDoorList.value.every((item) => !item.rfidIsConnected)
+    const noAvailableRfid = cabinetDoorList.value.every(item => !item.rfidIsConnected)
     if (noAvailableRfid) {
       createAlert('RFID 读取器连接失败')
       return
     }
 
-    const availableCabinetDoors = cabinetDoorList.value.filter((item) => item.rfidIsConnected)
+    const availableCabinetDoors = cabinetDoorList.value.filter(item => item.rfidIsConnected)
     if (availableCabinetDoors.length !== cabinetDoorList.value.length) {
       const unavailableCabinetDoorNames = cabinetDoorList.value
-        .filter((item) => !item.rfidIsConnected)
-        .map((item) => item.name)
+        .filter(item => !item.rfidIsConnected)
+        .map(item => item.name)
         .join('、')
       Modal.confirm({
         title: '提示',
@@ -225,7 +226,8 @@ export default function () {
           })
         },
       })
-    } else {
+    }
+    else {
       cabinetDoorList.value.forEach((door) => {
         addLastOperationCabinetDoorRecords(door)
         handleCheck(door.id)

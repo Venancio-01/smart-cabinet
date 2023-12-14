@@ -1,5 +1,12 @@
 {
   "extends": "config/tsconfig.web.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./renderer/*"],
+      "~/*": ["./types/*"]
+    }
+  },
   "include": [
     "renderer/env.d.ts",
     "renderer/**/*",
@@ -8,12 +15,5 @@
     "renderer/*.d.ts",
     "types/*.ts",
     "types/*.d.ts"
-  ],
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./renderer/*"],
-      "~/*": ["./types/*"]
-    }
-  }
+  ]
 }

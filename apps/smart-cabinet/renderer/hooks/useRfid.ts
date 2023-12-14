@@ -40,7 +40,7 @@ export default function () {
   const handleOpenRfid = async (address: string, antennaIds: string) => {
     window.JSBridge.rfid.sendCloseCommand(address)
 
-    const antennaIdList = antennaIds.split(',').map((item) => Number(item))
+    const antennaIdList = antennaIds.split(',').map(item => Number(item))
     window.JSBridge.rfid.sendOpenCommand(address, antennaIdList)
   }
 

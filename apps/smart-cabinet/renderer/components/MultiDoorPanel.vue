@@ -24,8 +24,8 @@ function handleClickDoor(door: CabinetDoorProps) {
 
 const doorList = computed(() => {
   return cabinetDoorList.value.map((door) => {
-    const totalCarriers = carrierList.value.filter((item) => item.cabinetDoorId === door.id)
-    const inPlaceCarriers = totalCarriers.filter((item) => item.docPStatus === BorrowedState.Returned)
+    const totalCarriers = carrierList.value.filter(item => item.cabinetDoorId === door.id)
+    const inPlaceCarriers = totalCarriers.filter(item => item.docPStatus === BorrowedState.Returned)
 
     return {
       ...door,
@@ -50,13 +50,18 @@ const doorList = computed(() => {
         v-for="(door, index) in doorList"
         :key="index"
         class="flex w-[180px] border-[1px] border-[#bebebe] bg-white"
-        @click="handleClickDoor(door)">
+        @click="handleClickDoor(door)"
+      >
         <div class="relative flex flex-1 items-center justify-center">
-          <div class="absolute top-2 left-2">[{{ door.viewName }}]</div>
+          <div class="absolute top-2 left-2">
+            [{{ door.viewName }}]
+          </div>
 
           <div class="mt-2 flex select-none flex-col items-center justify-center text-sm">
             <p>{{ door.name }}</p>
-            <p class="mt-1 text-lg underline">{{ door.inPlaceCarrierCount }} / {{ door.totalCarrierCount }}</p>
+            <p class="mt-1 text-lg underline">
+              {{ door.inPlaceCarrierCount }} / {{ door.totalCarrierCount }}
+            </p>
           </div>
         </div>
 

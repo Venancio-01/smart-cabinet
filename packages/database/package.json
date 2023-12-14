@@ -6,8 +6,8 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
   },
   "main": "./dist/index.js",
@@ -21,12 +21,12 @@
     "package": "tsup"
   },
   "dependencies": {
-    "@prisma/client": "4.16.0",
-    "prisma": "4.16.0",
-    "prisma-case-format": "^1.7.0"
+    "@prisma/client": "5.7.0",
+    "prisma": "5.7.0",
+    "prisma-case-format": "^1.7.3"
   },
   "devDependencies": {
-    "@types/ffi-napi": "^4.0.7",
+    "@types/ffi-napi": "^4.0.10",
     "config": "workspace:^",
     "electron": "^12.2.0",
     "utils": "workspace:^"

@@ -24,7 +24,7 @@ const { userList } = storeToRefs(store)
 const dataWithMisPlace = computed(() => {
   return props.data.map((carrier) => {
     const hasUnoperatedMisPlaceRecord = carrier.alarmRecord.some(
-      (item) => Number(item.contentType) === AlarmContentType.IncorrectLocation && Number(item.isOperation) === OperationStatus.Unoperated,
+      item => Number(item.contentType) === AlarmContentType.IncorrectLocation && Number(item.isOperation) === OperationStatus.Unoperated,
     )
     return {
       ...carrier,
@@ -66,7 +66,7 @@ const columns = ref<ColumnsType<DocDocumentProps>>([
     dataIndex: 'docLastUserId',
     key: 'docLastUserId',
     customRender: ({ record }) => {
-      return userList.value.find((item) => Number(item.userId) === record.docLastUserId)?.userName
+      return userList.value.find(item => Number(item.userId) === record.docLastUserId)?.userName
     },
   },
   {
@@ -89,7 +89,7 @@ function judgeIsMisPlace(carrier: DocDocumentProps) {
   if (carrier.alarmRecord.length === 0) return false
 
   const hasUnoperatedMisPlaceRecord = carrier.alarmRecord.some(
-    (item) => Number(item.contentType) === AlarmContentType.IncorrectLocation && Number(item.isOperation) === OperationStatus.Unoperated,
+    item => Number(item.contentType) === AlarmContentType.IncorrectLocation && Number(item.isOperation) === OperationStatus.Unoperated,
   )
   return hasUnoperatedMisPlaceRecord
 }
@@ -103,7 +103,7 @@ function handleResizeColumn(width, column) {
 }
 
 onMounted(() => {
-  columns.value = columns.value.map((item) => ({
+  columns.value = columns.value.map(item => ({
     ...item,
     align: 'center',
     ellipsis: true,
@@ -121,7 +121,8 @@ onMounted(() => {
       total,
       onChange: onPageChange,
     }"
-    @resize-column="handleResizeColumn">
+    @resize-column="handleResizeColumn"
+  >
     <template #bodyCell="{ column, record }">
       <template v-if="column.dataIndex === 'docPStatus'">
         <span v-if="!record.isMisPlace && record.docPStatus === BorrowedState.Returned" class="text-green-500">在柜</span>

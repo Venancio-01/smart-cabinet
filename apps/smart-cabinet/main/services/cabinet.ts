@@ -14,7 +14,7 @@ export async function getCurrentCabinet() {
   const devices = await selectRfidCabinetList()
   const ipList = getLocalIpAddress()
 
-  currentCabinet = devices.find((item) => item.cabAddr && ipList.includes(item.cabAddr)) || null
+  currentCabinet = devices.find(item => item.cabAddr && ipList.includes(item.cabAddr)) || null
 
   return currentCabinet
 }

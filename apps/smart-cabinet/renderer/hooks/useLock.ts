@@ -88,7 +88,8 @@ export default function () {
           recordDataWhenCheckStart()
           handleCheck(door.id)
           setCabinetDoor({ ...door, isOpen: false })
-        } else if (isOpen) {
+        }
+        else if (isOpen) {
           console.log(`${door.kgbh} - 门锁开启`)
           setCabinetDoor({ ...door, isOpen: true })
         }

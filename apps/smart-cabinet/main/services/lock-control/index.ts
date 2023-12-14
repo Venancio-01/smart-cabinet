@@ -17,9 +17,10 @@ async function getConnectState() {
   const COMPort = currentCabinet?.openDoor || ''
   if (COMPort === '') {
     connected = false
-  } else {
+  }
+  else {
     const list = await SerialPortLib.list()
-    connected = !!list.find((item) => item.path.includes(COMPort))
+    connected = !!list.find(item => item.path.includes(COMPort))
   }
 
   return connected
@@ -89,7 +90,7 @@ function getOpenStatus(): null | LockControlStateProps {
   // 1 - 8 锁控状态
   const lockGroup_1 = convertDecimalToBinary(Number(commandBody.slice(4, 6)))
 
-  const result = new Array(MAX_LOCK_COUNT).fill(0).reduce((acc, cur, index) => {
+  const result = Array.from({ length: MAX_LOCK_COUNT }).fill(0).reduce((acc, cur, index) => {
     const group = index < 8 ? lockGroup_1 : index < 16 ? lockGroup_2 : lockGroup_3
     const lockIndex = index < 8 ? index : index < 16 ? index - 8 : index - 16
     acc[index + 1] = group[lockIndex] === '0'

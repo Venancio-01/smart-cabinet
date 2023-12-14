@@ -11,7 +11,7 @@ export function makeChannelName(name: string, fnName: string) {
   return `${name}.${fnName}`
 }
 
-type ServiceType = Array<{ name: string; fns: Record<string, any> }>
+type ServiceType = Array<{ name: string, fns: Record<string, any> }>
 /**
  * Registers IPC handles for the given services.
  *
@@ -30,7 +30,7 @@ export function registerIPCHandle(services: ServiceType) {
  * Generates an IPC invoke object based on the given services.
  *
  * @param {ServiceType[]} services - An array of service types.
- * @return {Object} - The IPC invoke object.
+ * @return {object} - The IPC invoke object.
  */
 export function generateIPCInvoke(services: ServiceType) {
   return services.reduce((acc, cur) => {
@@ -46,7 +46,7 @@ export function generateIPCInvoke(services: ServiceType) {
 /**
  * @description: 发送 ipc 通信到渲染进程
  * @param {string} channel
- * @param {array} args
+ * @param {Array} args
  * @return {*}
  */
 export function sendIpcToRenderer(channel: string, ...args: any[]) {

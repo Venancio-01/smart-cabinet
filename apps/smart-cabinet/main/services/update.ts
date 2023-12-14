@@ -30,7 +30,8 @@ function handleReceiveData() {
   try {
     const parseData = JSON.parse(data) as ReceiveData
     return parseData
-  } catch (e) {
+  }
+  catch (e) {
     console.log(e)
     return null
   }
@@ -69,7 +70,8 @@ const updateService = {
       try {
         await instance.init()
         return (isConnected = true)
-      } catch (e) {
+      }
+      catch (e) {
         console.log(e, 'update service socket 连接失败')
         return isConnected
       }

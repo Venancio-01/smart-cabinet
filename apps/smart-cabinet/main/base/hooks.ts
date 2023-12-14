@@ -22,7 +22,8 @@ export async function onAppReady() {
     const isConnected = await connectDatabase()
     globalThis.databaseIsConnected = isConnected
     info('数据库连接成功')
-  } catch (e) {
+  }
+  catch (e) {
     error(`数据库连接失败${e}`)
   }
 
@@ -31,7 +32,8 @@ export async function onAppReady() {
 
   if (isControlEquipment) {
     info('是控制设备')
-  } else {
+  }
+  else {
     info('非控制设备')
   }
 

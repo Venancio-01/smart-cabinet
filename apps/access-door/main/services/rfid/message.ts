@@ -30,7 +30,7 @@ export class MessageQueue {
 
   // 根据名称获取队列中的消息
   getMessages(name: string): Message[] {
-    return this.messages.filter((item) => item.name === name)
+    return this.messages.filter(item => item.name === name)
   }
 
   // 获取队列中的所有消息

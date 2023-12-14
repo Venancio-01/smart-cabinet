@@ -1,8 +1,8 @@
 import type { SysUserProps } from 'database'
+import { v4 as uuidv4 } from 'uuid'
 import { useStore } from '@/store'
 import createAlert from '@/components/BaseAlert'
 import useTime from '@/hooks/useTime'
-import {v4 as uuidv4 } from 'uuid'
 
 export interface PasswordLoginType {
   username: string
@@ -12,7 +12,7 @@ export interface PasswordLoginType {
 export default function () {
   const router = useRouter()
   const store = useStore()
-  const { setIsLoggedIn, setUserData,setGuid } = store
+  const { setIsLoggedIn, setUserData, setGuid } = store
   const { openOperationTimeoutCountdown, closeOperationTimeoutCountdown } = useTime()
 
   /**

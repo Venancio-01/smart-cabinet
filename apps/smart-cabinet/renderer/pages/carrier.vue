@@ -60,16 +60,23 @@ onMounted(() => {
         :wrapper-col="{ span: 16 }"
         label-align="left"
         class="flex-1 grid grid-rows-2 grid-cols-2 gap-x-6"
-        autocomplete="off">
+        autocomplete="off"
+      >
         <a-form-item label="载体名称" name="title">
           <a-input v-model:value="condition.title" />
         </a-form-item>
 
         <a-form-item label="在位状态" name="title">
           <a-select v-model:value="condition.state" allow-clear @change="handleSearch">
-            <a-select-option :value="InPlaceState.IN_CABINET"> 在柜 </a-select-option>
-            <a-select-option :value="InPlaceState.BORROWED"> 领用 </a-select-option>
-            <a-select-option :value="InPlaceState.MISPLACED"> 错放 </a-select-option>
+            <a-select-option :value="InPlaceState.IN_CABINET">
+              在柜
+            </a-select-option>
+            <a-select-option :value="InPlaceState.BORROWED">
+              领用
+            </a-select-option>
+            <a-select-option :value="InPlaceState.MISPLACED">
+              错放
+            </a-select-option>
           </a-select>
         </a-form-item>
 
@@ -82,8 +89,12 @@ onMounted(() => {
         </a-form-item>
       </a-form>
       <div class="w-[180px] flex justify-end">
-        <a-button type="primary" @click="handleSearch"> 搜索 </a-button>
-        <a-button class="ml-4" @click="handleInit"> 重置 </a-button>
+        <a-button type="primary" @click="handleSearch">
+          搜索
+        </a-button>
+        <a-button class="ml-4" @click="handleInit">
+          重置
+        </a-button>
       </div>
     </div>
 
@@ -93,6 +104,7 @@ onMounted(() => {
       :condition="{ page: pagination.page, size: pagination.size }"
       :operable="true"
       @on-page-change="onPageChange"
-      @on-data-change="() => getCarriers(pagination, condition)" />
+      @on-data-change="() => getCarriers(pagination, condition)"
+    />
   </div>
 </template>

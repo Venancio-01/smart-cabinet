@@ -42,7 +42,7 @@ function sendOpenCommand(address: string, antennaIds: number[]) {
 export function getReportData(address: string) {
   const data = instanceMap?.[address]?.getData() || ''
   const reportData = parseRFIDReportData(data)
-  const TIDList = [...new Set(reportData.map((item) => getTIDByReportData(item)))]
+  const TIDList = [...new Set(reportData.map(item => getTIDByReportData(item)))]
 
   return TIDList
 }

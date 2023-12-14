@@ -35,7 +35,7 @@ export async function selectDoorRfidrecordList(condition?: Prisma.DoorRfidrecord
 export async function selectDoorRfidrecordListWithPage(
   pagination: PaginationType,
   condition?: Prisma.DoorRfidrecordWhereInput,
-): Promise<{ data: DoorRfidrecordProps[]; total: number }> {
+): Promise<{ data: DoorRfidrecordProps[], total: number }> {
   const skipAndTake = getSkipAndTake(pagination)
   const [data, total] = await Promise.all([
     prisma.doorRfidrecord.findMany({

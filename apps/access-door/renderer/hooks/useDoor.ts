@@ -43,7 +43,7 @@ export default function () {
 
     const query: Prisma.DoorRfidrecordWhereInput = {
       equipmentId: {
-        in: equipmentList.value.map((item) => `${item.equipmentid}`),
+        in: equipmentList.value.map(item => `${item.equipmentid}`),
       },
       carrierName: condition?.carrierName ? { contains: condition.carrierName } : undefined,
       creatorTime: condition?.timeRange ? timeRangeMap?.[condition.timeRange] : undefined,
@@ -60,7 +60,7 @@ export default function () {
   const selectUnviewedAlarmRecordCount = async () => {
     const result = await window.JSBridge.accessDoor.selectDoorAlarmRecordCount({
       equipmentId: {
-        in: equipmentList.value.map((item) => `${item.equipmentid}`),
+        in: equipmentList.value.map(item => `${item.equipmentid}`),
       },
       isOperation: '0',
     })
@@ -86,7 +86,7 @@ export default function () {
 
     const query: Prisma.DoorAlarmrecordWhereInput = {
       equipmentId: {
-        in: equipmentList.value.map((item) => `${item.equipmentid}`),
+        in: equipmentList.value.map(item => `${item.equipmentid}`),
       },
       carrierName: condition?.carrierName ? { contains: condition.carrierName } : undefined,
       carrierDeptid: condition?.deptId,

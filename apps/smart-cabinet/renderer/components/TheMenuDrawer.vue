@@ -40,7 +40,8 @@ function handleSetPassword() {
   if (isExpired) {
     openVerifyIdentityDialog()
     saveCallback(cb)
-  } else {
+  }
+  else {
     cb()
   }
 }
@@ -57,7 +58,8 @@ function handleSetFinger(order: 1 | 2) {
   if (isExpired) {
     openVerifyIdentityDialog()
     saveCallback(cb)
-  } else {
+  }
+  else {
     cb()
   }
 }
@@ -72,19 +74,20 @@ function handleSetCard() {
   if (isExpired) {
     openVerifyIdentityDialog()
     saveCallback(cb)
-  } else {
+  }
+  else {
     cb()
   }
 }
 
 const departmentName = computed(() => {
-  return departmentList.value.find((department) => user.value.deptId === department.deptId)?.deptName
+  return departmentList.value.find(department => user.value.deptId === department.deptId)?.deptName
 })
 const roleName = computed(() => {
-  const roleId = userRoleList.value.find((userRole) => user.value.userId === userRole.userId)?.roleId
+  const roleId = userRoleList.value.find(userRole => user.value.userId === userRole.userId)?.roleId
   if (!roleId) return ''
 
-  return roleList.value.find((role) => role.roleId === roleId)?.roleName
+  return roleList.value.find(role => role.roleId === roleId)?.roleName
 })
 </script>
 
@@ -115,12 +118,24 @@ const roleName = computed(() => {
     </div>
 
     <div class="menu text-light" @click="emits('update:visible', false)">
-      <div class="item" @click="handleSetPassword">设置密码</div>
-      <div class="item" @click="handleSetFinger(1)">设置指纹一</div>
-      <div class="item" @click="handleSetFinger(2)">设置指纹二</div>
-      <div class="item" @click="handleSetCard">设置卡号</div>
-      <div class="item" @click="handleManualCheck">手动盘点</div>
-      <div class="item" @click="handleLogout">退出登录</div>
+      <div class="item" @click="handleSetPassword">
+        设置密码
+      </div>
+      <div class="item" @click="handleSetFinger(1)">
+        设置指纹一
+      </div>
+      <div class="item" @click="handleSetFinger(2)">
+        设置指纹二
+      </div>
+      <div class="item" @click="handleSetCard">
+        设置卡号
+      </div>
+      <div class="item" @click="handleManualCheck">
+        手动盘点
+      </div>
+      <div class="item" @click="handleLogout">
+        退出登录
+      </div>
     </div>
   </a-drawer>
 </template>

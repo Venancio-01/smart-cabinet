@@ -11,7 +11,8 @@ export async function connectDatabase() {
   try {
     await prisma.$connect()
     isConnected = true
-  } catch (e) {
+  }
+  catch (e) {
     console.log('数据库连接失败', e)
   }
 

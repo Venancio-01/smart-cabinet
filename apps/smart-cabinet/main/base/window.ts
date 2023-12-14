@@ -18,7 +18,8 @@ export async function createWindow() {
 
   if (app.isPackaged) {
     win.loadFile(join(__dirname, '../renderer/index.html'))
-  } else {
+  }
+  else {
     win.loadURL('http://localhost:4200/')
     win.webContents.openDevTools()
   }

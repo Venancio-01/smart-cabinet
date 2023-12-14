@@ -24,7 +24,8 @@ const warnVisible = ref(false)
           icon="warn"
           class="text-icon-normal"
           :class="misPlaceCarrierTotal === 0 ? 'text-light' : 'text-error-color'"
-          @click="warnVisible = true" />
+          @click="warnVisible = true"
+        />
       </div>
 
       <div v-show="hasUnConnectedRfid" class="flex items-center justify-center">

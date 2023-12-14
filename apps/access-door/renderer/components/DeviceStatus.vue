@@ -11,7 +11,7 @@ const rfidVisible = ref(false)
 const deviceVisible = ref(false)
 
 const rfidIsConnected = computed(() => {
-  return equipmentList.value.every((item) => item.rfidIsConnected)
+  return equipmentList.value.every(item => item.rfidIsConnected)
 })
 
 const rfidStatusText = computed(() => {
@@ -38,7 +38,8 @@ function goWarningRecordPage() {
       v-model:visible="rfidVisible"
       title="RFID状态"
       :status-text="rfidStatusText"
-      content="检查RFID线缆是否正常，并尝试插拔后重新启动软件。" />
+      content="检查RFID线缆是否正常，并尝试插拔后重新启动软件。"
+    />
     <SolutionDialog v-model:visible="networkVisible" title="网络状态" content="请检查数据库链接配置是否正常，并重新启动软件。" />
     <SolutionDialog v-model:visible="deviceVisible" title="未找到通道门" content="请检查数据库通道门配置是否正常，并重新启动软件。" />
 
@@ -53,7 +54,8 @@ function goWarningRecordPage() {
             icon="warn"
             class="text-icon-normal"
             :class="[unviewedAccessRecordCount === 0 ? 'text-light' : 'text-error-color']"
-            @click="goWarningRecordPage" />
+            @click="goWarningRecordPage"
+          />
         </a-badge>
       </div>
 

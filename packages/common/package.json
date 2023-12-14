@@ -5,18 +5,18 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
     "./system": {
       "types": "./dist/system/index.d.ts",
-      "require": "./dist/system/index.cjs",
-      "import": "./dist/system/index.js"
+      "import": "./dist/system/index.js",
+      "require": "./dist/system/index.cjs"
     },
     "./activation": {
       "types": "./dist/activation/index.d.ts",
-      "require": "./dist/activation/index.cjs",
-      "import": "./dist/activation/index.js"
+      "import": "./dist/activation/index.js",
+      "require": "./dist/activation/index.cjs"
     }
   },
   "main": "./dist/index.js",

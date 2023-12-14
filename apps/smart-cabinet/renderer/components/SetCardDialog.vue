@@ -63,7 +63,8 @@ watch(show, (value) => {
     nextTick(() => {
       handleFocus()
     })
-  } else {
+  }
+  else {
     removeListenEnter(true)
     cardNumber.value = ''
   }

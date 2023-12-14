@@ -62,7 +62,7 @@ const routes: RouteRecordRaw[] = [
     component: Open,
     props: true,
   },
-  { path: '/result', component: Result},
+  { path: '/result', component: Result },
 ]
 
 const router = createRouter({

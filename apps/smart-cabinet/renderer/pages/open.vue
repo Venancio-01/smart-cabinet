@@ -58,6 +58,7 @@ onMounted(() => {
       :data="data"
       :total="total"
       :condition="{ page: pagination.page, size: pagination.size }"
-      @on-page-change="handlePageChange" />
+      @on-page-change="handlePageChange"
+    />
   </div>
 </template>

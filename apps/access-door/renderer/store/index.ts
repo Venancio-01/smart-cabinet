@@ -39,7 +39,7 @@ export const useStore = defineStore('main', {
   },
   getters: {
     hasUnprocessedAlarmRecord(state) {
-      return state.alarmRecordList.length > 0 && state.alarmRecordList.some((item) => item.isOperation === '0')
+      return state.alarmRecordList.length > 0 && state.alarmRecordList.some(item => item.isOperation === '0')
     },
     deviceNotFound(state) {
       return state.equipmentList.length === 0
@@ -59,7 +59,7 @@ export const useStore = defineStore('main', {
       this.equipmentList = equipmentList
     },
     setEquipment(id: number, equipment: Partial<EquipmentProps>) {
-      const index = this.equipmentList.findIndex((item) => item.equipmentid === id)
+      const index = this.equipmentList.findIndex(item => item.equipmentid === id)
       if (index < 0) return
 
       this.equipmentList[index] = {
@@ -71,7 +71,7 @@ export const useStore = defineStore('main', {
       this.alarmEquipmentList = equipmentList
     },
     setAlarmEquipment(id: number, equipment: Partial<AlarmEquipmentProps>) {
-      const index = this.alarmEquipmentList.findIndex((item) => item.equipmentid === id)
+      const index = this.alarmEquipmentList.findIndex(item => item.equipmentid === id)
       if (index < 0) return
 
       this.alarmEquipmentList[index] = {
