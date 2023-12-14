@@ -39,593 +39,141 @@
   "nxJsonPlugins": [],
   "fileMap": {
     "projectFileMap": {
-      "access-door": [
+      "database": [
         {
-          "file": "apps/access-door/.prettierignore",
-          "hash": "7067610566685412081"
+          "file": "packages/database/.env",
+          "hash": "14494876918981541364"
         },
         {
-          "file": "apps/access-door/.vscode/settings.json",
-          "hash": "5628349677861133691"
+          "file": "packages/database/.gitignore",
+          "hash": "7663861978715868291"
         },
         {
-          "file": "apps/access-door/electron-builder.yml",
-          "hash": "17699598862503250164"
-        },
-        {
-          "file": "apps/access-door/index.html",
-          "hash": "15862869603423354225"
-        },
-        {
-          "file": "apps/access-door/main/base/hooks.ts",
-          "hash": "29979734369881571",
+          "file": "packages/database/package.json",
+          "hash": "11797831984359126862",
           "deps": [
+            "npm:@prisma/client",
+            "npm:prisma",
+            "npm:prisma-case-format",
+            "npm:@types/ffi-napi",
+            "config",
             "npm:electron",
-            "npm:utils/electron",
-            "npm:@/base/window",
-            "npm:@/services/rfid",
-            "npm:@/services",
-            "npm:@/services/access-door",
-            "npm:@/services/log",
-            "npm:@/services/database"
+            "utils"
           ]
         },
         {
-          "file": "apps/access-door/main/base/loading.ts",
-          "hash": "14493582087960722852"
+          "file": "packages/database/prisma/schema.prisma",
+          "hash": "7125633674143356032"
         },
         {
-          "file": "apps/access-door/main/base/window.ts",
-          "hash": "5136764557519798775",
+          "file": "packages/database/src/doc-document.ts",
+          "hash": "7370184700632628696",
           "deps": [
-            "npm:path",
-            "npm:electron",
-            "npm:utils/config/main"
-          ]
-        },
-        {
-          "file": "apps/access-door/main/index.ts",
-          "hash": "12336137907879090035",
-          "deps": [
-            "npm:electron",
-            "npm:dotenv",
-            "npm:utils/config",
-            "npm:@/base/hooks"
-          ]
-        },
-        {
-          "file": "apps/access-door/main/preload.ts",
-          "hash": "10984588433555940325",
-          "deps": [
-            "npm:electron",
-            "npm:@electron-toolkit/preload",
-            "npm:@/services"
-          ]
-        },
-        {
-          "file": "apps/access-door/main/services/access-door.ts",
-          "hash": "9411959033840198600",
-          "deps": [
-            "npm:database",
             "npm:utils",
-            "npm:lodash-es"
+            "npm:@prisma/client"
           ]
         },
         {
-          "file": "apps/access-door/main/services/activation.ts",
-          "hash": "11087467486985651422",
+          "file": "packages/database/src/door-access-record.ts",
+          "hash": "4182588392596071990",
           "deps": [
-            "npm:common/activation"
+            "utils"
           ]
         },
         {
-          "file": "apps/access-door/main/services/database.ts",
-          "hash": "6065848531321911847",
+          "file": "packages/database/src/door-alarm-record.ts",
+          "hash": "18363657592098919033",
           "deps": [
-            "npm:database"
-          ]
-        },
-        {
-          "file": "apps/access-door/main/services/index.ts",
-          "hash": "518726325741508383",
-          "deps": [
-            "npm:utils/electron"
-          ]
-        },
-        {
-          "file": "apps/access-door/main/services/log.ts",
-          "hash": "14008859148901434112",
-          "deps": [
-            "npm:electron-log"
-          ]
-        },
-        {
-          "file": "apps/access-door/main/services/network.ts",
-          "hash": "6453226730954780856"
-        },
-        {
-          "file": "apps/access-door/main/services/rfid/command.ts",
-          "hash": "6744984542074293016",
-          "deps": [
-            "npm:utils/config/main",
-            "npm:~/enums"
-          ]
-        },
-        {
-          "file": "apps/access-door/main/services/rfid/data.ts",
-          "hash": "12050607292948732306",
-          "deps": [
-            "npm:lodash-es",
-            "npm:database",
-            "npm:dayjs",
-            "npm:~/enums"
-          ]
-        },
-        {
-          "file": "apps/access-door/main/services/rfid/index.ts",
-          "hash": "16494852928312232679",
-          "deps": [
-            "npm:database",
-            "npm:utils/electron",
-            "npm:utils/config/main",
-            "npm:@/services/access-door",
-            "npm:@/services/rfid/socket",
-            "npm:~/enums"
-          ]
-        },
-        {
-          "file": "apps/access-door/main/services/rfid/message.ts",
-          "hash": "9547473001781536745"
-        },
-        {
-          "file": "apps/access-door/main/services/rfid/protocol-map.ts",
-          "hash": "1360312466981596962"
-        },
-        {
-          "file": "apps/access-door/main/services/rfid/socket.ts",
-          "hash": "4069508456940525548",
-          "deps": [
-            "npm:net",
-            "npm:buffer",
-            "npm:@/services/log",
-            "npm:@/services/rfid/data"
-          ]
-        },
-        {
-          "file": "apps/access-door/main/services/rfid/utils.ts",
-          "hash": "15563826727230606951",
-          "deps": [
-            "npm:buffer",
-            "npm:ffi-napi",
-            "npm:ref-napi",
-            "npm:ref-array-di",
-            "npm:utils/config/main"
-          ]
-        },
-        {
-          "file": "apps/access-door/main/services/store.ts",
-          "hash": "6597756526981100228",
-          "deps": [
-            "npm:electron-store"
-          ]
-        },
-        {
-          "file": "apps/access-door/main/services/sys.ts",
-          "hash": "875986520685368000",
-          "deps": [
-            "npm:database",
-            "npm:common/system"
-          ]
-        },
-        {
-          "file": "apps/access-door/package.json",
-          "hash": "8137120439216126461",
-          "deps": [
-            "npm:ajv",
-            "npm:crypto-js",
-            "database",
-            "npm:dayjs",
-            "npm:dotenv",
-            "npm:electron-log",
-            "npm:electron-store",
-            "npm:ffi-napi",
-            "npm:node-machine-id",
-            "npm:ref-array-di",
-            "npm:ref-napi",
-            "npm:ref-struct-di",
-            "npm:serialport",
-            "npm:@electron-toolkit/preload",
-            "npm:@iconify-json/carbon",
-            "npm:@types/lodash-es",
-            "npm:@types/ref-array-di",
-            "npm:@vitejs/plugin-vue",
-            "npm:animate.css",
-            "npm:ant-design-vue",
-            "common",
-            "components",
-            "config",
-            "npm:daisyui",
-            "npm:electron",
-            "npm:electron-builder",
-            "npm:electron-devtools-installer",
-            "npm:lodash-es",
-            "npm:pinia",
-            "ui",
-            "npm:unocss",
-            "npm:unplugin-auto-import",
-            "npm:unplugin-vue-components",
-            "npm:unplugin-vue-router",
             "utils",
-            "npm:vite",
-            "npm:vite-plugin-electron-renderer",
-            "npm:vite-plugin-electron-vaausud",
-            "npm:vite-plugin-vue-devtools",
-            "npm:vue",
-            "npm:vue-router",
-            "npm:vue3-perfect-scrollbar"
+            "npm:@prisma/client"
           ]
         },
         {
-          "file": "apps/access-door/renderer/App.vue",
-          "hash": "13185875125480300178"
+          "file": "packages/database/src/door-equipment.ts",
+          "hash": "16159610473008964868"
         },
         {
-          "file": "apps/access-door/renderer/assets/styles/index.css",
-          "hash": "10259996349622531625"
-        },
-        {
-          "file": "apps/access-door/renderer/auto-imports.d.ts",
-          "hash": "14907724516745557620",
+          "file": "packages/database/src/door-rfid-record.ts",
+          "hash": "7615078647736512870",
           "deps": [
-            "npm:vue",
-            "npm:pinia",
-            "npm:vue-router",
-            "npm:unplugin-vue-router"
-          ]
-        },
-        {
-          "file": "apps/access-door/renderer/components.d.ts",
-          "hash": "10025112494962799393",
-          "deps": [
-            "npm:@vue/runtime-core",
-            "npm:ant-design-vue",
-            "npm:vue-router"
-          ]
-        },
-        {
-          "file": "apps/access-door/renderer/components/AlarmRecordCard.vue",
-          "hash": "7247696287812393535"
-        },
-        {
-          "file": "apps/access-door/renderer/components/BackButton.vue",
-          "hash": "13547829420042007331"
-        },
-        {
-          "file": "apps/access-door/renderer/components/BaseAlert/index.ts",
-          "hash": "17512316262219744054",
-          "deps": [
-            "npm:ant-design-vue"
-          ]
-        },
-        {
-          "file": "apps/access-door/renderer/components/BaseLoading.vue",
-          "hash": "5736968526922141507"
-        },
-        {
-          "file": "apps/access-door/renderer/components/DeviceStatus.vue",
-          "hash": "7137974851950552247"
-        },
-        {
-          "file": "apps/access-door/renderer/components/StopAlarmButton.vue",
-          "hash": "4912825370958202234"
-        },
-        {
-          "file": "apps/access-door/renderer/config/index.ts",
-          "hash": "7265058189400620162"
-        },
-        {
-          "file": "apps/access-door/renderer/env.d.ts",
-          "hash": "7956993448890132673",
-          "deps": [
-            "npm:vue"
-          ]
-        },
-        {
-          "file": "apps/access-door/renderer/features/activation.ts",
-          "hash": "1800962348028160688"
-        },
-        {
-          "file": "apps/access-door/renderer/features/background.ts",
-          "hash": "8041975777119263835",
-          "deps": [
-            "npm:@/public/background/index.png"
-          ]
-        },
-        {
-          "file": "apps/access-door/renderer/hooks/useDoor.ts",
-          "hash": "556022147119557898",
-          "deps": [
-            "npm:database",
-            "npm:@/store",
-            "npm:~/enums"
-          ]
-        },
-        {
-          "file": "apps/access-door/renderer/hooks/useInit.ts",
-          "hash": "5735238576320958362",
-          "deps": [
-            "ui",
-            "npm:@/hooks/useSys",
-            "npm:@/hooks/useDoor",
-            "npm:@/hooks/useRfid",
-            "npm:@/hooks/useNetwork",
-            "npm:@/features/activation"
-          ]
-        },
-        {
-          "file": "apps/access-door/renderer/hooks/useListenAction.ts",
-          "hash": "6116290604957306814"
-        },
-        {
-          "file": "apps/access-door/renderer/hooks/useListenEnter.ts",
-          "hash": "8944443856236097205"
-        },
-        {
-          "file": "apps/access-door/renderer/hooks/useMessage.tsx",
-          "hash": "18091699232505141706",
-          "deps": [
-            "npm:ant-design-vue",
-            "npm:@ant-design/icons-vue",
-            "npm:lodash-es"
-          ]
-        },
-        {
-          "file": "apps/access-door/renderer/hooks/useNetwork.ts",
-          "hash": "8844155852240883189",
-          "deps": [
-            "npm:@/store"
-          ]
-        },
-        {
-          "file": "apps/access-door/renderer/hooks/useRfid.ts",
-          "hash": "5842265904855202837",
-          "deps": [
-            "npm:database",
-            "npm:@/store",
-            "npm:~/enums"
-          ]
-        },
-        {
-          "file": "apps/access-door/renderer/hooks/useSys.ts",
-          "hash": "15294706853435394199",
-          "deps": [
-            "npm:@/store"
-          ]
-        },
-        {
-          "file": "apps/access-door/renderer/main.ts",
-          "hash": "8028743400410909808",
-          "deps": [
-            "npm:vue",
-            "npm:pinia",
-            "npm:@/router",
-            "npm:virtual:uno.css",
-            "npm:animate.css",
-            "npm:ant-design-vue",
-            "ui",
-            "npm:@/assets/styles/index.css"
-          ]
-        },
-        {
-          "file": "apps/access-door/renderer/pages/activate.vue",
-          "hash": "9079097269482312154"
-        },
-        {
-          "file": "apps/access-door/renderer/pages/alarm-multiple.vue",
-          "hash": "11528515379323555700"
-        },
-        {
-          "file": "apps/access-door/renderer/pages/alarm-record.vue",
-          "hash": "5995404253224638193"
-        },
-        {
-          "file": "apps/access-door/renderer/pages/alarm.vue",
-          "hash": "12285113926261170994"
-        },
-        {
-          "file": "apps/access-door/renderer/pages/check.vue",
-          "hash": "14966413233594301915"
-        },
-        {
-          "file": "apps/access-door/renderer/pages/index.vue",
-          "hash": "16741386090544456103"
-        },
-        {
-          "file": "apps/access-door/renderer/pages/record-detail.vue",
-          "hash": "4823893870888419396"
-        },
-        {
-          "file": "apps/access-door/renderer/pages/rfid-record.vue",
-          "hash": "7233101435353067551"
-        },
-        {
-          "file": "apps/access-door/renderer/public/background/index.png",
-          "hash": "16872582893383824026"
-        },
-        {
-          "file": "apps/access-door/renderer/router/index.ts",
-          "hash": "12951840726209416186",
-          "deps": [
-            "npm:vue-router"
-          ]
-        },
-        {
-          "file": "apps/access-door/renderer/store/index.ts",
-          "hash": "7176432878007686588",
-          "deps": [
-            "npm:pinia",
-            "npm:database"
-          ]
-        },
-        {
-          "file": "apps/access-door/renderer/typed-router.d.ts",
-          "hash": "16582632128311148999",
-          "deps": [
-            "npm:unplugin-vue-router",
-            "npm:vue-router"
-          ]
-        },
-        {
-          "file": "apps/access-door/tsconfig.json",
-          "hash": "10448847398748852004"
-        },
-        {
-          "file": "apps/access-door/tsconfig.node.json",
-          "hash": "7012425513986660196"
-        },
-        {
-          "file": "apps/access-door/tsconfig.web.json",
-          "hash": "744159046221629730"
-        },
-        {
-          "file": "apps/access-door/types/enums.ts",
-          "hash": "76267408873416896"
-        },
-        {
-          "file": "apps/access-door/types/index.d.ts",
-          "hash": "7060809232503453124",
-          "deps": [
-            "npm:database",
-            "npm:@electron-toolkit/preload"
-          ]
-        },
-        {
-          "file": "apps/access-door/types/update-service.d.ts",
-          "hash": "4533881093139095709"
-        },
-        {
-          "file": "apps/access-door/uno.config.ts",
-          "hash": "1765450289478082563",
-          "deps": [
-            "npm:ui/uno.config"
-          ]
-        },
-        {
-          "file": "apps/access-door/vite.config.ts",
-          "hash": "4541424809960135548",
-          "deps": [
-            "npm:path",
-            "npm:child_process",
-            "npm:vite",
-            "npm:@vitejs/plugin-vue",
-            "npm:@vitejs/plugin-vue-jsx",
-            "npm:vite-plugin-vue-devtools",
-            "npm:unplugin-vue-router",
-            "npm:unplugin-auto-import",
-            "npm:unplugin-vue-components",
-            "npm:unocss",
-            "npm:vite-plugin-electron-renderer",
-            "npm:vite-plugin-electron-vaausud"
-          ]
-        }
-      ],
-      "config": [
-        {
-          "file": "packages/config/package.json",
-          "hash": "6111780814806680760",
-          "deps": [
-            "npm:@typescript-eslint/eslint-plugin",
-            "npm:@typescript-eslint/parser",
-            "npm:eslint",
-            "npm:prettier",
-            "npm:typescript",
-            "npm:@antfu/eslint-config",
-            "npm:@vitejs/plugin-vue",
-            "npm:eslint-config-prettier",
-            "npm:eslint-plugin-prettier",
-            "npm:tsup",
-            "npm:unocss",
-            "npm:unplugin-auto-import",
-            "npm:unplugin-vue-components",
-            "npm:vite",
-            "npm:vite-plugin-electron-renderer",
-            "npm:vite-plugin-electron-vaausud",
-            "npm:vite-plugin-eslint"
-          ]
-        },
-        {
-          "file": "packages/config/tsconfig.base.json",
-          "hash": "1502584909356047738"
-        },
-        {
-          "file": "packages/config/tsconfig.node.json",
-          "hash": "14475465616126198519"
-        },
-        {
-          "file": "packages/config/tsconfig.web.json",
-          "hash": "8370028202254009352"
-        },
-        {
-          "file": "packages/config/tsup.base.config.ts",
-          "hash": "14881129499088820378"
-        }
-      ],
-      "components": [
-        {
-          "file": "packages/components/env.d.ts",
-          "hash": "7956993448890132673",
-          "deps": [
-            "npm:vue"
-          ]
-        },
-        {
-          "file": "packages/components/index.ts",
-          "hash": "17482288713929662742"
-        },
-        {
-          "file": "packages/components/package.json",
-          "hash": "5134906945623944921",
-          "deps": [
-            "config",
             "utils",
-            "npm:vue"
+            "npm:@prisma/client"
           ]
         },
         {
-          "file": "packages/components/src/CurrentTime.vue",
-          "hash": "16995635019018545859"
+          "file": "packages/database/src/door-rfid-register.ts",
+          "hash": "10492054441550551694"
         },
         {
-          "file": "packages/components/src/DeviceStatus.vue",
-          "hash": "13192224890380312059"
+          "file": "packages/database/src/index.ts",
+          "hash": "15559541729501530369",
+          "deps": [
+            "npm:@prisma/client"
+          ]
         },
         {
-          "file": "packages/components/src/SolutionDialog.vue",
-          "hash": "2976691496637260304"
+          "file": "packages/database/src/rfid-cabinet-door.ts",
+          "hash": "13606559917106419712",
+          "deps": [
+            "npm:@prisma/client"
+          ]
         },
         {
-          "file": "packages/components/src/VDialog.vue",
-          "hash": "11322117232605959113"
+          "file": "packages/database/src/rfid-cabinet.ts",
+          "hash": "15625483486545656925",
+          "deps": [
+            "npm:@prisma/client"
+          ]
         },
         {
-          "file": "packages/components/src/VIcon.vue",
-          "hash": "9863827092947764079"
+          "file": "packages/database/src/rfid-card-user.ts",
+          "hash": "16518536998172708110"
         },
         {
-          "file": "packages/components/src/VTitle.vue",
-          "hash": "515769282598144157"
+          "file": "packages/database/src/rfid-finger-user.ts",
+          "hash": "8608713869015534599"
         },
         {
-          "file": "packages/components/src/index.ts",
-          "hash": "8584264839008499255"
+          "file": "packages/database/src/rfid-tips-alarm-record.ts",
+          "hash": "8185102794259282718"
         },
         {
-          "file": "packages/components/src/react/index.ts",
-          "hash": "3244421341483603138"
+          "file": "packages/database/src/sys-dept.ts",
+          "hash": "1130473596743304391",
+          "deps": [
+            "npm:utils"
+          ]
         },
         {
-          "file": "packages/components/tsconfig.json",
+          "file": "packages/database/src/sys-role.ts",
+          "hash": "17801465880455117503"
+        },
+        {
+          "file": "packages/database/src/sys-user-role.ts",
+          "hash": "1799987215555679215"
+        },
+        {
+          "file": "packages/database/src/sys-user.ts",
+          "hash": "10724032048721820811",
+          "deps": [
+            "npm:@prisma/client",
+            "utils"
+          ]
+        },
+        {
+          "file": "packages/database/tsconfig.json",
           "hash": "11299782058365816437"
+        },
+        {
+          "file": "packages/database/tsup.config.ts",
+          "hash": "5234671277843549377",
+          "deps": [
+            "npm:tsup"
+          ]
+        },
+        {
+          "file": "packages/database/types/index.d.ts",
+          "hash": "16300396115269947038"
         }
       ],
       "smart-cabinet": [
@@ -643,11 +191,11 @@
         },
         {
           "file": "apps/smart-cabinet/main/base/hooks.ts",
-          "hash": "8663499186050681204",
+          "hash": "7110338572978530115",
           "deps": [
             "npm:electron",
-            "npm:utils/electron",
-            "npm:database",
+            "utils",
+            "database",
             "npm:@/base/window",
             "npm:@/services/rfid",
             "npm:@/services",
@@ -657,15 +205,15 @@
         },
         {
           "file": "apps/smart-cabinet/main/base/loading.ts",
-          "hash": "14493582087960722852"
+          "hash": "6362237633164026037"
         },
         {
           "file": "apps/smart-cabinet/main/base/window.ts",
-          "hash": "11852226492582892661",
+          "hash": "2215529886893614510",
           "deps": [
             "npm:path",
             "npm:electron",
-            "npm:utils/config/main"
+            "utils"
           ]
         },
         {
@@ -698,28 +246,28 @@
         },
         {
           "file": "apps/smart-cabinet/main/services/cabinet.ts",
-          "hash": "13469999437055813017",
+          "hash": "8889789268270851462",
           "deps": [
-            "npm:database",
-            "npm:utils"
+            "database",
+            "utils"
           ]
         },
         {
           "file": "apps/smart-cabinet/main/services/carrier.ts",
-          "hash": "308190912785577384",
+          "hash": "13737216294659357582",
           "deps": [
-            "npm:database",
+            "database",
             "npm:~/enums"
           ]
         },
         {
           "file": "apps/smart-cabinet/main/services/finger/algorithm-func.ts",
-          "hash": "1449612225858957325",
+          "hash": "11308222482311837338",
           "deps": [
             "npm:fs",
             "npm:child_process",
             "npm:ffi-napi",
-            "npm:utils/config"
+            "utils"
           ]
         },
         {
@@ -736,12 +284,11 @@
         },
         {
           "file": "apps/smart-cabinet/main/services/finger/main.ts",
-          "hash": "8410470965246263392",
+          "hash": "3546923670541931194",
           "deps": [
             "npm:buffer",
-            "npm:utils",
-            "npm:utils/config",
-            "npm:database"
+            "utils",
+            "database"
           ]
         },
         {
@@ -762,7 +309,7 @@
         },
         {
           "file": "apps/smart-cabinet/main/services/lock-control/index.ts",
-          "hash": "6432339560254526771",
+          "hash": "14405675115091234835",
           "deps": [
             "npm:serialport"
           ]
@@ -778,7 +325,7 @@
         },
         {
           "file": "apps/smart-cabinet/main/services/lock-control/utils.ts",
-          "hash": "8346250976153679450",
+          "hash": "16265275914391231685",
           "deps": [
             "npm:buffer",
             "npm:child_process"
@@ -797,14 +344,14 @@
         },
         {
           "file": "apps/smart-cabinet/main/services/rfid/index.ts",
-          "hash": "9631702465089295376",
+          "hash": "212356047700370863",
           "deps": [
             "npm:buffer"
           ]
         },
         {
           "file": "apps/smart-cabinet/main/services/rfid/socket.ts",
-          "hash": "13774015945152225697",
+          "hash": "3041616886466956039",
           "deps": [
             "npm:net",
             "npm:buffer"
@@ -812,11 +359,11 @@
         },
         {
           "file": "apps/smart-cabinet/main/services/rfid/utils.ts",
-          "hash": "14073567200349620941",
+          "hash": "8051636004728957531",
           "deps": [
             "npm:buffer",
             "npm:ffi-napi",
-            "npm:utils/config",
+            "utils",
             "npm:@/services/finger/types"
           ]
         },
@@ -852,11 +399,10 @@
         },
         {
           "file": "apps/smart-cabinet/main/services/update.ts",
-          "hash": "9779443294707734084",
+          "hash": "11568204076308285625",
           "deps": [
             "npm:electron",
-            "npm:utils/config",
-            "npm:utils/socket"
+            "utils"
           ]
         },
         {
@@ -937,11 +483,11 @@
         },
         {
           "file": "apps/smart-cabinet/renderer/components/AnimationInput.vue",
-          "hash": "17055177188108549293"
+          "hash": "9360641065951255985"
         },
         {
           "file": "apps/smart-cabinet/renderer/components/BackButton.vue",
-          "hash": "4696652642660012256"
+          "hash": "18224179893457478337"
         },
         {
           "file": "apps/smart-cabinet/renderer/components/BaseAlert/index.ts",
@@ -960,15 +506,15 @@
         },
         {
           "file": "apps/smart-cabinet/renderer/components/CarrierTable.vue",
-          "hash": "12598109393649377780"
+          "hash": "13350880094142985047"
         },
         {
           "file": "apps/smart-cabinet/renderer/components/CheckPanel.vue",
-          "hash": "2975519184629249689"
+          "hash": "5507542435949564168"
         },
         {
           "file": "apps/smart-cabinet/renderer/components/DeviceStatus.vue",
-          "hash": "8542898819233577396"
+          "hash": "1546199546912210617"
         },
         {
           "file": "apps/smart-cabinet/renderer/components/FingerAuth.vue",
@@ -976,19 +522,19 @@
         },
         {
           "file": "apps/smart-cabinet/renderer/components/MultiDoorPanel.vue",
-          "hash": "17248164873362556535"
+          "hash": "2820130018863959326"
         },
         {
           "file": "apps/smart-cabinet/renderer/components/PasswordAuth.vue",
-          "hash": "16352332410044352259"
+          "hash": "17285739334661822702"
         },
         {
           "file": "apps/smart-cabinet/renderer/components/SetCardDialog.vue",
-          "hash": "361222942448219290"
+          "hash": "14599216236397967687"
         },
         {
           "file": "apps/smart-cabinet/renderer/components/SetFingerDialog.vue",
-          "hash": "9929081609967669731"
+          "hash": "15527514544694238426"
         },
         {
           "file": "apps/smart-cabinet/renderer/components/SetPasswordDialog.vue",
@@ -996,11 +542,11 @@
         },
         {
           "file": "apps/smart-cabinet/renderer/components/StartButton.vue",
-          "hash": "8936675750220071475"
+          "hash": "13346045249869208084"
         },
         {
           "file": "apps/smart-cabinet/renderer/components/TheMenuDrawer.vue",
-          "hash": "799323506958816022"
+          "hash": "4837563741240209624"
         },
         {
           "file": "apps/smart-cabinet/renderer/components/TheMultiDoor/CabinetDoor.vue",
@@ -1008,19 +554,19 @@
         },
         {
           "file": "apps/smart-cabinet/renderer/components/TheMultiDoor/index.vue",
-          "hash": "541319314457681404"
+          "hash": "6816683655148352474"
         },
         {
           "file": "apps/smart-cabinet/renderer/components/TheSingleDoor.vue",
-          "hash": "16559785388149971496"
+          "hash": "10039017216909979460"
         },
         {
           "file": "apps/smart-cabinet/renderer/components/VerifyIdentity.vue",
-          "hash": "5575708655800700201"
+          "hash": "1760978068516744305"
         },
         {
           "file": "apps/smart-cabinet/renderer/components/WarningDialog.vue",
-          "hash": "9494716999411877300"
+          "hash": "2340058738223326117"
         },
         {
           "file": "apps/smart-cabinet/renderer/config/index.ts",
@@ -1063,11 +609,11 @@
         },
         {
           "file": "apps/smart-cabinet/renderer/hooks/useCheck.ts",
-          "hash": "7787900227082389818",
+          "hash": "12394802011124346841",
           "deps": [
-            "npm:database",
+            "database",
             "npm:ant-design-vue",
-            "npm:utils/config/renderer",
+            "utils",
             "npm:~/enums",
             "npm:@/store",
             "npm:@/hooks/useTime",
@@ -1111,9 +657,9 @@
         },
         {
           "file": "apps/smart-cabinet/renderer/hooks/useLock.ts",
-          "hash": "7772719700601433776",
+          "hash": "4567860472803831272",
           "deps": [
-            "npm:utils/config/renderer",
+            "utils",
             "npm:@/store"
           ]
         },
@@ -1123,13 +669,13 @@
         },
         {
           "file": "apps/smart-cabinet/renderer/hooks/useLogin.ts",
-          "hash": "4955663394459739826",
+          "hash": "10168643410802529884",
           "deps": [
-            "npm:database",
+            "database",
+            "npm:uuid",
             "npm:@/store",
             "npm:@/components/BaseAlert",
-            "npm:@/hooks/useTime",
-            "npm:uuid"
+            "npm:@/hooks/useTime"
           ]
         },
         {
@@ -1157,7 +703,7 @@
         },
         {
           "file": "apps/smart-cabinet/renderer/hooks/useRfid.ts",
-          "hash": "746085908575059948",
+          "hash": "9575279624783298673",
           "deps": [
             "npm:@/store"
           ]
@@ -1171,9 +717,9 @@
         },
         {
           "file": "apps/smart-cabinet/renderer/hooks/useTime.ts",
-          "hash": "5566689466020128130",
+          "hash": "13452157828868413032",
           "deps": [
-            "npm:utils/config/renderer",
+            "utils",
             "npm:@/store"
           ]
         },
@@ -1186,16 +732,16 @@
         },
         {
           "file": "apps/smart-cabinet/renderer/hooks/useVerify.ts",
-          "hash": "2901927113228102896",
+          "hash": "14657504481001554894",
           "deps": [
             "npm:@/store"
           ]
         },
         {
           "file": "apps/smart-cabinet/renderer/hooks/useViewCarriers.ts",
-          "hash": "17795421526259775930",
+          "hash": "16764622744723535303",
           "deps": [
-            "npm:database",
+            "database",
             "npm:@/components/CarrierTable.vue",
             "npm:@/store",
             "npm:~/enums"
@@ -1216,7 +762,7 @@
         },
         {
           "file": "apps/smart-cabinet/renderer/pages/activate.vue",
-          "hash": "7718618944464356995"
+          "hash": "11299983528885784217"
         },
         {
           "file": "apps/smart-cabinet/renderer/pages/cabinet-door.vue",
@@ -1224,15 +770,15 @@
         },
         {
           "file": "apps/smart-cabinet/renderer/pages/carrier.vue",
-          "hash": "7845313418398937826"
+          "hash": "15939213488745710430"
         },
         {
           "file": "apps/smart-cabinet/renderer/pages/department.vue",
-          "hash": "15198357501957310214"
+          "hash": "379482803189879220"
         },
         {
           "file": "apps/smart-cabinet/renderer/pages/index.vue",
-          "hash": "8698600171163885200"
+          "hash": "15436715012560224453"
         },
         {
           "file": "apps/smart-cabinet/renderer/pages/login.vue",
@@ -1240,11 +786,11 @@
         },
         {
           "file": "apps/smart-cabinet/renderer/pages/main.vue",
-          "hash": "14876324157835034964"
+          "hash": "13107868189856352245"
         },
         {
           "file": "apps/smart-cabinet/renderer/pages/open.vue",
-          "hash": "11795320850394251545"
+          "hash": "4992944503007951420"
         },
         {
           "file": "apps/smart-cabinet/renderer/pages/permission.vue",
@@ -1252,15 +798,15 @@
         },
         {
           "file": "apps/smart-cabinet/renderer/pages/result-cabinet-door.vue",
-          "hash": "6897486301330897593"
+          "hash": "14190723643963616787"
         },
         {
           "file": "apps/smart-cabinet/renderer/pages/result.vue",
-          "hash": "8806668164148871627"
+          "hash": "14537580518750342466"
         },
         {
           "file": "apps/smart-cabinet/renderer/pages/user.vue",
-          "hash": "9160975097681195253"
+          "hash": "12591283498885968566"
         },
         {
           "file": "apps/smart-cabinet/renderer/public/background/index.png",
@@ -1268,7 +814,7 @@
         },
         {
           "file": "apps/smart-cabinet/renderer/router/index.ts",
-          "hash": "3187163659586718252",
+          "hash": "209043141959042680",
           "deps": [
             "npm:vue-router",
             "npm:@/pages/index.vue",
@@ -1286,24 +832,24 @@
         },
         {
           "file": "apps/smart-cabinet/renderer/store/index.ts",
-          "hash": "2613174557183858167",
+          "hash": "15965732488516053674",
           "deps": [
-            "npm:database",
+            "database",
             "npm:pinia",
             "npm:~/enums"
           ]
         },
         {
           "file": "apps/smart-cabinet/tsconfig.json",
-          "hash": "10448847398748852004"
+          "hash": "4617328397397131185"
         },
         {
           "file": "apps/smart-cabinet/tsconfig.node.json",
-          "hash": "12159955689376487377"
+          "hash": "14356125344948987172"
         },
         {
           "file": "apps/smart-cabinet/tsconfig.web.json",
-          "hash": "744159046221629730"
+          "hash": "497539923172022282"
         },
         {
           "file": "apps/smart-cabinet/types/enums.ts",
@@ -1311,14 +857,14 @@
         },
         {
           "file": "apps/smart-cabinet/types/index.d.ts",
-          "hash": "2597699618836601047",
+          "hash": "10788413049531150242",
           "deps": [
-            "npm:database"
+            "database"
           ]
         },
         {
           "file": "apps/smart-cabinet/types/update-service.d.ts",
-          "hash": "4533881093139095709"
+          "hash": "15899020361794434673"
         },
         {
           "file": "apps/smart-cabinet/uno.config.ts",
@@ -1329,7 +875,7 @@
         },
         {
           "file": "apps/smart-cabinet/vite.config.ts",
-          "hash": "4149289203372208093",
+          "hash": "9887404491931985016",
           "deps": [
             "npm:path",
             "npm:child_process",
@@ -1343,130 +889,6 @@
             "npm:vite-plugin-electron-renderer",
             "npm:vite-plugin-electron-vaausud"
           ]
-        }
-      ],
-      "utils": [
-        {
-          "file": "packages/utils/package.json",
-          "hash": "2439933794678806934",
-          "deps": [
-            "npm:dayjs",
-            "npm:@types/lodash-es",
-            "config",
-            "npm:lodash-es",
-            "npm:vue"
-          ]
-        },
-        {
-          "file": "packages/utils/src/config/index.ts",
-          "hash": "10489958236270907468"
-        },
-        {
-          "file": "packages/utils/src/config/main/index.ts",
-          "hash": "3766740949654178794",
-          "deps": [
-            "npm:path"
-          ]
-        },
-        {
-          "file": "packages/utils/src/config/renderer/index.ts",
-          "hash": "18433202410520003348"
-        },
-        {
-          "file": "packages/utils/src/electron/index.ts",
-          "hash": "2738225622430081892",
-          "deps": [
-            "npm:electron"
-          ]
-        },
-        {
-          "file": "packages/utils/src/index.ts",
-          "hash": "8502943760535417771",
-          "deps": [
-            "npm:os",
-            "npm:dayjs",
-            "npm:lodash-es"
-          ]
-        },
-        {
-          "file": "packages/utils/src/install/index.ts",
-          "hash": "2026873502255890530",
-          "deps": [
-            "npm:vue"
-          ]
-        },
-        {
-          "file": "packages/utils/src/message/index.ts",
-          "hash": "9961471366799694073"
-        },
-        {
-          "file": "packages/utils/src/socket/index.ts",
-          "hash": "957834091695733153",
-          "deps": [
-            "npm:net",
-            "npm:buffer"
-          ]
-        },
-        {
-          "file": "packages/utils/tsconfig.json",
-          "hash": "7883219004027902824"
-        },
-        {
-          "file": "packages/utils/tsup.config.ts",
-          "hash": "15326327500107480722",
-          "deps": [
-            "npm:tsup"
-          ]
-        },
-        {
-          "file": "packages/utils/types/index.d.ts",
-          "hash": "3244421341483603138"
-        }
-      ],
-      "common": [
-        {
-          "file": "packages/common/package.json",
-          "hash": "9219414721989861187",
-          "deps": [
-            "npm:crypto-js",
-            "npm:node-machine-id",
-            "npm:@types/crypto-js",
-            "config"
-          ]
-        },
-        {
-          "file": "packages/common/src/activation/index.ts",
-          "hash": "16946927451587158142",
-          "deps": [
-            "npm:node-machine-id",
-            "npm:crypto-js"
-          ]
-        },
-        {
-          "file": "packages/common/src/index.ts",
-          "hash": "6813661305269309058"
-        },
-        {
-          "file": "packages/common/src/system/index.ts",
-          "hash": "13645538280304582633",
-          "deps": [
-            "npm:path"
-          ]
-        },
-        {
-          "file": "packages/common/tsconfig.json",
-          "hash": "15848255530344613440"
-        },
-        {
-          "file": "packages/common/tsup.config.ts",
-          "hash": "7572527672958797206",
-          "deps": [
-            "npm:tsup"
-          ]
-        },
-        {
-          "file": "packages/common/types/index.d.ts",
-          "hash": "15980757424139613376"
         }
       ],
       "ui": [
@@ -1568,148 +990,720 @@
           ]
         }
       ],
-      "database": [
+      "common": [
         {
-          "file": "packages/database/.env",
-          "hash": "14494876918981541364"
-        },
-        {
-          "file": "packages/database/.gitignore",
-          "hash": "7663861978715868291"
-        },
-        {
-          "file": "packages/database/package.json",
-          "hash": "7141878035325889906",
+          "file": "packages/common/package.json",
+          "hash": "10626611630043710485",
           "deps": [
-            "npm:@prisma/client",
-            "npm:prisma",
-            "npm:prisma-case-format",
-            "npm:@types/ffi-napi",
-            "config",
-            "npm:electron",
-            "utils"
+            "npm:crypto-js",
+            "npm:node-machine-id",
+            "npm:@types/crypto-js",
+            "config"
           ]
         },
         {
-          "file": "packages/database/prisma/schema.prisma",
-          "hash": "7125633674143356032"
-        },
-        {
-          "file": "packages/database/src/doc-document.ts",
-          "hash": "7370184700632628696",
+          "file": "packages/common/src/activation/index.ts",
+          "hash": "16946927451587158142",
           "deps": [
-            "npm:utils",
-            "npm:@prisma/client"
+            "npm:node-machine-id",
+            "npm:crypto-js"
           ]
         },
         {
-          "file": "packages/database/src/door-access-record.ts",
-          "hash": "1629208298689710731",
+          "file": "packages/common/src/index.ts",
+          "hash": "6813661305269309058"
+        },
+        {
+          "file": "packages/common/src/system/index.ts",
+          "hash": "13645538280304582633",
           "deps": [
-            "npm:utils"
+            "npm:path"
           ]
         },
         {
-          "file": "packages/database/src/door-alarm-record.ts",
-          "hash": "10683678071291059027",
-          "deps": [
-            "npm:utils",
-            "npm:@prisma/client"
-          ]
+          "file": "packages/common/tsconfig.json",
+          "hash": "15848255530344613440"
         },
         {
-          "file": "packages/database/src/door-equipment.ts",
-          "hash": "16159610473008964868"
-        },
-        {
-          "file": "packages/database/src/door-rfid-record.ts",
-          "hash": "4964729440591273200",
-          "deps": [
-            "npm:utils",
-            "npm:@prisma/client"
-          ]
-        },
-        {
-          "file": "packages/database/src/door-rfid-register.ts",
-          "hash": "10492054441550551694"
-        },
-        {
-          "file": "packages/database/src/index.ts",
-          "hash": "153952914935266630",
-          "deps": [
-            "npm:@prisma/client"
-          ]
-        },
-        {
-          "file": "packages/database/src/rfid-cabinet-door.ts",
-          "hash": "13606559917106419712",
-          "deps": [
-            "npm:@prisma/client"
-          ]
-        },
-        {
-          "file": "packages/database/src/rfid-cabinet.ts",
-          "hash": "5341681560808901195",
-          "deps": [
-            "npm:@prisma/client"
-          ]
-        },
-        {
-          "file": "packages/database/src/rfid-card-user.ts",
-          "hash": "16518536998172708110"
-        },
-        {
-          "file": "packages/database/src/rfid-finger-user.ts",
-          "hash": "8608713869015534599"
-        },
-        {
-          "file": "packages/database/src/rfid-tips-alarm-record.ts",
-          "hash": "8185102794259282718"
-        },
-        {
-          "file": "packages/database/src/sys-dept.ts",
-          "hash": "1130473596743304391",
-          "deps": [
-            "npm:utils"
-          ]
-        },
-        {
-          "file": "packages/database/src/sys-role.ts",
-          "hash": "17801465880455117503"
-        },
-        {
-          "file": "packages/database/src/sys-user-role.ts",
-          "hash": "1799987215555679215"
-        },
-        {
-          "file": "packages/database/src/sys-user.ts",
-          "hash": "15887963632404404401",
-          "deps": [
-            "npm:@prisma/client",
-            "npm:utils"
-          ]
-        },
-        {
-          "file": "packages/database/tsconfig.json",
-          "hash": "11299782058365816437"
-        },
-        {
-          "file": "packages/database/tsup.config.ts",
-          "hash": "5234671277843549377",
+          "file": "packages/common/tsup.config.ts",
+          "hash": "7572527672958797206",
           "deps": [
             "npm:tsup"
           ]
         },
         {
-          "file": "packages/database/types/index.d.ts",
-          "hash": "11361037489895242837"
+          "file": "packages/common/types/index.d.ts",
+          "hash": "15980757424139613376"
+        }
+      ],
+      "config": [
+        {
+          "file": "packages/config/package.json",
+          "hash": "8853345467705347822",
+          "deps": [
+            "npm:@antfu/eslint-config",
+            "npm:@typescript-eslint/eslint-plugin",
+            "npm:@typescript-eslint/parser",
+            "npm:@vitejs/plugin-vue",
+            "npm:eslint",
+            "npm:eslint-config-prettier",
+            "npm:eslint-plugin-prettier",
+            "npm:prettier",
+            "npm:tsup",
+            "npm:typescript",
+            "npm:unocss",
+            "npm:unplugin-auto-import",
+            "npm:unplugin-vue-components",
+            "npm:vite",
+            "npm:vite-plugin-electron-renderer",
+            "npm:vite-plugin-electron-vaausud",
+            "npm:vite-plugin-eslint"
+          ]
+        },
+        {
+          "file": "packages/config/tsconfig.base.json",
+          "hash": "7200633536801750685"
+        },
+        {
+          "file": "packages/config/tsconfig.node.json",
+          "hash": "17108029003010975013"
+        },
+        {
+          "file": "packages/config/tsconfig.web.json",
+          "hash": "18295429649065899336"
+        },
+        {
+          "file": "packages/config/tsup.base.config.ts",
+          "hash": "14881129499088820378"
+        }
+      ],
+      "utils": [
+        {
+          "file": "packages/utils/package.json",
+          "hash": "5070192876716182434",
+          "deps": [
+            "npm:dayjs",
+            "npm:@types/lodash-es",
+            "npm:@types/node",
+            "config",
+            "npm:lodash-es",
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "packages/utils/src/config/index.ts",
+          "hash": "10489958236270907468"
+        },
+        {
+          "file": "packages/utils/src/config/main/index.ts",
+          "hash": "3766740949654178794",
+          "deps": [
+            "npm:path"
+          ]
+        },
+        {
+          "file": "packages/utils/src/config/renderer/index.ts",
+          "hash": "18433202410520003348"
+        },
+        {
+          "file": "packages/utils/src/electron/index.ts",
+          "hash": "12696198747560819644",
+          "deps": [
+            "npm:electron"
+          ]
+        },
+        {
+          "file": "packages/utils/src/index.ts",
+          "hash": "17579505445279815308",
+          "deps": [
+            "npm:os",
+            "npm:dayjs",
+            "npm:lodash-es"
+          ]
+        },
+        {
+          "file": "packages/utils/src/install/index.ts",
+          "hash": "2026873502255890530",
+          "deps": [
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "packages/utils/src/message/index.ts",
+          "hash": "3519784700982349293"
+        },
+        {
+          "file": "packages/utils/src/socket/index.ts",
+          "hash": "7957826948110314961",
+          "deps": [
+            "npm:net",
+            "npm:buffer"
+          ]
+        },
+        {
+          "file": "packages/utils/tsconfig.json",
+          "hash": "7883219004027902824"
+        },
+        {
+          "file": "packages/utils/tsup.config.ts",
+          "hash": "5572954798157816140",
+          "deps": [
+            "npm:tsup"
+          ]
+        },
+        {
+          "file": "packages/utils/types/index.d.ts",
+          "hash": "3244421341483603138"
+        }
+      ],
+      "access-door": [
+        {
+          "file": "apps/access-door/.prettierignore",
+          "hash": "7067610566685412081"
+        },
+        {
+          "file": "apps/access-door/.vscode/settings.json",
+          "hash": "5628349677861133691"
+        },
+        {
+          "file": "apps/access-door/electron-builder.yml",
+          "hash": "17699598862503250164"
+        },
+        {
+          "file": "apps/access-door/index.html",
+          "hash": "15862869603423354225"
+        },
+        {
+          "file": "apps/access-door/main/base/hooks.ts",
+          "hash": "29979734369881571",
+          "deps": [
+            "npm:electron",
+            "npm:utils/electron",
+            "npm:@/base/window",
+            "npm:@/services/rfid",
+            "npm:@/services",
+            "npm:@/services/access-door",
+            "npm:@/services/log",
+            "npm:@/services/database"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/base/loading.ts",
+          "hash": "6362237633164026037"
+        },
+        {
+          "file": "apps/access-door/main/base/window.ts",
+          "hash": "6893987711998221370",
+          "deps": [
+            "npm:path",
+            "npm:electron",
+            "utils"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/index.ts",
+          "hash": "12336137907879090035",
+          "deps": [
+            "npm:electron",
+            "npm:dotenv",
+            "npm:utils/config",
+            "npm:@/base/hooks"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/preload.ts",
+          "hash": "10984588433555940325",
+          "deps": [
+            "npm:electron",
+            "npm:@electron-toolkit/preload",
+            "npm:@/services"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/access-door.ts",
+          "hash": "9634394849147464351",
+          "deps": [
+            "database",
+            "utils",
+            "npm:lodash-es"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/activation.ts",
+          "hash": "11087467486985651422",
+          "deps": [
+            "npm:common/activation"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/database.ts",
+          "hash": "12917130730554443931",
+          "deps": [
+            "database"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/index.ts",
+          "hash": "518726325741508383",
+          "deps": [
+            "npm:utils/electron"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/log.ts",
+          "hash": "14008859148901434112",
+          "deps": [
+            "npm:electron-log"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/network.ts",
+          "hash": "6453226730954780856"
+        },
+        {
+          "file": "apps/access-door/main/services/rfid/command.ts",
+          "hash": "6744984542074293016",
+          "deps": [
+            "npm:utils/config/main",
+            "npm:~/enums"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/rfid/data.ts",
+          "hash": "9155038522741476420",
+          "deps": [
+            "npm:lodash-es",
+            "database",
+            "npm:dayjs",
+            "npm:~/enums"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/rfid/index.ts",
+          "hash": "7578033842997771430",
+          "deps": [
+            "database",
+            "utils",
+            "npm:@/services/access-door",
+            "npm:@/services/rfid/socket",
+            "npm:~/enums"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/rfid/message.ts",
+          "hash": "14402593138543404205"
+        },
+        {
+          "file": "apps/access-door/main/services/rfid/protocol-map.ts",
+          "hash": "1360312466981596962"
+        },
+        {
+          "file": "apps/access-door/main/services/rfid/socket.ts",
+          "hash": "17009287724372707725",
+          "deps": [
+            "npm:net",
+            "npm:buffer",
+            "npm:@/services/log",
+            "npm:@/services/rfid/data"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/rfid/utils.ts",
+          "hash": "15563826727230606951",
+          "deps": [
+            "npm:buffer",
+            "npm:ffi-napi",
+            "npm:ref-napi",
+            "npm:ref-array-di",
+            "npm:utils/config/main"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/store.ts",
+          "hash": "6597756526981100228",
+          "deps": [
+            "npm:electron-store"
+          ]
+        },
+        {
+          "file": "apps/access-door/main/services/sys.ts",
+          "hash": "875986520685368000",
+          "deps": [
+            "npm:database",
+            "npm:common/system"
+          ]
+        },
+        {
+          "file": "apps/access-door/package.json",
+          "hash": "8137120439216126461",
+          "deps": [
+            "npm:ajv",
+            "npm:crypto-js",
+            "database",
+            "npm:dayjs",
+            "npm:dotenv",
+            "npm:electron-log",
+            "npm:electron-store",
+            "npm:ffi-napi",
+            "npm:node-machine-id",
+            "npm:ref-array-di",
+            "npm:ref-napi",
+            "npm:ref-struct-di",
+            "npm:serialport",
+            "npm:@electron-toolkit/preload",
+            "npm:@iconify-json/carbon",
+            "npm:@types/lodash-es",
+            "npm:@types/ref-array-di",
+            "npm:@vitejs/plugin-vue",
+            "npm:animate.css",
+            "npm:ant-design-vue",
+            "common",
+            "components",
+            "config",
+            "npm:daisyui",
+            "npm:electron",
+            "npm:electron-builder",
+            "npm:electron-devtools-installer",
+            "npm:lodash-es",
+            "npm:pinia",
+            "ui",
+            "npm:unocss",
+            "npm:unplugin-auto-import",
+            "npm:unplugin-vue-components",
+            "npm:unplugin-vue-router",
+            "utils",
+            "npm:vite",
+            "npm:vite-plugin-electron-renderer",
+            "npm:vite-plugin-electron-vaausud",
+            "npm:vite-plugin-vue-devtools",
+            "npm:vue",
+            "npm:vue-router",
+            "npm:vue3-perfect-scrollbar"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/App.vue",
+          "hash": "4486902368500126784"
+        },
+        {
+          "file": "apps/access-door/renderer/assets/styles/index.css",
+          "hash": "10259996349622531625"
+        },
+        {
+          "file": "apps/access-door/renderer/auto-imports.d.ts",
+          "hash": "14907724516745557620",
+          "deps": [
+            "npm:vue",
+            "npm:pinia",
+            "npm:vue-router",
+            "npm:unplugin-vue-router"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/components.d.ts",
+          "hash": "10025112494962799393",
+          "deps": [
+            "npm:@vue/runtime-core",
+            "npm:ant-design-vue",
+            "npm:vue-router"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/components/AlarmRecordCard.vue",
+          "hash": "7247696287812393535"
+        },
+        {
+          "file": "apps/access-door/renderer/components/BackButton.vue",
+          "hash": "13547829420042007331"
+        },
+        {
+          "file": "apps/access-door/renderer/components/BaseAlert/index.ts",
+          "hash": "17512316262219744054",
+          "deps": [
+            "npm:ant-design-vue"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/components/BaseLoading.vue",
+          "hash": "12364883444196248175"
+        },
+        {
+          "file": "apps/access-door/renderer/components/DeviceStatus.vue",
+          "hash": "9563217510301505059"
+        },
+        {
+          "file": "apps/access-door/renderer/components/StopAlarmButton.vue",
+          "hash": "15612740931105701443"
+        },
+        {
+          "file": "apps/access-door/renderer/config/index.ts",
+          "hash": "7265058189400620162"
+        },
+        {
+          "file": "apps/access-door/renderer/env.d.ts",
+          "hash": "7956993448890132673",
+          "deps": [
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/features/activation.ts",
+          "hash": "1800962348028160688"
+        },
+        {
+          "file": "apps/access-door/renderer/features/background.ts",
+          "hash": "8041975777119263835",
+          "deps": [
+            "npm:@/public/background/index.png"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/hooks/useDoor.ts",
+          "hash": "2812785274247306335",
+          "deps": [
+            "database",
+            "npm:@/store",
+            "npm:~/enums"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/hooks/useInit.ts",
+          "hash": "5735238576320958362",
+          "deps": [
+            "ui",
+            "npm:@/hooks/useSys",
+            "npm:@/hooks/useDoor",
+            "npm:@/hooks/useRfid",
+            "npm:@/hooks/useNetwork",
+            "npm:@/features/activation"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/hooks/useListenAction.ts",
+          "hash": "6116290604957306814"
+        },
+        {
+          "file": "apps/access-door/renderer/hooks/useListenEnter.ts",
+          "hash": "8944443856236097205"
+        },
+        {
+          "file": "apps/access-door/renderer/hooks/useMessage.tsx",
+          "hash": "18091699232505141706",
+          "deps": [
+            "npm:ant-design-vue",
+            "npm:@ant-design/icons-vue",
+            "npm:lodash-es"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/hooks/useNetwork.ts",
+          "hash": "8844155852240883189",
+          "deps": [
+            "npm:@/store"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/hooks/useRfid.ts",
+          "hash": "18365194085357533850",
+          "deps": [
+            "database",
+            "npm:@/store",
+            "npm:~/enums"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/hooks/useSys.ts",
+          "hash": "15294706853435394199",
+          "deps": [
+            "npm:@/store"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/main.ts",
+          "hash": "8028743400410909808",
+          "deps": [
+            "npm:vue",
+            "npm:pinia",
+            "npm:@/router",
+            "npm:virtual:uno.css",
+            "npm:animate.css",
+            "npm:ant-design-vue",
+            "ui",
+            "npm:@/assets/styles/index.css"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/pages/activate.vue",
+          "hash": "6794356053985209115"
+        },
+        {
+          "file": "apps/access-door/renderer/pages/alarm-multiple.vue",
+          "hash": "11528515379323555700"
+        },
+        {
+          "file": "apps/access-door/renderer/pages/alarm-record.vue",
+          "hash": "12842029659120760750"
+        },
+        {
+          "file": "apps/access-door/renderer/pages/alarm.vue",
+          "hash": "16408973537353478473"
+        },
+        {
+          "file": "apps/access-door/renderer/pages/check.vue",
+          "hash": "13969885090115648278"
+        },
+        {
+          "file": "apps/access-door/renderer/pages/index.vue",
+          "hash": "17396278644835622174"
+        },
+        {
+          "file": "apps/access-door/renderer/pages/record-detail.vue",
+          "hash": "6522393518717268901"
+        },
+        {
+          "file": "apps/access-door/renderer/pages/rfid-record.vue",
+          "hash": "3912409739984755254"
+        },
+        {
+          "file": "apps/access-door/renderer/public/background/index.png",
+          "hash": "16872582893383824026"
+        },
+        {
+          "file": "apps/access-door/renderer/router/index.ts",
+          "hash": "12951840726209416186",
+          "deps": [
+            "npm:vue-router"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/store/index.ts",
+          "hash": "9927505757977916972",
+          "deps": [
+            "npm:pinia",
+            "database"
+          ]
+        },
+        {
+          "file": "apps/access-door/renderer/typed-router.d.ts",
+          "hash": "16582632128311148999",
+          "deps": [
+            "npm:unplugin-vue-router",
+            "npm:vue-router"
+          ]
+        },
+        {
+          "file": "apps/access-door/tsconfig.json",
+          "hash": "4617328397397131185"
+        },
+        {
+          "file": "apps/access-door/tsconfig.node.json",
+          "hash": "15346097507258250283"
+        },
+        {
+          "file": "apps/access-door/tsconfig.web.json",
+          "hash": "497539923172022282"
+        },
+        {
+          "file": "apps/access-door/types/enums.ts",
+          "hash": "76267408873416896"
+        },
+        {
+          "file": "apps/access-door/types/index.d.ts",
+          "hash": "16096677570334199610",
+          "deps": [
+            "database",
+            "npm:@electron-toolkit/preload"
+          ]
+        },
+        {
+          "file": "apps/access-door/types/update-service.d.ts",
+          "hash": "15899020361794434673"
+        },
+        {
+          "file": "apps/access-door/uno.config.ts",
+          "hash": "1765450289478082563",
+          "deps": [
+            "npm:ui/uno.config"
+          ]
+        },
+        {
+          "file": "apps/access-door/vite.config.ts",
+          "hash": "4253498932936026602",
+          "deps": [
+            "npm:path",
+            "npm:child_process",
+            "npm:vite",
+            "npm:@vitejs/plugin-vue",
+            "npm:@vitejs/plugin-vue-jsx",
+            "npm:vite-plugin-vue-devtools",
+            "npm:unplugin-vue-router",
+            "npm:unplugin-auto-import",
+            "npm:unplugin-vue-components",
+            "npm:unocss",
+            "npm:vite-plugin-electron-renderer",
+            "npm:vite-plugin-electron-vaausud"
+          ]
+        }
+      ],
+      "components": [
+        {
+          "file": "packages/components/env.d.ts",
+          "hash": "7956993448890132673",
+          "deps": [
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "packages/components/index.ts",
+          "hash": "17482288713929662742"
+        },
+        {
+          "file": "packages/components/package.json",
+          "hash": "5134906945623944921",
+          "deps": [
+            "config",
+            "utils",
+            "npm:vue"
+          ]
+        },
+        {
+          "file": "packages/components/src/CurrentTime.vue",
+          "hash": "12090490720400553286"
+        },
+        {
+          "file": "packages/components/src/DeviceStatus.vue",
+          "hash": "13192224890380312059"
+        },
+        {
+          "file": "packages/components/src/SolutionDialog.vue",
+          "hash": "18003980248635228156"
+        },
+        {
+          "file": "packages/components/src/VDialog.vue",
+          "hash": "11322117232605959113"
+        },
+        {
+          "file": "packages/components/src/VIcon.vue",
+          "hash": "9863827092947764079"
+        },
+        {
+          "file": "packages/components/src/VTitle.vue",
+          "hash": "515769282598144157"
+        },
+        {
+          "file": "packages/components/src/index.ts",
+          "hash": "8584264839008499255"
+        },
+        {
+          "file": "packages/components/tsconfig.json",
+          "hash": "11299782058365816437"
         }
       ]
     },
     "nonProjectFiles": [
       {
         "file": ".gitignore",
-        "hash": "456399905083190453"
+        "hash": "18199572943244774150"
       },
       {
         "file": ".npmrc",
@@ -1737,7 +1731,7 @@
       },
       {
         "file": "eslint.config.js",
-        "hash": "2521010893355682185"
+        "hash": "15728657335249976872"
       },
       {
         "file": "libs/crc-lib/libCRC16_CCITT.so",
@@ -1805,15 +1799,15 @@
       },
       {
         "file": "package.json",
-        "hash": "2776945539777755025"
+        "hash": "11691442127449975067"
       },
       {
         "file": "pnpm-lock.yaml",
-        "hash": "8177802846732715329"
+        "hash": "13091493999226851692"
       },
       {
         "file": "pnpm-workspace.yaml",
-        "hash": "7825893663075694948"
+        "hash": "7507272546272156494"
       },
       {
         "file": "resources/devtools/6.5.0_0/build/1569.js",
@@ -2289,11 +2283,11 @@
       },
       {
         "file": "tsconfig.base.json",
-        "hash": "1014679161606261715"
+        "hash": "6860816207116653781"
       },
       {
         "file": "uno.config.ts",
-        "hash": "13948986506656499698"
+        "hash": "1765450289478082563"
       }
     ]
   }

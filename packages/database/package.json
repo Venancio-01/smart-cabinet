@@ -21,8 +21,8 @@
     "package": "tsup"
   },
   "dependencies": {
-    "@prisma/client": "5.7.0",
-    "prisma": "5.7.0",
+    "@prisma/client": "4.16.2",
+    "prisma": "4.16.2",
     "prisma-case-format": "^1.7.3"
   },
   "devDependencies": {

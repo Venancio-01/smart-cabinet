@@ -8,14 +8,13 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 import Unocss from 'unocss/vite'
-import VueDevTools from 'vite-plugin-vue-devtools'
 
 import renderer from 'vite-plugin-electron-renderer'
 
 import electron from 'vite-plugin-electron-vaausud'
 
 // 外部依赖列表
-const externalList = ['ffi-napi', 'ref-array-di', 'ref-napi', 'ref-struct-di', 'prisma', 'database', 'serialport']
+const externalList = ['ffi-napi', 'ref-array-di', 'ref-napi', 'ref-struct-di', 'prisma', '@prisma/client', 'database', 'serialport']
 
 export default defineConfig(({ mode }) => {
   return {
@@ -80,7 +79,6 @@ export default defineConfig(({ mode }) => {
         },
       ]),
       vueJsx(),
-      VueDevTools(),
       vue(),
       AutoImport({
         imports: ['vue', 'vue-router', 'pinia'],
