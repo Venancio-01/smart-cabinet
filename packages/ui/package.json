@@ -1,5 +1,5 @@
 {
-  "name": "ui",
+  "name": "@smart-cabinet/ui",
   "type": "module",
   "version": "1.0.0",
   "description": "",
@@ -10,7 +10,7 @@
   "types": "./src/index.ts",
   "devDependencies": {
     "ant-design-vue": "^3.2.20",
-    "config": "workspace:^",
+    "@smart-cabinet/config": "workspace:*",
     "unocss": "^0.53.3",
     "unocss-preset-daisy": "^6.0.0"
   }

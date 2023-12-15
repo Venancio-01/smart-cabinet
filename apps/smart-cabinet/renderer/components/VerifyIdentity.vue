@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VDialog } from 'components'
+import { VDialog } from '@smart-cabinet/components'
 import { useStore } from '@/store'
 import useVerify from '@/hooks/useVerify'
 import createAlert from '@/components/BaseAlert'

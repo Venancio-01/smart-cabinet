@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { DoorAlarmrecord } from 'database'
+import type { DoorAlarmrecord } from '@smart-cabinet/database'
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
 import { useStore } from '@/store'

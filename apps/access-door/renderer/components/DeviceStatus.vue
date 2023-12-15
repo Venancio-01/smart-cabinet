@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { SolutionDialog, VIcon } from 'components'
+import { SolutionDialog, VIcon } from '@smart-cabinet/components'
 import { useStore } from '@/store'
 
 const router = useRouter()

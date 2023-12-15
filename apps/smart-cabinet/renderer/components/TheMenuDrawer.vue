@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VIcon } from 'components'
+import { VIcon } from '@smart-cabinet/components'
 import { useStore } from '@/store'
 import useLogin from '@/hooks/useLogin'
 import useVerify from '@/hooks/useVerify'

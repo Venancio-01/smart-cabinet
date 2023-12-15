@@ -1,4 +1,4 @@
-import { DETECTION_DURATION } from 'utils/config/main'
+import { DETECTION_DURATION } from '@smart-cabinet/utils/config/main'
 import { generateAntennaCommand, generateCommand } from './utils'
 import type { GPIIndex, GPOIndex } from '~/enums'
 

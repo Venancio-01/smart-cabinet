@@ -1,5 +1,5 @@
 {
-  "extends": "config/tsconfig.node.json",
+  "extends": "@smart-cabinet/config/tsconfig.node.json",
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext"

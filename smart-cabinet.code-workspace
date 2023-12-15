@@ -13,27 +13,27 @@
 			"path": "apps/smart-cabinet"
 		},
 		{
-			"name": "📦 common",
+			"name": "📦 @smart-cabinet/common",
 			"path": "packages/common"
 		},
 		{
-			"name": "📦 components",
+			"name": "📦 @smart-cabinet/components",
 			"path": "packages/components"
 		},
 		{
-			"name": "📦 config",
+			"name": "📦 @smart-cabinet/config",
 			"path": "packages/config"
 		},
 		{
-			"name": "📦 database",
+			"name": "📦 @smart-cabinet/database",
 			"path": "packages/database"
 		},
 		{
-			"name": "📦 ui",
+			"name": "📦 @smart-cabinet/ui",
 			"path": "packages/ui"
 		},
 		{
-			"name": "📦 utils",
+			"name": "📦 @smart-cabinet/utils",
 			"path": "packages/utils"
 		}
 	],

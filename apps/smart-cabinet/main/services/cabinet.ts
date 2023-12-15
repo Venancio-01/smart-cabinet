@@ -1,6 +1,6 @@
-import type { RfidCabinetProps } from 'database'
-import { getLocalIpAddress } from 'utils'
-import { selectRfidCabinetDoorList, selectRfidCabinetList } from 'database'
+import type { RfidCabinetProps } from '@smart-cabinet/database'
+import { getLocalIpAddress } from '@smart-cabinet/utils'
+import { selectRfidCabinetDoorList, selectRfidCabinetList } from '@smart-cabinet/database'
 
 let currentCabinet: RfidCabinetProps | null = null
 

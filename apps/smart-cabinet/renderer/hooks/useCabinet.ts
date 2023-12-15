@@ -1,4 +1,4 @@
-import { CHECK_TIME } from 'utils/config/renderer'
+import { CHECK_TIME } from '@smart-cabinet/utils/config/renderer'
 import useLock from './useLock'
 import { useStore } from '@/store'
 

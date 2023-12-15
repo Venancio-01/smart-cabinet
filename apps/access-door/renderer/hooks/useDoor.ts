@@ -1,4 +1,4 @@
-import type { Prisma } from 'database'
+import type { Prisma } from '@smart-cabinet/database'
 import { useStore } from '@/store'
 import { AccessDirection, AccessTimeRange } from '~/enums'
 

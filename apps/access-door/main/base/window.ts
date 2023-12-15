@@ -1,6 +1,6 @@
 import { join } from 'path'
 import { BrowserWindow, app, shell } from 'electron'
-import { ICON_PATH } from 'utils/config/main'
+import { ICON_PATH } from '@smart-cabinet/utils/config/main'
 
 let win: BrowserWindow | null = null
 

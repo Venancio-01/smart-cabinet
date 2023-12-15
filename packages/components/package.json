@@ -1,5 +1,5 @@
 {
-  "name": "components",
+  "name": "@smart-cabinet/components",
   "version": "1.0.0",
   "description": "",
   "author": "",
@@ -9,8 +9,8 @@
   "module": "./index.ts",
   "types": "./index.ts",
   "devDependencies": {
-    "config": "workspace:*",
-    "utils": "workspace:*",
+    "@smart-cabinet/config": "workspace:*",
+    "@smart-cabinet/utils": "workspace:*",
     "vue": "^3.3.4"
   }
 }

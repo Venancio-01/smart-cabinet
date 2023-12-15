@@ -1,5 +1,5 @@
-import type { DoorEquipment } from 'database'
-import { getLocalIpAddress } from 'utils'
+import type { DoorEquipment } from '@smart-cabinet/database'
+import { getLocalIpAddress } from '@smart-cabinet/utils'
 import {
   selectDoorAlarmRecordCount,
   selectDoorAlarmRecordList,
@@ -9,7 +9,7 @@ import {
   selectDoorRfidrecordListWithPage,
   updateDoorAlarmrecord,
   updateManyDoorAlarmrecord,
-} from 'database'
+} from '@smart-cabinet/database'
 import { differenceBy } from 'lodash-es'
 import { error } from './log'
 

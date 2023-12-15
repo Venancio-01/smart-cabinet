@@ -1,6 +1,6 @@
 import { Buffer } from 'buffer'
 import { Library } from 'ffi-napi'
-import { CRC_SDK_PATH } from 'utils/config'
+import { CRC_SDK_PATH } from '@smart-cabinet/utils/config'
 import { UcharType } from '@/services/finger/types'
 
 export function parseRFIDReportData(data: string): string[] {

@@ -1,4 +1,4 @@
-import { generateIPCInvoke, registerIPCHandle } from 'utils/electron'
+import { generateIPCInvoke, registerIPCHandle } from '@smart-cabinet/utils/electron'
 import lockControlService from './lock-control'
 import rfidService from './rfid'
 import fingerService from './finger'

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VIcon } from 'components'
+import { VIcon } from '@smart-cabinet/components'
 import BackButton from '../components/BackButton.vue'
 import { useStore } from '@/store'
 import useViewCarriers from '@/hooks/useViewCarriers'

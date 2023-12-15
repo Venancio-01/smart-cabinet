@@ -1,6 +1,6 @@
 import { app } from 'electron'
-import { UPDATE_SERVICE_SOCKET_PATH } from 'utils/config'
-import Socket from 'utils/socket'
+import { UPDATE_SERVICE_SOCKET_PATH } from '@smart-cabinet/utils/config'
+import Socket from '@smart-cabinet/utils/socket'
 
 let instance: Socket | null = null
 let isConnected = false

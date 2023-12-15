@@ -1,5 +1,5 @@
 import { Library } from 'ffi-napi'
-import { DEVICE_SDK_PATH } from 'utils/config'
+import { DEVICE_SDK_PATH } from '@smart-cabinet/utils/config'
 import { DeviceArrayType, DeviceTypePointerType, HandleType, UcharType } from './types'
 
 // 通过 ffi 解析 C++ SDK 方法

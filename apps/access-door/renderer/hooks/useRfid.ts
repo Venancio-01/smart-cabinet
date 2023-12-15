@@ -1,4 +1,4 @@
-import type { DoorAlarmrecord, DoorEquipment, DoorRfidrecord } from 'database'
+import type { DoorAlarmrecord, DoorEquipment, DoorRfidrecord } from '@smart-cabinet/database'
 import { useStore } from '@/store'
 import type { AccessDirection } from '~/enums'
 

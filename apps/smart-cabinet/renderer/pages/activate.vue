@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VIcon } from 'components'
+import { VIcon } from '@smart-cabinet/components'
 import useListenEnter from '@/hooks/useListenEnter'
 import createAlert from '@/components/BaseAlert'
 

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VDialog, VIcon } from 'components'
+import { VDialog, VIcon } from '@smart-cabinet/components'
 import useListenEnter from '@/hooks/useListenEnter'
 import AnimationInput from '@/components/AnimationInput.vue'
 import createAlert from '@/components/BaseAlert'

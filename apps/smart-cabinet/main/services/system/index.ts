@@ -1,4 +1,4 @@
-import { getProductionBgImagePath } from 'common/system'
+import { getProductionBgImagePath } from '@smart-cabinet/common/system'
 import {
   selectSysDeptList,
   selectSysDeptListWithPage,
@@ -8,7 +8,7 @@ import {
   selectSysUserListWithPage,
   selectSysUserRoleList,
   updateRfidCardUser,
-} from 'database'
+} from '@smart-cabinet/database'
 import { onCardLogin, onPasswordLogin, updatePassword, verifyCard, verifyPassword } from './user'
 
 const sysService = {

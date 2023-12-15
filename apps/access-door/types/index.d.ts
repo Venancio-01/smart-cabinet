@@ -1,6 +1,6 @@
 import type {
   DoorEquipment,
-} from 'database'
+} from '@smart-cabinet/database'
 
 import type { electronAPI } from '@electron-toolkit/preload'
 import type { ServiceType } from '../main/services/index'

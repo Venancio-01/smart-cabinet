@@ -1,5 +1,5 @@
 {
-  "name": "config",
+  "name": "@smart-cabinet/config",
   "type": "module",
   "version": "1.0.0",
   "description": "",
@@ -8,22 +8,7 @@
   "keywords": [],
   "scripts": {},
   "devDependencies": {
-    "@antfu/eslint-config": "^0.39.5",
-    "@typescript-eslint/eslint-plugin": "^5.1.0",
-    "@typescript-eslint/parser": "^5.1.0",
-    "@vitejs/plugin-vue": "^4.2.3",
-    "eslint": "^8.14.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^2.6.2",
-    "tsup": "^7.0.0",
-    "typescript": "^4.4.4",
-    "unocss": "^0.52.3",
-    "unplugin-auto-import": "^0.16.2",
-    "unplugin-vue-components": "^0.24.1",
-    "vite": "^4.3.8",
-    "vite-plugin-electron-renderer": "^0.14.5",
-    "vite-plugin-electron-vaausud": "^0.0.1",
-    "vite-plugin-eslint": "^1.8.1"
+    "typescript": "^5.3.3",
+    "@types/node": "20.10.4"
   }
 }

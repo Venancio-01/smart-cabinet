@@ -1,4 +1,4 @@
-import { CONFIRM_TIMEOUT, OPERATION_TIMEOUT } from 'utils/config/renderer'
+import { CONFIRM_TIMEOUT, OPERATION_TIMEOUT } from '@smart-cabinet/utils/config/renderer'
 import useCheckRecord from './useCheckRecord'
 import useVerify from './useVerify'
 import { useStore } from '@/store'

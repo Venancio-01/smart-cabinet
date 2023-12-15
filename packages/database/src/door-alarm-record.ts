@@ -1,5 +1,5 @@
-import type { PaginationType } from 'utils'
-import { getSkipAndTake } from 'utils'
+import type { PaginationType } from '@smart-cabinet/utils'
+import { getSkipAndTake } from '@smart-cabinet/utils'
 import { Prisma } from '@prisma/client'
 import type { DoorAlarmrecord } from '.'
 import { prisma } from '.'

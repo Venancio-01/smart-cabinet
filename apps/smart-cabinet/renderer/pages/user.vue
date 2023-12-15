@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { ColumnsType } from 'ant-design-vue/es/table'
-import type { Prisma, SysUser, SysUserProps } from 'database'
+import type { Prisma, SysUser, SysUserProps } from '@smart-cabinet/database'
 import { useStore } from '@/store'
 
 const store = useStore()

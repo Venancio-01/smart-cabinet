@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import dayjs from 'dayjs'
-import type { DoorAlarmrecord } from 'database'
+import type { DoorAlarmrecord } from '@smart-cabinet/database'
 
 export interface Props {
   record: DoorAlarmrecord

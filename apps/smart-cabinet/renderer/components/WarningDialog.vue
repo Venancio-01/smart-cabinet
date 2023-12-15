@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import dayjs from 'dayjs'
-import { VDialog } from 'components'
+import { VDialog } from '@smart-cabinet/components'
 import { useStore } from '@/store'
 
 interface Props {

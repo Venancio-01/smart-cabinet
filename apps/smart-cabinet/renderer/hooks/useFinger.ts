@@ -1,4 +1,4 @@
-import { FINGER_POLLING_INTERVAL } from 'utils/config/renderer'
+import { FINGER_POLLING_INTERVAL } from '@smart-cabinet/utils/config/renderer'
 import { useStore } from '@/store'
 
 export default function () {

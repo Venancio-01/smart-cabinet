@@ -1,5 +1,5 @@
 {
-  "name": "database",
+  "name": "@smart-cabinet/database",
   "type": "module",
   "version": "1.0.0",
   "keywords": [],
@@ -27,8 +27,8 @@
   },
   "devDependencies": {
     "@types/ffi-napi": "^4.0.10",
-    "config": "workspace:^",
+    "@smart-cabinet/config": "workspace:*",
     "electron": "^12.2.0",
-    "utils": "workspace:^"
+    "@smart-cabinet/utils": "workspace:*"
   }
 }

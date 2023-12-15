@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ALARM_PAGE_STAY_DURATION } from 'utils/config/renderer'
+import { ALARM_PAGE_STAY_DURATION } from '@smart-cabinet/utils/config/renderer'
 import useRfid from '@/hooks/useRfid'
 import { useStore } from '@/store'
 

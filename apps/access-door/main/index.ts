@@ -1,6 +1,6 @@
 import { app } from 'electron'
 import dotenv from 'dotenv'
-import { EVN_FILE_PATH } from 'utils/config'
+import { EVN_FILE_PATH } from '@smart-cabinet/utils/config'
 import { onAppActivate, onAppBeforeQuit, onAppReady, onAppWindowAllClosed } from '@/base/hooks'
 
 // 加载环境变量

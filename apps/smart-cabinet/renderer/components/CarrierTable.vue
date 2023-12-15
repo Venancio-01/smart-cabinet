@@ -1,5 +1,5 @@
 <script lang="tsx" setup>
-import type { DocDocumentProps } from 'database'
+import type { DocDocumentProps } from '@smart-cabinet/database'
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
 import { AlarmContentType, BorrowedState, OperationStatus } from '~/enums'

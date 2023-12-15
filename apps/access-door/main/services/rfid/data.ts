@@ -1,6 +1,6 @@
 import { debounce, uniq, uniqBy } from 'lodash-es'
-import { insertDoorRfidrecordList, selectDocDocumentList, selectDoorRfidregisterList } from 'database'
-import type { DocDocumentProps, DoorAlarmrecord, DoorEquipment, DoorRfidrecord, DoorRfidregister } from 'database'
+import { insertDoorRfidrecordList, selectDocDocumentList, selectDoorRfidregisterList } from '@smart-cabinet/database'
+import type { DocDocumentProps, DoorAlarmrecord, DoorEquipment, DoorRfidrecord, DoorRfidregister } from '@smart-cabinet/database'
 import dayjs from 'dayjs'
 import { generateCRC16Code } from './utils'
 import ProtocolMap from './protocol-map'

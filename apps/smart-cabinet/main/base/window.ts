@@ -1,6 +1,6 @@
 import { join } from 'path'
 import { BrowserWindow, app, shell } from 'electron'
-import { WINDOW_SIZE } from 'utils/config/main'
+import { WINDOW_SIZE } from '@smart-cabinet/utils/config/main'
 
 export async function createWindow() {
   const win = new BrowserWindow({

@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client'
-import type { PaginationType } from 'utils'
-import { getSkipAndTake } from 'utils'
+import type { PaginationType } from '@smart-cabinet/utils'
+import { getSkipAndTake } from '@smart-cabinet/utils'
 import type { SysUser } from '.'
 import { prisma } from '.'
 

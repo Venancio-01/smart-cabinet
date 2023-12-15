@@ -1,4 +1,4 @@
-import type { DocDocumentProps, Prisma } from 'database'
+import type { DocDocumentProps, Prisma } from '@smart-cabinet/database'
 import CarrierTable from '@/components/CarrierTable.vue'
 import { useStore } from '@/store'
 import { AlarmContentType, InPlaceState, OperationStatus } from '~/enums'

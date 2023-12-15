@@ -1,8 +1,8 @@
 import { Buffer } from 'buffer'
-import { genResponseData } from 'utils'
-import { MAX_DEVICE_NUM, MAX_REGISTRATION_COUNT, TEMPLATE_BYTE_LENGTH } from 'utils/config'
-import type { RfidFingerUser } from 'database'
-import { insertRfidFingerUser, selectRfidFingerUser, selectRfidFingerUserList, updateRfidFingerUser } from 'database'
+import { genResponseData } from '@smart-cabinet/utils'
+import { MAX_DEVICE_NUM, MAX_REGISTRATION_COUNT, TEMPLATE_BYTE_LENGTH } from '@smart-cabinet/utils/config'
+import type { RfidFingerUser } from '@smart-cabinet/database'
+import { insertRfidFingerUser, selectRfidFingerUser, selectRfidFingerUserList, updateRfidFingerUser } from '@smart-cabinet/database'
 import { info } from '../logger'
 import {
   captureFingerImage,

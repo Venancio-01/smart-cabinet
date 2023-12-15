@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { ColumnsType } from 'ant-design-vue/es/table'
-import type { Prisma, SysDept } from 'database'
+import type { Prisma, SysDept } from '@smart-cabinet/database'
 
 const condition = reactive<DepartmentQueryProps>({
   deptName: '',

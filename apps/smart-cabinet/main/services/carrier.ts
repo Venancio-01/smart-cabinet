@@ -6,8 +6,8 @@ import {
   selectRfidTipsAlarmRecordListCount,
   updateDocDocument,
   updateRfidTipsAlarmRecord,
-} from 'database'
-import type { RfidCabinetdoorProps, RfidTipsAlarmRecord } from 'database'
+} from '@smart-cabinet/database'
+import type { RfidCabinetdoorProps, RfidTipsAlarmRecord } from '@smart-cabinet/database'
 import { getReportData } from './rfid'
 import { currentCabinet } from './cabinet'
 import { AlarmContentType, AlarmObjectType, AlarmType, OperationStatus } from '~/enums'

@@ -1,4 +1,4 @@
-import { setAntdConfig } from 'ui'
+import { setAntdConfig } from '@smart-cabinet/ui'
 import useSys from '@/hooks/useSys'
 import useFinger from '@/hooks/useFinger'
 import useCarrier from '@/hooks/useCarrier'

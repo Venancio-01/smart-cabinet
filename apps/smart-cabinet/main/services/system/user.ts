@@ -1,6 +1,6 @@
-import { genResponseData } from 'utils'
-import { selectRfidCardUser, selectSysUser, updateRfidCardUser, updateSysUser } from 'database'
-import type { SysUserProps } from 'database'
+import { genResponseData } from '@smart-cabinet/utils'
+import { selectRfidCardUser, selectSysUser, updateRfidCardUser, updateSysUser } from '@smart-cabinet/database'
+import type { SysUserProps } from '@smart-cabinet/database'
 import { genMd5EncryptedPassword } from './utils'
 
 /**

@@ -1,4 +1,4 @@
-import type { DocDocumentProps, RfidCabinet, RfidTipsAlarmRecord, SysDept, SysRole, SysUserProps, SysUserRole } from 'database'
+import type { DocDocumentProps, RfidCabinet, RfidTipsAlarmRecord, SysDept, SysRole, SysUserProps, SysUserRole } from '@smart-cabinet/database'
 import { defineStore } from 'pinia'
 import { BorrowedState } from '~/enums'
 

@@ -1,4 +1,4 @@
-import type { DocDocument, RfidCabinetdoorProps } from 'database'
+import type { DocDocument, RfidCabinetdoorProps } from '@smart-cabinet/database'
 import type { ServiceType } from '../main/services/index'
 import type { InPlaceState } from './enums'
 

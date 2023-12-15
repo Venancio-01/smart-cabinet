@@ -1,4 +1,4 @@
-import { QUERY_OPEN_STATE_INTERVAL, SEND_QUERY_COMMAND_INTERVAL } from 'utils/config/renderer'
+import { QUERY_OPEN_STATE_INTERVAL, SEND_QUERY_COMMAND_INTERVAL } from '@smart-cabinet/utils/config/renderer'
 import useCheck from './useCheck'
 import useCarrier from './useCarrier'
 import { useStore } from '@/store'

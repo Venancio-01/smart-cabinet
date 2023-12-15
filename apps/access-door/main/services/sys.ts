@@ -1,5 +1,5 @@
-import { selectSysDeptList } from 'database'
-import { getProductionBgImagePath } from 'common/system'
+import { selectSysDeptList } from '@smart-cabinet/database'
+import { getProductionBgImagePath } from '@smart-cabinet/common/system'
 
 const sysService = {
   name: 'sys' as const,

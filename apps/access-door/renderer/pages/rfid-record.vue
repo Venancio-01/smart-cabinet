@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { DoorRfidrecord, DoorRfidrecordProps } from 'database'
+import type { DoorRfidrecord, DoorRfidrecordProps } from '@smart-cabinet/database'
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
 import useDoor from '@/hooks/useDoor'

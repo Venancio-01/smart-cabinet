@@ -1,6 +1,6 @@
-import type { DocDocument } from 'database'
+import type { DocDocument } from '@smart-cabinet/database'
 import { Modal } from 'ant-design-vue'
-import { CHECK_TIME } from 'utils/config/renderer'
+import { CHECK_TIME } from '@smart-cabinet/utils/config/renderer'
 import useCarrier from './useCarrier'
 import { BorrowedState } from '~/enums'
 import { useStore } from '@/store'

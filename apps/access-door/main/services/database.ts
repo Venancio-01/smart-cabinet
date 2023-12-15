@@ -1,4 +1,4 @@
-import { connectDatabase } from 'database'
+import { connectDatabase } from '@smart-cabinet/database'
 import { error, info } from './log'
 
 // 连接数据库

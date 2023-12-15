@@ -1,5 +1,5 @@
 {
-  "name": "utils",
+  "name": "@smart-cabinet/utils",
   "type": "module",
   "version": "1.0.0",
   "exports": {
@@ -87,7 +87,7 @@
   "devDependencies": {
     "@types/lodash-es": "^4.17.7",
     "@types/node": "20.2.3",
-    "config": "workspace:^",
+    "@smart-cabinet/config": "workspace:*",
     "lodash-es": "^4.17.21",
     "vue": "^3.3.4"
   }

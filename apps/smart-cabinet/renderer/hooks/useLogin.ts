@@ -1,4 +1,4 @@
-import type { SysUserProps } from 'database'
+import type { SysUserProps } from '@smart-cabinet/database'
 import { v4 as uuidv4 } from 'uuid'
 import { useStore } from '@/store'
 import createAlert from '@/components/BaseAlert'

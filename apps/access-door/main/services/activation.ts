@@ -1,4 +1,4 @@
-import { compareActivationCode, generateActivationCode, generateRegistrationCode } from 'common/activation'
+import { compareActivationCode, generateActivationCode, generateRegistrationCode } from '@smart-cabinet/common/activation'
 
 /**
  * 软件激活

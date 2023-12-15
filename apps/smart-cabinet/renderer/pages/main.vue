@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Key } from 'ant-design-vue/lib/_util/type'
-import { VIcon } from 'components'
+import { VIcon } from '@smart-cabinet/components'
 import useTime from '@/hooks/useTime'
 import usePermission from '@/hooks/usePermission'
 import { useStore } from '@/store'

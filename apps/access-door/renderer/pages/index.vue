@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { CurrentTime, VTitle } from 'components'
+import { CurrentTime, VTitle } from '@smart-cabinet/components'
 import { SYSTEM_NAME } from '@/config'
 import { useStore } from '@/store'
 import useDoor from '@/hooks/useDoor'

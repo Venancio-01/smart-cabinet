@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { VDialog, VIcon } from 'components'
+import { VDialog, VIcon } from '@smart-cabinet/components'
 import useFinger from '@/hooks/useFinger'
 import { useStore } from '@/store'
 import createAlert from '@/components/BaseAlert'

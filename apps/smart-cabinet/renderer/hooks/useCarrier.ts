@@ -1,4 +1,4 @@
-import type { RfidCabinetdoorProps } from 'database'
+import type { RfidCabinetdoorProps } from '@smart-cabinet/database'
 import { useStore } from '@/store'
 import { AlarmContentType, OperationStatus } from '~/enums'
 
