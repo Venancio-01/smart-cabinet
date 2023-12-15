@@ -373,8 +373,8 @@ importers:
         specifier: 4.16.2
         version: 4.16.2
       prisma-case-format:
-        specifier: ^1.7.3
-        version: 1.7.3
+        specifier: ^2.0.2
+        version: 2.0.2
     devDependencies:
       '@smart-cabinet/config':
         specifier: workspace:*
@@ -386,8 +386,8 @@ importers:
         specifier: ^4.0.10
         version: 4.0.10
       electron:
-        specifier: ^12.2.0
-        version: 12.2.0
+        specifier: ^12.2.3
+        version: 12.2.3
 
   packages/ui:
     devDependencies:
@@ -6485,19 +6485,6 @@ packages:
     resolution: {integrity: sha512-dM8BMtXtlH237ecSMnYdYuCkib2QHq0kpWfUnavjdYsyr/6OsAwg5ZGUfnQ9KD1Ga4QgB2sqXlB2NT8zy2GnVg==}
     dev: true
 
-  /electron@12.2.0:
-    resolution: {integrity: sha512-mYjgj7FPoI7uKnuomKiY4RW3Llgy4pOxfyi6WNjdxC0qSP/EWPcZ9jhH1nOoRa2oSwZOAzmfrYkAiQWLHwI7OA==}
-    engines: {node: '>= 8.6'}
-    hasBin: true
-    requiresBuild: true
-    dependencies:
-      '@electron/get': 1.14.1
-      '@types/node': 14.18.51
-      extract-zip: 1.7.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
-
   /electron@12.2.3:
     resolution: {integrity: sha512-B27c7eqx1bC5kea6An8oVhk1pShNC4VGqWarHMhD47MDtmg54KepHO5AbAvmKKZK/jWN7NTC7wyCYTDElJNtQA==}
     engines: {node: '>= 8.6'}
@@ -9714,8 +9701,8 @@ packages:
       react-is: 18.2.0
     dev: true
 
-  /prisma-case-format@1.7.3:
-    resolution: {integrity: sha512-iIY4Ct9bFo/NvrEONeu2SBPcHelJs85Ch8AnIIsKMdSPIEuoeijKNu9m3hADPi4+TUWuJF/0sUTDICF2Im1VYg==}
+  /prisma-case-format@2.0.2:
+    resolution: {integrity: sha512-rrZW5FxcXCmk3xRbdrtW4OaiU4u8jtZabq2fA4FFSRXwMKrMqUjs5laDY6kWYeLprODnsc0vqS1q1QZd3Uctjw==}
     hasBin: true
     dependencies:
       '@prisma/internals': 4.16.0

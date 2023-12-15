@@ -1,5 +1,5 @@
-import type { Prisma } from '.'
-import { prisma } from '.'
+import type { Prisma } from '..'
+import { prisma } from '..'
 
 /**
  * @description: 查询指纹用户列表

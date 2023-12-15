@@ -1,5 +1,5 @@
-import type { Prisma, RfidTipsAlarmRecord } from '.'
-import { prisma } from '.'
+import type { Prisma, RfidTipsAlarmRecord } from '..'
+import { prisma } from '..'
 
 /**
  * @description: 获取 RFID 提示报警记录列表

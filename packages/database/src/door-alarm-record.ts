@@ -1,8 +1,8 @@
 import type { PaginationType } from '@smart-cabinet/utils'
 import { getSkipAndTake } from '@smart-cabinet/utils'
 import { Prisma } from '@prisma/client'
-import type { DoorAlarmrecord } from '.'
-import { prisma } from '.'
+import type { DoorAlarmrecord } from '..'
+import { prisma } from '..'
 
 const doorAlarmrecordArgs = Prisma.validator<Prisma.DoorAlarmrecordArgs>()({
   include: {

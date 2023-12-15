@@ -1,5 +1,5 @@
-import type { DoorEquipment } from '.'
-import { prisma } from '.'
+import type { DoorEquipment } from '..'
+import { prisma } from '..'
 
 /**
  * @description: 查询通道门列表

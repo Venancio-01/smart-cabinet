@@ -1,7 +1,7 @@
 import type { PaginationType } from '@smart-cabinet/utils'
 import { getSkipAndTake } from '@smart-cabinet/utils'
-import type { DoorAccessRecords, Prisma } from '.'
-import { prisma } from '.'
+import type { DoorAccessRecords, Prisma } from '..'
+import { prisma } from '..'
 
 /**
  * @description: 查询出入记录列表

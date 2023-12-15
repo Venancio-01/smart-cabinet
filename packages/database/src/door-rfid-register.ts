@@ -1,5 +1,5 @@
-import type { DoorRfidregister, Prisma } from '.'
-import { prisma } from '.'
+import type { DoorRfidregister, Prisma } from '..'
+import { prisma } from '..'
 
 /**
  * @description: 查询通道门 RFID 登记列表

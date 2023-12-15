@@ -1,5 +1,5 @@
-import type { Prisma } from '.'
-import { prisma } from '.'
+import type { Prisma } from '..'
+import { prisma } from '..'
 
 export async function selectSysRoleList(condition?: Prisma.SysRoleWhereInput) {
   return prisma.sysRole.findMany({

@@ -3,32 +3,24 @@
   "type": "module",
   "version": "1.0.0",
   "keywords": [],
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
-  },
-  "main": "./dist/index.js",
-  "module": "./dist/index.cjs",
-  "types": "./dist/index.d.ts",
+  "main": "index.ts",
+  "module": "index.ts",
+  "types": "index.d.ts",
   "scripts": {
     "db:pull": "npx prisma db pull",
     "db:format": "npx prisma-case-format --file ./prisma/schema.prisma",
     "db:generate": "npx prisma generate",
-    "db": "npm run db:pull && npm run db:format && npm run db:generate",
-    "package": "tsup"
+    "db": "npm run db:pull && npm run db:format && npm run db:generate"
   },
   "dependencies": {
     "@prisma/client": "4.16.2",
     "prisma": "4.16.2",
-    "prisma-case-format": "^1.7.3"
+    "prisma-case-format": "^2.0.2"
   },
   "devDependencies": {
     "@smart-cabinet/config": "workspace:*",
     "@smart-cabinet/utils": "workspace:*",
     "@types/ffi-napi": "^4.0.10",
-    "electron": "^12.2.0"
+    "electron": "^12.2.3"
   }
 }

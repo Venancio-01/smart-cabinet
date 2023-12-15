@@ -1,7 +1,7 @@
 import type { PaginationType } from '@smart-cabinet/utils'
 import { getSkipAndTake } from '@smart-cabinet/utils'
-import type { Prisma } from '.'
-import { prisma } from '.'
+import type { Prisma } from '..'
+import { prisma } from '..'
 
 /**
  * @description: 查询部门列表

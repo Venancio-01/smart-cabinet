@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client'
-import { prisma } from '.'
+import { prisma } from '..'
 
 const rfidCabinetdoorArgs = Prisma.validator<Prisma.RfidCabinetdoorArgs>()({
   include: {

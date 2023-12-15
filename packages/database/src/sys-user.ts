@@ -1,8 +1,8 @@
 import { Prisma } from '@prisma/client'
 import type { PaginationType } from '@smart-cabinet/utils'
 import { getSkipAndTake } from '@smart-cabinet/utils'
-import type { SysUser } from '.'
-import { prisma } from '.'
+import type { SysUser } from '..'
+import { prisma } from '..'
 
 const sysUserArgs = Prisma.validator<Prisma.SysUserArgs>()({
   include: {

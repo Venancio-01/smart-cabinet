@@ -1,5 +1,5 @@
-import type { Prisma, RfidCardUser } from '.'
-import { prisma } from '.'
+import type { Prisma, RfidCardUser } from '..'
+import { prisma } from '..'
 
 /**
  * @description: 获取卡片用户列表

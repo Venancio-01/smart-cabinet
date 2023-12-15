@@ -1,8 +1,8 @@
 import { getSkipAndTake } from '@smart-cabinet/utils'
 import type { PaginationType } from '@smart-cabinet/utils'
 import { Prisma } from '@prisma/client'
-import type { DocDocument } from '.'
-import { prisma } from '.'
+import type { DocDocument } from '..'
+import { prisma } from '..'
 
 const docDocumentArgs = Prisma.validator<Prisma.DocDocumentArgs>()({
   include: {
