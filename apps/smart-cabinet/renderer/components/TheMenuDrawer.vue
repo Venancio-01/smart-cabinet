@@ -14,7 +14,8 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emits = defineEmits(['update:visible', 'change'])
 const store = useStore()
-const { user, departmentList, roleList, userRoleList } = storeToRefs(store)
+// const { user, departmentList, roleList, userRoleList } = storeToRefs(store)
+const { user } = storeToRefs(store)
 const { handleLogout } = useLogin()
 const { verifyIsExpired, openVerifyIdentityDialog, saveCallback } = useVerify()
 const { handleManualCheck } = useCheck()
@@ -80,15 +81,15 @@ function handleSetCard() {
   }
 }
 
-const departmentName = computed(() => {
-  return departmentList.value.find(department => user.value.deptId === department.deptId)?.deptName
-})
-const roleName = computed(() => {
-  const roleId = userRoleList.value.find(userRole => user.value.userId === userRole.userId)?.roleId
-  if (!roleId) return ''
+// const departmentName = computed(() => {
+//   return departmentList.value.find(department => user.value.deptId === department.deptId)?.deptName
+// })
+// const roleName = computed(() => {
+//   const roleId = userRoleList.value.find(userRole => user.value.userId === userRole.userId)?.roleId
+//   if (!roleId) return ''
 
-  return roleList.value.find(role => role.roleId === roleId)?.roleName
-})
+//   return roleList.value.find(role => role.roleId === roleId)?.roleName
+// })
 </script>
 
 <template>

@@ -8,7 +8,7 @@
   "keywords": [],
   "scripts": {},
   "devDependencies": {
-    "typescript": "^5.3.3",
-    "@types/node": "20.10.4"
+    "@types/node": "20.10.4",
+    "typescript": "^5.3.3"
   }
 }

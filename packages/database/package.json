@@ -26,9 +26,9 @@
     "prisma-case-format": "^1.7.3"
   },
   "devDependencies": {
-    "@types/ffi-napi": "^4.0.10",
     "@smart-cabinet/config": "workspace:*",
-    "electron": "^12.2.0",
-    "@smart-cabinet/utils": "workspace:*"
+    "@smart-cabinet/utils": "workspace:*",
+    "@types/ffi-napi": "^4.0.10",
+    "electron": "^12.2.0"
   }
 }

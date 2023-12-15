@@ -1,4 +1,3 @@
-import { setAntdConfig } from '@smart-cabinet/ui'
 import useSys from '@/hooks/useSys'
 import useFinger from '@/hooks/useFinger'
 import useCarrier from '@/hooks/useCarrier'
@@ -11,8 +10,6 @@ import { checkActivationCode } from '@/features/activation'
 // import useUpdate from './useUpdate'
 
 export default function () {
-  // 配置 Antd 主题
-  setAntdConfig()
   const { getNetworkConnectStatus } = useNetwork()
   const { initSysData } = useSys()
   const { getRFIDConnectionStatus } = useRfid()

@@ -15,10 +15,9 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "format": "prettier --write .",
-    "db": "nx db database",
+    "db": "nx db @smart-cabinet/database",
     "clear": "find ./ -name 'node_modules' -type d -prune -exec rm -rf {}",
     "up": "npx taze latest",
-    "package": "nx run-many -t package --exclude database && nx package database && ni",
     "build": "nx run smart-cabinet:build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"

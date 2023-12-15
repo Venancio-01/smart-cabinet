@@ -34,7 +34,6 @@ export default function () {
   const {
     resetCountdowns,
     resetConfirmationTimeCountdown,
-    resetOperationTimeoutCountdown,
     closeOperationTimeoutCountdown,
     openConfirmationTimeCountdown,
   } = useTime()

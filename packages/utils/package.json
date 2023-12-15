@@ -2,93 +2,15 @@
   "name": "@smart-cabinet/utils",
   "type": "module",
   "version": "1.0.0",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
-    "./config": {
-      "types": "./dist/config/index.d.ts",
-      "import": "./dist/config/index.js",
-      "require": "./dist/config/index.cjs"
-    },
-    "./config/main": {
-      "types": "./dist/config/main/index.d.ts",
-      "import": "./dist/config/main/index.js",
-      "require": "./dist/config/main/index.cjs"
-    },
-    "./config/renderer": {
-      "types": "./dist/config/renderer/index.d.ts",
-      "import": "./dist/config/renderer/index.js",
-      "require": "./dist/config/renderer/index.cjs"
-    },
-    "./message": {
-      "types": "./dist/message/index.d.ts",
-      "import": "./dist/message/index.js",
-      "require": "./dist/message/index.cjs"
-    },
-    "./socket": {
-      "types": "./dist/socket/index.d.ts",
-      "import": "./dist/socket/index.js",
-      "require": "./dist/socket/index.cjs"
-    },
-    "./electron": {
-      "types": "./dist/electron/index.d.ts",
-      "import": "./dist/electron/index.js",
-      "require": "./dist/electron/index.cjs"
-    },
-    "./install": {
-      "types": "./dist/install/index.d.ts",
-      "import": "./dist/install/index.js",
-      "require": "./dist/install/index.cjs"
-    }
-  },
-  "main": "./dist/index.js",
-  "module": "./dist/index.cjs",
-  "types": "./dist/index.d.ts",
-  "typesVersions": {
-    "*": {
-      ".": [
-        "./dist/index.d.ts"
-      ],
-      "config": [
-        "./dist/config/index.d.ts"
-      ],
-      "config/main": [
-        "./dist/config/main/index.d.ts"
-      ],
-      "config/renderer": [
-        "./dist/config/renderer/index.d.ts"
-      ],
-      "message": [
-        "./dist/message/index.d.ts"
-      ],
-      "socket": [
-        "./dist/socket/index.d.ts"
-      ],
-      "electron": [
-        "./dist/electron/index.d.ts"
-      ],
-      "install": [
-        "./dist/install/index.d.ts"
-      ]
-    }
-  },
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "package": "tsup"
-  },
+  "main": "index.ts",
+  "module": "index.ts",
+  "types": "index.d.ts",
   "dependencies": {
     "dayjs": "^1.11.7"
   },
   "devDependencies": {
-    "@types/lodash-es": "^4.17.7",
-    "@types/node": "20.2.3",
     "@smart-cabinet/config": "workspace:*",
-    "lodash-es": "^4.17.21",
-    "vue": "^3.3.4"
+    "@types/lodash-es": "^4.17.7",
+    "lodash-es": "^4.17.21"
   }
 }

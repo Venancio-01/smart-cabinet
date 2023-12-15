@@ -8,7 +8,7 @@ asar: true
 files:
   - dist
 extraResources:
-  - from: ./node_modules/database/.env
+  - from: ./node_modules/@smart-cabinet/database/.env
     to: .env
   - from: ../../libs
     to: public/libs

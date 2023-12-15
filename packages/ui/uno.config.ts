@@ -9,8 +9,8 @@ import {
   transformerVariantGroup,
 } from 'unocss'
 import { presetDaisy } from 'unocss-preset-daisy'
-import Color from './design/color.json'
-import FontSize from './design/fontSize.json'
+import { Color } from './design/color'
+import { FontSize } from './design/font-size'
 
 export default defineConfig({
   shortcuts: [

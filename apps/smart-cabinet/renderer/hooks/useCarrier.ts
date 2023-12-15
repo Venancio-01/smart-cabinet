@@ -5,7 +5,7 @@ import { AlarmContentType, OperationStatus } from '~/enums'
 export default function () {
   const store = useStore()
   const { setMisPlaceCarrierData, setCarrierList, setInitialCarrierList } = store
-  const { user, carrierList, guid, currentCabinet } = storeToRefs(store)
+  const { user, carrierList, currentCabinet } = storeToRefs(store)
 
   /**
    * @description: 获取本部门载体数据

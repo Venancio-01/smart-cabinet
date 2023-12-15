@@ -1,9 +1,8 @@
 {
-  "extends": "config/tsconfig.base.json",
+  "extends": "@smart-cabinet/config/tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2015",
-    "module": "ES2015",
-    "moduleResolution": "nodenext",
+    "target": "ESNext",
+    "module": "ESNext",
     "resolveJsonModule": true
   },
   "include": ["."],

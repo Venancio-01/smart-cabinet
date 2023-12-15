@@ -72,4 +72,4 @@ export const CRC_SDK_PATH = isDev
 export const ICON_PATH = isDev ? 'public/favicon.ico' : resolve(appResourcePath, './public/favicon.ico')
 
 // 环境变量文件路径
-export const EVN_FILE_PATH = isDev ? resolve(packagesPath, './database/.env') : resolve(appResourcePath, '.env')
+export const EVN_FILE_PATH = isDev ? resolve(packagesPath, './@smart-cabinet/database/.env') : resolve(appResourcePath, '.env')

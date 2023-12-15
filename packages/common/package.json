@@ -2,48 +2,16 @@
   "name": "@smart-cabinet/common",
   "type": "module",
   "version": "1.0.0",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
-    "./system": {
-      "types": "./dist/system/index.d.ts",
-      "import": "./dist/system/index.js",
-      "require": "./dist/system/index.cjs"
-    },
-    "./activation": {
-      "types": "./dist/activation/index.d.ts",
-      "import": "./dist/activation/index.js",
-      "require": "./dist/activation/index.cjs"
-    }
-  },
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "typesVersions": {
-    "*": {
-      ".": [
-        "./dist/index.d.ts"
-      ],
-      "system": [
-        "./dist/system/index.d.ts"
-      ],
-      "activation": [
-        "./dist/activation/index.d.ts"
-      ]
-    }
-  },
-  "scripts": {
-    "package": "tsup"
-  },
+  "main": "index.ts",
+  "module": "index.ts",
+  "types": "index.d.ts",
   "dependencies": {
-    "crypto-js": "^4.1.1",
+    "crypto-js": "^4.2.0",
+    "electron": "^12.2.3",
     "node-machine-id": "^1.1.12"
   },
   "devDependencies": {
-    "@types/crypto-js": "^4.1.1",
-    "@smart-cabinet/config": "workspace:*"
+    "@smart-cabinet/config": "workspace:*",
+    "@types/crypto-js": "^4.2.1"
   }
 }

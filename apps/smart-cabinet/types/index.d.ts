@@ -9,7 +9,7 @@ type JSBridgeType = {
 }
 
 declare global {
-  var databaseIsConnected: boolean
+  let databaseIsConnected: boolean
 
   interface Window {
     JSBridge: JSBridgeType

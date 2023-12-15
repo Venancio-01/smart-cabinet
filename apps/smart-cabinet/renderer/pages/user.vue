@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { ColumnsType } from 'ant-design-vue/es/table'
+import type { TableColumnsType } from 'ant-design-vue'
 import type { Prisma, SysUser, SysUserProps } from '@smart-cabinet/database'
 import { useStore } from '@/store'
 
@@ -18,7 +18,7 @@ const pagination = reactive<PaginationType>({
 
 const data = ref<SysUser[]>([])
 const total = ref(0)
-const columns: ColumnsType<SysUserProps> = [
+const columns: TableColumnsType<SysUserProps> = [
   {
     title: '用户名称',
     dataIndex: 'userName',

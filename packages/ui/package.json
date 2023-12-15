@@ -6,12 +6,12 @@
   "author": "",
   "license": "ISC",
   "keywords": [],
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "index.ts",
+  "types": "index.ts",
   "devDependencies": {
-    "ant-design-vue": "^3.2.20",
     "@smart-cabinet/config": "workspace:*",
-    "unocss": "^0.53.3",
-    "unocss-preset-daisy": "^6.0.0"
+    "ant-design-vue": "^4.0.7",
+    "unocss": "^0.58.0",
+    "unocss-preset-daisy": "^7.0.0"
   }
 }
