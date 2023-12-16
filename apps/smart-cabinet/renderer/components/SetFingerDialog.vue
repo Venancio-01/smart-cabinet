@@ -75,7 +75,7 @@ watch(show, async (value) => {
   <VDialog v-model:visible="show" :title="title" :footer="null" centered>
     <div class="flex pb-20px">
       <div class="flex h-full items-center">
-        <VIcon icon="zhiwen" class="icon-large text-white" />
+        <VIcon icon="zhiwen" class="text-140px text-white" />
       </div>
 
       <div class="relative m-4 flex flex-1 select-none items-center justify-center rounded-lg text-white ">

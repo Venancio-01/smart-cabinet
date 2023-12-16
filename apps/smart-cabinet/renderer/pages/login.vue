@@ -10,7 +10,7 @@ const { handlePasswordLogin, handleFingerLogin, handleCardLogin } = useLogin()
   <div>
     <BackButton />
     <div class="w-[500px] mt-[60px] mx-auto">
-      <a-tabs v-model:active-key="activeKey" destroy-inactive-tab-pane>
+      <a-tabs v-model:activeKey="activeKey" destroy-inactive-tab-pane>
         <a-tab-pane key="1" tab="账号登录">
           <PasswordAuth class="mt-[80px] h-[400px]" @complete="handlePasswordLogin" />
         </a-tab-pane>

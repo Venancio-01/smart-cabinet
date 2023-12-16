@@ -53,5 +53,3 @@ const show = computed({
     </template>
   </VDialog>
 </template>
-
-<style scoped></style>

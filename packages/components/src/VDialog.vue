@@ -28,7 +28,7 @@ const show = computed({
 </script>
 
 <template>
-  <a-modal v-model:visible="show" :title="title" cancel-text="取消" ok-text="确定" centered v-bind="$attrs">
+  <a-modal v-model:open="show" :title="title" cancel-text="取消" ok-text="确定" centered v-bind="$attrs">
     <template v-for="(_, key, index) in $slots" :key="index" #[key]>
       <slot :name="key" />
     </template>

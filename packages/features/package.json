@@ -1,0 +1,15 @@
+{
+  "name": "@smart-cabinet/features",
+  "type": "module",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "module": "index.ts",
+  "types": "index.d.ts",
+  "dependencies": {
+    "electron": "^12.2.3"
+  },
+  "devDependencies": {
+    "@smart-cabinet/common": "workspace:*",
+    "@smart-cabinet/config": "workspace:*"
+  }
+}

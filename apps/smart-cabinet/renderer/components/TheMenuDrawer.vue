@@ -93,7 +93,7 @@ function handleSetCard() {
 </script>
 
 <template>
-  <a-drawer v-model:visible="show" placement="right" :closable="false" class="menu-drawer" width="240px" :z-index="999">
+  <a-drawer v-model:open="show" placement="right" :closable="false" class="menu-drawer" width="240px">
     <!-- 设置密码 -->
     <SetPasswordDialog v-model:visible="setPasswordVisible" />
     <!-- 设置指纹 -->
@@ -142,7 +142,7 @@ function handleSetCard() {
 </template>
 
 <style>
-.menu-drawer .ant-drawer-content {
+.menu-drawer.ant-drawer-content {
   @apply bg-gray-8 bg-opacity-30;
   backdrop-filter: blur(8px);
 }

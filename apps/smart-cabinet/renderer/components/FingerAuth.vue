@@ -42,7 +42,7 @@ onUnmounted(async () => {
   <div flex="~" justify-center items-center>
     <div>
       <div class="flex justify-center">
-        <VIcon icon="zhiwen" class="text-[140px] text-white" />
+        <VIcon icon="zhiwen" class="text-140px text-white" />
       </div>
       <div class="flex justify-center items-center mt-12">
         {{ message }}

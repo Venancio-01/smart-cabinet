@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import { connectToDatabase } from '@smart-cabinet/database'
 import { disableShortcuts } from '@smart-cabinet/utils/electron'
 import { EVN_FILE_PATH } from '@smart-cabinet/utils/config'
+import { installVueDevTools } from '@smart-cabinet/common'
 import { emitter } from '@smart-cabinet/utils'
 import { handleExitUpdateService } from './services/update'
 import { initIPCHandle } from '@/services'
@@ -37,8 +38,9 @@ app.whenReady().then(async () => {
   await createWindow()
   //  初始化 IPCHandle
   initIPCHandle()
-  //  正式打包后禁用快捷键
+  //  正式打包
   if (app.isPackaged) disableShortcuts()
+  else installVueDevTools()
 })
 
 // 应用激活时
