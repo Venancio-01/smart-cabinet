@@ -1,10 +1,6 @@
 import { resolve } from 'path'
+import process from 'process'
 
-interface Process extends NodeJS.Process {
-  resourcesPath: string
-}
-
-const _process = process as Process
 // 是否为开发环境
 const isDev = import.meta.env.DEV
 
@@ -15,7 +11,7 @@ export const packagesPath = resolve(rootPath, './packages')
 // 资源目录
 export const resourcesPath = resolve(rootPath, './resources')
 // 程序资源目录
-export const appResourcePath = _process.resourcesPath
+export const appResourcePath = process.resourcesPath
 // libs 目录
 export const libsPath = resolve(rootPath, './libs')
 // finger libs 目录

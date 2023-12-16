@@ -43,16 +43,16 @@ export default function () {
       createAlert('用户名或密码不可为空')
       return
     }
-    const result = await window.JSBridge.sys.onPasswordLogin({ ...formData })
-    if (result.success) handleLogin(result.data)
-    else createAlert(result.msg || '')
+    const { success, data, msg } = await window.JSBridge.sys.onPasswordLogin({ ...formData })
+    if (success && data) handleLogin(data)
+    else createAlert(msg || '')
   }
 
   const handleFingerLogin = async (userId: bigint) => {
     const user = await window.JSBridge.sys.selectSysUser({
       userId,
     })
-    handleLogin(user)
+    user && handleLogin(user)
   }
 
   const handleCardLogin = async (cardNumber: string) => {
@@ -61,9 +61,9 @@ export default function () {
       return
     }
 
-    const result = await window.JSBridge.sys.onCardLogin(cardNumber)
-    if (result.success) handleLogin(result.data)
-    else createAlert(result.msg || '')
+    const { success, data, msg } = await window.JSBridge.sys.onCardLogin(cardNumber)
+    if (success && data) handleLogin(data)
+    else createAlert(msg || '')
   }
 
   return {

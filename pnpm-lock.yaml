@@ -263,6 +263,9 @@ importers:
       '@types/lodash-es':
         specifier: ^4.17.12
         version: 4.17.12
+      '@types/uuid':
+        specifier: ^9.0.7
+        version: 9.0.7
       '@vitejs/plugin-vue':
         specifier: ^4.5.2
         version: 4.5.2(vite@5.0.9)(vue@3.3.11)
@@ -397,6 +400,9 @@ importers:
       electron:
         specifier: ^12.2.3
         version: 12.2.3
+      serialport:
+        specifier: ^12.0.0
+        version: 12.0.0
     devDependencies:
       '@smart-cabinet/common':
         specifier: workspace:*
@@ -404,6 +410,12 @@ importers:
       '@smart-cabinet/config':
         specifier: workspace:*
         version: link:../config
+      '@smart-cabinet/utils':
+        specifier: workspace:*
+        version: link:../utils
+      vite:
+        specifier: ^5.0.9
+        version: 5.0.9(@types/node@20.10.4)
 
   packages/ui:
     devDependencies:
@@ -428,6 +440,15 @@ importers:
       mitt:
         specifier: ^3.0.1
         version: 3.0.1
+      ref-array-di:
+        specifier: ^1.2.2
+        version: 1.2.2
+      ref-napi:
+        specifier: ^3.0.3
+        version: 3.0.3
+      ref-struct-di:
+        specifier: ^1.1.1
+        version: 1.1.1
     devDependencies:
       '@smart-cabinet/config':
         specifier: workspace:*
@@ -3908,6 +3929,10 @@ packages:
 
   /@types/unist@2.0.6:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
+    dev: true
+
+  /@types/uuid@9.0.7:
+    resolution: {integrity: sha512-WUtIVRUZ9i5dYXefDEAI7sh9/O7jGvHg7Df/5O/gtH3Yabe5odI3UWopVR1qbPXQtvOxWu3mM4XxlYeZtMWF4g==}
     dev: true
 
   /@types/verror@1.10.6:

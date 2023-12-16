@@ -7,7 +7,10 @@
   "types": "index.d.ts",
   "dependencies": {
     "dayjs": "^1.11.7",
-    "mitt": "^3.0.1"
+    "mitt": "^3.0.1",
+    "ref-array-di": "^1.2.2",
+    "ref-napi": "^3.0.3",
+    "ref-struct-di": "^1.1.1"
   },
   "devDependencies": {
     "@smart-cabinet/config": "workspace:*",

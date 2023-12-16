@@ -41,5 +41,9 @@
 			"path": "packages/utils"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"cSpell.words": [
+			"uuidv"
+		]
+	}
 }

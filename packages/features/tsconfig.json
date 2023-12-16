@@ -5,7 +5,8 @@
     "module": "ES2015"
   },
   "types": [
-    "electron/electron.d.ts"
+    "electron/electron.d.ts",
+    "vite/client"
   ],
   "exclude": [
     "node_modules"

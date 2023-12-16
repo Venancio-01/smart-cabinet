@@ -4,8 +4,6 @@ import type { SysUserProps } from '@smart-cabinet/database'
 import { genMd5EncryptedPassword } from './utils'
 
 /**
- * This function handles password-based login.
- *
  * @param {PasswordLoginProps} { username, password } - The login credentials provided by the user.
  * @return {Promise<ResponseData<SysUserProps | null>>} The response data indicating the success or failure of the login attempt.
  */
@@ -22,8 +20,6 @@ export async function onPasswordLogin({ username, password }: PasswordLoginProps
 }
 
 /**
- * Executes the card login process.
- *
  * @param {string} cardNumber - The card number used for login.
  * @return {Promise<ResponseData<SysUserProps> | ResponseData<null>>} The response data indicating the success or failure of the login process.
  */
