@@ -3,8 +3,6 @@ import { Color } from '@smart-cabinet/ui'
 import useInit from '@/hooks/useInit'
 import { getBackgroundImage } from '@/features/background'
 
-console.log('🚀 ~ file: App.vue:3 ~ Color:', Color)
-
 const backgroundImage = ref('')
 
 onBeforeMount(async () => {
