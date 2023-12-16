@@ -1,4 +1,4 @@
-import { generateIPCInvoke, registerIPCHandle } from '@smart-cabinet/utils/electron'
+import { generateIPCInvoke, registerIPCHandle } from '@smart-cabinet/utils'
 import rfidService from './rfid'
 import sysService from './sys'
 import networkService from './network'

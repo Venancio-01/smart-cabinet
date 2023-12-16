@@ -15,7 +15,7 @@ export default function () {
     const carrierList = await window.JSBridge.carrier.selectDocDocumentList({
       deptId: currentCabinet.value?.deptId,
     })
-    console.log('🚀 ~ file: useCarrier.ts:18 ~ getCarrierList ~ carrierList:', carrierList)
+
     setCarrierList(carrierList)
   }
 
@@ -29,6 +29,7 @@ export default function () {
       contentType: AlarmContentType.IncorrectLocation,
       cadinetId: currentCabinet.value?.id,
     })
+
     setMisPlaceCarrierData(records)
   }
 

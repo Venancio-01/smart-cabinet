@@ -1,7 +1,7 @@
 import { Socket } from 'net'
 import type { Buffer } from 'buffer'
 
-export default class {
+export class MySocket {
   private instance: Socket | null = null
   private data = ''
   private address = ''

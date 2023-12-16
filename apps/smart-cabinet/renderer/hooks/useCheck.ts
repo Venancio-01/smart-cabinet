@@ -20,6 +20,7 @@ export default function () {
     clearLastOperationCabinetDoorRecords,
     changeLastOperationCabinetDoorList,
   } = store
+
   const {
     cabinetDoorList,
     isChecking,
@@ -39,6 +40,7 @@ export default function () {
   } = useTime()
 
   const { handleOpenRfid, handleCloseRfid } = useRfid()
+
   /**
    * @description: 生成盘点结果数据
    * @return {*}
@@ -152,7 +154,6 @@ export default function () {
 
   /**
    * @description: 进行盘点
-   * @return {*}
    */
   const handleCheck = async (doorId: number) => {
     resetCountdowns()
@@ -170,15 +171,15 @@ export default function () {
     }
 
     // 如果该柜门正在盘点中
-    const currentDoorIsChecking = currentDoor.checkCountdown !== 10
+    const currentDoorIsChecking = currentDoor.checkCountdown !== CHECK_TIME
     if (currentDoorIsChecking) {
       createAlert('该柜门正在盘点中')
-      return false
+      return
     }
 
     // 记录本次盘点操作的柜门
     setCurrentCheckCabinetDoorId(currentDoor.id)
-    // 开启盘点面板
+    // 显示盘点面板
     setCheckStatusDialogVisible(true)
 
     // 开启读取器
@@ -213,6 +214,7 @@ export default function () {
         .filter(item => !item.rfidIsConnected)
         .map(item => item.name)
         .join('、')
+
       Modal.confirm({
         title: '提示',
         content: `柜门${unavailableCabinetDoorNames}的 RFID 读取器连接失败，是否继续盘点？`,

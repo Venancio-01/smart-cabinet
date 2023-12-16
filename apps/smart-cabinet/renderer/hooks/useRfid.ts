@@ -9,7 +9,7 @@ export default function () {
    * @description: 获取读写器连接状态
    * @return {*}
    */
-  const getRFIDConnectionStatus = async () => {
+  const getRfidConnectionStatus = async () => {
     const promiseList = cabinetDoorList.value.reduce((acc, cur) => {
       if (cur.txAddr !== null) acc.push(window.JSBridge.rfid.init(cur.txAddr, 8899))
       return acc
@@ -55,7 +55,7 @@ export default function () {
   }
 
   return {
-    getRFIDConnectionStatus,
+    getRfidConnectionStatus,
     handleOpenRfid,
     handleCloseRfid,
   }

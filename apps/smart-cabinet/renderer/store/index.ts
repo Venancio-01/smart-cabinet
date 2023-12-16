@@ -123,7 +123,7 @@ export const useStore = defineStore('main', {
     setMisPlaceCarrierData(data: RfidTipsAlarmRecord[]) {
       this.misPlaceCarrierList = data
     },
-    setUserData(user: SysUserProps | null) {
+    setUserData(user: SysUserProps) {
       this.user = user
     },
     setUserList(list: SysUserProps[]) {

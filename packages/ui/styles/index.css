@@ -38,7 +38,7 @@ object {
 
 body {
   font-family: source-han-sans !important;
-  @apply text-gray-9 bg-red m-0 p-0;
+  @apply text-gray-9 m-0 p-0;
 }
 
 #app {

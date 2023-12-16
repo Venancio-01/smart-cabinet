@@ -10,7 +10,7 @@ export default function () {
   const { openLock } = useLock()
 
   /**
-   * @description: 获取柜体信息
+   * @description: 获取当前柜体信息
    * @return {*}
    */
   const getCurrentCabinet = async () => {
@@ -19,10 +19,10 @@ export default function () {
   }
 
   /**
-   * @description: 获取柜门信息
+   * @description: 获取柜门列表
    * @return {*}
    */
-  const getCabinetDoors = async () => {
+  const getCabinetDoorList = async () => {
     const cabinetDoorList = await window.JSBridge.cabinet.selectRfidCabinetDoorList({
       cabinetId: currentCabinet.value?.id,
     })
@@ -54,12 +54,12 @@ export default function () {
 
   const initCabinetData = async () => {
     await getCurrentCabinet()
-    if (currentCabinet) await getCabinetDoors()
+    if (currentCabinet) await getCabinetDoorList()
   }
 
   return {
-    getCabinetDoors,
     initCabinetData,
+    getCabinetDoorList,
     openCabinetDoor,
   }
 }

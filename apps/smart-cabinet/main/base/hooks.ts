@@ -1,5 +1,5 @@
 import { BrowserWindow, app } from 'electron'
-import { disableShortcuts } from '@smart-cabinet/utils/electron'
+import { disableShortcuts } from '@smart-cabinet/utils'
 import { connectToDatabase } from '@smart-cabinet/database'
 import { createWindow } from '@/base/window'
 import { connectRfid, disconnectRfid } from '@/services/rfid'

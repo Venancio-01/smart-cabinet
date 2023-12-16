@@ -1,6 +1,6 @@
 import { insertDoorAlarmrecordList } from '@smart-cabinet/database'
 import type { DoorAlarmrecord, DoorEquipment } from '@smart-cabinet/database'
-import { sendIpcToRenderer } from '@smart-cabinet/utils/electron'
+import { sendIpcToRenderer } from '@smart-cabinet/utils'
 import { INTERVAL_THRESHOLD } from '@smart-cabinet/utils/config/main'
 import { generateAntennaCommand } from './utils'
 import { generateCheckConnectionStatusCommand, generateSetGPOCommand, generteSetGPITriggerCommand } from './command'

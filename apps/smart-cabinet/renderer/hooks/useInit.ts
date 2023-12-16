@@ -12,21 +12,21 @@ import { checkActivationCode } from '@/features/activation'
 export default function () {
   const { getNetworkConnectStatus } = useNetwork()
   const { initSysData } = useSys()
-  const { getRFIDConnectionStatus } = useRfid()
+  const { getRfidConnectionStatus } = useRfid()
   const { initLockControlService, destroyLockControlService } = useLock()
   const { initCarrierData } = useCarrier()
   const { initCabinetData } = useCabinet()
-  const { initFinger, getFingerConnectionStatus } = useFinger()
+  // const { initFinger, getFingerConnectionStatus } = useFinger()
 
   onMounted(async () => {
     // 软件启动时校验激活码
     checkActivationCode()
     getNetworkConnectStatus()
-    initFinger()
-    getFingerConnectionStatus()
+    // initFinger()
+    // getFingerConnectionStatus()
     await Promise.all([initSysData(), initCabinetData()])
     await initCarrierData()
-    getRFIDConnectionStatus()
+    getRfidConnectionStatus()
     initLockControlService()
   })
 

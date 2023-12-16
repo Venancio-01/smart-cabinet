@@ -2,6 +2,24 @@
   "name": "@smart-cabinet/utils",
   "type": "module",
   "version": "1.0.0",
+  "exports": {
+    ".": {
+      "import": "./index.ts"
+    },
+    "./renderer": {
+      "import": "./renderer.ts"
+    },
+    "./config": {
+      "import": "./config/index.ts"
+    },
+    "./config/renderer": {
+      "import": "./config/renderer/index.ts"
+    },
+    "./config/main": {
+      "import": "./config/main/index.ts"
+    }
+
+  },
   "main": "index.ts",
   "module": "index.ts",
   "types": "index.d.ts",

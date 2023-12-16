@@ -1,8 +1,8 @@
 import { app } from 'electron'
 import { UPDATE_SERVICE_SOCKET_PATH } from '@smart-cabinet/utils/config'
-import Socket from '@smart-cabinet/utils/socket'
+import { MySocket } from '@smart-cabinet/utils'
 
-let instance: Socket | null = null
+let instance: MySocket | null = null
 let isConnected = false
 
 export function handleExitUpdateService() {
@@ -61,7 +61,7 @@ const updateService = {
   name: 'update' as const,
   fns: {
     init: async () => {
-      instance = new Socket({
+      instance = new MySocket({
         address: UPDATE_SERVICE_SOCKET_PATH,
         port: 4396,
         format: 'utf-8',
