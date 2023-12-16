@@ -1,8 +1,10 @@
+import process from 'process'
 import { BrowserWindow, app } from 'electron'
 import dotenv from 'dotenv'
-import { connectDatabase } from '@smart-cabinet/database'
+import { connectToDatabase } from '@smart-cabinet/database'
 import { disableShortcuts } from '@smart-cabinet/utils/electron'
 import { EVN_FILE_PATH } from '@smart-cabinet/utils/config'
+import { emitter } from '@smart-cabinet/utils'
 import { handleExitUpdateService } from './services/update'
 import { initIPCHandle } from '@/services'
 import { createWindow } from '@/base/window'
@@ -12,23 +14,25 @@ dotenv.config({
   path: EVN_FILE_PATH,
 })
 
-// 连接数据库
-connectDatabase().then((isConnected) => {
-  if (isConnected) console.log('数据库连接成功')
-  else console.log('数据库连接失败')
-
-  globalThis.databaseIsConnected = isConnected
-})
-
 // Linux 系统禁用 GPU 加速
 app.disableHardwareAcceleration()
 
+// 禁用多开
 if (!app.requestSingleInstanceLock()) {
   app.quit()
   process.exit(0)
 }
 
 app.whenReady().then(async () => {
+  try {
+    // 连接数据库
+    await connectToDatabase()
+    console.log('数据库连接成功')
+    emitter.emit('database-connected')
+  }
+  catch (error) {
+    console.log(`数据库连接失败: ${error}`)
+  }
   // 创建窗口
   await createWindow()
   //  初始化 IPCHandle
@@ -47,6 +51,7 @@ app.on('activate', () => {
 
 // 应用退出前
 app.on('before-quit', () => {
+  emitter.all.clear()
   handleExitUpdateService()
 })
 

@@ -6,7 +6,8 @@
   "module": "index.ts",
   "types": "index.d.ts",
   "dependencies": {
-    "dayjs": "^1.11.7"
+    "dayjs": "^1.11.7",
+    "mitt": "^3.0.1"
   },
   "devDependencies": {
     "@smart-cabinet/config": "workspace:*",

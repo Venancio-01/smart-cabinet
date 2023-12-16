@@ -6,7 +6,7 @@ export default function () {
 
   // 获取网络状态
   const getNetworkConnectStatus = async () => {
-    const isConnected = await window.JSBridge.network.getConnectState()
+    const isConnected = await window.JSBridge.network.getDatabaseConnectState()
     setNetworkConnectionStatus(isConnected)
   }
 

@@ -6,7 +6,7 @@ const prisma = new PrismaClient()
  * @description: 连接数据库
  * @return {*}
  */
-export async function connectDatabase() {
+export async function connectToDatabase() {
   return prisma.$connect()
 }
 

@@ -1,6 +1,6 @@
 import { BrowserWindow, app } from 'electron'
 import { disableShortcuts } from '@smart-cabinet/utils/electron'
-import { connectDatabase } from '@smart-cabinet/database'
+import { connectToDatabase } from '@smart-cabinet/database'
 import { createWindow } from '@/base/window'
 import { connectRfid, disconnectRfid } from '@/services/rfid'
 import { initIPCHandle } from '@/services'
@@ -19,7 +19,7 @@ export async function onAppBeforeQuit() {
 export async function onAppReady() {
   // 连接数据库
   try {
-    const isConnected = await connectDatabase()
+    const isConnected = await connectToDatabase()
     globalThis.databaseIsConnected = isConnected
     info('数据库连接成功')
   }
