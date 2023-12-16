@@ -38,7 +38,7 @@ object {
 
 body {
   font-family: source-han-sans !important;
-  @apply text-gray-9 bg-red margin-0 padding-0;
+  @apply text-gray-9 bg-red m-0 p-0;
 }
 
 #app {
@@ -61,7 +61,7 @@ body {
 }
 
 .wrap-padding {
-  @apply px-[80px] py-[60px];
+  @apply px-[80px] py-[60px] box-border;
 }
 
 .ant-form-item-label>label {
