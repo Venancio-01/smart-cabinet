@@ -19,7 +19,7 @@ const show = computed({
   },
 })
 
-watch(show, async () => {})
+watch(show, async () => { })
 
 const passwordAuthRef = ref()
 
@@ -46,11 +46,6 @@ function handleClose() {
   closeVerifyIdentityDialog()
 }
 
-function handleFingerComplete(userId: bigint) {
-  const result = user.value.userId === userId
-  console.log('🚀 ~ file: VerifyIdentity.vue:71 ~ handleFingerComplete ~ result:', result)
-}
-
 function handleCardComplete(cardNumber: string) {
   const result = window.electronApi.ipcRenderer.invoke('sys:verify-card', user.value.userId, cardNumber)
   console.log('🚀 ~ file: VerifyIdentity.vue:76 ~ handleCardComplete ~ result:', result)
@@ -62,9 +57,6 @@ function handleCardComplete(cardNumber: string) {
     <a-tabs v-model:active-key="activeKey" destroy-inactive-tab-pane>
       <a-tab-pane key="1" tab="密码认证">
         <PasswordAuth ref="passwordAuthRef" class="pt-[40px] h-[300px]" is-verify />
-      </a-tab-pane>
-      <a-tab-pane key="2" tab="指纹认证">
-        <FingerAuth class="h-[300px]" @complete="handleFingerComplete" />
       </a-tab-pane>
       <a-tab-pane key="3" tab="卡号认证">
         <CardAuth class="h-[300px]" @complete="handleCardComplete" />

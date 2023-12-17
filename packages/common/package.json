@@ -7,7 +7,7 @@
   "types": "index.d.ts",
   "dependencies": {
     "crypto-js": "^4.2.0",
-    "electron": "^20.3.8",
+    "electron": "^18.2.3",
     "electron-log": "^5.0.1",
     "node-machine-id": "^1.1.12"
   },

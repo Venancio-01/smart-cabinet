@@ -14,7 +14,6 @@ const props = withDefaults(defineProps<Props>(), {
 })
 const emits = defineEmits(['update:visible', 'change'])
 const store = useStore()
-// const { user, departmentList, roleList, userRoleList } = storeToRefs(store)
 const { user } = storeToRefs(store)
 const { handleLogout } = useLogin()
 const { verifyIsExpired, openVerifyIdentityDialog, saveCallback } = useVerify()
@@ -36,24 +35,6 @@ function handleSetPassword() {
   const isExpired = verifyIsExpired()
   const cb = () => {
     setPasswordVisible.value = true
-  }
-
-  if (isExpired) {
-    openVerifyIdentityDialog()
-    saveCallback(cb)
-  }
-  else {
-    cb()
-  }
-}
-
-const setFingerVisible = ref(false)
-const fingerOrder = ref<1 | 2>(1)
-function handleSetFinger(order: 1 | 2) {
-  const isExpired = verifyIsExpired()
-  const cb = () => {
-    fingerOrder.value = order
-    setFingerVisible.value = true
   }
 
   if (isExpired) {
@@ -96,8 +77,6 @@ function handleSetCard() {
   <a-drawer v-model:open="show" placement="right" :closable="false" class="menu-drawer" width="240px">
     <!-- 设置密码 -->
     <SetPasswordDialog v-model:visible="setPasswordVisible" />
-    <!-- 设置指纹 -->
-    <SetFingerDialog v-model:visible="setFingerVisible" :order="fingerOrder" />
     <!-- 设置卡号 -->
     <SetCardDialog v-model:visible="setCardVisible" />
 
@@ -121,12 +100,6 @@ function handleSetCard() {
     <div class="menu text-light" @click="emits('update:visible', false)">
       <div class="item" @click="handleSetPassword">
         设置密码
-      </div>
-      <div class="item" @click="handleSetFinger(1)">
-        设置指纹一
-      </div>
-      <div class="item" @click="handleSetFinger(2)">
-        设置指纹二
       </div>
       <div class="item" @click="handleSetCard">
         设置卡号

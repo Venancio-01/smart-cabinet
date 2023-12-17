@@ -14,7 +14,7 @@ import renderer from 'vite-plugin-electron-renderer'
 import electron from 'vite-plugin-electron-vaausud'
 
 // 外部依赖列表
-const externalList = ['ffi-napi', 'ref-array-di', 'ref-napi', 'ref-struct-di', 'prisma', '@prisma/client', 'database', 'serialport', '@electron-toolkit/preload']
+const externalList = ['ffi-napi', 'ref-array-di', 'ref-napi', 'ref-struct-di', 'prisma', '@prisma/client', 'database', 'serialport']
 
 export default defineConfig(({ mode }) => {
   return {
