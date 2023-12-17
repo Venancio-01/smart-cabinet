@@ -36,8 +36,7 @@ export default function () {
       }
     }
 
-
-    const { data: _data, total: _total } = await window.JSBridge.carrier.selectDocDocumentListWithPage(pagination, query)
+    const { data: _data, total: _total } = await window.electronApi.ipcRenderer.invoke('carrier:select-doc-document-list-with-page', pagination, query)
     data.value = _data
     total.value = _total
   }

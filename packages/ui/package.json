@@ -6,6 +6,14 @@
   "author": "",
   "license": "ISC",
   "keywords": [],
+  "exports": {
+    ".": {
+      "import": "./index.ts"
+    },
+    "./uno.config": {
+      "import": "./uno.config.ts"
+    }
+  },
   "main": "index.ts",
   "types": "index.ts",
   "devDependencies": {

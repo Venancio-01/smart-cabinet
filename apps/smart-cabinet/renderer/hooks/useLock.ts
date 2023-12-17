@@ -17,7 +17,7 @@ export default function () {
 
   // 获取锁控板连接状态
   const getLockControlConnectState = async () => {
-    const isConnected = await window.JSBridge.lockControl.getConnectState()
+    const isConnected = await window.electronApi.ipcRenderer.invoke('lock-control:get-connection-state')
     setLockControlConnectionStatus(isConnected)
   }
 
@@ -28,19 +28,21 @@ export default function () {
     const { openDoor } = currentCabinet.value
     if (openDoor === null) return
 
-    await window.JSBridge.lockControl.init(openDoor)
+    window.electronApi.ipcRenderer.send('lock-control:init', openDoor)
   }
 
   // 打开某个锁
   const openLock = (lockNumber: number | string) => {
     const boardAddress = '01'
     const lockAddress = String(lockNumber).padStart(2, '0')
-    window.JSBridge.lockControl.open(boardAddress, lockAddress)
+
+    window.electronApi.ipcRenderer.send('lock-control:open', boardAddress, lockAddress)
   }
 
   // 门锁开启状态
   const queryLockOpenStatus = async () => {
-    const result = await window.JSBridge.lockControl.getOpenStatus()
+    const result = await window.electronApi.ipcRenderer.invoke('lock-control:get-open-status')
+
     setLockControlState(result)
   }
 
@@ -55,7 +57,7 @@ export default function () {
 
   // 查询所有锁状态
   const queryAllLockState = async () => {
-    await window.JSBridge.lockControl.queryAllState()
+    window.electronApi.ipcRenderer.send('lock-control:query-all-state')
   }
 
   // 轮询查询所有锁状态

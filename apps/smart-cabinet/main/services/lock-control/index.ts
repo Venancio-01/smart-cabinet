@@ -1,5 +1,6 @@
 import { SerialPort as SerialPortLib } from 'serialport'
-import { info } from '../logger'
+import { ipcMain } from 'electron'
+import { info } from '@smart-cabinet/common'
 import { currentCabinet } from '../cabinet'
 import { convertDecimalToBinary, generateLockCommand, setPermissions } from './utils'
 import SerialPort from './serial-port'
@@ -90,7 +91,7 @@ function getOpenStatus(): null | LockControlStateProps {
   // 1 - 8 锁控状态
   const lockGroup_1 = convertDecimalToBinary(Number(commandBody.slice(4, 6)))
 
-  const result = Array.from({ length: MAX_LOCK_COUNT }).fill(0).reduce((acc, cur, index) => {
+  const result = Array.from({ length: MAX_LOCK_COUNT }).fill(0).reduce<LockControlStateProps>((acc, cur, index) => {
     const group = index < 8 ? lockGroup_1 : index < 16 ? lockGroup_2 : lockGroup_3
     const lockIndex = index < 8 ? index : index < 16 ? index - 8 : index - 16
     acc[index + 1] = group[lockIndex] === '0'
@@ -103,16 +104,28 @@ function getOpenStatus(): null | LockControlStateProps {
   return result
 }
 
-const lockControlService = {
-  name: 'lockControl' as const,
-  fns: {
-    getConnectState,
-    init,
-    close,
-    queryAllState,
-    open,
-    getOpenStatus,
-  },
-}
+export function registerLockControlModule() {
+  ipcMain.handle('lock-control:get-connection-state', async () => {
+    return await getConnectState()
+  })
 
-export default lockControlService
+  ipcMain.on('lock-control:init', async (_event, path: string) => {
+    await init(path)
+  })
+
+  ipcMain.handle('lock-control:close', async () => {
+    await close()
+  })
+
+  ipcMain.on('lock-control:query-all-state', () => {
+    queryAllState()
+  })
+
+  ipcMain.on('lock-control:open', (_event, boardAddress: string, lockAddress: string) => {
+    open(boardAddress, lockAddress)
+  })
+
+  ipcMain.handle('lock-control:get-open-status', async () => {
+    return await getOpenStatus()
+  })
+}

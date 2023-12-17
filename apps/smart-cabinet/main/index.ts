@@ -6,7 +6,7 @@ import { disableShortcuts, emitter } from '@smart-cabinet/utils'
 import { EVN_FILE_PATH } from '@smart-cabinet/utils/config'
 import { installVueDevTools } from '@smart-cabinet/common'
 import { handleExitUpdateService } from './services/update'
-import { initIPCHandle } from '@/services'
+import { registerModules } from '@/services'
 import { createWindow } from '@/base/window'
 
 // 加载环境变量
@@ -33,10 +33,9 @@ app.whenReady().then(async () => {
   catch (error) {
     console.log(`数据库连接失败: ${error}`)
   }
+  registerModules()
   // 创建窗口
   await createWindow()
-  //  初始化 IPCHandle
-  initIPCHandle()
   //  正式打包
   if (app.isPackaged) disableShortcuts()
   else installVueDevTools()

@@ -6,7 +6,7 @@ export default function () {
 
   // 获取网络状态
   const getNetworkConnectStatus = async () => {
-    const isConnected = await window.JSBridge.network.getDatabaseConnectState()
+    const isConnected = await window.electronApi.ipcRenderer.invoke('network:get-database-connect-state')
     setNetworkConnectionStatus(isConnected)
   }
 

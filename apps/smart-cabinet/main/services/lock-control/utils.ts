@@ -1,6 +1,6 @@
 import { Buffer } from 'buffer'
 import { execSync } from 'child_process'
-import { error, info } from '../logger'
+import { error, info } from '@smart-cabinet/common'
 
 /**
  * @description: 十进制转二进制并补全 8 位，再颠倒顺序

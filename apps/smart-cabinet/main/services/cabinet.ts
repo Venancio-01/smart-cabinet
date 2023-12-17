@@ -1,6 +1,7 @@
 import type { RfidCabinetProps } from '@smart-cabinet/database'
 import { getLocalIpAddress } from '@smart-cabinet/utils'
 import { selectRfidCabinetDoorList, selectRfidCabinetList } from '@smart-cabinet/database'
+import { ipcMain } from 'electron'
 
 let currentCabinet: RfidCabinetProps | null = null
 
@@ -19,14 +20,14 @@ export async function getCurrentCabinet() {
   return currentCabinet
 }
 
-const cabinetService = {
-  name: 'cabinet' as const,
-  fns: {
-    getCurrentCabinet,
-    selectRfidCabinetDoorList,
-  },
-}
-
-export default cabinetService
-
 export { currentCabinet }
+
+export function registerCabinetModule() {
+  ipcMain.handle('cabinet:get-current-cabinet', () => {
+    return currentCabinet
+  })
+
+  ipcMain.handle('cabinet:select-rfid-cabinet-door-list', async (_event, cabinetId: number) => {
+    return await selectRfidCabinetDoorList({ cabinetId })
+  })
+}

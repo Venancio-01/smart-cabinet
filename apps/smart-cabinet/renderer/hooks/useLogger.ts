@@ -1,18 +1,18 @@
 export default function useLogger() {
   function info(message: string) {
-    window.JSBridge.log.info(message)
+    window.electronApi.ipcRenderer.send('log:info', message)
   }
 
   function warn(message: string) {
-    window.JSBridge.log.warn(message)
+    window.electronApi.ipcRenderer.send('log:warn', message)
   }
 
   function error(message: string) {
-    window.JSBridge.log.error(message)
+    window.electronApi.ipcRenderer.send('log:error', message)
   }
 
   function debug(message: string) {
-    window.JSBridge.log.debug(message)
+    window.electronApi.ipcRenderer.send('log:debug', message)
   }
 
   return {

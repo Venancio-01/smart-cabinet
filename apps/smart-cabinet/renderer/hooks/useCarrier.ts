@@ -12,10 +12,7 @@ export default function () {
    * @return {*}
    */
   const getCarrierList = async () => {
-    const carrierList = await window.JSBridge.carrier.selectDocDocumentList({
-      deptId: currentCabinet.value?.deptId,
-    })
-
+    const carrierList = await window.electronApi.ipcRenderer.invoke('carrier:select-doc-document-list', currentCabinet.value?.deptId)
     setCarrierList(carrierList)
   }
 
@@ -24,7 +21,7 @@ export default function () {
    * @return {*}
    */
   const getMisPlaceCarrierList = async () => {
-    const records = await window.JSBridge.carrier.selectRfidTipsAlarmRecordList({
+    const records = await window.electronApi.ipcRenderer.invoke('carrier:select-rfid-tips-alarm-record-list', {
       isOperation: OperationStatus.Unoperated,
       contentType: AlarmContentType.IncorrectLocation,
       cadinetId: currentCabinet.value?.id,
@@ -43,7 +40,8 @@ export default function () {
       cabinet: toRaw(door.cabinet),
     })
     const id = user.value?.userId
-    await window.JSBridge.carrier.updateCarrier(cabinetDoor, id)
+
+    await window.electronApi.ipcRenderer.invoke('carrier:update-carrier', cabinetDoor, id)
   }
 
   /**

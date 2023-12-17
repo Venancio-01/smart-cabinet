@@ -8,7 +8,8 @@ import {
   updateRfidTipsAlarmRecord,
 } from '@smart-cabinet/database'
 import type { RfidCabinetdoorProps, RfidTipsAlarmRecord } from '@smart-cabinet/database'
-import { getReportData } from './rfid'
+import { getRfidTIDList } from '@smart-cabinet/features'
+import { ipcMain } from 'electron'
 import { currentCabinet } from './cabinet'
 import { AlarmContentType, AlarmObjectType, AlarmType, OperationStatus } from '~/enums'
 
@@ -18,23 +19,23 @@ export enum BorrowedState {
 }
 
 async function updateCarrier(cabinetDoor: RfidCabinetdoorProps, userId: bigint) {
-  const rfidList = getReportData(cabinetDoor.txAddr)
-  console.log('🚀 ~ file: document-service.ts:94 ~ updateCarrier ~ rfidList.length:', rfidList.length)
+  const rfidTidList = getRfidTIDList(cabinetDoor.txAddr || '')
+  console.log('🚀 ~ file: document-service.ts:94 ~ updateCarrier ~ rfidList.length:', rfidTidList.length)
 
-  const map = {
-    e280110c2000731c782f0a8b: '检测到文件一',
-    e280110c2000759c783a0a8b: '检测到文件二',
-    e280110c20007adb783e0a8b: '检测到文件三',
-  }
-  rfidList.forEach((item) => {
-    if (map[item]) console.log(map[item])
-  })
+  // const map = {
+  //   e280110c2000731c782f0a8b: '检测到文件一',
+  //   e280110c2000759c783a0a8b: '检测到文件二',
+  //   e280110c20007adb783e0a8b: '检测到文件三',
+  // }
+  // rfidTidList.forEach((item) => {
+  //   if (map[item]) console.log(map[item])
+  // })
 
   const documents = await selectDocDocumentList()
 
   for (let i = 0; i < documents.length; i++) {
     const doc = documents[i]
-    const isDetectedDocument = rfidList.includes(doc.docRfid)
+    const isDetectedDocument = rfidTidList.includes(doc.docRfid)
 
     // 如果是本部门的文件
     if (doc.deptId === cabinetDoor.cabinet.deptId) {
@@ -115,7 +116,7 @@ async function updateCarrier(cabinetDoor: RfidCabinetdoorProps, userId: bigint) 
     const doc = misPlaceRecordList[i]
     if (!doc.rfid) continue
 
-    if (!rfidList.includes(doc.rfid)) {
+    if (!rfidTidList.includes(doc.rfid)) {
       await updateRfidTipsAlarmRecord(
         {
           rfid: doc.rfid,
@@ -128,14 +129,20 @@ async function updateCarrier(cabinetDoor: RfidCabinetdoorProps, userId: bigint) 
   }
 }
 
-const carrierService = {
-  name: 'carrier' as const,
-  fns: {
-    selectDocDocumentList,
-    selectDocDocumentListWithPage,
-    selectRfidTipsAlarmRecordList,
-    updateCarrier,
-  },
-}
+export function registerCarrierModule() {
+  ipcMain.handle('carrier:select-doc-document-list', async (_event, params) => {
+    return await selectDocDocumentList(params)
+  })
 
-export default carrierService
+  ipcMain.handle('carrier:select-doc-document-list-with-page', async (_event, params) => {
+    return await selectDocDocumentListWithPage(params)
+  })
+
+  ipcMain.handle('carrier:select-rfid-tips-alarm-record-list', async (_event, params) => {
+    return await selectRfidTipsAlarmRecordList(params)
+  })
+
+  ipcMain.handle('carrier:update-carrier', async (_event, cabinetDoor, userId) => {
+    return await updateCarrier(cabinetDoor, userId)
+  })
+}

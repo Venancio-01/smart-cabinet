@@ -1,36 +1,22 @@
-import log from 'electron-log'
+import { ipcMain } from 'electron'
+import { debug, error, info, initLogger, warn } from '@smart-cabinet/common'
 
-// console.log('🚀 ~ file: logger.ts:2 ~ log:', log)
+export function registerLogModule() {
+  initLogger()
 
-// 初始化 electron-log 模块
-// log.transports.file.level = 'info'
-// log.transports.console.level = 'debug'
-// log.transports.file.format = '{d}/{m}/{y} {h}:{i}:{s}:{ms} {text}'
+  ipcMain.on('log:info', (_event, message: string) => {
+    info(message)
+  })
 
-export function info(message: string) {
-  log.info(message)
+  ipcMain.on('log:warn', (_event, message: string) => {
+    warn(message)
+  })
+
+  ipcMain.on('log:error', (_event, message: string) => {
+    error(message)
+  })
+
+  ipcMain.on('log:debug', (_event, message: string) => {
+    debug(message)
+  })
 }
-
-export function warn(message: string) {
-  log.warn(message)
-}
-
-export function error(message: string) {
-  log.error(message)
-}
-
-export function debug(message: string) {
-  log.debug(message)
-}
-
-const logServices = {
-  name: 'log' as const,
-  fns: {
-    info,
-    warn,
-    error,
-    debug,
-  },
-}
-
-export default logServices

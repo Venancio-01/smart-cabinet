@@ -18,21 +18,26 @@ useInit()
         colorPrimary: Color.primary,
       },
     }"
-  />
-  <!-- 盘点倒计时 -->
-  <CheckPanel />
-  <!-- 身份校验 -->
-  <VerifyIdentity />
+  >
+    <!-- 盘点倒计时 -->
+    <CheckPanel />
+    <!-- 身份校验 -->
+    <VerifyIdentity />
 
-  <div class="relative h-full w-full items-center justify-center bg-cover" :style="{ backgroundImage: `url(${backgroundImage})` }">
-    <div class="w-full h-full mask wrap-padding">
-      <router-view v-slot="{ Component }">
-        <transition mode="out-in">
-          <component :is="Component" />
-        </transition>
-      </router-view>
+    <div
+      class="relative h-full w-full items-center justify-center bg-cover"
+      :style="{ backgroundImage: `url(${backgroundImage})` }"
+    >
+      <div class="w-full h-full mask wrap-padding">
+        <router-view v-slot="{ Component }">
+          <transition mode="out-in">
+            <component :is="Component" />
+          </transition>
+        </router-view>
+      </div>
     </div>
-  </div>
+  </a-config-provider>
 </template>
 
-<style></style>
+<style>
+</style>

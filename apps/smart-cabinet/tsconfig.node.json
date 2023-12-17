@@ -8,7 +8,8 @@
       "@/*": ["./main/*"],
       "~/*": ["./types/*"]
     },
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "strict": false
   },
   "include": ["vite.coinfig.ts", "main/*", "main/**/*", "types/*.ts", "types/*.d.ts"]
 }

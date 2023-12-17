@@ -1,9 +1,11 @@
 import { Buffer } from 'buffer'
 import { generateAntennaCommand, generateCRC16Code, getTIDByReportData, parseRFIDReportData } from './utils'
-import Socket from './socket'
+import { RfidSocket } from './socket'
+
+export * from './socket'
 
 interface InstanceMap {
-  [k: string]: Socket
+  [k: string]: RfidSocket
 }
 
 const rfidInstanceMap: InstanceMap = {}
@@ -19,15 +21,10 @@ export async function initRfidConnection(address: string, port: number) {
     delete rfidInstanceMap[address]
   }
 
-  const socketConnetcion = new Socket({ address, port })
+  const socketConnetcion = new RfidSocket({ address, port })
   rfidInstanceMap[address] = socketConnetcion
 
-  try {
-    await socketConnetcion.init()
-  }
-  catch (error) {
-    throw new Error(`RFID ${address} socket 连接失败`)
-  }
+  await socketConnetcion.connect()
 }
 
 /**

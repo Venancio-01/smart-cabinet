@@ -1,6 +1,6 @@
 import { Library } from 'ffi-napi'
 import { DEVICE_SDK_PATH } from '@smart-cabinet/utils/config'
-import { DeviceArrayType, DeviceTypePointerType, HandleType, UcharType } from './types'
+import { DeviceArrayType, DeviceTypePointerType, HandleType, UcharType } from '@smart-cabinet/utils'
 
 // 通过 ffi 解析 C++ SDK 方法
 let deviceSDK: any = null
@@ -19,7 +19,7 @@ export function destroyDeviceSDK() {
   deviceSDK = null
 }
 
-export function getDeviceCount(deviceList: unknown[], max: number) {
+export function getDeviceCount(deviceList: any[], max: number) {
   return deviceSDK.sensorEnumDevices(deviceList, max)
 }
 

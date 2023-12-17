@@ -1,9 +1,9 @@
 import { Buffer } from 'buffer'
-import { genResponseData } from '@smart-cabinet/utils'
+import { DeviceArrayType, IntType, TemplateType, UcharType, genResponseData } from '@smart-cabinet/utils'
 import { MAX_DEVICE_NUM, MAX_REGISTRATION_COUNT, TEMPLATE_BYTE_LENGTH } from '@smart-cabinet/utils/config'
 import type { RfidFingerUser } from '@smart-cabinet/database'
 import { insertRfidFingerUser, selectRfidFingerUser, selectRfidFingerUserList, updateRfidFingerUser } from '@smart-cabinet/database'
-import { info } from '../logger'
+import { info } from '@smart-cabinet/common'
 import {
   captureFingerImage,
   closeDeviceByHandle,
@@ -25,7 +25,6 @@ import {
   initAlgorithmSDK,
   verifyTemplate,
 } from './algorithm-func'
-import { DeviceArrayType, IntType, TemplateType, UcharType } from './types'
 
 // 指纹仪设备数组
 const deviceList = new DeviceArrayType(MAX_DEVICE_NUM)

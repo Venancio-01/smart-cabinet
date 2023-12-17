@@ -1,20 +1,13 @@
 import { emitter } from '@smart-cabinet/utils'
+import { ipcMain } from 'electron'
 
 let databaseIsConnected = false
 emitter.on('database-connected', () => {
   databaseIsConnected = true
 })
 
-// 获取数据库连接状态
-function getDatabaseConnectState() {
-  return databaseIsConnected
+export function registerNetworkModule() {
+  ipcMain.handle('network:get-database-connect-state', () => {
+    return databaseIsConnected
+  })
 }
-
-const networkService = {
-  name: 'network' as const,
-  fns: {
-    getDatabaseConnectState,
-  },
-}
-
-export default networkService

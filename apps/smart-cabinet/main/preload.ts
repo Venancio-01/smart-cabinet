@@ -1,5 +1,5 @@
 import { contextBridge } from 'electron'
-import { genetateIPCInvoke } from '@/services'
+import { electronAPI } from '@electron-toolkit/preload'
 import './base/loading'
 
-contextBridge.exposeInMainWorld('JSBridge', genetateIPCInvoke())
+contextBridge.exposeInMainWorld('electronApi', electronAPI)

@@ -15,32 +15,32 @@ export default function () {
   const registerResult = ref<null | ResponseProps>(null)
 
   const initFinger = () => {
-    window.JSBridge.finger.initSDK()
+    window.electronApi.ipcRenderer.send('fingerprint:init-sdk')
   }
 
   // 获取指纹仪连接状态
   const getFingerConnectionStatus = async () => {
-    const isOnline = await window.JSBridge.finger.queryConnectState()
+    const isOnline = await window.electronApi.ipcRenderer.invoke('fingerprint:query-connect-state')
 
     setFingerConnectionStatus(isOnline)
   }
 
   // 打开指纹仪设备
   const openFingerDevice = async () => {
-    const result = await window.JSBridge.finger.openDevice()
+    const result = await window.electronApi.ipcRenderer.invoke('fingerprint:open-device')
     console.log('打开指纹仪设备', result)
   }
 
   // 关闭指纹仪设备
   const closeFingerDevice = async () => {
-    const result = await window.JSBridge.finger.closeDevice()
+    const result = await window.electronApi.ipcRenderer.invoke('fingerprint:close-device')
     console.log('关闭指纹仪设备', result)
   }
 
   // 开始注册指纹
   const startRegisterFinger = (userId: number, order: 1 | 2) => {
     const registerFingerFn = async () => {
-      const result = await window.JSBridge.finger.handleRegister(userId, order)
+      const result = await window.electronApi.ipcRenderer.invoke('fingerprint:register', userId, order)
       registerResult.value = result
     }
     registerFingerFn()
@@ -55,7 +55,7 @@ export default function () {
   // 开始识别指纹
   const startIdentifyFinger = () => {
     const identifyFingerFn = async () => {
-      const result = await window.JSBridge.finger.handleIdentify()
+      const result = await window.electronApi.ipcRenderer.invoke('fingerprint:handle-identify')
       identifyResult.value = result
     }
     identifyFingerFn()

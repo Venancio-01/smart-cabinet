@@ -43,13 +43,13 @@ onMounted(() => {
   <div class="relative w-full h-full">
     <BackButton />
 
-    <div class="h-[200px] font-2xl flex-center-center">
+    <div class="h-[200px] text-64px flex-center-center">
       <div v-if="isLockControlConnected" class="text-light font-400 h-full flex-center-center">
         <VIcon icon="chenggong" class="mr-4" />
         <span>柜门已打开</span>
       </div>
       <div v-else class="text-error font-400 h-full flex-center-center">
-        <VIcon icon="warn" class="text-error mr-4 font-2xl" />
+        <VIcon icon="warn" class="text-error mr-4 text-76px" />
         <span>锁控板连接异常</span>
       </div>
     </div>

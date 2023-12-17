@@ -32,7 +32,7 @@ async function handlePasswordComplete() {
     password: password || '',
     newPassword: result.password,
   }
-  const success = await window.JSBridge.sys.verifyPassword(params)
+  const success = await window.electronApi.ipcRenderer.invoke('sys:verify-password', params)
   if (success) {
     createAlert('身份验证成功')
     handleVerificationSuccessful()
@@ -52,7 +52,7 @@ function handleFingerComplete(userId: bigint) {
 }
 
 function handleCardComplete(cardNumber: string) {
-  const result = window.JSBridge.sys.verifyCard(user.value?.userId, cardNumber)
+  const result = window.electronApi.ipcRenderer.invoke('sys:verify-card', user.value.userId, cardNumber)
   console.log('🚀 ~ file: VerifyIdentity.vue:76 ~ handleCardComplete ~ result:', result)
 }
 </script>

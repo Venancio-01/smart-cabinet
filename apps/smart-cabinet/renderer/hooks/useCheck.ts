@@ -39,7 +39,7 @@ export default function () {
     openConfirmationTimeCountdown,
   } = useTime()
 
-  const { handleOpenRfid, handleCloseRfid } = useRfid()
+  const { handleStartRfidReading, handleCloseRfid, handleInitRfidConnection } = useRfid()
 
   /**
    * @description: 生成盘点结果数据
@@ -162,12 +162,14 @@ export default function () {
     if (currentDoor === undefined) return
 
     const { txAddr: address, txId: antennaId } = currentDoor
-    if (address === null || antennaId === null) return
+    if (address === null || antennaId === null) {
+      createAlert('RFID 读取器连接失败')
+      return
+    }
 
-    const isConnected = await await window.JSBridge.rfid.init(address, 8899)
-    if (!isConnected) {
-      createAlert('读取连接设备失败')
-      return false
+    if (!currentDoor.rfidIsConnected) {
+      createAlert('RFID 读取器未连接')
+      return
     }
 
     // 如果该柜门正在盘点中
@@ -182,8 +184,10 @@ export default function () {
     // 显示盘点面板
     setCheckStatusDialogVisible(true)
 
-    // 开启读取器
-    handleOpenRfid(address, antennaId)
+    // 初始化读取器连接
+    await handleInitRfidConnection(address)
+    // 读取器开始读取
+    handleStartRfidReading(address, antennaId)
 
     const stopCheckCountdown = await startCheckCountdown(currentDoor.id, async () => {
       stopCheckCountdown()

@@ -45,7 +45,8 @@ async function getDepartmentList() {
     deptName: condition.deptName ? { contains: condition.deptName } : undefined,
   }
 
-  const { data: _data, total: _total } = await window.JSBridge.sys.selectSysDeptListWithPage(toRaw(pagination), query)
+  const { data: _data, total: _total } = await window.electronApi.ipcRenderer.invoke('sys:select-sys-dept-list-with-page', toRaw(pagination), query)
+
   data.value = _data
   total.value = _total
 }
@@ -59,12 +60,8 @@ onMounted(() => {
   <div class="w-full h-full">
     <div class="flex">
       <a-form
-        :model="condition"
-        :label-col="{ span: 8 }"
-        :wrapper-col="{ span: 16 }"
-        label-align="left"
-        class="flex-1 grid grid-rows-2 grid-cols-2 gap-x-6"
-        autocomplete="off"
+        :model="condition" :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }" label-align="left"
+        class="flex-1 grid grid-rows-2 grid-cols-2 gap-x-6" autocomplete="off"
       >
         <a-form-item label="机构名称">
           <a-input v-model:value="condition.deptName" />
@@ -82,9 +79,7 @@ onMounted(() => {
     </div>
 
     <a-table
-      :data-source="data"
-      :columns="columns"
-      :pagination="{
+      :data-source="data" :columns="columns" :pagination="{
         current: pagination.page,
         pageSize: pagination.size,
         total,

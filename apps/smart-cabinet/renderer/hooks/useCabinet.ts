@@ -14,7 +14,7 @@ export default function () {
    * @return {*}
    */
   const getCurrentCabinet = async () => {
-    const data = await window.JSBridge.cabinet.getCurrentCabinet()
+    const data = await window.electronApi.ipcRenderer.invoke('cabinet:get-current-cabinet')
     data && setCurrentCabinet(data)
   }
 
@@ -23,9 +23,8 @@ export default function () {
    * @return {*}
    */
   const getCabinetDoorList = async () => {
-    const cabinetDoorList = await window.JSBridge.cabinet.selectRfidCabinetDoorList({
-      cabinetId: currentCabinet.value?.id,
-    })
+    const cabinetDoorList = await window.electronApi.ipcRenderer.invoke('cabinet:select-rfid-cabinet-door-list', currentCabinet.value?.id)
+
     const list: CabinetDoorProps[] = cabinetDoorList.map((item) => {
       return {
         ...item,

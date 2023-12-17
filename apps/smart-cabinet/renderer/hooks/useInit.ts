@@ -1,5 +1,6 @@
 import useSys from '@/hooks/useSys'
-import useFinger from '@/hooks/useFinger'
+
+// import useFinger from '@/hooks/useFinger'
 import useCarrier from '@/hooks/useCarrier'
 import useRfid from '@/hooks/useRfid'
 import useLock from '@/hooks/useLock'

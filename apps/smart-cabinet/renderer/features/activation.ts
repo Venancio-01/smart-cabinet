@@ -5,7 +5,7 @@
 export async function checkActivationCode(): Promise<void> {
   const router = useRouter()
 
-  const localActivationCode = await window.JSBridge.store.get('activationCode')
-  const result = await window.JSBridge.activation.compareActivationCode(localActivationCode)
+  const localActivationCode = await window.electronApi.ipcRenderer.invoke('store:get', 'activationCode')
+  const result = await window.electronApi.ipcRenderer.invoke('activation:compare-activation-code', localActivationCode)
   if (localActivationCode === '' || !result) router.replace('/activate')
 }

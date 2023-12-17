@@ -50,8 +50,7 @@ async function handleSave() {
   }
 
   const userId = user.value?.userId
-  // @ts-expect-error bigint
-  const success = await await window.JSBridge.sys.updatePassword(userId, formState.password)
+  const success = await window.electronApi.ipcRenderer.invoke('sys:update-password', userId, formState.password)
   if (success) createAlert('密码修改成功')
   else createAlert('密码修改失败')
 
@@ -77,4 +76,5 @@ function handleClose() {
   </VDialog>
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>

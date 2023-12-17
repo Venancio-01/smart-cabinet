@@ -5,7 +5,8 @@
     "paths": {
       "@/*": ["./renderer/*"],
       "~/*": ["./types/*"]
-    }
+    },
+    "strict": false
   },
   "include": [
     "renderer/env.d.ts",

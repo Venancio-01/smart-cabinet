@@ -34,6 +34,7 @@
     "@smart-cabinet/common": "workspace:*",
     "@smart-cabinet/components": "workspace:*",
     "@smart-cabinet/config": "workspace:*",
+    "@smart-cabinet/features": "workspace:*",
     "@smart-cabinet/ui": "workspace:*",
     "@smart-cabinet/utils": "workspace:*",
     "@types/lodash-es": "^4.17.12",

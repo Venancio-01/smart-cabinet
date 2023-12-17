@@ -1,3 +1,4 @@
+import { ipcMain } from 'electron'
 import {
   closeDevice,
   destroySDK,
@@ -5,30 +6,40 @@ import {
   handleIdentify,
   handleRegister,
   initSDK,
-  loadAllTemplate,
-  onIdentify,
-  onRegister,
   openDevice,
   queryConnectState,
-  startFingerCapture,
 } from './main'
 
-const fingerService = {
-  name: 'finger' as const,
-  fns: {
-    initSDK,
-    destroySDK,
-    queryConnectState,
-    openDevice,
-    closeDevice,
-    getParameter,
-    startFingerCapture,
-    handleRegister,
-    onRegister,
-    onIdentify,
-    handleIdentify,
-    loadAllTemplate,
-  },
-}
+export function registerFingerprintModule() {
+  ipcMain.on('fingerprint:init-sdk', () => {
+    initSDK()
+  })
 
-export default fingerService
+  ipcMain.on('fingerprint:destroy-sdk', () => {
+    destroySDK()
+  })
+
+  ipcMain.handle('fingerprint:query-connect-state', () => {
+    return queryConnectState()
+  })
+
+  ipcMain.handle('fingerprint:open-device', () => {
+    return openDevice()
+  })
+
+  ipcMain.handle('fingerprint:close-device', () => {
+    return closeDevice()
+  })
+
+  ipcMain.handle('fingerprint:get-parameter', () => {
+    return getParameter()
+  })
+
+  ipcMain.handle('fingerprint:handle-register', (_event, userId: bigint, order: FingerOrder) => {
+    return handleRegister(userId, order)
+  })
+
+  ipcMain.handle('fingerprint:handle-identify', () => {
+    return handleIdentify()
+  })
+}

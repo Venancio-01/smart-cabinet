@@ -40,14 +40,11 @@ async function handleUpdateCardNumber(cardData: string) {
     return false
   }
 
-  const success = await window.JSBridge.sys.updateRfidCardUser(
-    {
-      userid: Number(user.value.userId),
-    },
-    {
-      cardData,
-    },
-  )
+  const success = await window.electronApi.ipcRenderer.invoke('sys:update-rfid-card-user', {
+    userid: Number(user.value.userId),
+  }, {
+    cardData,
+  })
 
   const tips = success ? '卡号设置成功' : '卡号设置失败'
   createAlert(tips)

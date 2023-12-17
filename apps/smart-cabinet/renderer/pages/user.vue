@@ -75,7 +75,7 @@ async function getUserList() {
     },
   }
 
-  const { data: _data, total: _total } = await window.JSBridge.sys.selectSysUserListWithPage(toRaw(pagination), query)
+  const { data: _data, total: _total } = await window.electronApi.ipcRenderer.invoke('sys:select-sys-user-list-with-page', toRaw(pagination), query)
   data.value = _data
   total.value = _total
 }

@@ -11,7 +11,7 @@ export default function () {
    */
   const getRfidConnectionStatus = async () => {
     const promiseList = cabinetDoorList.value.reduce((acc, cur) => {
-      if (cur.txAddr !== null) acc.push(window.JSBridge.rfid.init(cur.txAddr, 8899))
+      if (cur.txAddr !== null) acc.push(window.electronApi.ipcRenderer.invoke('rfid:check-connection-status', cur.txAddr, 8899))
       return acc
     }, [] as Promise<boolean>[])
 
@@ -25,10 +25,10 @@ export default function () {
     })
 
     setCabinetDoorList(list)
+  }
 
-    list.forEach((item) => {
-      if (item.txAddr) window.JSBridge.rfid.destroy(item.txAddr)
-    })
+  const handleInitRfidConnection = async (address: string) => {
+    await window.electronApi.ipcRenderer.invoke('rfid:init-rfid-connection', address, 8899)
   }
 
   /**
@@ -37,11 +37,11 @@ export default function () {
    * @param {string} antennaIds
    * @return {*}
    */
-  const handleOpenRfid = async (address: string, antennaIds: string) => {
-    window.JSBridge.rfid.sendCloseCommand(address)
+  const handleStartRfidReading = async (address: string, antennaIds: string) => {
+    window.electronApi.ipcRenderer.send('rfid:stop-rfid-reading', address)
 
     const antennaIdList = antennaIds.split(',').map(item => Number(item))
-    window.JSBridge.rfid.sendOpenCommand(address, antennaIdList)
+    window.electronApi.ipcRenderer.send('rfid:start-rfid-reading', address, antennaIdList)
   }
 
   /**
@@ -50,13 +50,14 @@ export default function () {
    * @return {*}
    */
   const handleCloseRfid = async (address: string) => {
-    window.JSBridge.rfid.sendCloseCommand(address)
-    window.JSBridge.rfid.destroy(address)
+    window.electronApi.ipcRenderer.send('rfid:stop-rfid-reading', address)
+    window.electronApi.ipcRenderer.send('rfid:destroy-rfid-connection', address)
   }
 
   return {
     getRfidConnectionStatus,
-    handleOpenRfid,
+    handleInitRfidConnection,
+    handleStartRfidReading,
     handleCloseRfid,
   }
 }

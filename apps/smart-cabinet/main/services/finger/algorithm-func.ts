@@ -2,8 +2,8 @@ import { existsSync } from 'fs'
 import { execSync } from 'child_process'
 import { Library } from 'ffi-napi'
 import { ALGORITHM_SDK_PATH, VERIFY_SCORE_THRESHOLD, fingerLibsPath } from '@smart-cabinet/utils/config'
-import { error, info } from '../logger'
-import { HandleType, IntType, TemplateType, UcharType } from './types'
+import { error, info } from '@smart-cabinet/common'
+import { HandleType, IntType, TemplateType, UcharType } from '@smart-cabinet/utils'
 
 export function checkFileExist() {
   if (!existsSync('/lib/libzkfinger10.so')) {

@@ -1,15 +1,16 @@
-import { compareActivationCode, generateActivationCode, generateRegistrationCode } from '@smart-cabinet/common/activation'
+import { compareActivationCode, generateActivationCode, generateRegistrationCode } from '@smart-cabinet/common'
+import { ipcMain } from 'electron'
 
-/**
- * 软件激活
- */
-const activationService = {
-  name: 'activation' as const,
-  fns: {
-    generateRegistrationCode,
-    generateActivationCode,
-    compareActivationCode,
-  },
+export function registerActivationModule() {
+  ipcMain.handle('activation:generate-registration-code', () => {
+    return generateRegistrationCode()
+  })
+
+  ipcMain.handle('activation:generate-activation-code', () => {
+    return generateActivationCode()
+  })
+
+  ipcMain.handle('activation:compare-activation-code', (_event, activationCode: string) => {
+    return compareActivationCode(activationCode)
+  })
 }
-
-export default activationService

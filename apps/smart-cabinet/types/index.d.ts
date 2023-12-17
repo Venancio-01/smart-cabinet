@@ -1,18 +1,12 @@
 import type { DocDocument, RfidCabinetdoorProps } from '@smart-cabinet/database'
-import type { ServiceType } from '../main/services/index'
+import type { ElectronAPI } from '@electron-toolkit/preload'
 import type { InPlaceState } from './enums'
 
 export {}
 
-type JSBridgeType = {
-  [name in ServiceType[number]['name']]: ServiceType[number] extends infer T ? (T extends { name: name, fns: infer F } ? F : never) : never
-}
-
 declare global {
-  let databaseIsConnected: boolean
-
   interface Window {
-    JSBridge: JSBridgeType
+    electronApi: ElectronAPI
   }
 
   interface ResponseProps<T = unknown> {

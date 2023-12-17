@@ -43,16 +43,16 @@ export default function () {
       createAlert('用户名或密码不可为空')
       return
     }
-    const { success, data, msg } = await window.JSBridge.sys.onPasswordLogin({ ...formData })
+
+    const { success, data, msg } = await window.electronApi.ipcRenderer.invoke('sys:on-password-login', formData.username, formData.password)
     if (success && data) handleLogin(data)
     else createAlert(msg || '')
   }
 
   const handleFingerLogin = async (userId: bigint) => {
-    const user = await window.JSBridge.sys.selectSysUser({
-      userId,
-    })
-    user && handleLogin(user)
+    const user = await window.electronApi.ipcRenderer.invoke('sys:select-sys-user', { userId })
+
+    handleLogin(user)
   }
 
   const handleCardLogin = async (cardNumber: string) => {
@@ -61,7 +61,7 @@ export default function () {
       return
     }
 
-    const { success, data, msg } = await window.JSBridge.sys.onCardLogin(cardNumber)
+    const { success, data, msg } = await window.electronApi.ipcRenderer.invoke('sys:on-card-login', cardNumber)
     if (success && data) handleLogin(data)
     else createAlert(msg || '')
   }

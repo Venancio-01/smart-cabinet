@@ -33,7 +33,7 @@ export const SERVICE_PATH = '/home/js/Project/go/apps/cabinet/hjrich-update-serv
 export const UPDATE_SERVICE_SOCKET_PATH = '/tmp/hjrich-update-service.sock'
 
 // 开发者工具路径
-export const DEVTOOLS_PATH = resolve(resourcesPath, './devtools/6.5.0_0')
+export const DEVTOOLS_PATH = resolve(resourcesPath, './devtools/6.5.1_0')
 
 // 设备最大连接数
 export const MAX_DEVICE_NUM = 16

@@ -1,4 +1,5 @@
 import os from 'os'
+import net from 'net'
 import { BrowserWindow, globalShortcut, ipcMain, ipcRenderer } from 'electron'
 
 /**
@@ -89,4 +90,29 @@ export function getLocalIpAddress(): string[] {
     }
   }
   return addresses
+}
+
+export function checkSocketConnection(ip: string, port: number, timeout = 1000) {
+  return new Promise((resolve) => {
+    const socket = new net.Socket()
+
+    socket.setTimeout(timeout)
+
+    socket.on('connect', () => {
+      socket.end()
+      resolve(true)
+    })
+
+    socket.on('timeout', () => {
+      socket.destroy()
+      resolve(false)
+    })
+
+    socket.on('error', () => {
+      socket.destroy()
+      resolve(false)
+    })
+
+    socket.connect(port, ip)
+  })
 }

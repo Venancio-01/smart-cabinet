@@ -5,17 +5,17 @@ export default function () {
   const { setDepartmentList, setUserList, setRoleList } = store
 
   const getUserList = async () => {
-    const list = await window.JSBridge.sys.selectSysUserList()
+    const list = await window.electronApi.ipcRenderer.invoke('sys:select-sys-user-list')
     setUserList(list)
   }
 
   const getDepartmentList = async () => {
-    const departments = await window.JSBridge.sys.selectSysDeptList()
+    const departments = await window.electronApi.ipcRenderer.invoke('sys:select-sys-dept-list')
     setDepartmentList(departments)
   }
 
   const getRoleList = async () => {
-    const roleList = await window.JSBridge.sys.selectSysRoleList()
+    const roleList = await window.electronApi.ipcRenderer.invoke('sys:select-sys-role-list')
     setRoleList(roleList)
   }
 

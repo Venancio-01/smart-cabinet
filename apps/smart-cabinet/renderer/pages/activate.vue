@@ -10,13 +10,12 @@ const registrationCode = ref('')
 const userInputActivationCode = ref('')
 
 async function handleActive() {
-  const activationCode = await window.JSBridge.activation.generateActivationCode()
+  const activationCode = await window.electronApi.ipcRenderer.invoke('activation:generate-activation-code')
 
   if (userInputActivationCode.value === activationCode) {
-    window.JSBridge.store.set('activationCode', activationCode)
+    window.electronApi.ipcRenderer.send('store:set', 'activationCode', activationCode)
 
     createAlert('激活成功')
-
     router.replace('/index')
   }
   else {
@@ -37,7 +36,7 @@ const labelWord = '请输入激活码'
 const labelWordArr = labelWord.split('')
 
 onMounted(async () => {
-  registrationCode.value = await window.JSBridge.activation.generateRegistrationCode()
+  registrationCode.value = await window.electronApi.ipcRenderer.invoke('activation:generate-registration-code')
 
   addListenEnter(handleActive)
 
