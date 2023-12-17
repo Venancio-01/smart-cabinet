@@ -19,8 +19,6 @@
   },
   "devDependencies": {
     "@smart-cabinet/config": "workspace:*",
-    "@smart-cabinet/utils": "workspace:*",
-    "@types/ffi-napi": "^4.0.10",
-    "electron": "^12.2.3"
+    "@smart-cabinet/utils": "workspace:*"
   }
 }
