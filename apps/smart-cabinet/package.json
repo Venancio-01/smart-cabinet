@@ -44,7 +44,7 @@
     "animate.css": "^4.1.1",
     "ant-design-vue": "^4.0.7",
     "dotenv-cli": "^7.3.0",
-    "electron": "^12.2.3",
+    "electron": "^20.3.8",
     "electron-builder": "^24.9.1",
     "lodash": "^4.17.21",
     "pinia": "^2.1.7",

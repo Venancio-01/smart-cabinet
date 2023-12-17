@@ -1,6 +1,4 @@
 import useSys from '@/hooks/useSys'
-
-// import useFinger from '@/hooks/useFinger'
 import useCarrier from '@/hooks/useCarrier'
 import useRfid from '@/hooks/useRfid'
 import useLock from '@/hooks/useLock'
@@ -17,14 +15,11 @@ export default function () {
   const { initLockControlService, destroyLockControlService } = useLock()
   const { initCarrierData } = useCarrier()
   const { initCabinetData } = useCabinet()
-  // const { initFinger, getFingerConnectionStatus } = useFinger()
 
   onMounted(async () => {
     // 软件启动时校验激活码
     checkActivationCode()
     getNetworkConnectStatus()
-    // initFinger()
-    // getFingerConnectionStatus()
     await Promise.all([initSysData(), initCabinetData()])
     await initCarrierData()
     getRfidConnectionStatus()
