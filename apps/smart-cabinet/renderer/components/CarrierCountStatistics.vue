@@ -61,4 +61,4 @@ function goCarrierPageWithMisPlace() {
   @apply text-light pt-4 tracking-[2px];
 }
 </style>
-@/store/index-old
+

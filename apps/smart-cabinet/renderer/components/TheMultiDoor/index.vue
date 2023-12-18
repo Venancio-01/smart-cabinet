@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { VScrollBar } from '@smart-cabinet/components'
 import CabinetDoor from './CabinetDoor.vue'
 import { BorrowedState } from '~/enums'
 import { useGlobalState } from '@/store'
@@ -28,18 +29,19 @@ const doorList = computed(() => {
 </script>
 
 <template>
-  <div class="col-span-2 grid grid-flow-col grid-rows-4 grid-cols-4 gap-4">
-    <CabinetDoor
-      v-for="(item, index) in doorList"
-      :key="index"
-      :index="index"
-      :name="item.viewName || ''"
-      :in-place-number="item.inPlaceCarrierCount"
-      :mis-place-number="item.misPlaceCarrierCount"
-      :total-number="item.totalCarrierCount"
-      department-name=""
-      @click="openCabinetDoor(item)"
-    />
-  </div>
+  <VScrollBar>
+    <div class="grid grid-cols-4 gap-4">
+      <CabinetDoor
+        v-for="(item, index) in doorList"
+        :key="index"
+        :index="index"
+        :name="item.viewName || ''"
+        :in-place-number="item.inPlaceCarrierCount"
+        :mis-place-number="item.misPlaceCarrierCount"
+        :total-number="item.totalCarrierCount"
+        department-name=""
+        @click="openCabinetDoor(item)"
+      />
+    </div>
+  </VScrollBar>
 </template>
-@/store/index-old

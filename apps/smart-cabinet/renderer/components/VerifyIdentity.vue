@@ -84,4 +84,4 @@ function handleCardComplete(cardNumber: string) {
   @apply flex h-[40px] flex-1 cursor-pointer select-none items-center justify-center text-white;
 }
 </style>
-@/store/index-old
+

@@ -13,7 +13,7 @@ const { isSingleDoor } = useGlobalState()
       <CarrierCountStatistics />
     </div>
 
-    <div class="flex-1">
+    <div class="h-[calc(100%-150px)]">
       <TheSingleDoor v-if="isSingleDoor" />
       <TheMultiDoor v-else />
     </div>
@@ -36,4 +36,3 @@ const { isSingleDoor } = useGlobalState()
   @apply text-light pt-8 text-sm tracking-[2px];
 }
 </style>
-@/store/index-old

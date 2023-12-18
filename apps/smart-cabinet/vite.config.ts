@@ -7,6 +7,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 import Unocss from 'unocss/vite'
+import vueDevTools from 'vite-plugin-vue-devtools'
 
 import renderer from 'vite-plugin-electron-renderer'
 import electron from 'vite-plugin-electron'
@@ -65,6 +66,7 @@ export default defineConfig(() => {
         },
       ]),
       vueJsx(),
+      vueDevTools(),
       vue(),
       AutoImport({
         imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'],

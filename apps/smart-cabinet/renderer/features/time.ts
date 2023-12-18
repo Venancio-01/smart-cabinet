@@ -50,8 +50,8 @@ export function closeOperationTimeoutCountdown() {
  * @param {*} time
  * @return {*}
  */
-export function resetOperationTimeoutCountdown(time = OPERATION_TIMEOUT) {
-  operationTimeout.value = time
+export function resetOperationTimeoutCountdown() {
+  operationTimeout.value = OPERATION_TIMEOUT
 }
 
 /**

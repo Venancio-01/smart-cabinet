@@ -36,4 +36,4 @@ watch(checkCountdown, (value) => {
     </div>
   </transition>
 </template>
-@/store/index-old
+

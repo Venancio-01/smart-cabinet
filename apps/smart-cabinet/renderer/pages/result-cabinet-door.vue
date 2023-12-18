@@ -231,4 +231,4 @@ const recordColumns: ColumnsType<RfidSwitchRecord> = [
   height: calc(100vh - 150px);
 }
 </style>
-@/store/index-old
+

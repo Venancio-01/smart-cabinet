@@ -50,16 +50,12 @@ watch(route, () => {
   if (key) activeKey.value = key
 })
 
-function handleUserAction() {
-  resetOperationTimeoutCountdown()
-}
-
 onMounted(() => {
-  window.addEventListener('click', handleUserAction)
+  window.addEventListener('click', resetOperationTimeoutCountdown)
 })
 
 onUnmounted(() => {
-  window.removeEventListener('click', handleUserAction)
+  window.removeEventListener('click', resetOperationTimeoutCountdown)
 })
 </script>
 
@@ -90,7 +86,7 @@ onUnmounted(() => {
       <BackButton />
     </div>
 
-    <div class="flex flex-1">
+    <div class="flex h-[calc(100%-50px)]">
       <router-view v-slot="{ Component }">
         <transition mode="out-in">
           <component :is="Component" />
@@ -127,4 +123,3 @@ onUnmounted(() => {
   @apply text-light;
 }
 </style>
-@/store/index-old
