@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { useStore } from '@/store'
+import { useGlobalState } from '@/store'
 
 const router = useRouter()
-const store = useStore()
-const { misPlaceCarrierTotal, carrierTotal, inPlaceCarrierTotal } = storeToRefs(store)
+
+const { misPlaceCarrierTotal, carrierTotal, inPlaceCarrierTotal } = useGlobalState()
 
 function goCarrierPage() {
   const state = null
@@ -61,3 +61,4 @@ function goCarrierPageWithMisPlace() {
   @apply text-light pt-4 tracking-[2px];
 }
 </style>
+@/store/index-old

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { VIcon } from '@smart-cabinet/components'
-import { useStore } from '@/store'
-import useLogin from '@/hooks/useLogin'
-import useVerify from '@/hooks/useVerify'
-import useCheck from '@/hooks/useCheck'
+import { useGlobalState } from '@/store'
+import { handleManualCheck } from '@/features/check'
+import { handleLogout } from '@/features/login'
+import { openVerifyIdentityDialog, saveCallback, verifyIsExpired } from '@/features/verify'
 
 interface Props {
   visible: boolean
@@ -13,11 +13,8 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false,
 })
 const emits = defineEmits(['update:visible', 'change'])
-const store = useStore()
-const { user } = storeToRefs(store)
-const { handleLogout } = useLogin()
-const { verifyIsExpired, openVerifyIdentityDialog, saveCallback } = useVerify()
-const { handleManualCheck } = useCheck()
+
+const { user } = useGlobalState()
 
 const show = computed({
   get: () => props.visible,
@@ -132,3 +129,4 @@ function handleSetCard() {
   @apply flex pl-8 items-center h-[60px] select-none;
 }
 </style>
+@/store/index-old

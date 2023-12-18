@@ -3,7 +3,6 @@ import type { DocDocumentProps } from '@smart-cabinet/database'
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
 import { AlarmContentType, BorrowedState, OperationStatus } from '~/enums'
-import { useStore } from '@/store'
 
 interface Props {
   data: DocDocumentProps[]
@@ -18,8 +17,6 @@ const props = withDefaults(defineProps<Props>(), {
   data: () => [],
 })
 const emits = defineEmits(['onPageChange', 'onDataChange'])
-const store = useStore()
-const { userList } = storeToRefs(store)
 
 const dataWithMisPlace = computed(() => {
   return props.data.map((carrier) => {
@@ -61,14 +58,14 @@ const columns = ref<ColumnsType<DocDocumentProps>>([
     dataIndex: 'docPStatus',
     key: 'docPStatus',
   },
-  {
-    title: '最后操作用户',
-    dataIndex: 'docLastUserId',
-    key: 'docLastUserId',
-    customRender: ({ record }) => {
-      return userList.value.find(item => Number(item.userId) === record.docLastUserId)?.userName
-    },
-  },
+  // {
+  //   title: '最后操作用户',
+  //   dataIndex: 'docLastUserId',
+  //   key: 'docLastUserId',
+  //   customRender: ({ record }) => {
+  //     return userList.value.find(item => Number(item.userId) === record.docLastUserId)?.userName
+  //   },
+  // },
   {
     title: '最后操作时间',
     dataIndex: 'docLastTime',
@@ -85,14 +82,14 @@ const columns = ref<ColumnsType<DocDocumentProps>>([
  * @param {*} carrier
  * @return {*}
  */
-function judgeIsMisPlace(carrier: DocDocumentProps) {
-  if (carrier.alarmRecord.length === 0) return false
+// function judgeIsMisPlace(carrier: DocDocumentProps) {
+//   if (carrier.alarmRecord.length === 0) return false
 
-  const hasUnoperatedMisPlaceRecord = carrier.alarmRecord.some(
-    item => Number(item.contentType) === AlarmContentType.IncorrectLocation && Number(item.isOperation) === OperationStatus.Unoperated,
-  )
-  return hasUnoperatedMisPlaceRecord
-}
+//   const hasUnoperatedMisPlaceRecord = carrier.alarmRecord.some(
+//     item => Number(item.contentType) === AlarmContentType.IncorrectLocation && Number(item.isOperation) === OperationStatus.Unoperated,
+//   )
+//   return hasUnoperatedMisPlaceRecord
+// }
 
 function onPageChange(page: number) {
   emits('onPageChange', page)

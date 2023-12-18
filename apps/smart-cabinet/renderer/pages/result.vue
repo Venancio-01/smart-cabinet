@@ -3,20 +3,16 @@ import type { TableColumnsType } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import type { DocDocument, RfidSwitchRecord } from '@smart-cabinet/database'
-import { useStore } from '@/store'
-import useCheck from '@/hooks/useCheck'
-import useCheckRecord from '@/hooks/useCheckRecord'
-import useTime from '@/hooks/useTime'
+import { useGlobalState } from '@/store'
 import BackButton from '@/components/BackButton.vue'
+import { handleCheck } from '@/features/check'
+import { resetCheckRecord, resetCheckResult } from '@/features/check-record'
+import { closeConfirmationTimeCountdown, confirmTimeout, openOperationTimeoutCountdown, resetConfirmationTimeCountdown } from '@/features/time'
 
 const router = useRouter()
-const store = useStore()
-const { addLastOperationCabinetDoorRecords } = store
-const { isLoggedIn, userList, cabinetDoorList, departmentList, checkResultList, lastOperationCabinetDoorList } = storeToRefs(store)
-const { handleCheck } = useCheck()
-const { resetCheckRecord, resetCheckResult } = useCheckRecord()
-const { resetConfirmationTimeCountdown, openOperationTimeoutCountdown, closeConfirmationTimeCountdown, confirmTimeout } = useTime()
 
+const { addLastOperationCabinetDoorRecords } = useGlobalState()
+const { isLoggedIn, cabinetDoorList, departmentList, checkResultList, lastOperationCabinetDoorList } = useGlobalState()
 // 统计信息
 const statisticsData = computed(() => {
   const data = checkResultList.value.reduce(
@@ -95,14 +91,14 @@ const documentColumns: TableColumnsType<DocDocument> = [
       return departmentList.value.find(item => item.deptId === record.deptId)?.deptName
     },
   },
-  {
-    title: '最后操作用户',
-    dataIndex: 'docLastUserId',
-    key: 'docLastUserId',
-    customRender: ({ record }) => {
-      return userList.value.find(item => Number(item.userId) === record.docLastUserId)?.userName
-    },
-  },
+  // {
+  //   title: '最后操作用户',
+  //   dataIndex: 'docLastUserId',
+  //   key: 'docLastUserId',
+  //   customRender: ({ record }) => {
+  //     return userList.value.find(item => Number(item.userId) === record.docLastUserId)?.userName
+  //   },
+  // },
   {
     title: '最后操作时间',
     dataIndex: 'docLastTime',
@@ -234,3 +230,4 @@ const recordColumns: TableColumnsType<RfidSwitchRecord> = [
   height: calc(100vh - 150px);
 }
 </style>
+@/store/index-old

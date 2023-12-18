@@ -1,11 +1,11 @@
 import type { DocDocumentProps, Prisma } from '@smart-cabinet/database'
 import CarrierTable from '@/components/CarrierTable.vue'
-import { useStore } from '@/store'
+
 import { AlarmContentType, InPlaceState, OperationStatus } from '~/enums'
+import { useGlobalState } from '@/store'
 
 export default function () {
-  const store = useStore()
-  const { currentCabinet } = storeToRefs(store)
+  const { currentCabinet } = useGlobalState()
 
   const data = ref<DocDocumentProps[]>([])
   const total = ref(0)

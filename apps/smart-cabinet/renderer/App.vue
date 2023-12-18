@@ -1,14 +1,30 @@
 <script setup lang="ts">
 import { Color } from '@smart-cabinet/ui'
-import useInit from '@/hooks/useInit'
 import { getBackgroundImage } from '@/features/background'
+import { initCarrierData } from '@/features/carrier'
+import { getRfidConnectionStatus } from '@/features/rfid'
+import { checkActivationCode } from '@/features/activation'
+import { destroyLockControlService, initLockControlService } from '@/features/lock-control'
+import { initCabinetData } from '@/features/cabinet'
+import { getNetworkConnectStatus } from '@/features/network'
+import { initSysData } from '@/features/sys'
 
 const backgroundImage = ref('')
 
+onMounted(() => {
+  initSysData()
+  initCarrierData()
+  initCabinetData()
+  initLockControlService()
+  getRfidConnectionStatus()
+  getNetworkConnectStatus()
+  checkActivationCode()
+})
+
 onBeforeMount(async () => {
+  destroyLockControlService()
   backgroundImage.value = await getBackgroundImage()
 })
-useInit()
 </script>
 
 <template>

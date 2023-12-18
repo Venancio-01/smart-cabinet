@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import { useStore } from '@/store'
 import TheMultiDoor from '@/components/TheMultiDoor/index.vue'
 import TheSingleDoor from '@/components/TheSingleDoor.vue'
 import CarrierCountStatistics from '@/components/CarrierCountStatistics.vue'
+import { useGlobalState } from '@/store'
 
-const store = useStore()
-const { isSingleDoor } = storeToRefs(store)
+const { isSingleDoor } = useGlobalState()
 </script>
 
 <template>
@@ -37,3 +36,4 @@ const { isSingleDoor } = storeToRefs(store)
   @apply text-light pt-8 text-sm tracking-[2px];
 }
 </style>
+@/store/index-old

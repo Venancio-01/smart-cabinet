@@ -1,9 +1,7 @@
 <script lang="ts" setup>
-import useLogin from '@/hooks/useLogin'
+import { handleCardLogin, handlePasswordLogin } from '@/features/login'
 
 const activeKey = ref('1')
-
-const { handlePasswordLogin, handleCardLogin } = useLogin()
 </script>
 
 <template>

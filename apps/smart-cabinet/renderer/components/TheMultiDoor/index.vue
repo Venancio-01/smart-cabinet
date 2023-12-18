@@ -1,12 +1,10 @@
 <script lang="ts" setup>
 import CabinetDoor from './CabinetDoor.vue'
 import { BorrowedState } from '~/enums'
-import { useStore } from '@/store'
-import useCabinet from '@/hooks/useCabinet'
+import { useGlobalState } from '@/store'
+import { openCabinetDoor } from '@/features/cabinet'
 
-const store = useStore()
-const { cabinetDoorList, carrierList, misPlaceCarrierList } = storeToRefs(store)
-const { openCabinetDoor } = useCabinet()
+const { cabinetDoorList, carrierList, misPlaceCarrierList } = useGlobalState()
 
 /**
  * @description: 生成柜门列表
@@ -44,3 +42,4 @@ const doorList = computed(() => {
     />
   </div>
 </template>
+@/store/index-old

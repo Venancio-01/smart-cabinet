@@ -1,11 +1,9 @@
 <script lang="ts" setup>
 import { VIcon } from '@smart-cabinet/components'
-import { useStore } from '@/store'
-import useCabinet from '@/hooks/useCabinet'
+import { useGlobalState } from '@/store'
+import { openCabinetDoor } from '@/features/cabinet'
 
-const store = useStore()
-const { cabinetDoorList, misPlaceCarrierList } = storeToRefs(store)
-const { openCabinetDoor } = useCabinet()
+const { cabinetDoorList, misPlaceCarrierList } = useGlobalState()
 
 const cabinetDoor = computed(() => {
   return cabinetDoorList.value[0]
@@ -35,3 +33,4 @@ const hasMisPlace = computed(() => {
     </div>
   </div>
 </template>
+@/store/index-old

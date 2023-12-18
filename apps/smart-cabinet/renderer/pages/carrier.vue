@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { useStore } from '@/store'
 import useViewCarriers from '@/hooks/useViewCarriers'
+import { useGlobalState } from '@/store'
 import { InPlaceState } from '~/enums'
 
 const route = useRoute()
-const store = useStore()
-const { departmentList, currentCabinetDoorId } = storeToRefs(store)
+
+const { departmentList, currentCabinetDoorId } = useGlobalState()
 const { CarrierTable, getCarriers, data, total } = useViewCarriers()
 
 const condition = reactive<CarrierQueryProps>({
@@ -108,3 +108,4 @@ onMounted(() => {
     />
   </div>
 </template>
+@/store/index-old

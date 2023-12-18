@@ -9,7 +9,6 @@ import CabinetDoor from '@/pages/cabinet-door.vue'
 import Carrier from '@/pages/carrier.vue'
 import User from '@/pages/user.vue'
 import Department from '@/pages/department.vue'
-import Permission from '@/pages/permission.vue'
 import Result from '@/pages/result.vue'
 import Open from '@/pages/open.vue'
 
@@ -49,11 +48,6 @@ const routes: RouteRecordRaw[] = [
         path: 'department',
         component: Department,
         name: 'department',
-      },
-      {
-        path: 'permission',
-        component: Permission,
-        name: 'permission',
       },
     ],
   },

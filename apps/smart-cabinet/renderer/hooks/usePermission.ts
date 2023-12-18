@@ -1,8 +1,7 @@
-import { useStore } from '@/store'
+import { useGlobalState } from '@/store'
 
 export default function usePermission() {
-  const store = useStore()
-  const { isLoggedIn } = storeToRefs(store)
+  const { isLoggedIn } = useGlobalState()
 
   const whiteList = ['view_carrier']
 

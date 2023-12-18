@@ -157,6 +157,9 @@ importers:
       '@vitejs/plugin-vue-jsx':
         specifier: ^3.1.0
         version: 3.1.0(vite@5.0.9)(vue@3.3.11)
+      '@vueuse/core':
+        specifier: ^10.7.0
+        version: 10.7.0(vue@3.3.11)
       animate.css:
         specifier: ^4.1.1
         version: 4.1.1
@@ -186,7 +189,7 @@ importers:
         version: 0.58.0(postcss@8.4.32)(vite@5.0.9)
       unplugin-auto-import:
         specifier: ^0.17.2
-        version: 0.17.2
+        version: 0.17.2(@vueuse/core@10.7.0)
       unplugin-vue-components:
         specifier: ^0.26.0
         version: 0.26.0(vue@3.3.11)
@@ -196,12 +199,12 @@ importers:
       vite:
         specifier: ^5.0.9
         version: 5.0.9(@types/node@20.10.4)
+      vite-plugin-electron:
+        specifier: ^0.15.5
+        version: 0.15.5(vite-plugin-electron-renderer@0.14.5)
       vite-plugin-electron-renderer:
         specifier: ^0.14.5
         version: 0.14.5
-      vite-plugin-electron-vaausud:
-        specifier: ^0.0.1
-        version: 0.0.1
       vue:
         specifier: ^3.3.11
         version: 3.3.11(typescript@5.3.3)
@@ -3398,6 +3401,10 @@ packages:
     dev: true
     optional: true
 
+  /@types/web-bluetooth@0.0.20:
+    resolution: {integrity: sha512-g9gZnnXVq7gM7v3tJCWV/qw7w+KeOlSHAhgF9RytFyifW6AF61hdT2ucrYhPq9hLs5JIryeupHV3qGk95dH9ow==}
+    dev: true
+
   /@typescript-eslint/eslint-plugin@6.14.0(@typescript-eslint/parser@6.14.0)(eslint@8.55.0)(typescript@5.3.3):
     resolution: {integrity: sha512-1ZJBykBCXaSHG94vMMKmiHoL0MhNHKSVlcHVYZNw+BKxufhqQVTOawNpwwI1P5nIFZ/4jLVop0mcY6mJJDFNaw==}
     engines: {node: ^16.0.0 || >=18.0.0}
@@ -4093,6 +4100,31 @@ packages:
 
   /@vue/shared@3.3.4:
     resolution: {integrity: sha512-7OjdcV8vQ74eiz1TZLzZP4JwqM5fA94K6yntPS5Z25r9HDuGNzaGdgvwKYq6S+MxwF0TFRwe50fIR/MYnakdkQ==}
+    dev: true
+
+  /@vueuse/core@10.7.0(vue@3.3.11):
+    resolution: {integrity: sha512-4EUDESCHtwu44ZWK3Gc/hZUVhVo/ysvdtwocB5vcauSV4B7NiGY5972WnsojB3vRNdxvAt7kzJWE2h9h7C9d5w==}
+    dependencies:
+      '@types/web-bluetooth': 0.0.20
+      '@vueuse/metadata': 10.7.0
+      '@vueuse/shared': 10.7.0(vue@3.3.11)
+      vue-demi: 0.14.6(vue@3.3.11)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: true
+
+  /@vueuse/metadata@10.7.0:
+    resolution: {integrity: sha512-GlaH7tKP2iBCZ3bHNZ6b0cl9g0CJK8lttkBNUX156gWvNYhTKEtbweWLm9rxCPIiwzYcr/5xML6T8ZUEt+DkvA==}
+    dev: true
+
+  /@vueuse/shared@10.7.0(vue@3.3.11):
+    resolution: {integrity: sha512-kc00uV6CiaTdc3i1CDC4a3lBxzaBE9AgYNtFN87B5OOscqeWElj/uza8qVDmk7/U8JbqoONLbtqiLJ5LGRuqlw==}
+    dependencies:
+      vue-demi: 0.14.6(vue@3.3.11)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
     dev: true
 
   /@yarnpkg/lockfile@1.1.0:
@@ -10086,7 +10118,7 @@ packages:
       - supports-color
     dev: true
 
-  /unplugin-auto-import@0.17.2:
+  /unplugin-auto-import@0.17.2(@vueuse/core@10.7.0):
     resolution: {integrity: sha512-Eu/xWI6SH4jTWXvzOfXQWAxRtiz/gMObm7wXtgMj7wBjHQKLgHTmHd4R4oha87KYGah1aKMqiqDeAxiPmfSoTg==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -10100,6 +10132,7 @@ packages:
     dependencies:
       '@antfu/utils': 0.7.7
       '@rollup/pluginutils': 5.1.0
+      '@vueuse/core': 10.7.0(vue@3.3.11)
       fast-glob: 3.3.2
       local-pkg: 0.5.0
       magic-string: 0.30.5
@@ -10263,8 +10296,18 @@ packages:
     resolution: {integrity: sha512-EQ7ORuPp8vFPCqfuGnVo7d36fXS0IFH4/RUlKb1drseix3TQEPcgwEuFADdXBxRgqMp70njz/1m0kdf5lEsm8w==}
     dev: true
 
-  /vite-plugin-electron-vaausud@0.0.1:
-    resolution: {integrity: sha512-IvL4lMty/6kb62L0gypjuW6elo7LgM/6LdTbkDxt/HPIBMfPooB9fprQ6Mo43rFDHzf0WakgWpiJkGUOcqbVmA==}
+  /vite-plugin-electron@0.15.5(vite-plugin-electron-renderer@0.14.5):
+    resolution: {integrity: sha512-GD2JkJJSsP3kyJlyCH4ep3spelkyzOVSWHswv5nwYhS8GfsojPxUjhs9U4tuDb5mZ2XDYyTN+nBSB/abRnTmYQ==}
+    peerDependencies:
+      tree-kill: '*'
+      vite-plugin-electron-renderer: '*'
+    peerDependenciesMeta:
+      tree-kill:
+        optional: true
+      vite-plugin-electron-renderer:
+        optional: true
+    dependencies:
+      vite-plugin-electron-renderer: 0.14.5
     dev: true
 
   /vite-plugin-eslint@1.8.1(eslint@8.55.0)(vite@5.0.9):

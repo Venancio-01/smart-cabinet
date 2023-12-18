@@ -1,181 +1,246 @@
 import type { DocDocumentProps, RfidCabinet, RfidTipsAlarmRecord, SysDept, SysRole, SysUserProps, SysUserRole } from '@smart-cabinet/database'
-import { defineStore } from 'pinia'
 import { BorrowedState } from '~/enums'
-
-interface State {
-  guid: string
-  isLockControlConnected: boolean
-  isNetworkConnected: boolean
-  isFingerConnected: boolean
-  isLoggedIn: boolean
-  user: SysUserProps
-  userList: SysUserProps[]
-  departmentList: SysDept[]
-  roleList: SysRole[]
-  userRoleList: SysUserRole[]
-  carrierList: DocDocumentProps[]
-  misPlaceCarrierList: RfidTipsAlarmRecord[]
-  currentCabinet: RfidCabinet | null
-  cabinetDoorList: CabinetDoorProps[]
-  lockCommandInterval: number
-  lockControlState: null | LockControlStateProps
-  currentCabinetDoorId: number
-  checkCountdownDialogVisible: boolean
-  verifyIdentityDialogVisible: boolean
-  currentCheckCabinetDoorId: number | null
-  reviewCarrierCondition: ReviewCarrierCondition
-  activationCode: string
-  initialCarrierList: DocDocumentProps[]
-  checkResultList: CheckResultType[]
-  lastOperationCabinetDoorRecords: CabinetDoorProps[]
-  lastOperationCabinetDoorList: CabinetDoorProps[]
-}
 
 interface ReviewCarrierCondition {
   cabinetDoorId: number | null
   state: number | null
 }
 
-export const useStore = defineStore('main', {
-  state: (): State => {
-    return {
-      guid: '',
-      isLockControlConnected: false,
-      isNetworkConnected: false,
-      isFingerConnected: false,
-      isLoggedIn: false,
-      user: null,
-      userList: [],
-      departmentList: [],
-      roleList: [],
-      userRoleList: [],
-      carrierList: [],
-      currentCabinet: null,
-      cabinetDoorList: [],
-      misPlaceCarrierList: [],
-      lockCommandInterval: 10,
-      lockControlState: null,
-      currentCabinetDoorId: 0,
-      checkCountdownDialogVisible: false,
-      verifyIdentityDialogVisible: false,
-      currentCheckCabinetDoorId: null,
-      reviewCarrierCondition: {
+export const useGlobalState = createGlobalState(
+  () => {
+    // state
+    const guid = ref<string>('')
+    const isLockControlConnected = ref<boolean>(false)
+    const isNetworkConnected = ref<boolean>(false)
+    const isFingerConnected = ref<boolean>(false)
+    const isLoggedIn = ref<boolean>(false)
+    const user = ref<SysUserProps>()
+    const userList = ref<SysUserProps[]>([])
+    const departmentList = ref<SysDept[]>([])
+    const roleList = ref<SysRole[]>([])
+    const userRoleList = ref<SysUserRole[]>([])
+    const carrierList = ref<DocDocumentProps[]>([])
+    const misPlaceCarrierList = ref<RfidTipsAlarmRecord[]>([])
+    const currentCabinet = ref<RfidCabinet | null>(null)
+    const cabinetDoorList = ref<CabinetDoorProps[]>([])
+    const lockCommandInterval = ref<number>(0)
+    const lockControlState = ref<LockControlStateProps | null>(null)
+    const currentCabinetDoorId = ref<number>(0)
+    const checkCountdownDialogVisible = ref<boolean>(false)
+    const verifyIdentityDialogVisible = ref<boolean>(false)
+    const currentCheckCabinetDoorId = ref<number | null>(null)
+    const reviewCarrierCondition = ref<ReviewCarrierCondition>(
+      {
         cabinetDoorId: null,
         state: null,
       },
-      activationCode: '',
-      initialCarrierList: [],
-      checkResultList: [],
-      lastOperationCabinetDoorRecords: [],
-      lastOperationCabinetDoorList: [],
-    }
-  },
-  getters: {
-    // 是单柜门
-    isSingleDoor(state) {
-      return state.cabinetDoorList.length === 1
-    },
-    misPlaceCarrierTotal(state) {
-      return state.misPlaceCarrierList.length
-    },
-    carrierTotal(state) {
-      return state.carrierList.length
-    },
-    hasUnConnectedRfid(state) {
-      return state.cabinetDoorList.length > 0 && state.cabinetDoorList.some(item => !item.rfidIsConnected)
-    },
-    inPlaceCarrierTotal(state) {
-      return state.carrierList.reduce((total, item) => {
+    )
+    const activationCode = ref<string>('')
+    const initialCarrierList = ref<DocDocumentProps[]>([])
+    const checkResultList = ref<CheckResultType[]>([])
+    const lastOperationCabinetDoorRecords = ref<CabinetDoorProps[]>([])
+    const lastOperationCabinetDoorList = ref<CabinetDoorProps[]>([])
+
+    // computed
+    const isSingleDoor = computed(() => {
+      return cabinetDoorList.value.length === 1
+    })
+
+    const misPlaceCarrierTotal = computed(() => {
+      return misPlaceCarrierList.value.length
+    })
+
+    const carrierTotal = computed(() => {
+      return carrierList.value.length
+    })
+
+    const hasUnConnectedRfid = computed(() => {
+      return cabinetDoorList.value.length > 0 && cabinetDoorList.value.some(item => !item.rfidIsConnected)
+    })
+
+    const inPlaceCarrierTotal = computed(() => {
+      return carrierList.value.reduce((total, item) => {
         if (item.docPStatus === BorrowedState.Returned) total += 1
         return total
       }, 0)
-    },
-    isChecking(state) {
-      return state.cabinetDoorList.some(item => item.checkCountdown !== 10)
-    },
-  },
-  actions: {
-    setGuid(value: string) {
-      this.guid = value
-    },
-    setLockControlConnectionStatus(state: boolean) {
-      this.isLockControlConnected = state
-    },
-    setFingerConnectionStatus(state: boolean) {
-      this.isFingerConnected = state
-    },
-    setNetworkConnectionStatus(state: boolean) {
-      this.isNetworkConnected = state
-    },
-    setIsLoggedIn(visible: boolean) {
-      this.isLoggedIn = visible
-    },
-    setCurrentCabinet(data: RfidCabinet) {
-      this.currentCabinet = data
-    },
-    setCabinetDoorList(list: CabinetDoorProps[]) {
-      this.cabinetDoorList = list
-    },
-    setCabinetDoor(data: CabinetDoorProps) {
-      const index = this.cabinetDoorList.findIndex(item => item.id === data.id)
-      this.cabinetDoorList[index] = data
-    },
-    setMisPlaceCarrierData(data: RfidTipsAlarmRecord[]) {
-      this.misPlaceCarrierList = data
-    },
-    setUserData(user: SysUserProps) {
-      this.user = user
-    },
-    setUserList(list: SysUserProps[]) {
-      this.userList = list
-    },
-    setDepartmentList(list: SysDept[]) {
-      this.departmentList = list
-    },
-    setRoleList(list: SysRole[]) {
-      this.roleList = list
-    },
-    setUserRoleList(list: SysUserRole[]) {
-      this.userRoleList = list
-    },
-    setCarrierList(list: DocDocumentProps[]) {
-      this.carrierList = list
-    },
-    setLockCommandInterval(time: number) {
-      this.lockCommandInterval = time
-    },
-    setLockControlState(state: LockControlStateProps | null) {
-      this.lockControlState = state
-    },
-    setCheckStatusDialogVisible(visible: boolean) {
-      this.checkCountdownDialogVisible = visible
-    },
-    setVerifyIdentityDialogVisible(visible: boolean) {
-      this.verifyIdentityDialogVisible = visible
-    },
-    setCurrentCheckCabinetDoorId(cabinetDoorId: number | null) {
-      this.currentCheckCabinetDoorId = cabinetDoorId
-    },
-    setReviewCarrierCondition(condition: ReviewCarrierCondition) {
-      this.reviewCarrierCondition = condition
-    },
-    setInitialCarrierList(record: DocDocumentProps[]) {
-      this.initialCarrierList = record
-    },
-    setCheckResultList(result: CheckResultType[]) {
-      this.checkResultList = result
-    },
-    addLastOperationCabinetDoorRecords(door: CabinetDoorProps) {
-      const isExist = this.lastOperationCabinetDoorRecords.find(item => item.id === door.id)
-      if (isExist) return
+    })
 
-      this.lastOperationCabinetDoorRecords.push(door)
-    },
-    clearLastOperationCabinetDoorRecords() {
-      this.lastOperationCabinetDoorRecords = []
-    },
-    changeLastOperationCabinetDoorList(list: CabinetDoorProps[]) {
-      this.lastOperationCabinetDoorList = list
-    },
+    const isChecking = computed(() => {
+      return cabinetDoorList.value.some(item => item.checkCountdown !== 10)
+    })
+
+    // methods
+    const setGuid = (value: string) => {
+      guid.value = value
+    }
+
+    const setLockControlConnectionStatus = (state: boolean) => {
+      isLockControlConnected.value = state
+    }
+
+    const setFingerConnectionStatus = (state: boolean) => {
+      isFingerConnected.value = state
+    }
+
+    const setNetworkConnectionStatus = (state: boolean) => {
+      isNetworkConnected.value = state
+    }
+
+    const setIsLoggedIn = (visible: boolean) => {
+      isLoggedIn.value = visible
+    }
+
+    const setCurrentCabinet = (data: RfidCabinet) => {
+      currentCabinet.value = data
+    }
+
+    const setCabinetDoorList = (list: CabinetDoorProps[]) => {
+      cabinetDoorList.value = list
+    }
+
+    const setCabinetDoor = (data: CabinetDoorProps) => {
+      const index = cabinetDoorList.value.findIndex(item => item.id === data.id)
+      if (index !== -1) {
+        cabinetDoorList.value[index] = data
+      }
+    }
+
+    const setMisPlaceCarrierData = (data: RfidTipsAlarmRecord[]) => {
+      misPlaceCarrierList.value = data
+    }
+
+    const setUserData = (userData: SysUserProps) => {
+      user.value = userData
+    }
+
+    const setUserList = (list: SysUserProps[]) => {
+      userList.value = list
+    }
+
+    const setDepartmentList = (list: SysDept[]) => {
+      departmentList.value = list
+    }
+
+    const setRoleList = (list: SysRole[]) => {
+      roleList.value = list
+    }
+
+    const setUserRoleList = (list: SysUserRole[]) => {
+      userRoleList.value = list
+    }
+
+    const setCarrierList = (list: DocDocumentProps[]) => {
+      carrierList.value = list
+    }
+
+    const setLockCommandInterval = (time: number) => {
+      lockCommandInterval.value = time
+    }
+
+    const setLockControlState = (state: LockControlStateProps | null) => {
+      lockControlState.value = state
+    }
+
+    const setCheckStatusDialogVisible = (visible: boolean) => {
+      checkCountdownDialogVisible.value = visible
+    }
+
+    const setVerifyIdentityDialogVisible = (visible: boolean) => {
+      verifyIdentityDialogVisible.value = visible
+    }
+
+    const setCurrentCheckCabinetDoorId = (cabinetDoorId: number | null) => {
+      currentCheckCabinetDoorId.value = cabinetDoorId
+    }
+
+    const setReviewCarrierCondition = (condition: ReviewCarrierCondition) => {
+      reviewCarrierCondition.value = condition
+    }
+
+    const setInitialCarrierList = (record: DocDocumentProps[]) => {
+      initialCarrierList.value = record
+    }
+
+    const setCheckResultList = (result: CheckResultType[]) => {
+      checkResultList.value = result
+    }
+
+    const addLastOperationCabinetDoorRecords = (door: CabinetDoorProps) => {
+      const isExist = lastOperationCabinetDoorRecords.value.find(item => item.id === door.id)
+      if (!isExist) {
+        lastOperationCabinetDoorRecords.value.push(door)
+      }
+    }
+
+    const clearLastOperationCabinetDoorRecords = () => {
+      lastOperationCabinetDoorRecords.value = []
+    }
+
+    const changeLastOperationCabinetDoorList = (list: CabinetDoorProps[]) => {
+      lastOperationCabinetDoorList.value = list
+    }
+
+    return {
+      guid,
+      isLockControlConnected,
+      isNetworkConnected,
+      isFingerConnected,
+      isLoggedIn,
+      user,
+      userList,
+      departmentList,
+      roleList,
+      userRoleList,
+      carrierList,
+      misPlaceCarrierList,
+      currentCabinet,
+      cabinetDoorList,
+      lockCommandInterval,
+      lockControlState,
+      currentCabinetDoorId,
+      checkCountdownDialogVisible,
+      verifyIdentityDialogVisible,
+      currentCheckCabinetDoorId,
+      reviewCarrierCondition,
+      activationCode,
+      initialCarrierList,
+      checkResultList,
+      lastOperationCabinetDoorRecords,
+      lastOperationCabinetDoorList,
+      // computed
+      isSingleDoor,
+      misPlaceCarrierTotal,
+      carrierTotal,
+      hasUnConnectedRfid,
+      inPlaceCarrierTotal,
+      isChecking,
+      // methods
+      setGuid,
+      setLockControlConnectionStatus,
+      setFingerConnectionStatus,
+      setNetworkConnectionStatus,
+      setIsLoggedIn,
+      setCurrentCabinet,
+      setCabinetDoorList,
+      setCabinetDoor,
+      setMisPlaceCarrierData,
+      setUserData,
+      setUserList,
+      setDepartmentList,
+      setRoleList,
+      setUserRoleList,
+      setCarrierList,
+      setLockCommandInterval,
+      setLockControlState,
+      setCheckStatusDialogVisible,
+      setVerifyIdentityDialogVisible,
+      setCurrentCheckCabinetDoorId,
+      setReviewCarrierCondition,
+      setInitialCarrierList,
+      setCheckResultList,
+      addLastOperationCabinetDoorRecords,
+      clearLastOperationCabinetDoorRecords,
+      changeLastOperationCabinetDoorList,
+    }
   },
-})
+)

@@ -1,11 +1,9 @@
 <script lang="ts" setup>
 import type { TableColumnsType } from 'ant-design-vue'
 import type { Prisma, SysUser, SysUserProps } from '@smart-cabinet/database'
-import { useStore } from '@/store'
+import { useGlobalState } from '@/store'
 
-const store = useStore()
-const { roleList, departmentList, currentCabinetDoorId } = storeToRefs(store)
-
+const { roleList, departmentList, currentCabinetDoorId } = useGlobalState()
 const condition = reactive<UserQueryProps>({
   userName: '',
   roleId: undefined,
@@ -143,3 +141,4 @@ onMounted(() => {
     </a-table>
   </div>
 </template>
+@/store/index-old

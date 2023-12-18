@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { useStore } from '@/store'
+import { useGlobalState } from '@/store'
 
-const store = useStore()
-const { setCheckStatusDialogVisible } = store
-const { checkCountdownDialogVisible, cabinetDoorList, currentCheckCabinetDoorId } = storeToRefs(store)
+
+const { setCheckStatusDialogVisible } = useGlobalState()
+const { checkCountdownDialogVisible, cabinetDoorList, currentCheckCabinetDoorId } = useGlobalState()
 
 const checkCountdown = computed(() => {
   return cabinetDoorList.value.find(item => item.id === currentCheckCabinetDoorId.value)?.checkCountdown
@@ -36,3 +36,4 @@ watch(checkCountdown, (value) => {
     </div>
   </transition>
 </template>
+@/store/index-old

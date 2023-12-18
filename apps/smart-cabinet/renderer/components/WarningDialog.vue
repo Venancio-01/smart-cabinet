@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import dayjs from 'dayjs'
 import { VDialog } from '@smart-cabinet/components'
-import { useStore } from '@/store'
+import { useGlobalState } from '@/store'
 
 interface Props {
   visible: boolean
@@ -11,8 +11,8 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false,
 })
 const emits = defineEmits(['update:visible'])
-const store = useStore()
-const { misPlaceCarrierList, misPlaceCarrierTotal } = storeToRefs(store)
+
+const { misPlaceCarrierList, misPlaceCarrierTotal } = useGlobalState()
 const show = computed({
   get: () => {
     return props.visible
@@ -83,3 +83,4 @@ function handleClose() {
 </template>
 
 <style scoped></style>
+@/store/index-old

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { VDialog } from '@smart-cabinet/components'
-import { useStore } from '@/store'
+import { useGlobalState } from '@/store'
 import createAlert from '@/components/BaseAlert'
 
 interface Props {
@@ -15,8 +15,8 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false,
 })
 const emits = defineEmits(['update:visible'])
-const store = useStore()
-const { user } = storeToRefs(store)
+
+const { user } = useGlobalState()
 
 const loginName = user.value?.loginName || ''
 
@@ -78,3 +78,4 @@ function handleClose() {
 
 <style scoped>
 </style>
+@/store/index-old

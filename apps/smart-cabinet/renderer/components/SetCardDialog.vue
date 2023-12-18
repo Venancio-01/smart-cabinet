@@ -3,7 +3,7 @@ import { VDialog, VIcon } from '@smart-cabinet/components'
 import useListenEnter from '@/hooks/useListenEnter'
 import AnimationInput from '@/components/AnimationInput.vue'
 import createAlert from '@/components/BaseAlert'
-import { useStore } from '@/store'
+import { useGlobalState } from '@/store'
 
 interface Props {
   visible: boolean
@@ -13,8 +13,8 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false,
 })
 const emits = defineEmits(['update:visible'])
-const store = useStore()
-const { user } = storeToRefs(store)
+
+const { user } = useGlobalState()
 const { addListenEnter, removeListenEnter } = useListenEnter()
 
 const show = computed({
@@ -84,3 +84,4 @@ function onClose() {
     </div>
   </VDialog>
 </template>
+@/store/index-old

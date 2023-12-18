@@ -1,15 +1,14 @@
 <script lang="ts" setup>
 import type { Key } from 'ant-design-vue/lib/_util/type'
 import { VIcon } from '@smart-cabinet/components'
-import useTime from '@/hooks/useTime'
 import usePermission from '@/hooks/usePermission'
-import { useStore } from '@/store'
+import { useGlobalState } from '@/store'
+import { operationTimeout, resetOperationTimeoutCountdown } from '@/features/time'
 
 const router = useRouter()
 const route = useRoute()
-const store = useStore()
-const { isLoggedIn } = storeToRefs(store)
-const { resetOperationTimeoutCountdown, operationTimeout } = useTime()
+
+const { isLoggedIn } = useGlobalState()
 const { hasPermission } = usePermission()
 const activeKey = ref('1')
 const visible = ref(false)
@@ -128,3 +127,4 @@ onUnmounted(() => {
   @apply text-light;
 }
 </style>
+@/store/index-old

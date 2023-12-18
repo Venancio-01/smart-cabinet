@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import { BorrowedState } from '~/enums'
-import { useStore } from '@/store'
-import useLock from '@/hooks/useLock'
+import { useGlobalState } from '@/store'
+import { openLock } from '@/features/lock-control'
 
 const router = useRouter()
-const store = useStore()
-const { setCabinetDoor, addLastOperationCabinetDoorRecords } = store
-const { cabinetDoorList, carrierList, isLockControlConnected } = storeToRefs(store)
-const { openLock } = useLock()
+
+const { setCabinetDoor, addLastOperationCabinetDoorRecords } = useGlobalState()
+const { cabinetDoorList, carrierList, isLockControlConnected } = useGlobalState()
 
 function handleClickDoor(door: CabinetDoorProps) {
   if (isLockControlConnected) {
@@ -87,3 +86,4 @@ const doorList = computed(() => {
   margin-left: 100%;
 }
 </style>
+@/store/index-old

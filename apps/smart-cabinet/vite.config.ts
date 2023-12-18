@@ -1,6 +1,5 @@
 /// <reference types="vite" />
 import { resolve } from 'path'
-import { spawn } from 'child_process'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
@@ -10,13 +9,12 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 import Unocss from 'unocss/vite'
 
 import renderer from 'vite-plugin-electron-renderer'
-
-import electron from 'vite-plugin-electron-vaausud'
+import electron from 'vite-plugin-electron'
 
 // 外部依赖列表
 const externalList = ['ffi-napi', 'ref-array-di', 'ref-napi', 'ref-struct-di', 'prisma', '@prisma/client', 'database', 'serialport']
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(() => {
   return {
     build: {
       outDir: 'dist/renderer',
@@ -40,19 +38,7 @@ export default defineConfig(({ mode }) => {
             },
           },
           onstart(options) {
-            const isSudo = mode === 'sudo'
-
-            if (isSudo) {
-              options.startup(['.', '--no-sandbox'], () => {
-                const electronPath = './node_modules/.bin/electron'
-                return spawn('sudo', [electronPath, '.', '--no-sandbox'], {
-                  stdio: 'inherit',
-                })
-              })
-            }
-            else {
-              options.startup(['.', '--no-sandbox'])
-            }
+            options.startup(['.', '--no-sandbox'])
           },
         },
         {
@@ -81,7 +67,7 @@ export default defineConfig(({ mode }) => {
       vueJsx(),
       vue(),
       AutoImport({
-        imports: ['vue', 'vue-router', 'pinia'],
+        imports: ['vue', 'vue-router', 'pinia', '@vueuse/core'],
         dts: './renderer/auto-imports.d.ts',
       }),
       Components({

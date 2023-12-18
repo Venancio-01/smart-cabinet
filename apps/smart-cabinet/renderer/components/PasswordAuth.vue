@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import useListenEnter from '@/hooks/useListenEnter'
-import type { PasswordLoginType } from '@/hooks/useLogin'
+import type { PasswordLoginType } from '@/features/login'
 
 interface Props {
   isVerify?: boolean
@@ -13,8 +13,8 @@ const emits = defineEmits(['complete'])
 const { addListenEnter, removeListenEnter } = useListenEnter()
 
 const formState = reactive<PasswordLoginType>({
-  username: 'test',
-  password: '123456',
+  username: 'admin',
+  password: 'admin321',
 })
 
 function handleComplete() {
