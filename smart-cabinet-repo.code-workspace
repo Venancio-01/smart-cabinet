@@ -1,0 +1,41 @@
+{
+	"folders": [
+		{
+			"name": "✨ smart-cabinet-repo",
+			"path": "."
+		},
+		{
+			"name": "🚀 @smart-cabinet/smart-cabinet",
+			"path": "apps/smart-cabinet"
+		},
+		{
+			"name": "📦 @smart-cabinet/common",
+			"path": "packages/common"
+		},
+		{
+			"name": "📦 @smart-cabinet/components",
+			"path": "packages/components"
+		},
+		{
+			"name": "📦 @smart-cabinet/config",
+			"path": "packages/config"
+		},
+		{
+			"name": "📦 @smart-cabinet/database",
+			"path": "packages/database"
+		},
+		{
+			"name": "📦 @smart-cabinet/features",
+			"path": "packages/features"
+		},
+		{
+			"name": "📦 @smart-cabinet/ui",
+			"path": "packages/ui"
+		},
+		{
+			"name": "📦 @smart-cabinet/utils",
+			"path": "packages/utils"
+		}
+	],
+	"settings": {}
+}

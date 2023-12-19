@@ -7,6 +7,7 @@ import { registerNetworkModule } from './network'
 import { registerStoreModule } from './store'
 import { registerActivationModule } from './activation'
 import { registerLogModule } from './logger'
+import { registerFaceModule } from './face'
 
 export function registerModules() {
   registerActivationModule()
@@ -18,4 +19,5 @@ export function registerModules() {
   registerNetworkModule()
   registerCarrierModule()
   registerSysModule()
+  registerFaceModule()
 }

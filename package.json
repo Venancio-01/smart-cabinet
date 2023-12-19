@@ -16,7 +16,7 @@
     "preinstall": "npx only-allow pnpm",
     "format": "prettier --write .",
     "db": "nx db @smart-cabinet/database",
-    "clear": "find ./ -name 'node_modules' -type d -prune -exec rm -rf {}",
+    "clear": "find ./ -type d -name 'node_modules' -exec rm -rf {} +",
     "up": "npx taze latest",
     "build": "nx run smart-cabinet:build",
     "lint": "eslint .",

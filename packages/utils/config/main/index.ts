@@ -16,6 +16,8 @@ export const appResourcePath = process.resourcesPath
 export const libsPath = resolve(rootPath, './libs')
 // finger libs 目录
 export const fingerLibsPath = resolve(rootPath, './libs/finger-lib')
+// face lib 目录
+export const faceLibPath = resolve(rootPath, './libs/face-lib')
 
 // 程序主窗口尺寸
 export const WINDOW_SIZE = { width: 1024, height: 768 }
@@ -63,6 +65,16 @@ export const LIBZKFINGER10_PATH = isDev
 export const CRC_SDK_PATH = isDev
   ? resolve(libsPath, './crc-lib/libCRC16_CCITT.so')
   : resolve(appResourcePath, './public/libs/crc-lib/libCRC16_CCITT.so')
+
+// 人脸算法 SDK 路径
+export const faceSDKPath = isDev
+  ? resolve(faceLibPath, './libarcsoft_face.so')
+  : resolve(appResourcePath, './public/libs/finger-lib/libarcsoft_face.so')
+
+// 人脸引擎 SDK 路径
+export const faceEngineSDKPath = isDev
+  ? resolve(faceLibPath, './libarcsoft_face_engine.so')
+  : resolve(appResourcePath, './public/libs/finger-lib/libarcsoft_face_engine.so')
 
 // 图标文件路径
 export const ICON_PATH = isDev ? 'public/favicon.ico' : resolve(appResourcePath, './public/favicon.ico')

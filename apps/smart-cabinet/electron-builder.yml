@@ -10,8 +10,10 @@ files:
 extraResources:
   - from: ./node_modules/@smart-cabinet/database/.env
     to: .env
-  - from: ../../libs
-    to: public/libs
+  - from: ../../libs/face-lib
+    to: public/libs/face-lib
+  - from: ../../libs/crc-lib
+    to: public/libs/crc-lib
   - from: ./renderer/public/background
     to: public/background
   - from: ../../scripts/install.sh
