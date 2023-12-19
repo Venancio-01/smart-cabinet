@@ -1,4 +1,5 @@
 import type { DocDocumentProps, Prisma } from '@smart-cabinet/database'
+import { CARRIER_EVENT_NAME } from '#/ipcNames'
 import CarrierTable from '@/components/CarrierTable.vue'
 
 import { AlarmContentType, InPlaceState, OperationStatus } from '~/enums'
@@ -36,9 +37,9 @@ export default function () {
       }
     }
 
-    const { data: _data, total: _total } = await window.electronApi.ipcRenderer.invoke('carrier:select-doc-document-list-with-page', pagination, query)
-    data.value = _data
-    total.value = _total
+    const result = await window.electronApi.ipcRenderer.invoke(CARRIER_EVENT_NAME.selectDocDocumentListWithPage, pagination, query)
+    data.value = result.data
+    total.value = result.total
   }
 
   return {

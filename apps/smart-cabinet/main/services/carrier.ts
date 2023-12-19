@@ -12,6 +12,7 @@ import { getRfidTIDList } from '@smart-cabinet/features'
 import { ipcMain } from 'electron'
 import { currentCabinet } from './cabinet'
 import { AlarmContentType, AlarmObjectType, AlarmType, OperationStatus } from '~/enums'
+import { CARRIER_EVENT_NAME } from '#/ipcNames'
 
 export enum BorrowedState {
   Returned,
@@ -130,11 +131,11 @@ async function updateCarrier(cabinetDoor: RfidCabinetdoorProps, userId: bigint) 
 }
 
 export function registerCarrierModule() {
-  ipcMain.handle('carrier:select-doc-document-list', async (_event, params) => {
+  ipcMain.handle(CARRIER_EVENT_NAME.selectDocDocumentList, async (_event, params) => {
     return await selectDocDocumentList(params)
   })
 
-  ipcMain.handle('carrier:select-doc-document-list-with-page', async (_event, params) => {
+  ipcMain.handle(CARRIER_EVENT_NAME.selectDocDocumentListWithPage, async (_event, params) => {
     return await selectDocDocumentListWithPage(params)
   })
 

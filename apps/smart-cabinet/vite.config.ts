@@ -34,6 +34,7 @@ export default defineConfig(() => {
             resolve: {
               alias: {
                 '@': resolve(__dirname, './main'),
+                '#': resolve(__dirname, './common'),
                 '~': resolve(__dirname, './types'),
               },
             },
@@ -54,6 +55,7 @@ export default defineConfig(() => {
             resolve: {
               alias: {
                 '@': resolve(__dirname, './main'),
+                '#': resolve(__dirname, './common'),
                 '~': resolve(__dirname, './types'),
               },
             },
@@ -88,6 +90,7 @@ export default defineConfig(() => {
     resolve: {
       alias: {
         '@': resolve(__dirname, './renderer'),
+        '#': resolve(__dirname, './common'),
         '~': resolve(__dirname, './types'),
       },
     },

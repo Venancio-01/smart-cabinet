@@ -49,7 +49,7 @@ const columns = ref<ColumnsType<DocDocumentProps>>([
     dataIndex: 'department',
     key: 'department',
     customRender: ({ record }) => {
-      return record?.department.deptName
+      return record?.department?.deptName
     },
   },
   {

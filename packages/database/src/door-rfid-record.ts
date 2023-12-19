@@ -3,13 +3,13 @@ import { getSkipAndTake } from '@smart-cabinet/utils'
 import { Prisma } from '@prisma/client'
 import { prisma } from '..'
 
-const doorRfidRecordArgs = Prisma.validator<Prisma.DoorRfidrecordArgs>()({
+const doorRfidRecordDefaultArgs = Prisma.validator<Prisma.DoorRfidrecordDefaultArgs>()({
   include: {
     department: true,
   },
 })
 
-export type DoorRfidrecordProps = Prisma.DoorRfidrecordGetPayload<typeof doorRfidRecordArgs>
+export type DoorRfidrecordProps = Prisma.DoorRfidrecordGetPayload<typeof doorRfidRecordDefaultArgs>
 
 /**
  * @description: 查询通道门 rfid 检测记录列表
@@ -22,7 +22,7 @@ export async function selectDoorRfidrecordList(condition?: Prisma.DoorRfidrecord
     orderBy: {
       creatorTime: 'desc',
     },
-    ...doorRfidRecordArgs,
+    ...doorRfidRecordDefaultArgs,
   })
 }
 
@@ -44,7 +44,7 @@ export async function selectDoorRfidrecordListWithPage(
       orderBy: {
         creatorTime: 'desc',
       },
-      ...doorRfidRecordArgs,
+      ...doorRfidRecordDefaultArgs,
     }),
     prisma.doorRfidrecord.count({
       where: condition,

@@ -86,4 +86,3 @@ const doorList = computed(() => {
   margin-left: 100%;
 }
 </style>
-

@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import useViewCarriers from '@/hooks/useViewCarriers'
+import useCarrierTable from '@/hooks/useCarrierTable'
 import { useGlobalState } from '@/store'
 import { InPlaceState } from '~/enums'
 
 const route = useRoute()
 
 const { departmentList, currentCabinetDoorId } = useGlobalState()
-const { CarrierTable, getCarriers, data, total } = useViewCarriers()
+const { CarrierTable, getCarriers, data, total } = useCarrierTable()
 
 const condition = reactive<CarrierQueryProps>({
   title: '',
@@ -63,11 +63,11 @@ onMounted(() => {
         autocomplete="off"
       >
         <a-form-item label="载体名称" name="title">
-          <a-input v-model:value="condition.title" />
+          <a-input v-model:value="condition.title" placeholder="请输入载体名称" />
         </a-form-item>
 
         <a-form-item label="在位状态" name="title">
-          <a-select v-model:value="condition.state" allow-clear @change="handleSearch">
+          <a-select v-model:value="condition.state" allow-clear placeholder="请选择在位状态" @change="handleSearch">
             <a-select-option :value="InPlaceState.IN_CABINET">
               在柜
             </a-select-option>
@@ -81,7 +81,7 @@ onMounted(() => {
         </a-form-item>
 
         <a-form-item v-show="currentCabinetDoorId === 0" label="所属部门" name="title">
-          <a-select v-model:value="condition.deptId" allow-clear @change="handleSearch">
+          <a-select v-model:value="condition.deptId" allow-clear placeholder="请选择所属部门" @change="handleSearch">
             <a-select-option v-for="item in departmentList" :key="item.deptId" :value="Number(item.deptId)">
               {{ item.deptName }}
             </a-select-option>
@@ -108,4 +108,4 @@ onMounted(() => {
     />
   </div>
 </template>
-
+@/hooks/useCarrierTable

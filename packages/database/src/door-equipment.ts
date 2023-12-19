@@ -1,4 +1,4 @@
-import type { DoorEquipment } from '..'
+import type { DoorEquipment } from '@prisma/client'
 import { prisma } from '..'
 
 /**

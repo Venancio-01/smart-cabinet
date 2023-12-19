@@ -2,7 +2,7 @@
 import { VIcon } from '@smart-cabinet/components'
 import BackButton from '../components/BackButton.vue'
 import { useGlobalState } from '@/store'
-import useViewCarriers from '@/hooks/useViewCarriers'
+import useCarrierTable from '@/hooks/useCarrierTable'
 
 interface Props {
   id: string
@@ -11,7 +11,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const { isLockControlConnected } = useGlobalState()
-const { CarrierTable, getCarriers, data, total } = useViewCarriers()
+const { CarrierTable, getCarriers, data, total } = useCarrierTable()
 
 const condition = reactive<CarrierQueryProps>({
   title: '',
