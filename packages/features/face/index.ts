@@ -17,12 +17,16 @@ const ASF_VERSION = CStruct({
 
 export function initFace() {
   handle = Library(faceEngineSDKPath, {
-    ASFGetVersion: [ASF_VERSION],
+    ASFGetVersion: [ASF_VERSION, []],
     // ASFGetActiveFileInfo:
     // ASFOnlineActivation: ['int', ['uchar', 'uchar', 'uchar']],
   })
 
-  console.log('🚀 ~ file: index.ts:11 ~ initFace ~ handle:', handle)
+  const result = handle.ASFGetVersion()
+
+  console.log('🚀 ~ file: index.ts:26 ~ initFace ~ result:', result.Version)
+  console.log('🚀 ~ file: index.ts:26 ~ initFace ~ result:', result.BuildDate)
+  console.log('🚀 ~ file: index.ts:26 ~ initFace ~ result:', result.CopyRight)
 }
 
 // 在线激活 sdk
