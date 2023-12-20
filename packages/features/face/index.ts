@@ -1,43 +1,40 @@
 import { faceEngineSDKPath } from '@smart-cabinet/utils/config/main'
 import { Library } from 'ffi-napi'
-import ref from 'ref-napi'
-import ArrayType from 'ref-array-di'
-import StructType from 'ref-struct-di'
+import messageMapping from './message'
+import { HandleType } from './types'
 
-export const CArray = ArrayType(ref)
-export const CStruct = StructType(ref)
-
-let handle: any = null
-
-const ASF_VERSION = CStruct({
-  Version: ref.types.CString,
-  BuildDate: ref.types.CString,
-  CopyRight: ref.types.CString,
-})
+let faceSDK: any = null
+const engineHandle: any = null
 
 export function initFace() {
-  handle = Library(faceEngineSDKPath, {
-    ASFGetVersion: [ASF_VERSION, []],
-    // ASFGetActiveFileInfo:
-    // ASFOnlineActivation: ['int', ['uchar', 'uchar', 'uchar']],
+  faceSDK = Library(faceEngineSDKPath, {
+    ASFOnlineActivation: ['int', ['string', 'string', 'string']],
+    ASFInitEngine: ['int', ['int', 'int', 'int', 'int', 'int', HandleType]],
   })
-
-  const result = handle.ASFGetVersion()
-
-  console.log('🚀 ~ file: index.ts:26 ~ initFace ~ result:', result.Version)
-  console.log('🚀 ~ file: index.ts:26 ~ initFace ~ result:', result.BuildDate)
-  console.log('🚀 ~ file: index.ts:26 ~ initFace ~ result:', result.CopyRight)
 }
 
 // 在线激活 sdk
 export function onlineActivation() {
   const APPID = 'BQZiN32nNRvvEDTgBPCVXJgsmVS8bLPgkhXBst2wMr81'
   const SDK_KEY = '6eTKVpmoBFFQ7J6Ni87UN914rwhxJv7BzeViWGrV8dQu'
-  const ACTIVE_KEY = '82H1-11MP-611H-XLW4'
-  const result = handle.ASFOnlineActivation(APPID, SDK_KEY, ACTIVE_KEY)
+  const ACTIVE_KEY = '82H1-11MP-612Y-32HT'
+  const result = faceSDK.ASFOnlineActivation(APPID, SDK_KEY, ACTIVE_KEY)
+
+  if (result !== 0) {
+    console.log(messageMapping[result])
+  }
+
   console.log('🚀 ~ file: index.ts:22 ~ onlineActivation ~ result:', result)
 }
 
-export function getActiveFileInfo() {
+// 初始化引擎
+export function initFaceEngine() {
+  const DETECT_MODE = 0xFFFFFFFF
+  const ORIENT_PRIORITY = 0x1
+  const DETECT_FACE_SCALE_VAL = 32
+  const DETECT_FACE_MAX_NUM = 5
+  const COMBINED_MASK = 0x00000001
 
+  const result = faceSDK.ASFInitEngine(DETECT_MODE, ORIENT_PRIORITY, DETECT_FACE_SCALE_VAL, DETECT_FACE_MAX_NUM, COMBINED_MASK, engineHandle)
+  console.log('🚀 ~ file: index.ts:39 ~ initEngine ~ result:', result)
 }

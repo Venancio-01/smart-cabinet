@@ -1,5 +1,5 @@
 import { Buffer } from 'buffer'
-import { DeviceArrayType, IntType, TemplateType, UcharType, genResponseData } from '@smart-cabinet/utils'
+import { DeviceArrayType, IntType, TemplateType, UcharType } from '@smart-cabinet/utils'
 import { MAX_DEVICE_NUM, MAX_REGISTRATION_COUNT, TEMPLATE_BYTE_LENGTH } from '@smart-cabinet/utils/config'
 import { info } from '@smart-cabinet/common'
 import {

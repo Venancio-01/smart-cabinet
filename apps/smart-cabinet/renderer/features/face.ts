@@ -7,3 +7,7 @@ export function initFaceSDK() {
 export function onlineActivation() {
   window.electronApi.ipcRenderer.send(FACE_EVENT_NAME.onlineActivation)
 }
+
+export function initFaceEngine() {
+  window.electronApi.ipcRenderer.send(FACE_EVENT_NAME.initEngine)
+}
