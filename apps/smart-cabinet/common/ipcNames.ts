@@ -5,11 +5,7 @@ const modules = {
   },
   face: {
     // 初始化 SDK
-    initSDK: 'face:init-sdk',
-    // 初始化引擎
-    initEngine: 'face:init-engine',
-    // 在线激活
-    onlineActivation: 'face:online-activation',
+    init: 'face:init',
     // 人脸识别
     faceRecognition: 'face:face-recognition',
     // 人脸注册

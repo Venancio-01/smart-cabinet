@@ -11,13 +11,18 @@
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "vue-tsc --noEmit -p tsconfig.web.json --composite false",
     "dev": "vite",
-    "dev:sudo": "vite --mode sudo",
+    "electron-rebuild": "electron-rebuild -f -w opencv4nodejs",
     "build:code": "vite build",
     "build:app": "electron-builder --linux",
-    "build": "nr build:code && nr build:app"
+    "build": "nr build:code && nr build:app",
+    "build:opencv": "build-opencv --incDir ~/opencv-build/include --libDir ~/opencv-build/lib --binDir ~/opencv-build/bin --nobuild rebuild"
+  },
+  "opencv4nodejs": {
+    "disableAutoBuild": "1"
   },
   "dependencies": {
     "@smart-cabinet/database": "workspace:*",
+    "@u4/opencv4nodejs": "^6.5.2",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.10",
     "dotenv": "^16.3.1",
@@ -33,6 +38,7 @@
   "devDependencies": {
     "@electron-toolkit/preload": "^2.0.0",
     "@electron-toolkit/utils": "^2.0.1",
+    "@electron/rebuild": "^3.4.1",
     "@smart-cabinet/common": "workspace:*",
     "@smart-cabinet/components": "workspace:*",
     "@smart-cabinet/config": "workspace:*",

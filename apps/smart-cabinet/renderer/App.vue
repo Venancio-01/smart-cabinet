@@ -8,7 +8,7 @@ import { destroyLockControlService, initLockControlService } from '@/features/lo
 import { initCabinetData } from '@/features/cabinet'
 import { getNetworkConnectStatus } from '@/features/network'
 import { initSysData } from '@/features/sys'
-import { initFaceEngine, initFaceSDK, onlineActivation } from '@/features/face'
+import { initFace } from '@/features/face'
 
 const backgroundImage = ref('')
 
@@ -20,9 +20,7 @@ onMounted(() => {
   getRfidConnectionStatus()
   getNetworkConnectStatus()
   checkActivationCode()
-  initFaceSDK()
-  onlineActivation()
-  initFaceEngine()
+  initFace()
 })
 
 onBeforeMount(async () => {
