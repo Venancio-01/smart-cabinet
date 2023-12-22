@@ -6,13 +6,13 @@
   "module": "index.ts",
   "types": "index.d.ts",
   "dependencies": {
-    "electron": "^18.2.3",
+    "electron": "^16.2.8",
     "serialport": "^12.0.0"
   },
   "devDependencies": {
     "@smart-cabinet/common": "workspace:*",
     "@smart-cabinet/config": "workspace:*",
     "@smart-cabinet/utils": "workspace:*",
-    "vite": "^5.0.10"
+    "vite": "^4.5.1"
   }
 }

@@ -11,14 +11,10 @@
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "vue-tsc --noEmit -p tsconfig.web.json --composite false",
     "dev": "vite",
-    "electron-rebuild": "electron-rebuild -f -w opencv4nodejs",
+    "electron-rebuild": "build-opencv --electron rebuild",
     "build:code": "vite build",
     "build:app": "electron-builder --linux",
-    "build": "nr build:code && nr build:app",
-    "build:opencv": "build-opencv --incDir ~/opencv-build/include --libDir ~/opencv-build/lib --binDir ~/opencv-build/bin --nobuild rebuild"
-  },
-  "opencv4nodejs": {
-    "disableAutoBuild": "1"
+    "build": "nr build:code && nr build:app"
   },
   "dependencies": {
     "@smart-cabinet/database": "workspace:*",
@@ -39,6 +35,7 @@
     "@electron-toolkit/preload": "^2.0.0",
     "@electron-toolkit/utils": "^2.0.1",
     "@electron/rebuild": "^3.4.1",
+    "@rollup/plugin-commonjs": "^25.0.7",
     "@smart-cabinet/common": "workspace:*",
     "@smart-cabinet/components": "workspace:*",
     "@smart-cabinet/config": "workspace:*",
@@ -53,8 +50,9 @@
     "animate.css": "^4.1.1",
     "ant-design-vue": "^4.0.7",
     "dotenv-cli": "^7.3.0",
-    "electron": "^18.2.3",
+    "electron": "^16.2.8",
     "electron-builder": "^24.9.1",
+    "electron-rebuild": "^3.2.9",
     "lodash": "^4.17.21",
     "pinia": "^2.1.7",
     "typescript": "^5.3.3",
@@ -62,7 +60,7 @@
     "unplugin-auto-import": "^0.17.2",
     "unplugin-vue-components": "^0.26.0",
     "uuid": "^9.0.1",
-    "vite": "^5.0.9",
+    "vite": "^4.5.1",
     "vite-plugin-electron": "^0.15.5",
     "vite-plugin-electron-renderer": "^0.14.5",
     "vite-plugin-vue-devtools": "1.0.0-rc.8",
