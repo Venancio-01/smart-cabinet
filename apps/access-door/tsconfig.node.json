@@ -1,0 +1,14 @@
+{
+  "extends": "@smart-cabinet/config/tsconfig.node.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "baseUrl": ".",
+    "module": "ESNext",
+    "paths": {
+      "@/*": ["./main/*"],
+      "~/*": ["./types/*"]
+    },
+    "types": ["vite/client"]
+  },
+  "include": ["vite.coinfig.ts", "main/*", "main/**/*", "./types/*"]
+}
