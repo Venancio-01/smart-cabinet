@@ -1,4 +1,3 @@
-import os from 'os'
 import { debounce } from 'lodash-es'
 
 export interface PaginationType {

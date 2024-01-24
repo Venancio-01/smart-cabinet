@@ -2,7 +2,6 @@
 import { SolutionDialog, VIcon } from '@smart-cabinet/components'
 import { useGlobalState } from '@/store'
 
-
 const { misPlaceCarrierTotal, isNetworkConnected, isLockControlConnected, hasUnConnectedRfid } = useGlobalState()
 
 const rfidVisible = ref(false)
@@ -55,4 +54,3 @@ const warnVisible = ref(false)
   box-shadow: 15px 15px 30px #bebebe, -15px -15px 30px #ffffff;
 }
 </style>
-

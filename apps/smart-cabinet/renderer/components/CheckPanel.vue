@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { useGlobalState } from '@/store'
 
-
 const { setCheckStatusDialogVisible } = useGlobalState()
 const { checkCountdownDialogVisible, cabinetDoorList, currentCheckCabinetDoorId } = useGlobalState()
 
@@ -36,4 +35,3 @@ watch(checkCountdown, (value) => {
     </div>
   </transition>
 </template>
-

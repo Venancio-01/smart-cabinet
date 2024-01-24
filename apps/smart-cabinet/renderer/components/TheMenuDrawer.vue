@@ -129,4 +129,3 @@ function handleSetCard() {
   @apply flex pl-8 items-center h-[60px] select-none;
 }
 </style>
-

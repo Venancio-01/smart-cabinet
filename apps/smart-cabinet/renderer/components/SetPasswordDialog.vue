@@ -78,4 +78,3 @@ function handleClose() {
 
 <style scoped>
 </style>
-

@@ -4,7 +4,6 @@ import { useGlobalState } from '@/store'
 import createAlert from '@/components/BaseAlert'
 import { closeVerifyIdentityDialog, handleVerificationSuccessful } from '@/features/verify'
 
-
 const { setVerifyIdentityDialogVisible } = useGlobalState()
 const { verifyIdentityDialogVisible, user } = useGlobalState()
 const activeKey = ref('1')
@@ -84,4 +83,3 @@ function handleCardComplete(cardNumber: string) {
   @apply flex h-[40px] flex-1 cursor-pointer select-none items-center justify-center text-white;
 }
 </style>
-

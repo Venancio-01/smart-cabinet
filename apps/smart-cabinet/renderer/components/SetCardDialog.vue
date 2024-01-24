@@ -84,4 +84,3 @@ function onClose() {
     </div>
   </VDialog>
 </template>
-

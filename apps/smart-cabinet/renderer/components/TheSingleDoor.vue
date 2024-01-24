@@ -33,4 +33,3 @@ const hasMisPlace = computed(() => {
     </div>
   </div>
 </template>
-
