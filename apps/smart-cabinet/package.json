@@ -52,7 +52,6 @@
     "dotenv-cli": "^7.3.0",
     "electron": "^12.2.3",
     "electron-builder": "^24.9.1",
-    "electron-rebuild": "^3.2.9",
     "lodash": "^4.17.21",
     "pinia": "^2.1.7",
     "typescript": "^5.3.3",
