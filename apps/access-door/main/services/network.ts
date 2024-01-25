@@ -1,12 +1,13 @@
-function getNetworkConnectionStatus() {
-  return globalThis.databaseIsConnected
-}
+import { emitter } from '@smart-cabinet/utils'
+import { ipcMain } from 'electron'
 
-const networkService = {
-  name: 'network' as const,
-  fns: {
-    getNetworkConnectionStatus,
-  },
-}
+let databaseIsConnected = false
+emitter.on('database-connected', () => {
+  databaseIsConnected = true
+})
 
-export default networkService
+export function registerNetworkModule() {
+  ipcMain.handle('network:get-database-connect-state', () => {
+    return databaseIsConnected
+  })
+}

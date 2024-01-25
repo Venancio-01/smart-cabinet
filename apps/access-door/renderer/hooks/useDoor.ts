@@ -1,4 +1,5 @@
 import type { Prisma } from '@smart-cabinet/database'
+import { rendererInvoke } from '@smart-cabinet/utils/renderer'
 import { useStore } from '@/store'
 import { AccessDirection, AccessTimeRange } from '~/enums'
 
@@ -8,15 +9,17 @@ export default function () {
   const { equipmentList } = storeToRefs(store)
 
   const getControlEquipment = async () => {
-    setControlEquipment(await window.JSBridge.accessDoor.getControlEquipment())
+    const equipment = await rendererInvoke('access-door:get-control-equipment')
+    setControlEquipment(equipment)
   }
 
   const getIsControlEquipment = async () => {
-    setIsControlEquipment(await window.JSBridge.accessDoor.getIsControlEquipment())
+    const isEquipment = await rendererInvoke('access-door:get-is-control-equipment')
+    setIsControlEquipment(isEquipment)
   }
 
   const getEquipmentList = async () => {
-    const result = await window.JSBridge.accessDoor.getEquipmentList()
+    const result = await rendererInvoke('access-door:get-equipment-list')
     const list = result.map((item) => {
       return { ...item, rfidIsConnected: false }
     })
@@ -53,17 +56,26 @@ export default function () {
       query.type = condition.type ? `${condition.type}` : undefined
     }
 
-    return window.JSBridge.accessDoor.selectDoorRfidrecordListWithPage(pagination, query)
+    // return window.JSBridge.accessDoor.selectDoorRfidrecordListWithPage(pagination, query)
+    return rendererInvoke('access-door:select-door-rfidrecord-list-with-page', { pagination, query })
   }
 
   // 获取未查看的报警记录总数
   const selectUnviewedAlarmRecordCount = async () => {
-    const result = await window.JSBridge.accessDoor.selectDoorAlarmRecordCount({
+    // const result = await window.JSBridge.accessDoor.selectDoorAlarmRecordCount({
+    //   equipmentId: {
+    //     in: equipmentList.value.map(item => `${item.equipmentid}`),
+    //   },
+    //   isOperation: '0',
+    // })
+
+    const result = await rendererInvoke('access-door:select-door-alarm-record-count', {
       equipmentId: {
         in: equipmentList.value.map(item => `${item.equipmentid}`),
       },
       isOperation: '0',
     })
+
     setUnviewedAccessRecordCount(result)
   }
 
@@ -93,7 +105,7 @@ export default function () {
       createTime: condition?.timeRange ? timeRangeMap?.[condition.timeRange] : undefined,
     }
 
-    return await window.JSBridge.accessDoor.selectDoorAlarmRecordListWithPage(pagination, query)
+    return await rendererInvoke('access-door:select-door-alarm-record-list-with-page', { pagination, query })
   }
 
   const initAccessDoorData = async () => {

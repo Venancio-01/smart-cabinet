@@ -1,4 +1,4 @@
-import type { DoorEquipment } from '@smart-cabinet/database'
+import type { DoorAlarmrecord, DoorEquipment, Prisma } from '@smart-cabinet/database'
 import { getLocalIpAddress } from '@smart-cabinet/utils'
 import {
   selectDoorAlarmRecordCount,
@@ -10,8 +10,9 @@ import {
   updateDoorAlarmrecord,
   updateManyDoorAlarmrecord,
 } from '@smart-cabinet/database'
-import { differenceBy } from 'lodash-es'
-import { error } from './log'
+import differenceBy from 'lodash/differenceBy'
+import { error } from '@smart-cabinet/common'
+import { ipcMain } from 'electron'
 
 // 设备列表
 export let equipmentList: DoorEquipment[] = []
@@ -64,20 +65,44 @@ export async function initEquipment() {
   equipmentList = isControlEquipment ? allEquipmentList.filter(item => item.fid === currentEquipment?.equipmentid) : [currentEquipment]
 }
 
-const accessDoorService = {
-  name: 'accessDoor' as const,
-  fns: {
-    getIsControlEquipment,
-    getEquipmentList,
-    getControlEquipment,
-    selectDoorRfidrecordList,
-    selectDoorRfidrecordListWithPage,
-    selectDoorAlarmRecordList,
-    selectDoorAlarmRecordListWithPage,
-    selectDoorAlarmRecordCount,
-    updateDoorAlarmrecord,
-    updateManyDoorAlarmrecord,
-  },
-}
+export function registerAccessDoorService() {
+  ipcMain.handle('access-door:get-is-control-equipment', async () => {
+    return getIsControlEquipment()
+  })
 
-export default accessDoorService
+  ipcMain.handle('access-door:get-equipment-list', async () => {
+    return getEquipmentList()
+  })
+
+  ipcMain.handle('access-door:get-control-equipment', async () => {
+    return getControlEquipment()
+  })
+
+  ipcMain.handle('access-door:select-door-rfidrecord-list', async (_, args) => {
+    return selectDoorRfidrecordList(args)
+  })
+
+  ipcMain.handle('access-door:select-door-rfidrecord-list-with-page', async (_, args) => {
+    return selectDoorRfidrecordListWithPage(args)
+  })
+
+  ipcMain.handle('access-door:select-door-alarm-record-list', async (_, args) => {
+    return selectDoorAlarmRecordList(args)
+  })
+
+  ipcMain.handle('access-door:select-door-alarm-record-list-with-page', async (_, args) => {
+    return selectDoorAlarmRecordListWithPage(args)
+  })
+
+  ipcMain.handle('access-door:select-door-alarm-record-count', async (_, args) => {
+    return selectDoorAlarmRecordCount(args)
+  })
+
+  ipcMain.handle('access-door:update-door-alarm-record', async (_, args: [Prisma.DoorAlarmrecordWhereUniqueInput, Partial<DoorAlarmrecord>]) => {
+    return updateDoorAlarmrecord(...args)
+  })
+
+  ipcMain.handle('access-door:update-many-door-alarm-record', async (_, args: [Prisma.DoorAlarmrecordWhereUniqueInput, data: Partial<DoorAlarmrecord>]) => {
+    return updateManyDoorAlarmrecord(...args)
+  })
+}

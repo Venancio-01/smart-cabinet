@@ -3,7 +3,6 @@ import { CurrentTime, VTitle } from '@smart-cabinet/components'
 import { SYSTEM_NAME } from '@/config'
 import { useStore } from '@/store'
 import useDoor from '@/hooks/useDoor'
-
 import DeviceStatus from '@/components/DeviceStatus.vue'
 
 const store = useStore()

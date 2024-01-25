@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { VIcon } from '@smart-cabinet/components'
+import { VActivation } from '@smart-cabinet/components'
+import { rendererInvoke, rendererSend } from '@smart-cabinet/utils/renderer'
 import useListenEnter from '@/hooks/useListenEnter'
 import createAlert from '@/components/BaseAlert'
 
@@ -7,13 +8,13 @@ const router = useRouter()
 const { addListenEnter, removeListenEnter } = useListenEnter()
 
 const registrationCode = ref('')
-const userInputActivationCode = ref('')
+const activationCode = ref('')
 
 async function handleActive() {
-  const activationCode = await window.JSBridge.activation.generateActivationCode()
+  const code = await rendererInvoke('sys:generate-activation-code')
 
-  if (userInputActivationCode.value === activationCode) {
-    window.JSBridge.store.set('activationCode', activationCode)
+  if (activationCode.value === code) {
+    rendererSend('store:set', 'activationCode', activationCode.value)
     createAlert('激活成功')
 
     router.replace('/')
@@ -23,26 +24,10 @@ async function handleActive() {
   }
 }
 
-// 使输入框聚焦
-
-const inputEl = ref<null | HTMLInputElement>(null)
-
-function handleFocus() {
-  inputEl.value?.focus()
-}
-
-const labelWord = '请输入激活码'
-
-const labelWordArr = labelWord.split('')
-
 onMounted(async () => {
-  registrationCode.value = await window.JSBridge.activation.generateRegistrationCode()
-
+  registrationCode.value = await rendererInvoke('sys:generate-registration-code')
+  console.log('🚀 ~ onMounted ~ registrationCode:', registrationCode)
   addListenEnter(handleActive)
-
-  nextTick(() => {
-    handleFocus()
-  })
 })
 
 onBeforeMount(() => {
@@ -51,73 +36,5 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="flex flex-col items-center">
-    <div class="flex justify-center mt-[120px]">
-      <VIcon icon="activate" class="text-[200px] text-light" />
-    </div>
-
-    <div class="w-[500px] text-lg text-light mt-[20px]">
-      <span>注册码：</span>
-      <span class="select-text">{{ registrationCode }}</span>
-    </div>
-
-    <div class="flex-center-center">
-      <div m="y-40px" w="500px" flex="~" justify-center relative class="form-control">
-        <input ref="inputEl" v-model="userInputActivationCode" type="password" required>
-        <label>
-          <span v-for="(item, index) in labelWordArr" :key="index" :style="{ transitionDelay: `${index * 20}ms` }">{{ item }}</span>
-        </label>
-      </div>
-    </div>
-  </div>
+  <VActivation v-model:activation-code="activationCode" :registration-code="registrationCode" />
 </template>
-
-<style scoped>
-.form-control input {
-  background-color: transparent;
-  border: 0;
-  border-bottom-width: 2px;
-  border-style: solid;
-  display: block;
-  width: 100%;
-  padding: 15px 0;
-  font-size: 18px;
-  @apply w-full border-light text-light;
-}
-
-.form-control input:focus,
-.form-control input:valid {
-  outline: 0;
-
-  @apply border-b-light;
-}
-
-.form-control label {
-  position: absolute;
-
-  top: 15px;
-
-  left: 0;
-
-  pointer-events: none;
-}
-
-.form-control label span {
-  @apply text-light;
-
-  display: inline-block;
-
-  font-size: 18px;
-
-  min-width: 5px;
-
-  transition: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.form-control input:focus + label span,
-.form-control input:valid + label span {
-  @apply text-light;
-
-  transform: translateY(-30px);
-}
-</style>

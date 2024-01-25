@@ -32,8 +32,8 @@
     "serialport": "^12.0.0"
   },
   "devDependencies": {
-    "@electron-toolkit/preload": "^3.0.0",
-    "@electron-toolkit/utils": "^3.0.0",
+    "@electron-toolkit/preload": "^2.0.0",
+    "@electron-toolkit/utils": "^2.0.0",
     "@electron/rebuild": "^3.6.0",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@smart-cabinet/common": "workspace:*",
@@ -52,7 +52,7 @@
     "dotenv-cli": "^7.3.0",
     "electron": "^12.2.3",
     "electron-builder": "^24.9.1",
-    "lodash": "^4.17.21",
+    "lodash-es": "^4.17.21",
     "pinia": "^2.1.7",
     "typescript": "^5.3.3",
     "unocss": "^0.58.3",

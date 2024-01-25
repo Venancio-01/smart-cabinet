@@ -3,7 +3,7 @@ import { message as Message, Modal, notification } from 'ant-design-vue'
 import { CheckCircleFilled, CloseCircleFilled, InfoCircleFilled } from '@ant-design/icons-vue'
 
 import type { ConfigProps, NotificationArgsProps } from 'ant-design-vue/lib/notification'
-import { isString } from 'lodash-es'
+import isString from 'lodash/isString'
 
 export interface NotifyApi {
   info(config: NotificationArgsProps): void

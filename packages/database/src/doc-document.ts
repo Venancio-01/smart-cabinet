@@ -1,10 +1,10 @@
 import { getSkipAndTake } from '@smart-cabinet/utils'
 import type { PaginationType } from '@smart-cabinet/utils'
 import { Prisma } from '@prisma/client'
-import type { DocDocument } from '@prisma/client'
+import type { DocDocument } from '..'
 import { prisma } from '..'
 
-const docDocumentDefaultArgs = Prisma.validator<Prisma.DocDocumentDefaultArgs>()({
+const docDocumentArgs = Prisma.validator<Prisma.DocDocumentArgs>()({
   include: {
     alarmRecord: true,
     cabinet: true,
@@ -17,7 +17,7 @@ const docDocumentDefaultArgs = Prisma.validator<Prisma.DocDocumentDefaultArgs>()
   },
 })
 
-export type DocDocumentProps = Prisma.DocDocumentGetPayload<typeof docDocumentDefaultArgs>
+export type DocDocumentProps = Prisma.DocDocumentGetPayload<typeof docDocumentArgs>
 
 /**
  * @description: 获取载体列表
@@ -27,7 +27,7 @@ export type DocDocumentProps = Prisma.DocDocumentGetPayload<typeof docDocumentDe
 export async function selectDocDocumentList(condition?: Prisma.DocDocumentWhereInput): Promise<DocDocumentProps[]> {
   return prisma.docDocument.findMany({
     where: condition,
-    ...docDocumentDefaultArgs,
+    ...docDocumentArgs,
   })
 }
 
@@ -44,7 +44,7 @@ export async function selectDocDocumentListWithPage(pagination: PaginationType, 
     prisma.docDocument.findMany({
       ...skipAndTake,
       where: condition,
-      ...docDocumentDefaultArgs,
+      ...docDocumentArgs,
     }),
     prisma.docDocument.count({
       where: condition,

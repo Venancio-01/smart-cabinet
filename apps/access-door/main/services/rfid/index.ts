@@ -2,6 +2,7 @@ import { insertDoorAlarmrecordList } from '@smart-cabinet/database'
 import type { DoorAlarmrecord, DoorEquipment } from '@smart-cabinet/database'
 import { sendIpcToRenderer } from '@smart-cabinet/utils/electron'
 import { INTERVAL_THRESHOLD } from '@smart-cabinet/utils/config/main'
+import { ipcMain } from 'electron'
 import { generateAntennaCommand } from './utils'
 import { generateCheckConnectionStatusCommand, generateSetGPOCommand, generteSetGPITriggerCommand } from './command'
 import type { Message } from './message'
@@ -272,12 +273,12 @@ export async function registerMessageListerner(equipment: DoorEquipment, message
   })
 }
 
-const rfidService = {
-  name: 'rfid' as const,
-  fns: {
-    getRfidConnectionStatus,
-    handleSetGPO,
-  },
-}
+export function registerRfidService() {
+  ipcMain.handle('rfid:get-rfid-connection-status', async (_, equipment: DoorEquipment) => {
+    return getRfidConnectionStatus(equipment)
+  })
 
-export default rfidService
+  ipcMain.handle('rfid:handle-set-gpo', async (_, equipment: DoorEquipment, index: GPOIndex, status: boolean) => {
+    handleSetGPO(equipment, index, status)
+  })
+}

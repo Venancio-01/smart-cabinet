@@ -1,3 +1,4 @@
+import process from 'process'
 import { app } from 'electron'
 import dotenv from 'dotenv'
 import { EVN_FILE_PATH } from '@smart-cabinet/utils/config'

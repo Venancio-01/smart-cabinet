@@ -1,3 +1,4 @@
+import { ipcMain } from 'electron'
 import Store from 'electron-store'
 
 const defaults = {
@@ -10,39 +11,28 @@ const store = new Store({
   defaults,
 })
 
-/**
- * Get a value from the store
- * @param name - The name of the value to get
- * @returns The value from the store
- */
 async function get(name: StoreKeys) {
   return store.get(name)
 }
 
-/**
- * Set a value in the store
- * @param name - The name of the value to set
- * @param value - The value to set
- */
 function set<T>(name: StoreKeys, value: T) {
   store.set(name, value)
 }
 
-/**
- * Delete a value from the store
- * @param name - The name of the value to delete
- */
 function del(name: StoreKeys) {
   store.delete(name)
 }
 
-const storeService = {
-  name: 'store' as const,
-  fns: {
-    get,
-    set,
-    delete: del,
-  },
-}
+export function registerStoreModule() {
+  ipcMain.handle('store:get', (_event, name: StoreKeys) => {
+    return get(name)
+  })
 
-export default storeService
+  ipcMain.on('store:set', (_event, name: StoreKeys, value: any) => {
+    set(name, value)
+  })
+
+  ipcMain.on('store:delete', (_event, name: StoreKeys) => {
+    del(name)
+  })
+}

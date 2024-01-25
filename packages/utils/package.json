@@ -12,6 +12,9 @@
     "./config": {
       "import": "./config/index.ts"
     },
+    "./electron": {
+      "import": "./electron/index.ts"
+    },
     "./config/renderer": {
       "import": "./config/renderer/index.ts"
     },
@@ -31,6 +34,7 @@
     "ref-struct-di": "^1.1.1"
   },
   "devDependencies": {
+    "@electron-toolkit/preload": "^2.0.0",
     "@smart-cabinet/config": "workspace:*",
     "@types/lodash-es": "^4.17.7",
     "lodash-es": "^4.17.21"

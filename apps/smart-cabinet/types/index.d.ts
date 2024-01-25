@@ -2,8 +2,6 @@ import type { DocDocument, RfidCabinetdoorProps } from '@smart-cabinet/database'
 import type { ElectronAPI } from '@electron-toolkit/preload'
 import type { InPlaceState } from './enums'
 
-export {}
-
 declare global {
   interface Window {
     electronApi: ElectronAPI

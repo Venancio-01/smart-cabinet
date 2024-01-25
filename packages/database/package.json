@@ -13,8 +13,8 @@
     "db": "npm run db:pull && npm run db:format && npm run db:generate"
   },
   "dependencies": {
-    "@prisma/client": "5.7.0",
-    "prisma": "5.7.0",
+    "@prisma/client": "4.16.2",
+    "prisma": "4.16.2",
     "prisma-case-format": "^2.0.2"
   },
   "devDependencies": {

@@ -1,4 +1,6 @@
-import { debounce, uniq, uniqBy } from 'lodash-es'
+import debounce from 'lodash/debounce'
+import uniq from 'lodash/uniq'
+import uniqBy from 'lodash/uniqBy'
 import { insertDoorRfidrecordList, selectDocDocumentList, selectDoorRfidregisterList } from '@smart-cabinet/database'
 import type { DocDocumentProps, DoorAlarmrecord, DoorEquipment, DoorRfidrecord, DoorRfidregister } from '@smart-cabinet/database'
 import dayjs from 'dayjs'

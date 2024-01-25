@@ -4,7 +4,7 @@ import { getSkipAndTake } from '@smart-cabinet/utils'
 import type { SysUser } from '..'
 import { prisma } from '..'
 
-const sysUserDefaultArgs = Prisma.validator<Prisma.SysUserDefaultArgs>()({
+const sysUserArgs = Prisma.validator<Prisma.SysUserArgs>()({
   include: {
     department: true,
     userRole: {
@@ -15,7 +15,7 @@ const sysUserDefaultArgs = Prisma.validator<Prisma.SysUserDefaultArgs>()({
   },
 })
 
-export type SysUserProps = Prisma.SysUserGetPayload<typeof sysUserDefaultArgs>
+export type SysUserProps = Prisma.SysUserGetPayload<typeof sysUserArgs>
 
 /**
  * @description: 获取用户列表
@@ -24,7 +24,7 @@ export type SysUserProps = Prisma.SysUserGetPayload<typeof sysUserDefaultArgs>
 export function selectSysUserList(condition?: Prisma.SysUserWhereInput): Promise<SysUserProps[]> {
   return prisma.sysUser.findMany({
     where: condition,
-    ...sysUserDefaultArgs,
+    ...sysUserArgs,
   })
 }
 
@@ -42,7 +42,7 @@ export async function selectSysUserListWithPage(
     prisma.sysUser.findMany({
       ...skipAndTake,
       where: condition,
-      ...sysUserDefaultArgs,
+      ...sysUserArgs,
     }),
     prisma.sysUser.count({
       where: condition,
@@ -63,7 +63,7 @@ export async function selectSysUserListWithPage(
 export function selectSysUser(condition: Prisma.SysUserWhereInput): Promise<SysUserProps | null> {
   return prisma.sysUser.findFirst({
     where: condition,
-    include: sysUserDefaultArgs.include,
+    include: sysUserArgs.include,
   })
 }
 

@@ -13,6 +13,6 @@
     "@smart-cabinet/common": "workspace:*",
     "@smart-cabinet/config": "workspace:*",
     "@smart-cabinet/utils": "workspace:*",
-    "vite": "^4.5.1"
+    "vite": "^4.5.2"
   }
 }

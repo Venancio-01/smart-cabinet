@@ -1,4 +1,3 @@
-import { setAntdConfig } from '@smart-cabinet/ui'
 import useSys from '@/hooks/useSys'
 import useDoor from '@/hooks/useDoor'
 import useRfid from '@/hooks/useRfid'
@@ -6,9 +5,6 @@ import useNetwork from '@/hooks/useNetwork'
 import { checkActivationCode } from '@/features/activation'
 
 export default function () {
-  // 配置 Antd 主题
-  setAntdConfig()
-
   const { initSysData } = useSys()
   const { initAccessDoorData } = useDoor()
   const { startGetNetworkConnectionStatus, stopGetNetworkConnectionStatus } = useNetwork()

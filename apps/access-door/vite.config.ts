@@ -1,11 +1,10 @@
 /// <reference types="vite" />
 import { resolve } from 'path'
-import { spawn } from 'child_process'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import VueJsx from '@vitejs/plugin-vue-jsx'
-import VueDevTools from 'vite-plugin-vue-devtools'
 import VueRouter from 'unplugin-vue-router/vite'
+import VueDevTools from 'vite-plugin-vue-devtools'
 import { VueRouterAutoImports } from 'unplugin-vue-router'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
@@ -13,8 +12,7 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
 import Unocss from 'unocss/vite'
 
 import renderer from 'vite-plugin-electron-renderer'
-
-import electron from 'vite-plugin-electron-vaausud'
+import electron from 'vite-plugin-electron'
 
 // 外部依赖列表
 const externalList = ['ffi-napi', 'ref-array-di', 'ref-napi', 'ref-struct-di', 'prisma', 'database', 'serialport']
@@ -44,19 +42,7 @@ export default defineConfig(({ mode }) => {
             },
           },
           onstart(options) {
-            const isSudo = mode === 'sudo'
-
-            if (isSudo) {
-              options.startup(['.', '--no-sandbox'], () => {
-                const electronPath = './node_modules/.bin/electron'
-                return spawn('sudo', [electronPath, '.', '--no-sandbox'], {
-                  stdio: 'inherit',
-                })
-              })
-            }
-            else {
-              options.startup(['.', '--no-sandbox'])
-            }
+            options.startup(['.', '--no-sandbox'])
           },
         },
         {
@@ -88,7 +74,6 @@ export default defineConfig(({ mode }) => {
         importMode: isProduction ? 'sync' : 'async',
       }),
       VueJsx(),
-      VueDevTools(),
       AutoImport({
         imports: ['vue', 'pinia', VueRouterAutoImports],
         dts: './renderer/auto-imports.d.ts',
@@ -103,6 +88,7 @@ export default defineConfig(({ mode }) => {
         dts: './renderer/components.d.ts',
       }),
       Vue(),
+      VueDevTools(),
       Unocss(),
       renderer(),
     ],

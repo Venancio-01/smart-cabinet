@@ -4,13 +4,13 @@ import { Prisma } from '@prisma/client'
 import type { DoorAlarmrecord } from '..'
 import { prisma } from '..'
 
-const doorAlarmrecordDefaultArgs = Prisma.validator<Prisma.DoorAlarmrecordDefaultArgs>()({
+const doorAlarmrecordArgs = Prisma.validator<Prisma.DoorAlarmrecordArgs>()({
   include: {
     department: true,
   },
 })
 
-export type DoorAlarmrecordProps = Prisma.DoorAlarmrecordGetPayload<typeof doorAlarmrecordDefaultArgs>
+export type DoorAlarmrecordProps = Prisma.DoorAlarmrecordGetPayload<typeof doorAlarmrecordArgs>
 
 /**
  * @description: 查询通道门报警记录列表
@@ -23,7 +23,7 @@ export async function selectDoorAlarmRecordList(condition?: Prisma.DoorAlarmreco
     orderBy: {
       createTime: 'desc',
     },
-    ...doorAlarmrecordDefaultArgs,
+    ...doorAlarmrecordArgs,
   })
 }
 
@@ -45,7 +45,7 @@ export async function selectDoorAlarmRecordListWithPage(
       orderBy: {
         createTime: 'desc',
       },
-      ...doorAlarmrecordDefaultArgs,
+      ...doorAlarmrecordArgs,
     }),
     prisma.doorAlarmrecord.count({
       where: condition,

@@ -14,6 +14,12 @@ import electron from 'vite-plugin-electron'
 
 // 外部依赖列表
 const externalList = ['ffi-napi', 'ref-array-di', 'ref-napi', 'ref-struct-di', 'prisma', '@prisma/client', 'database', 'serialport']
+// 别名
+const alias = {
+  '@': resolve(__dirname, './renderer'),
+  '#': resolve(__dirname, './common'),
+  '~': resolve(__dirname, './types'),
+}
 
 export default defineConfig(() => {
   return {
@@ -32,11 +38,7 @@ export default defineConfig(() => {
               },
             },
             resolve: {
-              alias: {
-                '@': resolve(__dirname, './main'),
-                '#': resolve(__dirname, './common'),
-                '~': resolve(__dirname, './types'),
-              },
+              alias,
             },
           },
           onstart(options) {
@@ -53,11 +55,7 @@ export default defineConfig(() => {
               },
             },
             resolve: {
-              alias: {
-                '@': resolve(__dirname, './main'),
-                '#': resolve(__dirname, './common'),
-                '~': resolve(__dirname, './types'),
-              },
+              alias,
             },
           },
           onstart(options) {
@@ -88,11 +86,7 @@ export default defineConfig(() => {
     ],
 
     resolve: {
-      alias: {
-        '@': resolve(__dirname, './renderer'),
-        '#': resolve(__dirname, './common'),
-        '~': resolve(__dirname, './types'),
-      },
+      alias,
     },
 
     server: {

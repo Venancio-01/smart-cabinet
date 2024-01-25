@@ -1,7 +1,7 @@
 import { Socket } from 'net'
 import type { Buffer } from 'buffer'
+import { error, info, warn } from '@smart-cabinet/common'
 import type { MessageQueue } from './message'
-import { error, info, warn } from '@/services/log'
 import { parseData, validateReceivedData } from '@/services/rfid/data'
 
 export default class RfidSocket {
@@ -11,7 +11,7 @@ export default class RfidSocket {
   private port = 8160
   connected = false
   heartbeatCount = 0
-  timer: NodeJS.Timer | null = null
+  timer: NodeJS.Timer
 
   constructor(option: { address: string, port: number, message: MessageQueue }) {
     this.address = option.address
