@@ -37,5 +37,10 @@
 			"path": "packages/utils"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"cSpell.words": [
+			"equipmentid",
+			"Rfidrecord"
+		]
+	}
 }

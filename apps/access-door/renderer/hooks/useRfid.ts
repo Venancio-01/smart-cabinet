@@ -1,5 +1,6 @@
-import type { DoorAlarmrecord, DoorEquipment, DoorRfidrecord } from '@smart-cabinet/database'
+import type { DoorEquipment, DoorRfidrecord } from '@smart-cabinet/database'
 import { rendererInvoke, rendererOn } from '@smart-cabinet/utils/renderer'
+import useListenAction from './useListenAction'
 import { useStore } from '@/store'
 import { type AccessDirection, ActiveEquipmentState, GPIIndex } from '~/enums'
 import ipcNames from '#/ipcNames'
@@ -9,8 +10,9 @@ let timer: number | null = null
 export default function () {
   const router = useRouter()
   const store = useStore()
-  const { setEquipment, setCurrentReadRecordList, setLoadingVisible, setAlarmRecordList, setAlarmEquipmentList, setAlarmEquipment, setActiveEquipmentList } = store
-  const { equipmentList, alarmEquipmentList, alarmRecordList, activeEquipmentList } = storeToRefs(store)
+  const { setEquipment, setActiveEquipmentList } = store
+  const { equipmentList, activeEquipmentList } = storeToRefs(store)
+  const { resetCountdown } = useListenAction()
 
   /**
    * @description: 开始获取 RFID 连接状态
@@ -45,7 +47,7 @@ export default function () {
    */
   const handleSetGPO = async (equipment: DoorEquipment, status: boolean) => {
     rendererInvoke(ipcNames.rfid.handleSetGPO, {
-      equipment: toRaw(equipment),
+      addr: equipment.equipmentAddr,
       index: GPIIndex.ONE,
       status,
     })
@@ -64,51 +66,80 @@ export default function () {
       if (isExist) {
         const equipmentList = activeEquipmentList.value.map((item) => {
           if (item.equipmentid === equipment.equipmentid) {
-            return { ...equipment, direction, state: ActiveEquipmentState.CHECKING }
+            return { ...equipment, direction, state: ActiveEquipmentState.CHECKING, loading: true }
           }
           return item
         })
         setActiveEquipmentList(equipmentList)
       }
       else {
-        const equipmentList = [...activeEquipmentList.value, { ...equipment, direction, state: ActiveEquipmentState.CHECKING }]
+        const equipmentList = [...activeEquipmentList.value, { ...equipment, direction, state: ActiveEquipmentState.CHECKING, loading: true }]
         setActiveEquipmentList(equipmentList)
       }
 
-      setLoadingVisible(true)
+      // 重置操作倒计时
+      resetCountdown()
+
       router.replace({
         path: '/multiple-alarm',
       })
     })
 
     // 监听检测到报警
-    rendererOn(ipcNames.renderer.detectAlarm, (_: unknown, equipment: DoorEquipment, alarmRecordList: DoorAlarmrecord[]) => {
-      const existActiveEquipmentIndex = activeEquipmentList.value.findIndex(item => item.equipmentid === equipment.equipmentid)
-      const isExist = existActiveEquipmentIndex > -1
+    rendererOn(ipcNames.renderer.detectAlarm, (_: unknown, equipment: DoorEquipment) => {
+      const existActiveEquipment = activeEquipmentList.value.find(item => item.equipmentid === equipment.equipmentid)
+      const isExist = !!existActiveEquipment
 
       if (isExist) {
         const equipmentList = activeEquipmentList.value.map((item) => {
           if (item.equipmentid === equipment.equipmentid) {
-            return { ...equipment, alarmRecordList }
+            return { ...equipment, state: ActiveEquipmentState.ALARMING, loading: true }
           }
           return item
         })
         setActiveEquipmentList(equipmentList)
       }
       else {
-        const equipmentList = [...activeEquipmentList.value, { ...equipment, alarmRecordList }]
+        const equipmentList = [...activeEquipmentList.value, { ...equipment, state: ActiveEquipmentState.ALARMING, loading: true }]
         setActiveEquipmentList(equipmentList)
       }
+
+      // 重置操作倒计时
+      resetCountdown()
 
       router.replace({
         path: '/multiple-alarm',
       })
     })
 
-    // 监听读取数据
+    // 监听读取完成数据
     rendererOn(ipcNames.renderer.readData, async (_: unknown, equipment: DoorEquipment, data: DoorRfidrecord[]) => {
-      setCurrentReadRecordList(data)
-      setLoadingVisible(false)
+      const existActiveEquipment = activeEquipmentList.value.find(item => item.equipmentid === equipment.equipmentid)
+      const isExist = !!existActiveEquipment
+
+      if (isExist) {
+        const isCheckingState = existActiveEquipment.state === ActiveEquipmentState.CHECKING
+        const state = isCheckingState ? ActiveEquipmentState.CHECKED : existActiveEquipment.state
+
+        const equipmentList = activeEquipmentList.value.map((item) => {
+          if (item.equipmentid === equipment.equipmentid) {
+            return { ...equipment, readRecordList: data, state, loading: false }
+          }
+          return item
+        })
+        setActiveEquipmentList(equipmentList)
+      }
+      else {
+        const equipmentList = [...activeEquipmentList.value, { ...equipment, readRecordList: data, state: ActiveEquipmentState.CHECKED, loading: false }]
+        setActiveEquipmentList(equipmentList)
+      }
+
+      // 重置操作倒计时
+      resetCountdown()
+
+      router.replace({
+        path: '/multiple-alarm',
+      })
     })
   }
 

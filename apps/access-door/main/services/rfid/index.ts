@@ -76,7 +76,7 @@ export function registerRfidService() {
     return getRfidConnectionStatus(equipment)
   })
 
-  ipcMain.handle(ipcNames.rfid.handleSetGPO, (_, { equipment, index, status }) => {
-    equipmentMap[equipment.equipmentAddr].handleSetGPO(index, status)
+  ipcMain.handle(ipcNames.rfid.handleSetGPO, (_, { addr, index, status }) => {
+    equipmentMap[addr].handleSetGPO(index, status)
   })
 }

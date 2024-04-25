@@ -16,7 +16,7 @@ declare global {
 
   interface ReadRecordQueryProps {
     carrierName: string
-    deptId?: number
+    deptId?: string
     type?: AccessDirection
     timeRange?: AccessTimeRange
   }
@@ -45,5 +45,6 @@ declare global {
     readRecordList?: DoorRfidrecord[]
     alarmRecordList?: DoorAlarmrecord[]
     state?: ActiveEquipmentState
+    loading?: boolean
   }
 }

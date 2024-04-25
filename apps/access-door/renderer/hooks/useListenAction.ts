@@ -1,33 +1,42 @@
-export default function (time?: number) {
-  const TIME = time || 60
-  let timer: number | null = null
-  const router = useRouter()
-  const operationTimeoutCountdown = ref(TIME)
+import { useStore } from '@/store'
 
-  function handleListenUserAction() {
-    operationTimeoutCountdown.value = TIME
-  }
+const TIME = 60
+const operationTimeoutCountdown = ref(TIME)
+
+export default function () {
+  let timer: number | null = null
+
+  const router = useRouter()
+  const store = useStore()
+  const { setActiveEquipmentList } = store
 
   function handleClearInterval() {
     timer && window.clearInterval(timer)
   }
 
-  onMounted(() => {
-    window.addEventListener('click', handleListenUserAction)
+  function resetCountdown() {
+    operationTimeoutCountdown.value = TIME
+  }
 
-    timer = window.setInterval(() => {
-      operationTimeoutCountdown.value--
-      if (operationTimeoutCountdown.value <= 0) {
-        handleClearInterval()
-        router.replace('/')
-      }
-    }, 1000)
-  })
+  function startMountHook() {
+    onMounted(() => {
+      window.addEventListener('click', resetCountdown)
 
-  onUnmounted(() => {
-    window.removeEventListener('click', handleListenUserAction)
-    handleClearInterval()
-  })
+      timer = window.setInterval(() => {
+        operationTimeoutCountdown.value--
+        if (operationTimeoutCountdown.value <= 0) {
+          handleClearInterval()
+          setActiveEquipmentList([])
+          router.replace('/')
+        }
+      }, 1000)
+    })
 
-  return { operationTimeoutCountdown }
+    onUnmounted(() => {
+      window.removeEventListener('click', resetCountdown)
+      handleClearInterval()
+    })
+  }
+
+  return { operationTimeoutCountdown, resetCountdown, startMountHook }
 }

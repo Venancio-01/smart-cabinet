@@ -4,7 +4,6 @@ import { error, info, warn } from '@smart-cabinet/common'
 import { INTERVAL_THRESHOLD, sendIpcToRenderer } from '@smart-cabinet/utils'
 import type { DoorAlarmrecord, DoorEquipment } from '@smart-cabinet/database'
 import { insertDoorAlarmrecordList } from '@smart-cabinet/database'
-import { isSingleEquipmentMode } from '../access-door'
 import type { Message } from './message'
 import { MessageQueue } from './message'
 import { generateCheckConnectionStatusCommand, generateSetGPOCommand, generteSetGPITriggerCommand } from './command'
@@ -143,8 +142,8 @@ export default class Equipment {
     const isGPI1Triggered = command.slice(14, 16) === '00'
     const isGPI2Triggered = command.slice(14, 16) === '01'
 
-    // const isGPI1 = command.slice(14, 16) === '01'
-    // const isGPI2 = command.slice(14, 16) === '00'
+    // const isGPI1Triggered = command.slice(14, 16) === '01'
+    // const isGPI2Triggered = command.slice(14, 16) === '00'
 
     // GPI1 触发
     if (isGPI1Triggered) {
@@ -186,7 +185,7 @@ export default class Equipment {
 
     // 如果没有读到数据库中登记过的载体，则跳过
     if (carriers.length === 0) {
-      if (isSingleEquipmentMode) sendIpcToRenderer(ipcNames.renderer.readData, this.data, [])
+      sendIpcToRenderer(ipcNames.renderer.readData, this.data, [])
       return
     }
 
@@ -195,6 +194,7 @@ export default class Equipment {
 
     // 如果是外出状态
     if (this.isDepart) {
+      console.log(this.isDepart, 'isDepart')
       // 筛选登记状态异常的载体
       const { unregisteredCarrierList, approvalFailedCarrierList, expiredCarrier } = filterAbnormalCarrier(
         carriers,
@@ -226,16 +226,17 @@ export default class Equipment {
 
       if (hasUnregisteredCarrier) {
         await insertDoorAlarmrecordList(alarmRecordList)
-        const dataList = await insertRfidRecordList(
-          this.data,
-          carriers,
-          registrationCarrierRecordList,
-          AccessDirection.OUT,
-          alarmRecordList,
-        )
-
-        sendIpcToRenderer(ipcNames.renderer.detectAlarm, this.data, alarmRecordList)
       }
+
+      const dataList = await insertRfidRecordList(
+        this.data,
+        carriers,
+        registrationCarrierRecordList,
+        AccessDirection.OUT,
+        alarmRecordList,
+      )
+
+      sendIpcToRenderer(ipcNames.renderer.readData, this.data, dataList)
     }
 
     // 如果是进入状态
@@ -266,7 +267,7 @@ export default class Equipment {
 
     if (hasUnregistered) {
       this.handleSetGPO(GPOIndex.ONE, true)
-      if (isSingleEquipmentMode) sendIpcToRenderer(ipcNames.renderer.detectAlarm)
+      sendIpcToRenderer(ipcNames.renderer.detectAlarm, this.data)
     }
   }
 

@@ -113,5 +113,13 @@ export const useStore = defineStore('main', {
     setActiveEquipmentList(list: ActiveEquipmentProps[]) {
       this.activeEquipmentList = list
     },
+    setActiveEquipment(equipment: ActiveEquipmentProps) {
+      this.activeEquipmentList = this.activeEquipmentList.map((item) => {
+        if (item.equipmentid === equipment.equipmentid) {
+          return equipment
+        }
+        return item
+      })
+    },
   },
 })

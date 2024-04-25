@@ -3,24 +3,18 @@ import type { DoorRfidrecord } from '@smart-cabinet/database'
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
 import { useStore } from '@/store'
-import useListenAction from '@/hooks/useListenAction'
 
 interface Props {
-  data: DoorRfidrecord[]
+  equipment: ActiveEquipmentProps
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  data: () = []
-})
+const props = defineProps<Props>()
 
-const router = useRouter()
 const store = useStore()
 const { departmentList } = storeToRefs(store)
-const { operationTimeoutCountdown } = useListenAction()
 
 const total = ref(0)
 const condition = reactive<Partial<ReadRecordQueryProps>>({
-  carrierName: '',
   deptId: undefined,
 })
 
@@ -54,40 +48,27 @@ function handleResizeColumn(width: any, column: any) {
   column.width = width
 }
 
-function handleBack() {
-  router.replace('/')
-}
-
-function handleQuery() {}
-
 function handleInit() {
   pagination.page = 1
-  condition.carrierName = ''
-  condition.timeRange = undefined
+  condition.deptId = undefined
 }
 
 function onPageChange(page: number) {
   pagination.page = page
 }
 
-const pagedData = computed(()=>{
-  return props.data.slice((pagination.page - 1) * pagination.size, pagination.size * pagination.page)
+const pagedData = computed(() => {
+  if (condition.deptId) {
+    return props.equipment.readRecordList.filter(item => String(item.carrierDeptid) === condition.deptId).slice((pagination.page - 1) * pagination.size, pagination.size * pagination.page)
+  }
+  else {
+    return props.equipment.readRecordList.slice((pagination.page - 1) * pagination.size, pagination.size * pagination.page)
+  }
 })
-
 </script>
 
 <template>
   <div class="w-h-full">
-    <div class="flex items-center justify-between">
-      <div flex items-center>
-        <BackButton @back="handleBack" />
-        <span class="text-light text-[28px] ml-6"> 报警载体详情 </span>
-      </div>
-      <div text="light 2xl" font="thin">
-        {{ operationTimeoutCountdown }}秒后返回首页
-      </div>
-    </div>
-
     <div class="flex" m="y-8">
       <a-form
         :model="condition"
@@ -98,7 +79,7 @@ const pagedData = computed(()=>{
         autocomplete="off"
       >
         <a-form-item label="所属部门" name="title">
-          <a-select v-model:value="condition.deptId" allow-clear placeholder="请选择部门" @change="handleQuery">
+          <a-select v-model:value="condition.deptId" allow-clear placeholder="请选择部门" >
             <a-select-option v-for="item in departmentList" :key="item.deptId" :value="String(item.deptId)">
               {{ item.deptName }}
             </a-select-option>
@@ -115,7 +96,7 @@ const pagedData = computed(()=>{
 
     <div class="mt-4">
       <a-table
-        :data-source="data"
+        :data-source="pagedData"
         :columns="columns"
         :pagination="{
           current: pagination.page,

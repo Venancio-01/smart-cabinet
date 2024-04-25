@@ -81,5 +81,7 @@ export enum MessageType {
 // 当前激活设备状态
 export enum ActiveEquipmentState {
   CHECKING,
+  CHECKED,
   ALARMING,
+  VIEWING,
 }
