@@ -75,28 +75,20 @@ export function generateSetGPOCommand(index: GPOIndex, status: boolean) {
  */
 export function generteSetGPITriggerCommand(index: GPIIndex, triggerCommand: string) {
   const protocolControlWord = '0001010B'
-
   // 触发 GPI 端口号
   const GPIIndexStr = index.toString().padStart(2, '0')
-
   // 触发开始条件, 2 - 高电平触发
   const triggerStartCondition = '02'
-
   // 触发命令的长度
   const triggerCommandLength = (triggerCommand.length / 2).toString(16).padStart(4, '0')
-
   // 触发停止条件, 6 - 延时停止
   const triggerStopCondition = '06'
-
   // 停止延时时间， mid = 01
   const duration = `01${(DETECTION_DURATION / 10).toString(16).padStart(4, '0')}`
-
   // 完整命令
   const body = `${GPIIndexStr}${triggerStartCondition}${triggerCommandLength}${triggerCommand}${triggerStopCondition}${duration}`
-
   // 数据长度
   const dataLength = (body.length / 2).toString(16).padStart(4, '0')
-
   const str = protocolControlWord + dataLength + body
 
   return generateCommand(str)

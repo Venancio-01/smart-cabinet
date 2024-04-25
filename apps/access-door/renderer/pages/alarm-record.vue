@@ -2,10 +2,13 @@
 import type { DoorAlarmrecordProps } from '@smart-cabinet/database'
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
+import { rendererInvoke } from '@smart-cabinet/utils/renderer'
+import { Modal } from 'ant-design-vue'
 import useDoor from '@/hooks/useDoor'
 import useListenAction from '@/hooks/useListenAction'
 import { AccessTimeRange, OperationStatus } from '~/enums'
 import { useStore } from '@/store'
+import ipcNames from '#/ipcNames'
 
 const store = useStore()
 const { departmentList, equipmentList } = storeToRefs(store)
@@ -110,30 +113,34 @@ function handleResizeColumn(width: any, column: any) {
 }
 
 async function handleConfirm(record: DoorAlarmrecordProps) {
-  await window.JSBridge.accessDoor.updateDoorAlarmrecord(
-    {
-      alarmid: record.alarmid,
-    },
-    {
-      isOperation: `${OperationStatus.PROCESSED}`,
-    },
-  )
+  const condition = {
+    alarmid: record.alarmid,
+  }
+  const data = {
+    isOperation: `${OperationStatus.PROCESSED}`,
+  }
+
+  await rendererInvoke(ipcNames.accessDoor.updateDoorAlarmRecord, { condition, data })
   getRfidRecordList()
 }
 
 async function handleConfirmAll() {
-  await window.JSBridge.accessDoor.updateManyDoorAlarmrecord(
-    {
-      equipmentId: {
-        in: equipmentList.value.map(item => `${item.equipmentid}`),
-      },
-      isOperation: `${OperationStatus.UNPROCESSED}`,
+  Modal.confirm({
+    title: '确认全部确认',
+    content: '确认全部确认后，所有未处理的报警记录将会被标记为已处理，是否确认全部确认？',
+    centered: true,
+    onOk: async () => {
+      const condition = {
+        isOperation: `${OperationStatus.UNPROCESSED}`,
+      }
+      const data = {
+        isOperation: `${OperationStatus.PROCESSED}`,
+      }
+
+      await rendererInvoke(ipcNames.accessDoor.updateManyDoorAlarmRecord, { condition, data })
+      getRfidRecordList()
     },
-    {
-      isOperation: `${OperationStatus.PROCESSED}`,
-    },
-  )
-  getRfidRecordList()
+  })
 }
 
 onMounted(() => {

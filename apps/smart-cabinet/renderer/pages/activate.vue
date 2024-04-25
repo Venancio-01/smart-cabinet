@@ -12,15 +12,15 @@ const activationCode = ref('')
 async function handleActive() {
   const code = await window.electronApi.ipcRenderer.invoke('activation:generate-activation-code')
 
-  if (activationCode.value === code) {
-    window.electronApi.ipcRenderer.send('store:set', 'activationCode', code)
-
-    createAlert('激活成功')
-    router.replace('/index')
-  }
-  else {
+  if (activationCode.value !== code) {
     createAlert('激活失败')
+    return
   }
+
+  window.electronApi.ipcRenderer.send('store:set', 'activationCode', code)
+
+  createAlert('激活成功')
+  router.replace('/index')
 }
 
 onMounted(async () => {

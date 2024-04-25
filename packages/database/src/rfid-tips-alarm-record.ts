@@ -28,8 +28,8 @@ export function selectRfidTipsAlarmRecordListCount(condition: Prisma.RfidTipsAla
  * @param {Partial} data
  * @return {*}
  */
-export function insertRfidTipsAlarmRecord(data: Partial<RfidTipsAlarmRecord>) {
-  return prisma.rfidTipsAlarmRecord.create({
+export function insertRfidTipsAlarmRecord(data: Partial<RfidTipsAlarmRecord>[]) {
+  return prisma.rfidTipsAlarmRecord.createMany({
     data,
   })
 }
@@ -39,7 +39,7 @@ export function insertRfidTipsAlarmRecord(data: Partial<RfidTipsAlarmRecord>) {
  * @param {Partial} data
  * @return {*}
  */
-export function updateRfidTipsAlarmRecord(condition: Prisma.RfidTipsAlarmRecordWhereInput, data: Partial<RfidTipsAlarmRecord>) {
+export function updateRfidTipsAlarmRecord(condition: Prisma.RfidTipsAlarmRecordWhereInput, data: Partial<RfidTipsAlarmRecord> | Partial<RfidTipsAlarmRecord>[]) {
   return prisma.rfidTipsAlarmRecord.updateMany({
     where: condition,
     data,

@@ -6,7 +6,8 @@
     "module": "ESNext",
     "paths": {
       "@/*": ["./main/*"],
-      "~/*": ["./types/*"]
+      "~/*": ["./types/*"],
+      "#/*": ["./common/*"]
     },
     "types": ["vite/client"]
   },

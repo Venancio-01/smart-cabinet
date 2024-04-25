@@ -24,8 +24,11 @@ onMounted(() => {
 })
 
 onBeforeMount(async () => {
-  destroyLockControlService()
   backgroundImage.value = await getBackgroundImage()
+})
+
+onBeforeUnmount(() => {
+  destroyLockControlService()
 })
 </script>
 

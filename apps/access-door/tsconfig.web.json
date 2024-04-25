@@ -4,7 +4,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./renderer/*"],
-      "~/*": ["./types/*"]
+      "~/*": ["./types/*"],
+      "#/*": ["./common/*"]
     }
   },
   "include": [

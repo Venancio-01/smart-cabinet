@@ -2,6 +2,7 @@ import type { Prisma } from '@smart-cabinet/database'
 import { rendererInvoke } from '@smart-cabinet/utils/renderer'
 import { useStore } from '@/store'
 import { AccessDirection, AccessTimeRange } from '~/enums'
+import ipcNames from '#/ipcNames'
 
 export default function () {
   const store = useStore()
@@ -9,17 +10,17 @@ export default function () {
   const { equipmentList } = storeToRefs(store)
 
   const getControlEquipment = async () => {
-    const equipment = await rendererInvoke('access-door:get-control-equipment')
+    const equipment = await rendererInvoke(ipcNames.accessDoor.getControlEquipment)
     setControlEquipment(equipment)
   }
 
   const getIsControlEquipment = async () => {
-    const isEquipment = await rendererInvoke('access-door:get-is-control-equipment')
+    const isEquipment = await rendererInvoke(ipcNames.accessDoor.getIsControlEquipment)
     setIsControlEquipment(isEquipment)
   }
 
   const getEquipmentList = async () => {
-    const result = await rendererInvoke('access-door:get-equipment-list')
+    const result = await rendererInvoke(ipcNames.accessDoor.getEquipmentList)
     const list = result.map((item) => {
       return { ...item, rfidIsConnected: false }
     })
@@ -44,7 +45,7 @@ export default function () {
       },
     }
 
-    const query: Prisma.DoorRfidrecordWhereInput = {
+    const queryCondition: Prisma.DoorRfidrecordWhereInput = {
       equipmentId: {
         in: equipmentList.value.map(item => `${item.equipmentid}`),
       },
@@ -53,25 +54,18 @@ export default function () {
     }
 
     if (condition?.type !== AccessDirection.ALL) {
-      query.type = condition.type ? `${condition.type}` : undefined
+      queryCondition.type = condition.type ? `${condition.type}` : undefined
     }
 
-    // return window.JSBridge.accessDoor.selectDoorRfidrecordListWithPage(pagination, query)
-    return rendererInvoke('access-door:select-door-rfidrecord-list-with-page', { pagination, query })
+    return rendererInvoke(ipcNames.accessDoor.selectDoorRfidrecordListWithPage, { pagination, queryCondition })
   }
 
   // 获取未查看的报警记录总数
   const selectUnviewedAlarmRecordCount = async () => {
-    // const result = await window.JSBridge.accessDoor.selectDoorAlarmRecordCount({
-    //   equipmentId: {
-    //     in: equipmentList.value.map(item => `${item.equipmentid}`),
-    //   },
-    //   isOperation: '0',
-    // })
-
-    const result = await rendererInvoke('access-door:select-door-alarm-record-count', {
+    const equipmentIdList = equipmentList.value.map(item => `${item.equipmentid}`)
+    const result = await rendererInvoke(ipcNames.accessDoor.selectDoorAlarmRecordCount, {
       equipmentId: {
-        in: equipmentList.value.map(item => `${item.equipmentid}`),
+        in: equipmentIdList,
       },
       isOperation: '0',
     })
@@ -96,16 +90,17 @@ export default function () {
       },
     }
 
-    const query: Prisma.DoorAlarmrecordWhereInput = {
+    const equipmentIdList = equipmentList.value.map(item => `${item.equipmentid}`)
+    const queryCondition: Prisma.DoorAlarmrecordWhereInput = {
       equipmentId: {
-        in: equipmentList.value.map(item => `${item.equipmentid}`),
+        in: equipmentIdList,
       },
       carrierName: condition?.carrierName ? { contains: condition.carrierName } : undefined,
       carrierDeptid: condition?.deptId,
       createTime: condition?.timeRange ? timeRangeMap?.[condition.timeRange] : undefined,
     }
 
-    return await rendererInvoke('access-door:select-door-alarm-record-list-with-page', { pagination, query })
+    return await rendererInvoke(ipcNames.accessDoor.selectDoorAlarmRecordListWithPage, { pagination, queryCondition })
   }
 
   const initAccessDoorData = async () => {

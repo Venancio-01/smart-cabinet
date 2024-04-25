@@ -16,6 +16,17 @@ import electron from 'vite-plugin-electron'
 
 // 外部依赖列表
 const externalList = ['ffi-napi', 'ref-array-di', 'ref-napi', 'ref-struct-di', 'prisma', 'database', 'serialport']
+// 别名
+function generateAlias(isMain = false) {
+  const alias = {
+    '@': resolve(__dirname, './renderer'),
+    '#': resolve(__dirname, './common'),
+    '~': resolve(__dirname, './types'),
+  }
+  if (isMain) alias['@'] = resolve(__dirname, './main')
+
+  return alias
+}
 
 export default defineConfig(({ mode }) => {
   const isProduction = mode === 'production'
@@ -35,10 +46,7 @@ export default defineConfig(({ mode }) => {
               },
             },
             resolve: {
-              alias: {
-                '@': resolve(__dirname, './main'),
-                '~': resolve(__dirname, './types'),
-              },
+              alias: generateAlias(true),
             },
           },
           onstart(options) {
@@ -55,10 +63,7 @@ export default defineConfig(({ mode }) => {
               },
             },
             resolve: {
-              alias: {
-                '@': resolve(__dirname, './main'),
-                '~': resolve(__dirname, './types'),
-              },
+              alias: generateAlias(),
             },
           },
           onstart(options) {
@@ -94,10 +99,7 @@ export default defineConfig(({ mode }) => {
     ],
 
     resolve: {
-      alias: {
-        '@': resolve(__dirname, './renderer'),
-        '~': resolve(__dirname, './types'),
-      },
+      alias: generateAlias(),
     },
 
     server: {

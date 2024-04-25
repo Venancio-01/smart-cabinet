@@ -12,3 +12,7 @@ export function rendererSend(name: string, ...data: any) {
 export function rendererSendSync(name: string, data?: any) {
   return window.electron.ipcRenderer.sendSync(name, data)
 }
+
+export function rendererOn(name: string, listener: (...args: any[]) => void) {
+  window.electron.ipcRenderer.on(name, listener)
+}

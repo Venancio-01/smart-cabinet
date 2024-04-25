@@ -3,6 +3,7 @@ import { VActivation } from '@smart-cabinet/components'
 import { rendererInvoke, rendererSend } from '@smart-cabinet/utils/renderer'
 import useListenEnter from '@/hooks/useListenEnter'
 import createAlert from '@/components/BaseAlert'
+import ipcNames from '#/ipcNames'
 
 const router = useRouter()
 const { addListenEnter, removeListenEnter } = useListenEnter()
@@ -11,7 +12,7 @@ const registrationCode = ref('')
 const activationCode = ref('')
 
 async function handleActive() {
-  const code = await rendererInvoke('sys:generate-activation-code')
+  const code = await rendererInvoke(ipcNames.sys.generateActivationCode)
 
   if (activationCode.value === code) {
     rendererSend('store:set', 'activationCode', activationCode.value)
@@ -25,8 +26,7 @@ async function handleActive() {
 }
 
 onMounted(async () => {
-  registrationCode.value = await rendererInvoke('sys:generate-registration-code')
-  console.log('🚀 ~ onMounted ~ registrationCode:', registrationCode)
+  registrationCode.value = await rendererInvoke(ipcNames.sys.generateRegistrationCode)
   addListenEnter(handleActive)
 })
 

@@ -14,11 +14,16 @@ import electron from 'vite-plugin-electron'
 
 // 外部依赖列表
 const externalList = ['ffi-napi', 'ref-array-di', 'ref-napi', 'ref-struct-di', 'prisma', '@prisma/client', 'database', 'serialport']
-// 别名
-const alias = {
-  '@': resolve(__dirname, './renderer'),
-  '#': resolve(__dirname, './common'),
-  '~': resolve(__dirname, './types'),
+// 生成别名
+function generateAlias(isMain = false) {
+  const alias = {
+    '@': resolve(__dirname, './renderer'),
+    '#': resolve(__dirname, './common'),
+    '~': resolve(__dirname, './types'),
+  }
+  if (isMain) alias['@'] = resolve(__dirname, './main')
+
+  return alias
 }
 
 export default defineConfig(() => {
@@ -38,7 +43,7 @@ export default defineConfig(() => {
               },
             },
             resolve: {
-              alias,
+              alias: generateAlias(true),
             },
           },
           onstart(options) {
@@ -55,7 +60,7 @@ export default defineConfig(() => {
               },
             },
             resolve: {
-              alias,
+              alias: generateAlias(),
             },
           },
           onstart(options) {
@@ -86,7 +91,7 @@ export default defineConfig(() => {
     ],
 
     resolve: {
-      alias,
+      alias: generateAlias(),
     },
 
     server: {

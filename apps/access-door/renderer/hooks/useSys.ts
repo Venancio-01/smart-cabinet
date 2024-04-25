@@ -1,3 +1,5 @@
+import { rendererInvoke } from '@smart-cabinet/utils/renderer'
+import ipcNames from '#/ipcNames'
 import { useStore } from '@/store'
 
 export default function () {
@@ -5,7 +7,7 @@ export default function () {
   const { setDepartmentList } = store
 
   const getDepartmentList = async () => {
-    const departments = await window.JSBridge.sys.selectSysDeptList()
+    const departments = await rendererInvoke(ipcNames.sys.selectSysDeptList)
     setDepartmentList(departments)
     return departments
   }

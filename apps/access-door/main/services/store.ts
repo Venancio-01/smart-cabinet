@@ -1,5 +1,6 @@
 import { ipcMain } from 'electron'
 import Store from 'electron-store'
+import ipcNames from '#/ipcNames'
 
 const defaults = {
   activationCode: '',
@@ -24,15 +25,15 @@ function del(name: StoreKeys) {
 }
 
 export function registerStoreModule() {
-  ipcMain.handle('store:get', (_event, name: StoreKeys) => {
+  ipcMain.handle(ipcNames.store.get, (_event, name: StoreKeys) => {
     return get(name)
   })
 
-  ipcMain.on('store:set', (_event, name: StoreKeys, value: any) => {
+  ipcMain.on(ipcNames.store.set, (_event, name: StoreKeys, value: any) => {
     set(name, value)
   })
 
-  ipcMain.on('store:delete', (_event, name: StoreKeys) => {
+  ipcMain.on(ipcNames.store.delete, (_event, name: StoreKeys) => {
     del(name)
   })
 }

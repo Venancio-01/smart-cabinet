@@ -1,4 +1,6 @@
+import { rendererInvoke } from '@smart-cabinet/utils/renderer'
 import { useStore } from '@/store'
+import ipcNames from '#/ipcNames'
 
 let timer: number | null = null
 
@@ -9,7 +11,7 @@ export default function () {
   // 开始获取数据库连接状态
   const startGetNetworkConnectionStatus = () => {
     const getNetworkConnectionStatus = async () => {
-      const status = await window.JSBridge.network.getNetworkConnectionStatus()
+      const status = await rendererInvoke(ipcNames.network.getDatabaseConnectState)
       setNetworkIsConnected(status)
     }
     getNetworkConnectionStatus()

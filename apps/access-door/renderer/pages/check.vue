@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useStore } from '@/store'
+import { AccessDirection } from '~/enums'
 
 const router = useRouter()
 const route = useRoute()
@@ -10,7 +11,7 @@ const { loadingVisible, currentReadRecordList } = storeToRefs(store)
 const message = computed(() => {
   const direction = route.query?.direction
 
-  return direction === '1' ? '检测到人员进入' : '检测到人员外出'
+  return direction === AccessDirection.IN.toString() ? '检测到人员进入' : '检测到人员外出'
 })
 
 function goDetail() {

@@ -7,7 +7,7 @@ import {
   updateDocDocument,
   updateRfidTipsAlarmRecord,
 } from '@smart-cabinet/database'
-import type { RfidCabinetdoorProps, RfidTipsAlarmRecord } from '@smart-cabinet/database'
+import type { RfidCabinetdoorProps } from '@smart-cabinet/database'
 import { getRfidTIDList } from '@smart-cabinet/features'
 import { ipcMain } from 'electron'
 import { currentCabinet } from './cabinet'
@@ -19,6 +19,7 @@ export enum BorrowedState {
   Borrowed,
 }
 
+// 更新文件状态
 async function updateCarrier(cabinetDoor: RfidCabinetdoorProps, userId: bigint) {
   const rfidTidList = getRfidTIDList(cabinetDoor.txAddr || '')
   console.log('🚀 ~ file: document-service.ts:94 ~ updateCarrier ~ rfidList.length:', rfidTidList.length)
@@ -33,6 +34,8 @@ async function updateCarrier(cabinetDoor: RfidCabinetdoorProps, userId: bigint) 
   // })
 
   const documents = await selectDocDocumentList()
+  const updates = []
+  const inserts = []
 
   for (let i = 0; i < documents.length; i++) {
     const doc = documents[i]
@@ -42,31 +45,31 @@ async function updateCarrier(cabinetDoor: RfidCabinetdoorProps, userId: bigint) 
     if (doc.deptId === cabinetDoor.cabinet.deptId) {
       // 归还
       if (isDetectedDocument && doc.docPStatus === BorrowedState.Borrowed) {
-        await updateDocDocument(
-          {
+        updates.push({
+          filter: {
             docId: doc.docId,
           },
-          {
+          update: {
             cabinetId: cabinetDoor.cabinet.id,
             cabinetDoorId: cabinetDoor.id,
             docPStatus: BorrowedState.Returned,
             docLastUserId: Number(userId),
             docLastTime: new Date(),
           },
-        )
+        })
       }
       // 借出
       else if (!isDetectedDocument && doc.docPStatus === BorrowedState.Returned) {
-        await updateDocDocument(
-          {
+        updates.push({
+          filter: {
             docId: doc.docId,
           },
-          {
+          update: {
             docPStatus: BorrowedState.Borrowed,
             docLastUserId: Number(userId),
             docLastTime: new Date(),
           },
-        )
+        })
       }
     }
     // 检测到本部门之外的文件
@@ -82,7 +85,8 @@ async function updateCarrier(cabinetDoor: RfidCabinetdoorProps, userId: bigint) 
         })) !== 0
 
       if (hasMisPlaceRecord) continue
-      const data: Partial<RfidTipsAlarmRecord> = {
+
+      inserts.push({
         alarmType: `${AlarmObjectType.Carrier}`,
         type: AlarmType.Alarm,
         userId: Number(userId),
@@ -103,30 +107,38 @@ async function updateCarrier(cabinetDoor: RfidCabinetdoorProps, userId: bigint) 
         cabdoorUserName: '',
         cabdoorDeptName: '',
         isOperation: OperationStatus.Unoperated,
-      }
-
-      await insertRfidTipsAlarmRecord(data)
+      })
     }
   }
 
+  for (let i = 0; i < updates.length; i++) {
+    const item = updates[i]
+    updateDocDocument(item.filter, item.update)
+  }
+
+  if (inserts.length > 0) {
+    insertRfidTipsAlarmRecord(inserts)
+  }
+
+  // 更新错放记录
   const misPlaceRecordList = await selectRfidTipsAlarmRecordList({
     isOperation: OperationStatus.Unoperated,
     doorid: cabinetDoor.id,
   })
-  for (let i = 0; i < misPlaceRecordList.length; i++) {
-    const doc = misPlaceRecordList[i]
-    if (!doc.rfid) continue
 
-    if (!rfidTidList.includes(doc.rfid)) {
-      await updateRfidTipsAlarmRecord(
-        {
-          rfid: doc.rfid,
-        },
-        {
-          isOperation: OperationStatus.Operated,
-        },
-      )
-    }
+  const rfidListToUpdate = misPlaceRecordList
+    .filter(doc => doc.rfid && !rfidTidList.includes(doc.rfid))
+    .map(doc => doc.rfid)
+
+  if (rfidListToUpdate.length > 0) {
+    await updateRfidTipsAlarmRecord(
+      {
+        rfid: { in: rfidListToUpdate },
+      },
+      {
+        isOperation: OperationStatus.Operated,
+      },
+    )
   }
 }
 

@@ -51,8 +51,8 @@ function goHome() {
 
     <a-tabs v-model:activeKey="activeKey" size="middle" class="!mt-12px">
       <a-tab-pane v-for="(item, index) in alarmEquipmentList" :key="index" :tab="item.equipmentName">
-        <div class="mt-24px">
-          <a-table :data-source="item.alarmRecordList" :columns="columns" :pagination="undefined" @resize-column="handleResizeColumn">
+        <div class="mt-24px h-300px">
+          <a-table :data-source="item.alarmRecordList" :columns="columns" :scroll="{ x: '100%', y: 300 }" :pagination="undefined" @resize-column="handleResizeColumn">
             <template #emptyText>
               <span>暂无数据</span>
             </template>

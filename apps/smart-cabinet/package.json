@@ -62,7 +62,7 @@
     "vite": "^4.5.2",
     "vite-plugin-electron": "^0.15.5",
     "vite-plugin-electron-renderer": "^0.14.5",
-    "vite-plugin-vue-devtools": "7.0.11",
+    "vite-plugin-vue-devtools": "1.0.0-rc.8",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5",
     "vue3-perfect-scrollbar": "^1.6.1"

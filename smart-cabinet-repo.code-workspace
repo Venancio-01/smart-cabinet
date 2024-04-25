@@ -5,8 +5,8 @@
 			"path": "."
 		},
 		{
-			"name": "🚀 @smart-cabinet/smart-cabinet",
-			"path": "apps/smart-cabinet"
+			"name": "🚀 @smart-cabinet/access-door",
+			"path": "apps/access-door"
 		},
 		{
 			"name": "📦 @smart-cabinet/common",

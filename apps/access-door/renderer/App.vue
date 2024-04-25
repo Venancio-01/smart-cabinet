@@ -4,17 +4,23 @@ import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 import { getBackgroundImage } from '@/features/background'
+import useInit from '@/hooks/useInit'
 
+const router = useRouter()
 const route = useRoute()
 const backgroundImage = ref('')
 
 onMounted(async () => {
   backgroundImage.value = await getBackgroundImage()
+
+  setTimeout(() => {
+    // router.push('/alarm-multiple')
+  }, 1000)
 })
 
 dayjs.locale('zh-cn')
 
-// useInit()
+useInit()
 </script>
 
 <template>

@@ -1,6 +1,8 @@
 import type { DoorAlarmrecord, DoorEquipment, DoorRfidrecord } from '@smart-cabinet/database'
+import { rendererInvoke, rendererOn } from '@smart-cabinet/utils/renderer'
 import { useStore } from '@/store'
-import type { AccessDirection } from '~/enums'
+import { GPIIndex, type AccessDirection } from '~/enums'
+import ipcNames from '#/ipcNames'
 
 let timer: number | null = null
 
@@ -18,7 +20,7 @@ export default function () {
     const getRfiRfidConnectionStatus = async () => {
       for (let index = 0; index < equipmentList.value.length; index++) {
         const equipment = toRaw(equipmentList.value[index])
-        const status = await window.JSBridge.rfid.getRfidConnectionStatus(equipment)
+        const status = await rendererInvoke(ipcNames.rfid.getRfidConnectionStatus, equipment)
         setEquipment(equipment.equipmentid, {
           rfidIsConnected: status,
         })
@@ -45,7 +47,11 @@ export default function () {
    */
   const handleSetGPO = async (status: boolean) => {
     equipmentList.value.forEach((equipment) => {
-      window.JSBridge.rfid.handleSetGPO(toRaw(equipment), 1, status)
+      rendererInvoke(ipcNames.rfid.handleSetGPO, {
+        equipment: toRaw(equipment),
+        index: GPIIndex.ONE,
+        status,
+      })
     })
   }
 
@@ -54,7 +60,8 @@ export default function () {
    * @return {*}
    */
   const regsterAlarmsListener = () => {
-    window.electron.ipcRenderer.on('go-check-page', (_: unknown, direction: AccessDirection) => {
+    // 跳转到检查页面
+    rendererOn('go-check-page', (_: unknown, direction: AccessDirection) => {
       setLoadingVisible(true)
       router.replace({
         path: '/check',
@@ -65,17 +72,14 @@ export default function () {
       })
     })
 
-    window.electron.ipcRenderer.on('go-alarm-page', () => {
+    // 跳转到报警页面
+    rendererOn('go-alarm-page', () => {
       setLoadingVisible(true)
       router.replace('/alarm')
     })
 
-    window.electron.ipcRenderer.on('go-alarm-page', () => {
-      setLoadingVisible(true)
-      router.replace('/alarm')
-    })
-
-    window.electron.ipcRenderer.on('go-alarm-multiple-page', (_: unknown, equipment: DoorEquipment, data: DoorAlarmrecord[]) => {
+    // 跳转到多设备报警页面
+    rendererOn('go-alarm-multiple-page', (_: unknown, equipment: DoorEquipment, data: DoorAlarmrecord[]) => {
       const existAlarmEquipment = alarmEquipmentList.value.find(item => item.equipmentid === equipment.equipmentid)
       const isExist = !!existAlarmEquipment
 
@@ -94,10 +98,11 @@ export default function () {
         ])
       }
 
-      router.replace('/alarm-multiple')
+      const isInMultiplePage = router.currentRoute.value.path === '/alarm-multiple'
+      !isInMultiplePage && router.replace('/alarm-multiple')
     })
 
-    window.electron.ipcRenderer.on('get-read-data', async (_: unknown, equipment: DoorEquipment, data: DoorRfidrecord[]) => {
+    rendererOn('get-read-data', async (_: unknown, equipment: DoorEquipment, data: DoorRfidrecord[]) => {
       setCurrentReadRecordList(data)
       setLoadingVisible(false)
     })

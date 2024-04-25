@@ -63,8 +63,8 @@ export async function selectDocDocumentListWithPage(pagination: PaginationType, 
  * @param {Partial} data
  * @return {*}
  */
-export function updateDocDocument(condition: Prisma.DocDocumentWhereUniqueInput, data: Partial<DocDocument>): Promise<DocDocument> {
-  return prisma.docDocument.update({
+export function updateDocDocument(condition: Prisma.DocDocumentWhereUniqueInput, data: Partial<DocDocument>) {
+  return prisma.docDocument.updateMany({
     where: condition,
     data,
   })

@@ -12,7 +12,7 @@ interface Listener<T extends any[]> {
 
 export class MessageQueue {
   private messages: Message[] = [] // 存储消息队列
-  private maxLength = 800 // 消息队列上限
+  private maxLength = 10000 // 消息队列上限
   private listeners: Listener<any>[] = [] // 事件监听器列表
 
   // 添加消息到队列中
@@ -52,5 +52,10 @@ export class MessageQueue {
     for (const listener of this.listeners) {
       if (listener.eventName === eventName) listener.callback(...args)
     }
+  }
+
+  // 获取某个时间段的数据
+  getMessagesByTimeRange(startTime: number, endTime: number): Message[] {
+    return this.messages.filter(item => item.time >= startTime && item.time <= endTime)
   }
 }

@@ -1,4 +1,4 @@
-import type { DoorAlarmrecord, DoorEquipment, Prisma } from '@smart-cabinet/database'
+import type { DoorEquipment } from '@smart-cabinet/database'
 import { getLocalIpAddress } from '@smart-cabinet/utils'
 import {
   selectDoorAlarmRecordCount,
@@ -10,24 +10,19 @@ import {
   updateDoorAlarmrecord,
   updateManyDoorAlarmrecord,
 } from '@smart-cabinet/database'
-import differenceBy from 'lodash/differenceBy'
 import { error } from '@smart-cabinet/common'
 import { ipcMain } from 'electron'
+import ipcNames from '#/ipcNames'
+import { EquipmentType } from '~/enums'
 
 // 设备列表
 export let equipmentList: DoorEquipment[] = []
-// 是否是控制设备
-export let isControlEquipment = false
+// 是否是控制模式
+export let isControlMode = false
 // 控制设备
 export let controlEquipment: DoorEquipment | null = null
-
-/**
- * @description: 获取是否为控制设备
- * @return {*}
- */
-export async function getIsControlEquipment() {
-  return isControlEquipment
-}
+// 是否是单个设备模式
+export let isSingleEquipmentMode = false
 
 /**
  * @description: 获取控制设备
@@ -45,64 +40,79 @@ export async function getEquipmentList() {
   return equipmentList
 }
 
+/**
+ * @description: 初始化设备
+ * @return {*}
+ */
 export async function initEquipment() {
   const allEquipmentList = await selectDoorEquipmentList()
   const ipList = getLocalIpAddress()
 
-  // 获取当前设备
-  const currentEquipment = allEquipmentList.find(item => item.addressip && ipList.includes(item.addressip)) || null
-  if (currentEquipment === null) {
-    error('数据库设备 IP 配置错误，找不到对应设备')
+  isSingleEquipmentMode = allEquipmentList.length === 1
+
+  // 获取当前IP设备
+  const currentIPEquipmentData = allEquipmentList.filter(item => item.addressip && ipList.includes(item.addressip))
+  if (currentIPEquipmentData.length === 0) {
+    error('请正确配置数据库中的设备IP')
     return
   }
 
-  // 获取是否为控制设备
-  const otherEquipmentList = differenceBy(allEquipmentList, [currentEquipment], 'equipmentid')
-  isControlEquipment = currentEquipment?.fid === null && otherEquipmentList.some(item => item.fid === currentEquipment?.equipmentid)
-  if (isControlEquipment) controlEquipment = currentEquipment
+  if (currentIPEquipmentData.length > 1) {
+    const controlEquipmentList = currentIPEquipmentData.filter(item => item.type === EquipmentType.CONTROL)
+    if (controlEquipmentList.length > 1) {
+      error('控制设备只能有一个')
+      return
+    }
 
+    controlEquipment = controlEquipmentList[0]
+  }
+  else {
+    controlEquipment = currentIPEquipmentData[0]
+  }
+
+  isControlMode = controlEquipment?.type === EquipmentType.CONTROL
   // 获取设备列表
-  equipmentList = isControlEquipment ? allEquipmentList.filter(item => item.fid === currentEquipment?.equipmentid) : [currentEquipment]
+  equipmentList = allEquipmentList.filter(item => item.type === EquipmentType.DEVICE)
 }
 
 export function registerAccessDoorService() {
-  ipcMain.handle('access-door:get-is-control-equipment', async () => {
-    return getIsControlEquipment()
+  ipcMain.handle(ipcNames.accessDoor.getIsControlEquipment, async () => {
+    return isControlMode
   })
 
-  ipcMain.handle('access-door:get-equipment-list', async () => {
+  ipcMain.handle(ipcNames.accessDoor.getEquipmentList, async () => {
     return getEquipmentList()
   })
 
-  ipcMain.handle('access-door:get-control-equipment', async () => {
+  ipcMain.handle(ipcNames.accessDoor.getControlEquipment, async () => {
     return getControlEquipment()
   })
 
-  ipcMain.handle('access-door:select-door-rfidrecord-list', async (_, args) => {
+  ipcMain.handle(ipcNames.accessDoor.selectDoorRfidrecordList, async (_, args) => {
     return selectDoorRfidrecordList(args)
   })
 
-  ipcMain.handle('access-door:select-door-rfidrecord-list-with-page', async (_, args) => {
-    return selectDoorRfidrecordListWithPage(args)
+  ipcMain.handle(ipcNames.accessDoor.selectDoorAlarmRecordListWithPage, async (_, { pagination, queryCondition }) => {
+    return selectDoorAlarmRecordListWithPage(pagination, queryCondition)
   })
 
-  ipcMain.handle('access-door:select-door-alarm-record-list', async (_, args) => {
+  ipcMain.handle(ipcNames.accessDoor.selectDoorAlarmRecordList, async (_, args) => {
     return selectDoorAlarmRecordList(args)
   })
 
-  ipcMain.handle('access-door:select-door-alarm-record-list-with-page', async (_, args) => {
-    return selectDoorAlarmRecordListWithPage(args)
+  ipcMain.handle(ipcNames.accessDoor.selectDoorRfidrecordListWithPage, async (_, { pagination, queryCondition }) => {
+    return selectDoorRfidrecordListWithPage(pagination, queryCondition)
   })
 
-  ipcMain.handle('access-door:select-door-alarm-record-count', async (_, args) => {
+  ipcMain.handle(ipcNames.accessDoor.selectDoorAlarmRecordCount, async (_, args) => {
     return selectDoorAlarmRecordCount(args)
   })
 
-  ipcMain.handle('access-door:update-door-alarm-record', async (_, args: [Prisma.DoorAlarmrecordWhereUniqueInput, Partial<DoorAlarmrecord>]) => {
-    return updateDoorAlarmrecord(...args)
+  ipcMain.handle(ipcNames.accessDoor.updateDoorAlarmRecord, async (_, { condition, data }) => {
+    return updateDoorAlarmrecord(condition, data)
   })
 
-  ipcMain.handle('access-door:update-many-door-alarm-record', async (_, args: [Prisma.DoorAlarmrecordWhereUniqueInput, data: Partial<DoorAlarmrecord>]) => {
-    return updateManyDoorAlarmrecord(...args)
+  ipcMain.handle(ipcNames.accessDoor.updateManyDoorAlarmRecord, async (_, { condition, data }) => {
+    return updateManyDoorAlarmrecord(condition, data)
   })
 }

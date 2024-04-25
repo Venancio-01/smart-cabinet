@@ -6,6 +6,7 @@ interface State {
   controlEquipment: DoorEquipment | null
   equipmentList: EquipmentProps[]
   alarmEquipmentList: AlarmEquipmentProps[]
+  activeEquipmentList: DoorEquipment[]
   networkIsConnected: boolean
   rfidIsConnected: boolean
   activationCode: string
@@ -24,7 +25,10 @@ export const useStore = defineStore('main', {
       isControlEquipment: false,
       controlEquipment: null,
       equipmentList: [],
+      // 报警设备列表
       alarmEquipmentList: [],
+      // 正在触发的设备列表
+      activeEquipmentList: [],
       networkIsConnected: false,
       rfidIsConnected: false,
       activationCode: '',

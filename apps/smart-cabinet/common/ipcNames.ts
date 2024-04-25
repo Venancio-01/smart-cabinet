@@ -1,4 +1,4 @@
-const modules = {
+const names = {
   carrier: {
     selectDocDocumentList: 'carrier:select-doc-document-list',
     selectDocDocumentListWithPage: 'carrier:select-doc-document-list-with-page',
@@ -19,5 +19,5 @@ const modules = {
   },
 }
 
-export const CARRIER_EVENT_NAME = modules.carrier
-export const FACE_EVENT_NAME = modules.face
+export const CARRIER_EVENT_NAME = names.carrier
+export const FACE_EVENT_NAME = names.face

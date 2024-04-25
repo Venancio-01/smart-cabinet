@@ -6,7 +6,7 @@ import { info, initLogger } from '@smart-cabinet/common'
 import { createWindow } from '@/base/window'
 import { connectAllRfid, disconnectAllRfid } from '@/services/rfid'
 import { registerModules } from '@/services'
-import { initEquipment, isControlEquipment } from '@/services/access-door'
+import { initEquipment, isControlMode } from '@/services/access-door'
 
 export async function onAppBeforeQuit() {
   // 断开所有设备的 RFID 连接
@@ -39,7 +39,7 @@ export async function onAppReady() {
 
   // 获取当前连接设备
   await initEquipment()
-  isControlEquipment ? info('是控制设备') : info('非控制设备')
+  isControlMode ? info('是控制设备') : info('非控制设备')
 
   // 连接 RFID
   connectAllRfid()

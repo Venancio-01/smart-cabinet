@@ -23,6 +23,9 @@ export class MySocket {
       // 创建新的实例
       this.instance = new Socket()
 
+      const MAX_CONNECT_DURATION = 3000
+      this.instance.setTimeout(MAX_CONNECT_DURATION)
+
       // 监听各种事件
       this.instance.on('connect', () => {
         console.log('socket 连接成功')
@@ -40,14 +43,14 @@ export class MySocket {
         this.instance?.destroy()
       })
 
+      this.instance.on('timeout', () => {
+        console.log('socket 连接超时')
+        this.instance?.destroy()
+      })
+
       this.instance.on('data', (data) => {
         this.data += data.toString(this.format)
       })
-
-      const MAX_CONNECT_DURATION = 3000
-      this.timer = setTimeout(() => {
-        this.instance?.destroy()
-      }, MAX_CONNECT_DURATION)
 
       this.connect()
     })

@@ -156,8 +156,8 @@ export async function debouncedSelectRfidRegisterRecord() {
  * @return {*}
  */
 export function filterAbnormalCarrier(carrierList: DocDocumentProps[], registerRecord: DoorRfidregister[]) {
-  // 未登记载体
   const registerRfidList = registerRecord.map(item => item.docRfid)
+  // 未登记的载体
   const unregisteredCarrierList = carrierList.filter(item => !registerRfidList.includes(item.docRfid))
 
   // 审批未通过载体
@@ -169,7 +169,9 @@ export function filterAbnormalCarrier(carrierList: DocDocumentProps[], registerR
   // 审批通过但超出规定时间的载体
   const now = dayjs()
 
+  // 审批通过的登记记录
   const approvalPassedRegisterRecord = registerRecord.filter(item => item.state === ApprovalStatus.APPROVED)
+  // 过期的载体
   const expiredCarrier = carrierList.reduce<DocDocumentProps[]>((acc, cur) => {
     approvalPassedRegisterRecord.forEach((item) => {
       if (item.docRfid === cur.docRfid && dayjs(item.startTime).isBefore(now) && dayjs(item.endTime).isAfter(now)) {
