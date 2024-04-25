@@ -2,7 +2,7 @@ import type {
   DoorEquipment,
 } from '@smart-cabinet/database'
 import type { electronAPI } from '@electron-toolkit/preload'
-import type { AccessTimeRange } from './enums'
+import type { AccessDirection, AccessTimeRange } from './enums'
 
 declare global {
   interface Window {
@@ -35,7 +35,15 @@ declare global {
   type EquipmentProps = DoorEquipment & {
     rfidIsConnected: boolean
   }
+
   type AlarmEquipmentProps = DoorEquipment & {
     alarmRecordList: DoorAlarmrecord[]
+  }
+
+  type ActiveEquipmentProps = DoorEquipment & {
+    direction?: AccessDirection
+    readRecordList?: DoorRfidrecord[]
+    alarmRecordList?: DoorAlarmrecord[]
+    state?: ActiveEquipmentState
   }
 }

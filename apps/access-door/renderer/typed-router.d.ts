@@ -45,6 +45,7 @@ declare module 'vue-router/auto/routes' {
     '/alarm-multiple': RouteRecordInfo<'/alarm-multiple', '/alarm-multiple', Record<never, never>, Record<never, never>>,
     '/alarm-record': RouteRecordInfo<'/alarm-record', '/alarm-record', Record<never, never>, Record<never, never>>,
     '/check': RouteRecordInfo<'/check', '/check', Record<never, never>, Record<never, never>>,
+    '/multiple-alarm/': RouteRecordInfo<'/multiple-alarm/', '/multiple-alarm', Record<never, never>, Record<never, never>>,
     '/record-detail': RouteRecordInfo<'/record-detail', '/record-detail', Record<never, never>, Record<never, never>>,
     '/rfid-record': RouteRecordInfo<'/rfid-record', '/rfid-record', Record<never, never>, Record<never, never>>,
   }

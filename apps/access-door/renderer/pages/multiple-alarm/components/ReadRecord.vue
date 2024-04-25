@@ -1,0 +1,134 @@
+<script lang="ts" setup>
+import type { DoorRfidrecord } from '@smart-cabinet/database'
+import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
+import dayjs from 'dayjs'
+import { useStore } from '@/store'
+import useListenAction from '@/hooks/useListenAction'
+
+interface Props {
+  data: DoorRfidrecord[]
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  data: () = []
+})
+
+const router = useRouter()
+const store = useStore()
+const { departmentList } = storeToRefs(store)
+const { operationTimeoutCountdown } = useListenAction()
+
+const total = ref(0)
+const condition = reactive<Partial<ReadRecordQueryProps>>({
+  carrierName: '',
+  deptId: undefined,
+})
+
+const pagination = reactive<PaginationType>({
+  page: 1,
+  size: 6,
+})
+
+const columns = ref<ColumnsType<DoorRfidrecord>>([
+  {
+    title: '载体名称',
+    dataIndex: 'carrierName',
+    key: 'carrierName',
+  },
+  {
+    title: '所属部门',
+    dataIndex: 'carrierDeptName',
+    key: 'carrierDeptName',
+  },
+  {
+    title: '检测时间',
+    dataIndex: 'createTime',
+    key: 'createTime',
+    customRender({ record }) {
+      return dayjs(record.creatorTime).format('YYYY-MM-DD HH:mm:ss')
+    },
+  },
+])
+
+function handleResizeColumn(width: any, column: any) {
+  column.width = width
+}
+
+function handleBack() {
+  router.replace('/')
+}
+
+function handleQuery() {}
+
+function handleInit() {
+  pagination.page = 1
+  condition.carrierName = ''
+  condition.timeRange = undefined
+}
+
+function onPageChange(page: number) {
+  pagination.page = page
+}
+
+const pagedData = computed(()=>{
+  return props.data.slice((pagination.page - 1) * pagination.size, pagination.size * pagination.page)
+})
+
+</script>
+
+<template>
+  <div class="w-h-full">
+    <div class="flex items-center justify-between">
+      <div flex items-center>
+        <BackButton @back="handleBack" />
+        <span class="text-light text-[28px] ml-6"> 报警载体详情 </span>
+      </div>
+      <div text="light 2xl" font="thin">
+        {{ operationTimeoutCountdown }}秒后返回首页
+      </div>
+    </div>
+
+    <div class="flex" m="y-8">
+      <a-form
+        :model="condition"
+        :label-col="{ span: 8 }"
+        :wrapper-col="{ span: 16 }"
+        label-align="left"
+        class="flex-1 grid grid-rows-1 grid-cols-2 gap-x-6"
+        autocomplete="off"
+      >
+        <a-form-item label="所属部门" name="title">
+          <a-select v-model:value="condition.deptId" allow-clear placeholder="请选择部门" @change="handleQuery">
+            <a-select-option v-for="item in departmentList" :key="item.deptId" :value="String(item.deptId)">
+              {{ item.deptName }}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+      </a-form>
+
+      <div class="w-[180px] flex justify-end">
+        <a-button class="ml-4" @click="handleInit">
+          重置
+        </a-button>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <a-table
+        :data-source="data"
+        :columns="columns"
+        :pagination="{
+          current: pagination.page,
+          pageSize: pagination.size,
+          total,
+          onChange: onPageChange,
+        }"
+        @resize-column="handleResizeColumn"
+      >
+        <template #emptyText>
+          <span>暂无数据</span>
+        </template>
+      </a-table>
+    </div>
+  </div>
+</template>

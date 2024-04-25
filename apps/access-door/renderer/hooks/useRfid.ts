@@ -1,7 +1,7 @@
 import type { DoorAlarmrecord, DoorEquipment, DoorRfidrecord } from '@smart-cabinet/database'
 import { rendererInvoke, rendererOn } from '@smart-cabinet/utils/renderer'
 import { useStore } from '@/store'
-import { GPIIndex, type AccessDirection } from '~/enums'
+import { type AccessDirection, ActiveEquipmentState, GPIIndex } from '~/enums'
 import ipcNames from '#/ipcNames'
 
 let timer: number | null = null
@@ -9,8 +9,8 @@ let timer: number | null = null
 export default function () {
   const router = useRouter()
   const store = useStore()
-  const { setEquipment, setCurrentReadRecordList, setLoadingVisible, setAlarmEquipmentList, setAlarmEquipment } = store
-  const { equipmentList, alarmEquipmentList } = storeToRefs(store)
+  const { setEquipment, setCurrentReadRecordList, setLoadingVisible, setAlarmRecordList, setAlarmEquipmentList, setAlarmEquipment, setActiveEquipmentList } = store
+  const { equipmentList, alarmEquipmentList, alarmRecordList, activeEquipmentList } = storeToRefs(store)
 
   /**
    * @description: 开始获取 RFID 连接状态
@@ -41,17 +41,13 @@ export default function () {
 
   /**
    * @description: 设置 GPO
-   * @param {string} address
-   * @param {boolean} status
    * @return {*}
    */
-  const handleSetGPO = async (status: boolean) => {
-    equipmentList.value.forEach((equipment) => {
-      rendererInvoke(ipcNames.rfid.handleSetGPO, {
-        equipment: toRaw(equipment),
-        index: GPIIndex.ONE,
-        status,
-      })
+  const handleSetGPO = async (equipment: DoorEquipment, status: boolean) => {
+    rendererInvoke(ipcNames.rfid.handleSetGPO, {
+      equipment: toRaw(equipment),
+      index: GPIIndex.ONE,
+      status,
     })
   }
 
@@ -60,49 +56,57 @@ export default function () {
    * @return {*}
    */
   const regsterAlarmsListener = () => {
-    // 跳转到检查页面
-    rendererOn('go-check-page', (_: unknown, direction: AccessDirection) => {
+    // 监听红外开始触发
+    rendererOn(ipcNames.renderer.triggerStart, (_: unknown, equipment: DoorEquipment, direction: AccessDirection) => {
+      const existActiveEquipmentIndex = activeEquipmentList.value.findIndex(item => item.equipmentid === equipment.equipmentid)
+      const isExist = existActiveEquipmentIndex > -1
+
+      if (isExist) {
+        const equipmentList = activeEquipmentList.value.map((item) => {
+          if (item.equipmentid === equipment.equipmentid) {
+            return { ...equipment, direction, state: ActiveEquipmentState.CHECKING }
+          }
+          return item
+        })
+        setActiveEquipmentList(equipmentList)
+      }
+      else {
+        const equipmentList = [...activeEquipmentList.value, { ...equipment, direction, state: ActiveEquipmentState.CHECKING }]
+        setActiveEquipmentList(equipmentList)
+      }
+
       setLoadingVisible(true)
       router.replace({
-        path: '/check',
-        query: {
-          key: new Date().getTime(),
-          direction,
-        },
+        path: '/multiple-alarm',
       })
     })
 
-    // 跳转到报警页面
-    rendererOn('go-alarm-page', () => {
-      setLoadingVisible(true)
-      router.replace('/alarm')
-    })
-
-    // 跳转到多设备报警页面
-    rendererOn('go-alarm-multiple-page', (_: unknown, equipment: DoorEquipment, data: DoorAlarmrecord[]) => {
-      const existAlarmEquipment = alarmEquipmentList.value.find(item => item.equipmentid === equipment.equipmentid)
-      const isExist = !!existAlarmEquipment
+    // 监听检测到报警
+    rendererOn(ipcNames.renderer.detectAlarm, (_: unknown, equipment: DoorEquipment, alarmRecordList: DoorAlarmrecord[]) => {
+      const existActiveEquipmentIndex = activeEquipmentList.value.findIndex(item => item.equipmentid === equipment.equipmentid)
+      const isExist = existActiveEquipmentIndex > -1
 
       if (isExist) {
-        setAlarmEquipment(equipment.equipmentid, {
-          alarmRecordList: [...existAlarmEquipment.alarmRecordList, ...data],
+        const equipmentList = activeEquipmentList.value.map((item) => {
+          if (item.equipmentid === equipment.equipmentid) {
+            return { ...equipment, alarmRecordList }
+          }
+          return item
         })
+        setActiveEquipmentList(equipmentList)
       }
       else {
-        setAlarmEquipmentList([
-          ...alarmEquipmentList.value,
-          {
-            ...equipment,
-            alarmRecordList: data,
-          },
-        ])
+        const equipmentList = [...activeEquipmentList.value, { ...equipment, alarmRecordList }]
+        setActiveEquipmentList(equipmentList)
       }
 
-      const isInMultiplePage = router.currentRoute.value.path === '/alarm-multiple'
-      !isInMultiplePage && router.replace('/alarm-multiple')
+      router.replace({
+        path: '/multiple-alarm',
+      })
     })
 
-    rendererOn('get-read-data', async (_: unknown, equipment: DoorEquipment, data: DoorRfidrecord[]) => {
+    // 监听读取数据
+    rendererOn(ipcNames.renderer.readData, async (_: unknown, equipment: DoorEquipment, data: DoorRfidrecord[]) => {
       setCurrentReadRecordList(data)
       setLoadingVisible(false)
     })

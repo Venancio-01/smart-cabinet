@@ -77,3 +77,9 @@ export enum MessageType {
   RECEIVE_GPI_TRIGGER_STOP_REPORT = '00011201',
   RECEIVE_EPC_REPORT = '00011200',
 }
+
+// 当前激活设备状态
+export enum ActiveEquipmentState {
+  CHECKING,
+  ALARMING,
+}

@@ -1,4 +1,9 @@
 const ipcNames = {
+  renderer: {
+    triggerStart: 'trigger-start',
+    readData: 'read-data',
+    detectAlarm: 'detect-alarm',
+  },
   accessDoor: {
     getIsControlEquipment: 'get-is-control-equipment',
     getEquipmentList: 'get-equipment-list',

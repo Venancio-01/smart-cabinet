@@ -77,6 +77,7 @@ export default defineConfig(({ mode }) => {
         routesFolder: './renderer/pages',
         dts: './renderer/typed-router.d.ts',
         importMode: isProduction ? 'sync' : 'async',
+        exclude: ['**/components'],
       }),
       VueJsx(),
       AutoImport({

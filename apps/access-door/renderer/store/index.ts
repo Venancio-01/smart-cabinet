@@ -6,7 +6,7 @@ interface State {
   controlEquipment: DoorEquipment | null
   equipmentList: EquipmentProps[]
   alarmEquipmentList: AlarmEquipmentProps[]
-  activeEquipmentList: DoorEquipment[]
+  activeEquipmentList: ActiveEquipmentProps[]
   networkIsConnected: boolean
   rfidIsConnected: boolean
   activationCode: string
@@ -109,6 +109,9 @@ export const useStore = defineStore('main', {
     },
     setUnviewedAccessRecordCount(count: number) {
       this.unviewedAccessRecordCount = count
+    },
+    setActiveEquipmentList(list: ActiveEquipmentProps[]) {
+      this.activeEquipmentList = list
     },
   },
 })

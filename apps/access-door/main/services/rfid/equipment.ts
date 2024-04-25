@@ -12,6 +12,7 @@ import { generateAntennaCommand } from './utils'
 import { debouncedSelectRfidRegisterRecord, filterAbnormalCarrier, getInDatabaseCarrier, insertRfidRecordList, parseData, validateReceivedData } from '@/services/rfid/data'
 import type { GPIIndex } from '~/enums'
 import { AccessDirection, GPOIndex, OperationStatus } from '~/enums'
+import ipcNames from '#/ipcNames'
 
 export default class Equipment {
   data: DoorEquipment
@@ -167,16 +168,13 @@ export default class Equipment {
 
     // 出入方向
     const accessDirection = this.isEnter ? AccessDirection.IN : this.isDepart ? AccessDirection.OUT : null
-    // 跳转到检查页面
-    if (!isSingleEquipmentMode) sendIpcToRenderer('go-check-page', accessDirection)
-    sendIpcToRenderer('go-check-page', accessDirection)
+    // 触发开始
+    sendIpcToRenderer(ipcNames.renderer.triggerStart, this.data, accessDirection)
   }
 
   // 处理读到 GPI 停止触发的上报
   async handleReceiveGPITriggerStopReport(msg: Message) {
     if (!this.isEnter && !this.isDepart) return
-
-    console.log('handleReceiveGPITriggerStopReport')
 
     this.GPIEndMessage = msg
 
@@ -188,7 +186,7 @@ export default class Equipment {
 
     // 如果没有读到数据库中登记过的载体，则跳过
     if (carriers.length === 0) {
-      if (isSingleEquipmentMode) sendIpcToRenderer('get-read-data', this.data, [])
+      if (isSingleEquipmentMode) sendIpcToRenderer(ipcNames.renderer.readData, this.data, [])
       return
     }
 
@@ -225,25 +223,25 @@ export default class Equipment {
 
       // 是否有状态异常的载体
       const hasUnregisteredCarrier = abnormalCarrierList.length > 0
-      console.log('🚀 - Equipment - handleReceiveGPITriggerStopReport - hasUnregisteredCarrier:', hasUnregisteredCarrier)
-      hasUnregisteredCarrier && (await insertDoorAlarmrecordList(alarmRecordList))
 
-      const dataList = await insertRfidRecordList(
-        this.data,
-        carriers,
-        registrationCarrierRecordList,
-        AccessDirection.OUT,
-        alarmRecordList,
-      )
+      if (hasUnregisteredCarrier) {
+        await insertDoorAlarmrecordList(alarmRecordList)
+        const dataList = await insertRfidRecordList(
+          this.data,
+          carriers,
+          registrationCarrierRecordList,
+          AccessDirection.OUT,
+          alarmRecordList,
+        )
 
-      if (isSingleEquipmentMode) sendIpcToRenderer('get-read-data', this.data, dataList)
-      else sendIpcToRenderer('go-alarm-multiple-page', this.data, alarmRecordList)
+        sendIpcToRenderer(ipcNames.renderer.detectAlarm, this.data, alarmRecordList)
+      }
     }
 
     // 如果是进入状态
     if (this.isEnter) {
       const dataList = await insertRfidRecordList(this.data, carriers, registrationCarrierRecordList, AccessDirection.IN, [])
-      if (!isSingleEquipmentMode) sendIpcToRenderer('get-read-data', this.data, dataList)
+      sendIpcToRenderer(ipcNames.renderer.readData, this.data, dataList)
     }
   }
 
@@ -251,8 +249,6 @@ export default class Equipment {
   async handleReceiveEPCReport(msg: Message) {
     // 如果是进入状态，则跳过
     if (this.isEnter) return
-
-    console.log('handleReceiveEPCReport')
 
     // 获取在数据库中登记的载体以及登记记录
     const [carriers, registrationCarrierRecordList] = await Promise.all([
@@ -270,7 +266,7 @@ export default class Equipment {
 
     if (hasUnregistered) {
       this.handleSetGPO(GPOIndex.ONE, true)
-      if (isSingleEquipmentMode) sendIpcToRenderer('go-alarm-page')
+      if (isSingleEquipmentMode) sendIpcToRenderer(ipcNames.renderer.detectAlarm)
     }
   }
 
