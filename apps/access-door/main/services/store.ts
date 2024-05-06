@@ -4,6 +4,7 @@ import ipcNames from '#/ipcNames'
 
 const defaults = {
   activationCode: '',
+  alarmSound: true,
 }
 
 type StoreKeys = keyof typeof defaults
@@ -12,15 +13,15 @@ const store = new Store({
   defaults,
 })
 
-async function get(name: StoreKeys) {
+export async function get(name: StoreKeys) {
   return store.get(name)
 }
 
-function set<T>(name: StoreKeys, value: T) {
+export function set<T>(name: StoreKeys, value: T) {
   store.set(name, value)
 }
 
-function del(name: StoreKeys) {
+export function del(name: StoreKeys) {
   store.delete(name)
 }
 

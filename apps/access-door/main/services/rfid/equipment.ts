@@ -4,6 +4,7 @@ import { error, info, warn } from '@smart-cabinet/common'
 import { INTERVAL_THRESHOLD, sendIpcToRenderer } from '@smart-cabinet/utils'
 import type { DoorAlarmrecord, DoorEquipment } from '@smart-cabinet/database'
 import { insertDoorAlarmrecordList } from '@smart-cabinet/database'
+import { alarmSound } from '../config'
 import type { Message } from './message'
 import { MessageQueue } from './message'
 import { generateCheckConnectionStatusCommand, generateSetGPOCommand, generteSetGPITriggerCommand } from './command'
@@ -31,6 +32,8 @@ export default class Equipment {
   isEnter = false
   // 是出门
   isDepart = false
+  // 检测到有违规载体
+  hasIllegalCarrier = false
 
   constructor(option: { address: string, port: number, data: DoorEquipment }) {
     this.address = option.address
@@ -136,8 +139,6 @@ export default class Equipment {
     // 如果已经触发过 GPI1 或 GPI2，则跳过
     if (this.isEnter || this.isDepart) return
 
-    console.log('handleReceiveGPITriggerStartReport')
-
     const command = msg.content
     const isGPI1Triggered = command.slice(14, 16) === '00'
     const isGPI2Triggered = command.slice(14, 16) === '01'
@@ -152,6 +153,7 @@ export default class Equipment {
       // 重置状态
       setTimeout(() => {
         this.isDepart = false
+        this.hasIllegalCarrier = false
       }, INTERVAL_THRESHOLD)
     }
 
@@ -162,13 +164,14 @@ export default class Equipment {
       // 重置状态
       setTimeout(() => {
         this.isEnter = false
+        this.hasIllegalCarrier = false
       }, INTERVAL_THRESHOLD)
     }
 
     // 出入方向
     const accessDirection = this.isEnter ? AccessDirection.IN : this.isDepart ? AccessDirection.OUT : null
-    // 触发开始
-    sendIpcToRenderer(ipcNames.renderer.triggerStart, this.data, accessDirection)
+    // 检测开始
+    sendIpcToRenderer(ipcNames.renderer.detectionStart, this.data, accessDirection)
   }
 
   // 处理读到 GPI 停止触发的上报
@@ -185,7 +188,8 @@ export default class Equipment {
 
     // 如果没有读到数据库中登记过的载体，则跳过
     if (carriers.length === 0) {
-      sendIpcToRenderer(ipcNames.renderer.readData, this.data, [])
+      sendIpcToRenderer(ipcNames.renderer.detectedNoException, this.data, [])
+      sendIpcToRenderer(ipcNames.renderer.detectionComplete, this.data)
       return
     }
 
@@ -194,7 +198,6 @@ export default class Equipment {
 
     // 如果是外出状态
     if (this.isDepart) {
-      console.log(this.isDepart, 'isDepart')
       // 筛选登记状态异常的载体
       const { unregisteredCarrierList, approvalFailedCarrierList, expiredCarrier } = filterAbnormalCarrier(
         carriers,
@@ -236,14 +239,18 @@ export default class Equipment {
         alarmRecordList,
       )
 
-      sendIpcToRenderer(ipcNames.renderer.readData, this.data, dataList)
+      if (this.hasIllegalCarrier) sendIpcToRenderer(ipcNames.renderer.detectedWithIllegalCarrier, this.data, dataList)
+      else sendIpcToRenderer(ipcNames.renderer.detectedWithNormalCarrier, this.data, dataList)
     }
 
     // 如果是进入状态
     if (this.isEnter) {
       const dataList = await insertRfidRecordList(this.data, carriers, registrationCarrierRecordList, AccessDirection.IN, [])
-      sendIpcToRenderer(ipcNames.renderer.readData, this.data, dataList)
+      sendIpcToRenderer(ipcNames.renderer.detectedWithNormalCarrier, this.data, dataList)
     }
+
+    // 检测结束
+    sendIpcToRenderer(ipcNames.renderer.detectionComplete, this.data)
   }
 
   // 处理读到 EPC 标签的上报
@@ -262,12 +269,13 @@ export default class Equipment {
 
     // 获取已登记的载体
     const registerCarrierList = registrationCarrierRecordList.map(item => item.docRfid)
-    // 是否有未登记的载体
-    const hasUnregistered = carriers.some(carrier => !registerCarrierList.includes(carrier.docRfid))
+    // 是否有违规的载体
+    const hasIllegalCarrier = carriers.some(carrier => !registerCarrierList.includes(carrier.docRfid))
 
-    if (hasUnregistered) {
+    if (hasIllegalCarrier) {
+      this.hasIllegalCarrier = true
       this.handleSetGPO(GPOIndex.ONE, true)
-      sendIpcToRenderer(ipcNames.renderer.detectAlarm, this.data)
+      sendIpcToRenderer(ipcNames.renderer.detectedWithIllegalCarrier, this.data)
     }
   }
 
@@ -290,6 +298,9 @@ export default class Equipment {
 
   // 设置 GPO 触发
   handleSetGPO(index: GPOIndex, status: boolean) {
+    // 如果未开启报警声音，则跳过
+    if (!alarmSound) return
+
     const command = generateSetGPOCommand(index, status)
     this.write(command)
   }

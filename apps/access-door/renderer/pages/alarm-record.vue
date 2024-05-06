@@ -4,16 +4,16 @@ import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
 import { rendererInvoke } from '@smart-cabinet/utils/renderer'
 import { Modal } from 'ant-design-vue'
-import useDoor from '@/hooks/useDoor'
+import useEquipment from '@/hooks/useEquipment'
 import useListenAction from '@/hooks/useListenAction'
 import { AccessTimeRange, OperationStatus } from '~/enums'
 import { useStore } from '@/store'
 import ipcNames from '#/ipcNames'
 
 const store = useStore()
-const { departmentList, equipmentList } = storeToRefs(store)
-const { selectAlarmRecordList } = useDoor()
-const { operationTimeoutCountdown } = useListenAction()
+const { departmentList } = storeToRefs(store)
+const { selectAlarmRecordList } = useEquipment()
+const { operationTimeoutCountdown,startMountHook } = useListenAction()
 
 const data = ref<DoorAlarmrecordProps[]>([])
 const total = ref(0)
@@ -146,6 +146,8 @@ async function handleConfirmAll() {
 onMounted(() => {
   handleInit()
 })
+
+startMountHook()
 </script>
 
 <template>
@@ -232,4 +234,4 @@ onMounted(() => {
       </a-table>
     </div>
   </div>
-</template>
+</template>@/hooks/useEquipment

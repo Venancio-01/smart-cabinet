@@ -2,12 +2,12 @@
 import type { DoorRfidrecord, DoorRfidrecordProps } from '@smart-cabinet/database'
 import type { ColumnsType } from 'ant-design-vue/lib/table/interface'
 import dayjs from 'dayjs'
-import useDoor from '@/hooks/useDoor'
+import useEquipment from '@/hooks/useEquipment'
 import useListenAction from '@/hooks/useListenAction'
 import { AccessDirection, AccessTimeRange } from '~/enums'
 
-const { selectRfidRecordList } = useDoor()
-const { operationTimeoutCountdown } = useListenAction()
+const { selectRfidRecordList } = useEquipment()
+const { operationTimeoutCountdown, startMountHook } = useListenAction()
 
 const data = ref<DoorRfidrecordProps[]>([])
 const total = ref(0)
@@ -92,6 +92,8 @@ function handleResizeColumn(width: any, column: any) {
 onMounted(() => {
   handleInit()
 })
+
+startMountHook()
 </script>
 
 <template>
@@ -171,4 +173,4 @@ onMounted(() => {
       </a-table>
     </div>
   </div>
-</template>
+</template>@/hooks/useEquipment

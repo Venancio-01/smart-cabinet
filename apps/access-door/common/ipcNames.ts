@@ -1,8 +1,10 @@
 const ipcNames = {
   renderer: {
-    triggerStart: 'trigger-start',
-    readData: 'read-data',
-    detectAlarm: 'detect-alarm',
+    detectionStart: 'renderer:detection-start',
+    detectionComplete: 'renderer:detection-complete',
+    detectedNoException: 'renderer:detected-no-exception',
+    detectedWithNormalCarrier: 'renderer:detected-with-normal-carrier',
+    detectedWithIllegalCarrier: 'renderer:detected-with-illegal-carrier',
   },
   accessDoor: {
     getIsControlEquipment: 'get-is-control-equipment',
@@ -34,6 +36,10 @@ const ipcNames = {
     get: 'store:get',
     set: 'store:set',
     delete: 'store:delete',
+  },
+  config: {
+    getAlarmSound: 'config:get-alarm-sound',
+    setAlarmSound: 'config:set-alarm-sound',
   },
 }
 

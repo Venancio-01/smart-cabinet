@@ -1,8 +1,8 @@
-import type { DoorEquipment, DoorRfidrecord } from '@smart-cabinet/database'
+import type { DoorEquipment } from '@smart-cabinet/database'
 import { rendererInvoke, rendererOn } from '@smart-cabinet/utils/renderer'
 import useListenAction from './useListenAction'
 import { useStore } from '@/store'
-import { type AccessDirection, ActiveEquipmentState, GPIIndex } from '~/enums'
+import { type AccessDirection, EquipmentDetectionState, GPIIndex } from '~/enums'
 import ipcNames from '#/ipcNames'
 
 let timer: number | null = null
@@ -10,7 +10,7 @@ let timer: number | null = null
 export default function () {
   const router = useRouter()
   const store = useStore()
-  const { setEquipment, setActiveEquipmentList } = store
+  const { setEquipment, setEquipmentList, setActiveEquipmentList } = store
   const { equipmentList, activeEquipmentList } = storeToRefs(store)
   const { resetCountdown } = useListenAction()
 
@@ -58,88 +58,45 @@ export default function () {
    * @return {*}
    */
   const regsterAlarmsListener = () => {
-    // 监听红外开始触发
-    rendererOn(ipcNames.renderer.triggerStart, (_: unknown, equipment: DoorEquipment, direction: AccessDirection) => {
-      const existActiveEquipmentIndex = activeEquipmentList.value.findIndex(item => item.equipmentid === equipment.equipmentid)
-      const isExist = existActiveEquipmentIndex > -1
-
-      if (isExist) {
-        const equipmentList = activeEquipmentList.value.map((item) => {
-          if (item.equipmentid === equipment.equipmentid) {
-            return { ...equipment, direction, state: ActiveEquipmentState.CHECKING, loading: true }
-          }
-          return item
-        })
-        setActiveEquipmentList(equipmentList)
-      }
-      else {
-        const equipmentList = [...activeEquipmentList.value, { ...equipment, direction, state: ActiveEquipmentState.CHECKING, loading: true }]
-        setActiveEquipmentList(equipmentList)
-      }
-
-      // 重置操作倒计时
-      resetCountdown()
-
-      router.replace({
-        path: '/multiple-alarm',
+    // 检测开始触发
+    rendererOn(ipcNames.renderer.detecting, (_: unknown, equipment: DoorEquipment, direction: AccessDirection) => {
+      const list = equipmentList.value.map((item) => {
+        if (item.equipmentid === equipment.equipmentid) {
+          return { ...item, ...equipment, direction, detectionState: EquipmentDetectionState.DETECTING }
+        }
+        return item
       })
+      setEquipmentList(list)
     })
 
-    // 监听检测到报警
-    rendererOn(ipcNames.renderer.detectAlarm, (_: unknown, equipment: DoorEquipment) => {
-      const existActiveEquipment = activeEquipmentList.value.find(item => item.equipmentid === equipment.equipmentid)
-      const isExist = !!existActiveEquipment
-
-      if (isExist) {
-        const equipmentList = activeEquipmentList.value.map((item) => {
-          if (item.equipmentid === equipment.equipmentid) {
-            return { ...equipment, state: ActiveEquipmentState.ALARMING, loading: true }
-          }
-          return item
-        })
-        setActiveEquipmentList(equipmentList)
-      }
-      else {
-        const equipmentList = [...activeEquipmentList.value, { ...equipment, state: ActiveEquipmentState.ALARMING, loading: true }]
-        setActiveEquipmentList(equipmentList)
-      }
-
-      // 重置操作倒计时
-      resetCountdown()
-
-      router.replace({
-        path: '/multiple-alarm',
+    rendererOn(ipcNames.renderer.detectedWithNormalCarrier, (_: unknown, equipment: DoorEquipment) => {
+      const list = equipmentList.value.map((item) => {
+        if (item.equipmentid === equipment.equipmentid) {
+          return { ...item, ...equipment, detectionState: EquipmentDetectionState.DETECTED_WITH_NORMAL_CARRIER }
+        }
+        return item
       })
+      setEquipmentList(list)
     })
 
-    // 监听读取完成数据
-    rendererOn(ipcNames.renderer.readData, async (_: unknown, equipment: DoorEquipment, data: DoorRfidrecord[]) => {
-      const existActiveEquipment = activeEquipmentList.value.find(item => item.equipmentid === equipment.equipmentid)
-      const isExist = !!existActiveEquipment
-
-      if (isExist) {
-        const isCheckingState = existActiveEquipment.state === ActiveEquipmentState.CHECKING
-        const state = isCheckingState ? ActiveEquipmentState.CHECKED : existActiveEquipment.state
-
-        const equipmentList = activeEquipmentList.value.map((item) => {
-          if (item.equipmentid === equipment.equipmentid) {
-            return { ...equipment, readRecordList: data, state, loading: false }
-          }
-          return item
-        })
-        setActiveEquipmentList(equipmentList)
-      }
-      else {
-        const equipmentList = [...activeEquipmentList.value, { ...equipment, readRecordList: data, state: ActiveEquipmentState.CHECKED, loading: false }]
-        setActiveEquipmentList(equipmentList)
-      }
-
-      // 重置操作倒计时
-      resetCountdown()
-
-      router.replace({
-        path: '/multiple-alarm',
+    rendererOn(ipcNames.renderer.detectedWithIllegalCarrier, (_: unknown, equipment: DoorEquipment) => {
+      const list = equipmentList.value.map((item) => {
+        if (item.equipmentid === equipment.equipmentid) {
+          return { ...item, ...equipment, detectionState: EquipmentDetectionState.DETECTED_WITH_ILLEGAL_CARRIER }
+        }
+        return item
       })
+      setEquipmentList(list)
+    })
+
+    rendererOn(ipcNames.renderer.detectedNoException, async (_: unknown, equipment: DoorEquipment) => {
+      const list = equipmentList.value.map((item) => {
+        if (item.equipmentid === equipment.equipmentid) {
+          return { ...item, ...equipment, detectionState: EquipmentDetectionState.DETECTED_NO_EXCEPTION }
+        }
+        return item
+      })
+      setEquipmentList(list)
     })
   }
 

@@ -85,3 +85,16 @@ export enum ActiveEquipmentState {
   ALARMING,
   VIEWING,
 }
+
+// 设备检测状态
+export enum EquipmentDetectionState {
+  DETECTION_START,
+  DETECTION_COMPLETE,
+}
+
+// 设备检测结果
+export enum EquipmentDetectionResult {
+  EMPTY,
+  NORMAL,
+  ILLEGAL,
+}

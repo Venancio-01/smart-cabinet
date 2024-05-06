@@ -34,6 +34,9 @@ declare global {
 
   type EquipmentProps = DoorEquipment & {
     rfidIsConnected: boolean
+    detectionState?: EquipmentDetectionState
+    direction?: AccessDirection
+    timer: Window.timer
   }
 
   type AlarmEquipmentProps = DoorEquipment & {

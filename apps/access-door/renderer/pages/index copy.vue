@@ -1,0 +1,52 @@
+<script lang="ts" setup>
+import { CurrentTime, VTitle } from '@smart-cabinet/components'
+import { SYSTEM_NAME } from '@/config'
+import { useStore } from '@/store'
+import useEquipment from '@/hooks/useEquipment'
+import DeviceStatus from '@/components/DeviceStatus.vue'
+
+const store = useStore()
+const { isControlEquipment, equipmentList, controlEquipment, deviceNotFound } = storeToRefs(store)
+const { selectUnviewedAlarmRecordCount } = useEquipment()
+
+const deviceName = computed(() => {
+  if (isControlEquipment.value) return controlEquipment.value?.equipmentName
+  return equipmentList.value[0]?.equipmentName
+})
+
+const titleClass = 'text-center select-none font-thin tracking-[10px] text-light'
+
+onMounted(() => {
+  selectUnviewedAlarmRecordCount()
+})
+</script>
+
+<template>
+  <div class="h-full">
+    <!-- 当前时间 -->
+    <CurrentTime class="fixed top-[40px] right-[40px]" />
+
+    <!-- 系统名 -->
+    <VTitle :title="SYSTEM_NAME" p="t-34" />
+
+    <!-- 设备名 -->
+    <div :class="titleClass" text="5xl" p="t-28">
+      <span v-if="deviceNotFound" text-error>未连接通道门</span>
+      <span v-else>{{ deviceName }}</span>
+    </div>
+
+    <BaseSetting />
+
+    <!-- 设备状态 -->
+    <DeviceStatus class="fixed bottom-[40px] right-[40px]" />
+  </div>
+</template>
+
+<style scoped>
+.card {
+  padding: 24px;
+  border-radius: 30px;
+  background: rgba(250, 250, 250, 0.2);
+  box-shadow: 15px 15px 24px #bebebe;
+}
+</style>@/hooks/useEquipment

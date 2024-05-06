@@ -4,6 +4,7 @@ import { compareActivationCode, generateActivationCode, generateRegistrationCode
 import { ipcMain } from 'electron'
 import ipcNames from '#/ipcNames'
 
+
 export function registerSysModule() {
   ipcMain.handle(ipcNames.sys.selectSysDeptList, async (_, args) => {
     return selectSysDeptList(args)

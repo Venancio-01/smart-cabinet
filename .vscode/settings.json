@@ -15,7 +15,7 @@
   "less.validate": false,
   "scss.validate": false,
   "files.exclude": {
-    "**/access-door": true,
+    // "**/access-door": true,
     // "**/smart-cabinet": true,
     "resources": true
   }

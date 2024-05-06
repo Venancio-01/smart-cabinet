@@ -1,12 +1,12 @@
 import useSys from '@/hooks/useSys'
-import useDoor from '@/hooks/useDoor'
+import useEquipment from '@/hooks/useEquipment'
 import useRfid from '@/hooks/useRfid'
 import useNetwork from '@/hooks/useNetwork'
 import { checkActivationCode } from '@/features/activation'
 
 export default function () {
   const { initSysData } = useSys()
-  const { initAccessDoorData } = useDoor()
+  const { initAccessDoorData } = useEquipment()
   const { startGetNetworkConnectionStatus, stopGetNetworkConnectionStatus } = useNetwork()
   const { startGetRfidConnectionStatus, stopGetRfidConnectionStatus, regsterAlarmsListener } = useRfid()
 

@@ -9,6 +9,10 @@ object {
   vertical-align: initial;
 }
 
+button {
+  outline: none;
+}
+
 /* lcd字体 */
 @font-face {
   font-family: 'LCDFont';
