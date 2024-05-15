@@ -16,6 +16,7 @@ declare global {
 
   interface ReadRecordQueryProps {
     carrierName: string
+    equipmentName?: string
     deptId?: string
     type?: AccessDirection
     timeRange?: AccessTimeRange
@@ -23,6 +24,7 @@ declare global {
 
   interface AlarmQueryProps {
     carrierName?: string
+    equipmentName?: number
     deptId?: number
     timeRange?: AccessTimeRange
   }
@@ -34,9 +36,11 @@ declare global {
 
   type EquipmentProps = DoorEquipment & {
     rfidIsConnected: boolean
-    detectionState?: EquipmentDetectionState
-    direction?: AccessDirection
-    timer: Window.timer
+    detectionResult: EquipmentDetectionResult | null
+    detectionState: EquipmentDetectionState | null
+    direction: AccessDirection | null
+    isAlerting: boolean
+    rfidRecordList: DoorRfidrecord[]
   }
 
   type AlarmEquipmentProps = DoorEquipment & {

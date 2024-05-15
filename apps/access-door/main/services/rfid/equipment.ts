@@ -15,7 +15,7 @@ import { AccessDirection, GPOIndex, OperationStatus } from '~/enums'
 import ipcNames from '#/ipcNames'
 
 export default class Equipment {
-  data: DoorEquipment
+  equipment: DoorEquipment
   address = ''
   port = 8160
   socket: Socket | null = null
@@ -35,10 +35,13 @@ export default class Equipment {
   // 检测到有违规载体
   hasIllegalCarrier = false
 
+  // 重置定时器
+  resetUITimer = null
+
   constructor(option: { address: string, port: number, data: DoorEquipment }) {
     this.address = option.address
     this.port = option?.port
-    this.data = option.data
+    this.equipment = option.data
   }
 
   async connect() {
@@ -171,7 +174,13 @@ export default class Equipment {
     // 出入方向
     const accessDirection = this.isEnter ? AccessDirection.IN : this.isDepart ? AccessDirection.OUT : null
     // 检测开始
-    sendIpcToRenderer(ipcNames.renderer.detectionStart, this.data, accessDirection)
+    sendIpcToRenderer(ipcNames.renderer.detectionStart, this.equipment, accessDirection)
+
+    // 无触发 5 秒后重置 UI
+    clearTimeout(this.resetUITimer)
+    this.resetUITimer = setTimeout(() => {
+      sendIpcToRenderer(ipcNames.renderer.resetUI, this.equipment)
+    }, 5000)
   }
 
   // 处理读到 GPI 停止触发的上报
@@ -188,8 +197,7 @@ export default class Equipment {
 
     // 如果没有读到数据库中登记过的载体，则跳过
     if (carriers.length === 0) {
-      sendIpcToRenderer(ipcNames.renderer.detectedNoException, this.data, [])
-      sendIpcToRenderer(ipcNames.renderer.detectionComplete, this.data)
+      sendIpcToRenderer(ipcNames.renderer.detectionComplete, this.equipment, [])
       return
     }
 
@@ -210,8 +218,8 @@ export default class Equipment {
       // 生成报警记录
       const alarmRecordList: Partial<DoorAlarmrecord>[] = abnormalCarrierList.map((carrier) => {
         return {
-          equipmentId: `${this.data.equipmentid}`,
-          equipmentName: this.data.equipmentName,
+          equipmentId: `${this.equipment.equipmentid}`,
+          equipmentName: this.equipment.equipmentName,
           carrierId: `${carrier.docId}`,
           carrierRfid: carrier.docRfid,
           carrierName: carrier.docName,
@@ -232,25 +240,21 @@ export default class Equipment {
       }
 
       const dataList = await insertRfidRecordList(
-        this.data,
+        this.equipment,
         carriers,
         registrationCarrierRecordList,
         AccessDirection.OUT,
         alarmRecordList,
       )
 
-      if (this.hasIllegalCarrier) sendIpcToRenderer(ipcNames.renderer.detectedWithIllegalCarrier, this.data, dataList)
-      else sendIpcToRenderer(ipcNames.renderer.detectedWithNormalCarrier, this.data, dataList)
+      sendIpcToRenderer(ipcNames.renderer.detectionComplete, this.equipment, dataList)
     }
 
     // 如果是进入状态
     if (this.isEnter) {
-      const dataList = await insertRfidRecordList(this.data, carriers, registrationCarrierRecordList, AccessDirection.IN, [])
-      sendIpcToRenderer(ipcNames.renderer.detectedWithNormalCarrier, this.data, dataList)
+      const dataList = await insertRfidRecordList(this.equipment, carriers, registrationCarrierRecordList, AccessDirection.IN, [])
+      sendIpcToRenderer(ipcNames.renderer.detectionComplete, this.equipment, dataList)
     }
-
-    // 检测结束
-    sendIpcToRenderer(ipcNames.renderer.detectionComplete, this.data)
   }
 
   // 处理读到 EPC 标签的上报
@@ -275,7 +279,7 @@ export default class Equipment {
     if (hasIllegalCarrier) {
       this.hasIllegalCarrier = true
       this.handleSetGPO(GPOIndex.ONE, true)
-      sendIpcToRenderer(ipcNames.renderer.detectedWithIllegalCarrier, this.data)
+      sendIpcToRenderer(ipcNames.renderer.detectionException, this.equipment)
     }
   }
 

@@ -67,13 +67,13 @@ export function disconnectAllRfid() {
  * @param {DoorEquipment} equipment
  * @return {*}
  */
-function getRfidConnectionStatus(equipment: DoorEquipment) {
-  return equipmentMap?.[equipment.equipmentAddr ?? '']?.getSocketStatus() || false
+function getRfidConnectionStatus(equipmentAddr: string) {
+  return equipmentMap?.[equipmentAddr ?? '']?.getSocketStatus() || false
 }
 
 export function registerRfidService() {
-  ipcMain.handle(ipcNames.rfid.getRfidConnectionStatus, async (_, equipment: DoorEquipment) => {
-    return getRfidConnectionStatus(equipment)
+  ipcMain.handle(ipcNames.rfid.getRfidConnectionStatus, async (_, equipmentAddr: string) => {
+    return getRfidConnectionStatus(equipmentAddr)
   })
 
   ipcMain.handle(ipcNames.rfid.handleSetGPO, (_, { addr, index, status }) => {

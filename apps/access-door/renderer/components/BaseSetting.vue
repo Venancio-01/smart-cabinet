@@ -26,14 +26,16 @@ onMounted(async () => {
 </script>
 
 <template>
-  <VDialog v-model:visible="settingVisible" title="设置">
-    <div p="x-20px y-20px">
-      <div flex="~ justify-between">
-        <span>是否开启报警铃声</span>
-        <div><a-switch v-model:checked="checked" @change="handleChange" /></div>
+  <div>
+    <VDialog v-model:visible="settingVisible" title="设置">
+      <div p="x-20px y-20px">
+        <div flex="~ justify-between">
+          <span>是否开启报警铃声</span>
+          <div><a-switch v-model:checked="checked" @change="handleChange" /></div>
+        </div>
       </div>
-    </div>
-    <template #footer />
-  </VDialog>
-  <VIcon class="fixed bottom-40px left-40px text-icon-normal text-white cursor-pointer" icon="settings" @click="handleOpenSettingModal" />
+      <template #footer />
+    </VDialog>
+    <VIcon class="fixed bottom-40px left-40px text-icon-normal text-white cursor-pointer" icon="settings" @click="handleOpenSettingModal" />
+  </div>
 </template>

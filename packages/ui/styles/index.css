@@ -65,7 +65,7 @@ body {
 }
 
 .wrap-padding {
-  @apply px-[80px] py-[60px] box-border;
+  @apply px-[40px] py-[40px] box-border;
 }
 
 .ant-form-item-label>label {

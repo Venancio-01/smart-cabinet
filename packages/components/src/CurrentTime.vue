@@ -2,13 +2,15 @@
 import dayjs from 'dayjs'
 import { onMounted, onUnmounted, ref } from 'vue'
 
-const currentTime = ref<string | null>(null)
+const currentTime = ref<string>()
 const timer = ref<number | null>(null)
 
+function generateCurrentTime() {
+  currentTime.value = dayjs().format('HH:mm:ss')
+}
+
 function startGenerateCurrentTime() {
-  timer.value = window.setInterval(() => {
-    currentTime.value = dayjs().format('HH:mm:ss')
-  }, 1000)
+  timer.value = window.setInterval(generateCurrentTime, 1000)
 }
 
 function stopGenerateCurrentTime() {
@@ -16,6 +18,7 @@ function stopGenerateCurrentTime() {
 }
 
 onMounted(() => {
+  generateCurrentTime()
   startGenerateCurrentTime()
 })
 

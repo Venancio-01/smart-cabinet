@@ -50,6 +50,7 @@ export default function () {
         in: equipmentList.value.map(item => `${item.equipmentid}`),
       },
       carrierName: condition?.carrierName ? { contains: condition.carrierName } : undefined,
+      equipmentName: condition?.equipmentName ? { contains: condition.equipmentName } : undefined,
       creatorTime: condition?.timeRange ? timeRangeMap?.[condition.timeRange] : undefined,
     }
 
@@ -111,6 +112,7 @@ export default function () {
   }
 
   return {
+    equipmentList,
     initAccessDoorData,
     selectRfidRecordList,
     selectAlarmRecordList,

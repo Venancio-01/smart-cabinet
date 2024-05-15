@@ -108,7 +108,7 @@ importers:
         version: 4.1.1
       ant-design-vue:
         specifier: ^4.1.1
-        version: 4.1.1(vue@3.4.15)
+        version: 4.2.1(vue@3.4.15)
       daisyui:
         specifier: ^3.9.4
         version: 3.9.4
@@ -3866,8 +3866,8 @@ packages:
       warning: 4.0.3
     dev: true
 
-  /ant-design-vue@4.1.1(vue@3.4.15):
-    resolution: {integrity: sha512-YLhDHhGvegGEczxDqIiiZIJsTHh3dge5Rf94n17sp24gAcey0hDaLtYWM0Z/+N8EheAcM0w3fePvYGMxwGxSDg==}
+  /ant-design-vue@4.2.1(vue@3.4.15):
+    resolution: {integrity: sha512-3u6fmfCEJ5AFTsYhogP8lJ/vcqiAJO16o+gGQkWYRGLl0NxmY4hje4cPyv+pcxpeJgcG0vNEmkb1vVHKcnxd+g==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       vue: '>=3.2.0'

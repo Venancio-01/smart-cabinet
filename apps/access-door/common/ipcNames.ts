@@ -2,9 +2,8 @@ const ipcNames = {
   renderer: {
     detectionStart: 'renderer:detection-start',
     detectionComplete: 'renderer:detection-complete',
-    detectedNoException: 'renderer:detected-no-exception',
-    detectedWithNormalCarrier: 'renderer:detected-with-normal-carrier',
-    detectedWithIllegalCarrier: 'renderer:detected-with-illegal-carrier',
+    detectionException: 'renderer:detection-exception',
+    resetUI: 'renderer:reset-ui',
   },
   accessDoor: {
     getIsControlEquipment: 'get-is-control-equipment',

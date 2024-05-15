@@ -1,8 +1,8 @@
-import type { DoorEquipment } from '@smart-cabinet/database'
+import type { DoorEquipment, DoorRfidrecord } from '@smart-cabinet/database'
 import { rendererInvoke, rendererOn } from '@smart-cabinet/utils/renderer'
 import useListenAction from './useListenAction'
 import { useStore } from '@/store'
-import { type AccessDirection, EquipmentDetectionState, GPIIndex } from '~/enums'
+import { type AccessDirection, EquipmentDetectionResult, EquipmentDetectionState, GPIIndex } from '~/enums'
 import ipcNames from '#/ipcNames'
 
 let timer: number | null = null
@@ -22,7 +22,7 @@ export default function () {
     const getRfiRfidConnectionStatus = async () => {
       for (let index = 0; index < equipmentList.value.length; index++) {
         const equipment = toRaw(equipmentList.value[index])
-        const status = await rendererInvoke(ipcNames.rfid.getRfidConnectionStatus, equipment)
+        const status = await rendererInvoke(ipcNames.rfid.getRfidConnectionStatus, equipment.equipmentAddr)
         setEquipment(equipment.equipmentid, {
           rfidIsConnected: status,
         })
@@ -59,40 +59,52 @@ export default function () {
    */
   const regsterAlarmsListener = () => {
     // 检测开始触发
-    rendererOn(ipcNames.renderer.detecting, (_: unknown, equipment: DoorEquipment, direction: AccessDirection) => {
+    rendererOn(ipcNames.renderer.detectionStart, (_: unknown, equipment: DoorEquipment, direction: AccessDirection) => {
+      console.log('detectionStart', equipment, direction)
       const list = equipmentList.value.map((item) => {
         if (item.equipmentid === equipment.equipmentid) {
-          return { ...item, ...equipment, direction, detectionState: EquipmentDetectionState.DETECTING }
+          return { ...item, ...equipment, direction, detectionState: EquipmentDetectionState.DETECTION_START }
         }
         return item
       })
       setEquipmentList(list)
     })
 
-    rendererOn(ipcNames.renderer.detectedWithNormalCarrier, (_: unknown, equipment: DoorEquipment) => {
+    // 检测结束触发
+    rendererOn(ipcNames.renderer.detectionComplete, (_: unknown, equipment: DoorEquipment, rfidRecordList: DoorRfidrecord[]) => {
+      console.log('detectionComplete', equipment, rfidRecordList)
       const list = equipmentList.value.map((item) => {
         if (item.equipmentid === equipment.equipmentid) {
-          return { ...item, ...equipment, detectionState: EquipmentDetectionState.DETECTED_WITH_NORMAL_CARRIER }
+          let detectionResult = rfidRecordList.length === 0 ? EquipmentDetectionResult.EMPTY : EquipmentDetectionResult.NORMAL
+          if (item.detectionResult === EquipmentDetectionResult.ILLEGAL) {
+            detectionResult = EquipmentDetectionResult.ILLEGAL
+          }
+
+          return { ...item, ...equipment, detectionState: EquipmentDetectionState.DETECTION_COMPLETE, detectionResult, rfidRecordList }
         }
         return item
       })
       setEquipmentList(list)
     })
 
-    rendererOn(ipcNames.renderer.detectedWithIllegalCarrier, (_: unknown, equipment: DoorEquipment) => {
+    // 检测异常触发
+    rendererOn(ipcNames.renderer.detectionException, (_: unknown, equipment: DoorEquipment) => {
+      console.log('detectionException', equipment)
       const list = equipmentList.value.map((item) => {
         if (item.equipmentid === equipment.equipmentid) {
-          return { ...item, ...equipment, detectionState: EquipmentDetectionState.DETECTED_WITH_ILLEGAL_CARRIER }
+          return { ...item, ...equipment, detectionResult: EquipmentDetectionResult.ILLEGAL, isAlerting: true }
         }
         return item
       })
       setEquipmentList(list)
     })
 
-    rendererOn(ipcNames.renderer.detectedNoException, async (_: unknown, equipment: DoorEquipment) => {
+    // 重置 UI
+    rendererOn(ipcNames.renderer.resetUI, (_: unknown, equipment: DoorEquipment) => {
       const list = equipmentList.value.map((item) => {
         if (item.equipmentid === equipment.equipmentid) {
-          return { ...item, ...equipment, detectionState: EquipmentDetectionState.DETECTED_NO_EXCEPTION }
+          const detectionResult = item.detectionResult === EquipmentDetectionResult.ILLEGAL ? EquipmentDetectionResult.ILLEGAL : null
+          return { ...item, ...equipment, detectionState: null, detectionResult }
         }
         return item
       })

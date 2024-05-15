@@ -13,12 +13,14 @@ import ipcNames from '#/ipcNames'
 const store = useStore()
 const { departmentList } = storeToRefs(store)
 const { selectAlarmRecordList } = useEquipment()
-const { operationTimeoutCountdown,startMountHook } = useListenAction()
+const { operationTimeoutCountdown, startMountHook } = useListenAction()
+const { equipmentList } = useEquipment()
 
 const data = ref<DoorAlarmrecordProps[]>([])
 const total = ref(0)
 const condition = reactive<AlarmQueryProps>({
   carrierName: '',
+  equipmentName: undefined,
   deptId: undefined,
   timeRange: undefined,
 })
@@ -48,6 +50,7 @@ async function handleQuery() {
 async function handleInit() {
   pagination.page = 1
   condition.carrierName = ''
+  condition.equipmentName = undefined
   condition.deptId = undefined
   condition.timeRange = undefined
   data.value = []
@@ -173,6 +176,17 @@ startMountHook()
       >
         <a-form-item label="载体名称" name="title">
           <a-input v-model:value="condition.carrierName" placeholder="请输入载体名称" />
+        </a-form-item>
+
+        <a-form-item label="检测设备" name="equipmentName">
+          <a-select v-model:value="condition.equipmentName" allow-clear placeholder="请选择检测设备" @change="handleQuery">
+            <a-select-option value="">
+              全部
+            </a-select-option>
+            <a-select-option v-for="item in equipmentList" :key="item.equipmentAddr" :value="item.equipmentName">
+              {{ item.equipmentName }}
+            </a-select-option>
+          </a-select>
         </a-form-item>
 
         <a-form-item label="所属部门" name="title">
