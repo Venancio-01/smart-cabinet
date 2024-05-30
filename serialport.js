@@ -24,7 +24,7 @@ eventEmitter.on('close-door', () => {
 
 
 function fun0() {
-  const command = Buffer.from('A5 5A 03 81 00 01', 'hex')
+  const command = Buffer.from('A55A03810001', 'hex')
   port.write(command, (err) => {
     if (err) {
       console.error('Error writing to serial port:', err)
