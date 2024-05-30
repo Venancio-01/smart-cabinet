@@ -4,7 +4,7 @@ const { generateCRC16Code, generateAntennaCommand, MessageQueue } = require('./u
 const logger = require('./logger');
 
 const port = new SerialPort({
-  path: '/dev/ttyS3',
+  path: '/dev/ttyS1',
   baudRate: 115200,
 })
 const parser = new ReadlineParser()
