@@ -10,10 +10,12 @@ const gpio23 = new Gpio({
     setInterval(function() {
       gpio23.read()
         .then((state) => {
-          console.log('pin 23 -' + state); //state of pin 23
           if (prevState === 0 && state === 1) {
+            console.log('pin 23 -' + state)
             eventEmitter.emit('startRfidReading');
           }
+
+          prevState = state;
         });
     }, 200)
   }

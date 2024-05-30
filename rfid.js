@@ -34,6 +34,7 @@ function writeCommand(command) {
 const readTime = 5 * 1000 // 10s
 let timer = null
 function startReading() {
+  console.log('Start reading RFID...')
   const COMMAND_HEADER = '5A'
   const commandBody = `000102100008${generateAntennaCommand()}01020006`
   const checkCode = generateCRC16Code(commandBody)
@@ -48,6 +49,7 @@ function startReading() {
 }
 
 function stopReading() {
+  console.log('Stop reading RFID')
   const command = Buffer.from('5A000102FF0000885A', 'hex')
   writeCommand(command)
   getRfidTIDList()
