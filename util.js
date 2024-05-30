@@ -45,7 +45,7 @@ function generateCRC16Code(command) {
     const chChar = buffer[i];
     wCRC = ((wCRC << 8) ^ CRC_CCITT_table[((wCRC >> 8) ^ chChar) & 0xFF]) & 0xFFFF;
   }
-  return wCRC.toString('hex');
+  return wCRC.toString(16);
 }
 
 // 串口消息队列
