@@ -50,20 +50,20 @@ function generateCRC16Code(command) {
 
 // 串口消息队列
 class MessageQueue {
-  MAX_QUEUE_LENGTH = 1000
+  MAX_QUEUE_LENGTH = 10000
   constructor() {
-    this.queue = [];
+    this.data = '';
   }
 
   add(message) {
-    if (this.queue.length >= this.MAX_QUEUE_LENGTH) {
-      this.queue.shift(); // 删除前面的旧数据
+    if (this.data.length >= this.MAX_QUEUE_LENGTH) {
+      this.data.substring(0, 5000); // 删除前面的旧数据
     }
-    this.queue.push(message);
+    this.data += message;
   }
 
-  getQueue() {
-    return this.queue
+  getData() {
+    return this.data
   }
 }
 
@@ -78,12 +78,49 @@ function generateScreenCommandBody(str) {
   return hexString
 }
 
-generateScreenCommandBody('1234')
+function parseRFIDReportData(data) {
+  const PREFIX = '5a00011200'
+  const arr = data.split(PREFIX)
+
+  const parseArr = arr.reduce((acc, cur) => {
+    if (cur.startsWith('00')) {
+      const length = Number.parseInt(`0x${cur.substring(0, 4)}`, 16) * 2
+      acc.push(`${PREFIX}${cur.substring(0, 4 + length)}`)
+    }
+
+    return acc
+  }, [])
+
+  return parseArr
+}
+
+function getTIDByReportData(data ) {
+  let str = data
+  const PREFIX = '5a00011200'
+  const TIDLengthCommandLength = 4
+  const MidCommandLength = 16
+
+  str = str.replace(PREFIX, '')
+
+  const EPCLength = Number.parseInt(`0x${str.substring(4, 8)}`, 16) * 2
+  const TIDLength
+    = Number.parseInt(`0x${str.substring(8 + EPCLength + MidCommandLength, 8 + EPCLength + MidCommandLength + TIDLengthCommandLength)}`, 16)
+    * 2
+
+  const TID = str.substring(
+    8 + EPCLength + MidCommandLength + TIDLengthCommandLength,
+    8 + EPCLength + MidCommandLength + TIDLengthCommandLength + TIDLength,
+  )
+
+  return TID
+}
 
 
 module.exports = {
   generateAntennaCommand,
   generateCRC16Code,
   generateScreenCommandBody,
+  parseRFIDReportData,
+  getTIDByReportData,
   MessageQueue
 }

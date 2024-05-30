@@ -1,14 +1,13 @@
-const { SerialPort, ReadlineParser } = require('serialport')
+const { SerialPort } = require('serialport')
 const eventEmitter = require('./emit');
 const { generateCRC16Code, generateAntennaCommand, MessageQueue } = require('./util')
 const logger = require('./logger');
+const { parseRFIDReportData, getTIDByReportData } = require('./util')
 
 const port = new SerialPort({
   path: '/dev/ttyS1',
   baudRate: 115200,
 })
-const parser = new ReadlineParser()
-port.pipe(parser)
 
 const messageQueue = new MessageQueue()
 
@@ -17,8 +16,9 @@ port.on('open', function() {
 })
 
 port.on('data', function(data) {
-  logger.info('Rfid Data:' + data.toString('hex'))
-  messageQueue.add(data)
+  const hexData = data.toString('hex')
+  logger.info('Rfid Data:' + hexData)
+  messageQueue.add(hexData)
 })
 
 function writeCommand(command) {
@@ -31,7 +31,7 @@ function writeCommand(command) {
   })
 }
 
-const readTime = 2 * 1000 // 10s
+const readTime = 5 * 1000 // 10s
 let timer = null
 function startReading() {
   const COMMAND_HEADER = '5A'
@@ -47,12 +47,19 @@ function startReading() {
   }, readTime)
 }
 
-
 function stopReading() {
   const command = Buffer.from('5A000102FF0000885A', 'hex')
   writeCommand(command)
+  getRfidTIDList()
 }
 
+function getRfidTIDList() {
+  const data = messageQueue.getData()
+  const reportData = parseRFIDReportData(data)
+  const TIDList = [...new Set(reportData.map((item) => getTIDByReportData(item)))]
+
+  console.log('🚀 - getRfidTIDList - TIDList:', TIDList)
+}
 
 eventEmitter.on('startRfidReading', startReading)
 
