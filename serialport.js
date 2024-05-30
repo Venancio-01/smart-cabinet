@@ -1,6 +1,8 @@
 const { SerialPort } = require('serialport')
 const eventEmitter = require('./emit');
 
+console.log('starting serialport')
+
 const port = new SerialPort({
   path: '/dev/ttyS3',
   baudRate: 115200,

@@ -1,6 +1,8 @@
 const Gpio = require('orange-pi-gpio');
 const eventEmitter = require('./emit');
 
+console.log('starting lock')
+
 let prevState = 0
 
 const gpio23 = new Gpio({

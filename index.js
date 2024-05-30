@@ -1,2 +1,2 @@
-require('./lock')
+// require('./lock')
 require('./serialport')
