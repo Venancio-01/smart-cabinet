@@ -37,31 +37,32 @@ function generateCommand(body) {
   const end = 'FFFF';
   const len = ((head.length + prefix.length + end.length + body.length) / 2 - 2).toString(16).padStart(2, '0');
 
-  console.log(head.length + prefix.length + end.length + body.length)
-
   const commandStr = `${head}${len}${prefix}${body}${end}`
   return Buffer.from(commandStr, 'hex')
 }
 
 
-function fun0() {
-  const command = Buffer.from('A55A03810001', 'hex')
-  writeCommand(command)
-}
+const block1 = '0001'
+const block2 = '0004'
+const block3 = '0010'
+const block4 = '0020'
+const block5 = '0030'
+const block6 = '0050'
+
 
 function fun1() {
-  // const command = Buffer.from('A55A 09 82 0001 31323334 FFFF', 'hex')
-  const command = generateCommand('000131323335')
+
+  const command = generateCommand(`${block1}31323345`)
   writeCommand(command)
 }
 
 function fun2() {
-  const command = Buffer.from('A55A11820004B2E2CAD4D1D0B7A2B0F3B6A8FFFF', 'hex')
+  const command = Buffer.from('A55A 11 82 0004 B2E2CAD4D1D0B7A2B0F3B6A8FFFF', 'hex')
   port.write(command)
 }
 
 function fun3() {
-  const command = Buffer.from('A55A05820010FFFF', 'hex')
+  const command = Buffer.from('A55A05 82 0010FFFF', 'hex')
   port.write(command)
 }
 
