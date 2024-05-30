@@ -23,6 +23,11 @@ eventEmitter.on('close-door', () => {
 })
 
 
+function fun0() {
+  const command = Buffer.from('A5 5A 03 81 00 01', 'hex')
+  port.write(command)
+}
+
 function fun1() {
   const command = Buffer.from('A5 5A 09 82 00 01 31 32 33 34 FF FF', 'hex')
   port.write(command)
@@ -55,4 +60,4 @@ function fun6() {
 
 
 
-fun1()
+fun0()
