@@ -35,7 +35,7 @@ function generateCommand(body) {
   const head = 'A55A';
   const prefix = '82';
   const end = 'FFFF';
-  const len = ((head.length + prefix.length + end.length + body.length) / 2).toString(16).padStart(2, '0');
+  const len = ((head.length + prefix.length + end.length + body.length) / 2 - 2).toString(16).padStart(2, '0');
 
   const commandStr = `${head}${len}${prefix}${body}${end}`
   return Buffer.from(commandStr, 'hex')
@@ -49,7 +49,7 @@ function fun0() {
 
 function fun1() {
   // const command = Buffer.from('A55A 09 82 0001 31323334 FFFF', 'hex')
-  const command = generateCommand('31323335')
+  const command = generateCommand('000131323335')
   writeCommand(command)
 }
 
