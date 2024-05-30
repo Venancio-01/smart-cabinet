@@ -52,6 +52,7 @@ const gpio23 = new Gpio({
 
 const gpio25 = new Gpio({
   pin: 25, mode: 'out', ready: () => {
+    gpio25.write(1);
     // setInterval(function() {
     //   gpio25.read()
     //     .then((state) => {
