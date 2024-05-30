@@ -18,7 +18,7 @@ port.on('data', function(data) {
 
 eventEmitter.on('updateScreen', (num) => {
   console.log('Update Screen', )
-  const str = `检测到rfid数量：${num}`
+  const str = `${num}`
   fun1(str)
 })
 
