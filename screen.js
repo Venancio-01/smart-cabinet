@@ -24,10 +24,10 @@ eventEmitter.on('close-door', () => {
 function writeCommand(command) {
   port.write(command, (err) => {
     if (err) {
-      console.error('Error writing to serial port:', err)
+      console.error('Error writing to screen serial port:', err)
     }
 
-    console.log('Command written to serial port', command.toString('hex'))
+    console.log('Command written to screen serial port', command.toString('hex'))
   })
 }
 

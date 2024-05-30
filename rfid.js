@@ -17,12 +17,21 @@ port.on('open', function() {
 })
 
 port.on('data', function(data) {
-  console.log('Rfid Data:' + data.toString('hex'))
   logger.info('Rfid Data:' + data.toString('hex'))
   messageQueue.add(data)
 })
 
-const readTime = 10 * 1000 // 10s
+function writeCommand(command) {
+  port.write(command, (err) => {
+    if (err) {
+      console.error('Error writing to rfid serial port:', err)
+    }
+
+    console.log('Command written to rfid serial port', command.toString('hex'))
+  })
+}
+
+const readTime = 2 * 1000 // 10s
 let timer = null
 function startReading() {
   const COMMAND_HEADER = '5A'
@@ -30,7 +39,7 @@ function startReading() {
   const checkCode = generateCRC16Code(commandBody)
   const command = COMMAND_HEADER + commandBody + checkCode
 
-  port.write(Buffer.from(command, 'hex'))
+  writeCommand(Buffer.from(command, 'hex'))
 
   if (timer) clearTimeout(timer)
   timer = setTimeout(() => {
@@ -41,8 +50,10 @@ function startReading() {
 
 function stopReading() {
   const command = Buffer.from('5A000102FF0000885A', 'hex')
-  port.write(command)
+  writeCommand(command)
 }
 
 
 eventEmitter.on('startRfidReading', startReading)
+
+startReading()
