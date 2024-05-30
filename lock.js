@@ -1,8 +1,6 @@
 const Gpio = require('orange-pi-gpio');
 const eventEmitter = require('./emit');
 
-console.log('starting lock')
-
 let prevState = 0
 
 const gpio23 = new Gpio({
@@ -10,7 +8,7 @@ const gpio23 = new Gpio({
     setInterval(function() {
       gpio23.read()
         .then((state) => {
-          if (prevState === 0 && state === 1) {
+          if (prevState == 0 && state == 1) {
             console.log('pin 23 -' + state)
             eventEmitter.emit('startRfidReading');
           }
