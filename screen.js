@@ -37,6 +37,8 @@ function generateCommand(body) {
   const end = 'FFFF';
   const len = ((head.length + prefix.length + end.length + body.length) / 2 - 2).toString(16).padStart(2, '0');
 
+  console.log(head.length + prefix.length + end.length + body.length)
+
   const commandStr = `${head}${len}${prefix}${body}${end}`
   return Buffer.from(commandStr, 'hex')
 }
