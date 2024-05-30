@@ -41,6 +41,7 @@ const gpio23 = new Gpio({
           if (prevState == 0 && state == 1) {
             console.log('pin 23 -' + state)
             eventEmitter.emit('startRfidReading');
+            prevState = 0
           }
 
           prevState = state;
