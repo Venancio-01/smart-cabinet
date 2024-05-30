@@ -1,22 +1,19 @@
 const { SerialPort } = require('serialport')
 const eventEmitter = require('./emit');
 
-console.log('starting serialport')
-
 const port = new SerialPort({
   path: '/dev/ttyS3',
   baudRate: 115200,
 })
 
 port.on('open', function() {
-  console.log('SerialPort Open')
+  console.log('Screen SerialPort Open')
 })
 
 port.on('data', function(data) {
-  console.log('Data:' + data.toString('hex'))
+  console.log('Screen Data:' + data.toString('hex'))
 })
 
-// const command = Buffer.from('A55A03810001', 'hex')
 
 eventEmitter.on('close-door', () => {
   fun0()

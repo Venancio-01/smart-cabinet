@@ -1,2 +1,4 @@
 require('./lock')
-require('./serialport')
+require('./screen')
+require('./rfid')
+require('./logger')
