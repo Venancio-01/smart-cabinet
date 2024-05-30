@@ -21,12 +21,12 @@ const gpio23 = new Gpio({
 
 const gpio25 = new Gpio({
   pin: 25, mode: 'in', ready: () => {
-    setInterval(function() {
-      gpio25.read()
-        .then((state) => {
-          console.log('pin 25 -' + state);
-        });
-    }, 200)
+    // setInterval(function() {
+    //   gpio25.read()
+    //     .then((state) => {
+    //       console.log('pin 25 -' + state);
+    //     });
+    // }, 200)
   }
 });
 
