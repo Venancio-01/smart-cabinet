@@ -24,6 +24,7 @@ function generateCommand(body) {
   const head = 'A55A';
   const prefix = '82';
   const end = 'FFFF';
+  console.log((head.length + prefix.length + end.length + body.length),'len')
   const len = ((head.length + prefix.length + end.length + body.length) / 2).toString('hex').padStart(2, '0');
   console.log('🚀 - generateCommand - len:', len)
 
