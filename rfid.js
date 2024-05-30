@@ -60,7 +60,7 @@ function getRfidTIDList() {
   const reportData = parseRFIDReportData(data)
   const TIDList = [...new Set(reportData.map((item) => getTIDByReportData(item)))]
 
-  eventEmitter.on('updateScreen', TIDList.length)
+  eventEmitter.emit('updateScreen', TIDList.length)
 }
 
 eventEmitter.on('startRfidReading', startReading)
