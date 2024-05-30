@@ -30,7 +30,14 @@ const gpio23 = new Gpio({
   pin: 23, mode: 'in', ready: () => {
     setInterval(function() {
       gpio23.read()
-        .then(handleCloseDoor);
+        .then((state) => {
+          if (prevState == 0 && state == 1) {
+            console.log('pin 23 -' + state)
+            eventEmitter.emit('startRfidReading');
+          }
+
+          prevState = state;
+        });
     }, 200)
   }
 });
