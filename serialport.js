@@ -13,7 +13,7 @@ port.on('open', function() {
 })
 
 port.on('data', function(data) {
-  console.log('Data:' + data)
+  console.log('Data:' + data.toString('hex'))
 })
 
 // const command = Buffer.from('A55A03810001', 'hex')
