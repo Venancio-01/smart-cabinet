@@ -16,10 +16,10 @@ port.on('data', function(data) {
 })
 
 
-eventEmitter.on('close-door', () => {
-  fun0()
+eventEmitter.on('updateScreen', (num) => {
+  const str = `检测到rfid数量：${num}`
+  fun1(str)
 })
-
 
 function writeCommand(command) {
   port.write(command, (err) => {
@@ -51,8 +51,8 @@ const block5 = '0030'
 const block6 = '0050'
 
 
-function fun1() {
-  const command = generateCommand(`${block1}${generateScreenCommandBody('2222')}`)
+function fun1(str) {
+  const command = generateCommand(`${block1}${generateScreenCommandBody(str)}`)
   writeCommand(command)
 }
 
@@ -80,6 +80,4 @@ function fun6() {
   const command = Buffer.from('A55A05820050FFFF', 'hex')
   port.write(command)
 }
-
-fun1()
 

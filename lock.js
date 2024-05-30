@@ -12,7 +12,7 @@ const gpio23 = new Gpio({
         .then((state) => {
           console.log('pin 23 -' + state); //state of pin 23
           if (prevState === 0 && state === 1) {
-            eventEmitter.emit('close-door');
+            eventEmitter.emit('startRfidReading');
           }
         });
     }, 200)
