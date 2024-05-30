@@ -21,18 +21,13 @@ eventEmitter.on('close-door', () => {
 
 
 function generateCommand(body) {
-console.log('🚀 - generateCommand - body:', body.length)
-
   const head = 'A55A';
   const prefix = '82';
   const end = 'FFFF';
-  console.log((head.length + prefix.length + end.length + body.length),'len')
   const len = ((head.length + prefix.length + end.length + body.length) / 2).toString(16).padStart(2, '0');
-  console.log('🚀 - generateCommand - len:', len)
 
   const commandStr = `${head}${prefix}${len}${body}${end}`
   return Buffer.from(commandStr, 'hex')
-  console.log('🚀 - generateCommand - commandStr:', commandStr)
 }
 
 
@@ -49,7 +44,7 @@ function fun0() {
 
 function fun1() {
   // const command = Buffer.from('A55A 09 82 0001 31323334 FFFF', 'hex')
-  const command = generateCommand('31323334')
+  const command = generateCommand('31323335')
   port.write(command)
 }
 
