@@ -1,5 +1,6 @@
 const { SerialPort } = require('serialport')
 const eventEmitter = require('./emit');
+const { generateScreenCommandBody } = require('./util');
 
 const port = new SerialPort({
   path: '/dev/ttyS3',
@@ -51,8 +52,7 @@ const block6 = '0050'
 
 
 function fun1() {
-
-  const command = generateCommand(`${block1}31323345`)
+  const command = generateCommand(`${block1}${generateScreenCommandBody('2222')}`)
   writeCommand(command)
 }
 
@@ -82,3 +82,4 @@ function fun6() {
 }
 
 fun1()
+

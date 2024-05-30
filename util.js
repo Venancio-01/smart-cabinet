@@ -67,23 +67,23 @@ class MessageQueue {
   }
 }
 
-function decimalStrToHex(decimal) {
-  let hex = '';
-  while (decimal > 0) {
-    hex += decimal.toString(16);
-    decimal--;
-  }
-  return hex;
+// 生成屏幕指令, unicode 转 gb2312 转 16 进制
+function generateScreenCommandBody(str) {
+  const encoder = new TextEncoder('gb2312');
+
+  // 编码Unicode字符串为GB2312字节序列
+  const encodedBytes = encoder.encode(str);
+  // 转十六进制字符串
+  const hexString = Array.from(encodedBytes).map(byte => byte.toString(16).padStart(2, '0')).join('');
+  return hexString
 }
 
-// 测试
-const decimalInput = '1234';
-const hexOutput = decimalStrToHex(decimalInput);
-console.log(hexOutput); // 输出 31323334
+generateScreenCommandBody('1234')
 
 
 module.exports = {
   generateAntennaCommand,
   generateCRC16Code,
+  generateScreenCommandBody,
   MessageQueue
 }
