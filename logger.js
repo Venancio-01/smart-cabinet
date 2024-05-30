@@ -3,8 +3,9 @@ const pino = require('pino');
 const logger = pino({
   transport: {
     target: 'pino-pretty',
+    destination: 'app.log'
   },
-}, pino.destination('app.log'));
+});
 
 // 记录信息级别的日志
 logger.info('This is an info message');

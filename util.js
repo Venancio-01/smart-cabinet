@@ -67,6 +67,20 @@ class MessageQueue {
   }
 }
 
+function decimalStrToHex(decimal) {
+  let hex = '';
+  while (decimal > 0) {
+    hex += decimal.toString(16);
+    decimal--;
+  }
+  return hex;
+}
+
+// 测试
+const decimalInput = '1234';
+const hexOutput = decimalStrToHex(decimalInput);
+console.log(hexOutput); // 输出 31323334
+
 
 module.exports = {
   generateAntennaCommand,
