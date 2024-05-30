@@ -35,35 +35,35 @@ function fun0() {
 }
 
 function fun1() {
-  const command = Buffer.from('A5 5A 09 82 00 01 31 32 33 34 FF FF', 'hex')
+  const command = Buffer.from('A55A0982000131323334FFFF', 'hex')
   port.write(command)
 }
 
 function fun2() {
-  const command = Buffer.from('A5 5A 11 82 00 04 B2 E2 CA D4 D1 D0 B7 A2 B0 F3 B6 A8 FF FF', 'hex')
+  const command = Buffer.from('A55A11820004B2E2CAD4D1D0B7A2B0F3B6A8FFFF', 'hex')
   port.write(command)
 }
 
 function fun3() {
-  const command = Buffer.from('A5 5A 05 82 00 10 FF FF', 'hex')
+  const command = Buffer.from('A55A05820010FFFF', 'hex')
   port.write(command)
 }
 
 function fun4() {
-  const command = Buffer.from('A5 5A 09 82 00 20 31 32 34 35 FF FF', 'hex')
+  const command = Buffer.from('A55A0982002031323435FFFF', 'hex')
   port.write(command)
 }
 
 function fun5() {
-  const command = Buffer.from('A5 5A 0A 82 00 30 2F 39 38 37 36 FF FF', 'hex')
+  const command = Buffer.from('A55A0A8200302F39383736FFFF', 'hex')
   port.write(command)
 }
 
 function fun6() {
-  const command = Buffer.from('A5 5A 05 82 00 50 FF FF', 'hex')
+  const command = Buffer.from('A55A05820050FFFF', 'hex')
   port.write(command)
 }
 
 
 
-fun0()
+fun1()
