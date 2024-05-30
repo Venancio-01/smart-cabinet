@@ -1,4 +1,7 @@
 const Gpio = require('orange-pi-gpio');
+const eventEmitter = require('./emit');
+
+let prevState = 0
 
 const gpio23 = new Gpio({
   pin: 23, mode: 'in', ready: () => {
@@ -6,6 +9,9 @@ const gpio23 = new Gpio({
       gpio23.read()
         .then((state) => {
           console.log('pin 23 -' + state); //state of pin 23
+          if (prevState === 0 && state === 1) {
+            eventEmitter.emit('close-door');
+          }
         });
     }, 200)
   }
