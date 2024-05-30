@@ -59,8 +59,8 @@ function getRfidTIDList() {
   const data = messageQueue.getData()
   const reportData = parseRFIDReportData(data)
   const TIDList = [...new Set(reportData.map((item) => getTIDByReportData(item)))]
-  
-  logger.info('Rfid TID List:', TIDList)
+
+  logger.info('检测到 Rfid TID 数量:', TIDList.length)
 
   eventEmitter.emit('updateScreen', TIDList.length)
 }
