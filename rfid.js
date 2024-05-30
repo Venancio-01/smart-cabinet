@@ -63,6 +63,6 @@ function getRfidTIDList() {
 
 eventEmitter.on('startRfidReading', startReading)
 
-// startReading()
+startReading()
 
-writeCommand(Buffer.from('5A000101010000EBD5', 'hex'))
+// writeCommand(Buffer.from('5A000101010000EBD5', 'hex'))
