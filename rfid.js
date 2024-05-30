@@ -59,6 +59,8 @@ function getRfidTIDList() {
   const data = messageQueue.getData()
   const reportData = parseRFIDReportData(data)
   const TIDList = [...new Set(reportData.map((item) => getTIDByReportData(item)))]
+  
+  logger.info('Rfid TID List:', TIDList)
 
   eventEmitter.emit('updateScreen', TIDList.length)
 }
