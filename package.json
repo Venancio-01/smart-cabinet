@@ -1,0 +1,17 @@
+{
+  "name": "smart-cabinet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "pkg --target node14-linux-armv7 index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "onoff": "^6.0.3",
+    "serialport": "^12.0.0"
+  }
+}
