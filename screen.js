@@ -20,6 +20,17 @@ eventEmitter.on('close-door', () => {
 })
 
 
+function writeCommand(command) {
+  port.write(command, (err) => {
+    if (err) {
+      console.error('Error writing to serial port:', err)
+    }
+
+    console.log('Command written to serial port', command.toString('hex'))
+  })
+}
+
+
 function generateCommand(body) {
   const head = 'A55A';
   const prefix = '82';
@@ -33,19 +44,13 @@ function generateCommand(body) {
 
 function fun0() {
   const command = Buffer.from('A55A03810001', 'hex')
-  port.write(command, (err) => {
-    if (err) {
-      console.error('Error writing to serial port:', err)
-    }
-
-    console.log('Command written to serial port', command.toString('hex'))
-  })
+  writeCommand(command)
 }
 
 function fun1() {
   // const command = Buffer.from('A55A 09 82 0001 31323334 FFFF', 'hex')
   const command = generateCommand('31323335')
-  port.write(command)
+  writeCommand(command)
 }
 
 function fun2() {
