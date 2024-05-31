@@ -62,7 +62,7 @@ function initScreen() {
 initScreen()
 
 function updateRfidCount(count) {
-  const command = generateCommand(`${block2}${generateScreenCommandBody(count.toString().padStart(3, ' '))}`)
+  const command = generateCommand(`${block1}${generateScreenCommandBody(count.toString().padStart(3, ' '))}`)
   writeCommand(command)
 }
 

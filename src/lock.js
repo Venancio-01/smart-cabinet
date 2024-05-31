@@ -5,14 +5,14 @@ const logger = require('./utils/logger');
 let prevState = 0;
 let lastStableState = 0;
 let lastDebounceTime = 0;
-const debounceDelay = 50; // 50ms的去抖动延迟
+const debounceDelay = 120; // 50ms的去抖动延迟
 
 const gpio19 = new Gpio({
   pin: 19, mode: 'in', ready: () => {
     setInterval(function() {
       gpio19.read()
         .then((state) => {
-          logger.info('pin 19 -' + state);
+          logger.info('pin 19 通电状态:' + state);
 
           const currentTime = Date.now();
 
@@ -36,7 +36,7 @@ const gpio19 = new Gpio({
             }
           }
         });
-    }, 200)
+    }, 100)
   }
 });
 
