@@ -83,9 +83,9 @@ function fun6() {
 function initScreen() {
   console.log(config,'config')
   console.log(config.usr,'usr')
-  const command1 = generateCommand(`${block1}${generateScreenCommandBody('  0')}`)
+  const command1 = generateCommand(`${block1}${generateScreenCommandBody(' 0')}`)
   const command2 = generateCommand(`${block2}${generateScreenCommandBody('')}`)
-  const command3 = generateCommand(`${block3}${generateScreenCommandBody(config.user)}`)
+  const command3 = generateCommand(`${block3}${generateScreenCommandBody(' ' + config.user)}`)
   const command4 = generateCommand(`${block4}${generateScreenCommandBody('')}`)
   const command5 = generateCommand(`${block5}${generateScreenCommandBody('')}`)
   const command6 = generateCommand(`${block6}${generateScreenCommandBody('')}`)
