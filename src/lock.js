@@ -12,6 +12,8 @@ const gpio19 = new Gpio({
     setInterval(function() {
       gpio19.read()
         .then((state) => {
+          logger.info('pin 19 -' + state);
+          
           const currentTime = Date.now();
 
           if (state !== lastStableState) {
