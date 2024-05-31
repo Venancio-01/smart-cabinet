@@ -78,7 +78,9 @@ eventEmitter.on('startRfidReading', startReading)
 
 
 function cleanup() {
-  stopReading()
+  // 停止读取器读取
+  const command = Buffer.from('5A000102FF0000885A', 'hex')
+  writeCommand(command)
 }
 
 function handleExit(options, exitCode) {
