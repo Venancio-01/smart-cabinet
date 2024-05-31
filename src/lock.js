@@ -22,6 +22,8 @@ const gpio19 = new Gpio({
           }
 
           if ((currentTime - lastDebounceTime) > debounceDelay) {
+            console.log('超过防抖时间');
+            console.log('lastStableState:', lastStableState);
             // 如果状态已经稳定超过去抖动延迟时间
             if (lastStableState != state) {
               lastStableState = state;
