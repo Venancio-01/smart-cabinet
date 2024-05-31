@@ -81,6 +81,8 @@ function fun6() {
 
 
 function initScreen() {
+  console.log(config,'config')
+  console.log(config.usr,'usr')
   const command1 = generateCommand(`${block1}${generateScreenCommandBody('  0')}`)
   const command2 = generateCommand(`${block2}${generateScreenCommandBody(' ')}`)
   const command3 = generateCommand(`${block3}${generateScreenCommandBody(config.user)}`)
@@ -95,7 +97,18 @@ function initScreen() {
   })
 }
 
-initScreen()
+function restoreScreen(){
+  fun1()
+  fun2()
+  fun3()
+  fun4()
+  fun5()
+  fun6()
+}
+
+// initScreen()
+restoreScreen()
+
 
 eventEmitter.on('updateScreen', (num) => {
   console.log('Update Screen',)
