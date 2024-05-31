@@ -18,9 +18,10 @@ const gpio19 = new Gpio({
             }
             debounceTimer = setTimeout(() => {
               logger.info('level changed');
-              // eventEmitter.emit('startRfidReading');
               debounceTimer = null; // Reset the debounce timer
               flag = true;
+
+              eventEmitter.emit('startRfidReading');
             }, 500);
           } else if (state === '0') {
             if (debounceTimer) {
