@@ -3,6 +3,7 @@ const eventEmitter = require('./utils/emit');
 const logger = require('./utils/logger');
 
 let prevState = '0';
+let debounceTimer = null;
 
 const gpio19 = new Gpio({
   pin: 19, mode: 'in', ready: () => {
@@ -11,10 +12,20 @@ const gpio19 = new Gpio({
         .then((state) => {
           logger.info('pin 19 通电状态: ' + state);
 
-          // 检查从低电平到高电平的变化
           if (prevState === '0' && state === '1') {
-            logger.info('level changed');
-            // eventEmitter.emit('startRfidReading');
+            if (debounceTimer) {
+              clearTimeout(debounceTimer);
+            }
+            debounceTimer = setTimeout(() => {
+              logger.info('level changed');
+              // eventEmitter.emit('startRfidReading');
+              debounceTimer = null; // Reset the debounce timer
+            }, 500);
+          } else if (state === '0') {
+            if (debounceTimer) {
+              clearTimeout(debounceTimer);
+              debounceTimer = null; // Reset the debounce timer
+            }
           }
 
           prevState = state;
