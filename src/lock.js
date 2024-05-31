@@ -13,7 +13,7 @@ const gpio19 = new Gpio({
       gpio19.read()
         .then((state) => {
           logger.info('pin 19 -' + state);
-          
+
           const currentTime = Date.now();
 
           if (state !== lastStableState) {
@@ -28,7 +28,7 @@ const gpio19 = new Gpio({
 
               // 检查从低电平到高电平的变化
               if (prevState == 0 && state == 1) {
-                logger.info('pin 19 -' + state);
+                logger.info('level changed');
                 // eventEmitter.emit('startRfidReading');
               }
 
