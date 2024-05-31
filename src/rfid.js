@@ -43,14 +43,18 @@ function startReading() {
 
   writeCommand(Buffer.from(command, 'hex'))
 
+  countdown = 5;
+
   if (timer) clearInterval(timer)
+    
+  eventEmitter.emit('updateCountdown', countdown)
   timer = setInterval(() => {
     countdown--
     eventEmitter.emit('updateCountdown', countdown)
     if (countdown <= 0) {
       stopReading()
     }
-  },readTime)
+  }, 1000)
 }
 
 function stopReading() {
