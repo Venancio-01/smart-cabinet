@@ -2,6 +2,7 @@ const { SerialPort } = require('serialport')
 const eventEmitter = require('./utils/emit');
 const { generateScreenCommandBody } = require('./utils/util');
 const config = require('../config');
+const logger = require('./utils/logger');
 
 const port = new SerialPort({
   path: '/dev/ttyS3',
@@ -9,11 +10,11 @@ const port = new SerialPort({
 })
 
 port.on('open', function() {
-  console.log('Screen SerialPort Open')
+  logger.info('Screen SerialPort Open')
 })
 
 port.on('data', function(data) {
-  console.log('Screen Data:' + data.toString('hex'))
+  logger.info('Screen Data:' + data.toString('hex'))
 })
 
 function writeCommand(command) {
@@ -22,7 +23,7 @@ function writeCommand(command) {
       console.error('Error writing to screen serial port:', err)
     }
 
-    console.log('Command written to screen serial port', command.toString('hex'))
+    logger.info('Command written to screen serial port', command.toString('hex'))
   })
 }
 
@@ -76,6 +77,6 @@ eventEmitter.on('updateScreen', (count) => {
 })
 
 eventEmitter.on('updateCountdown', (countdown) => {
-  console.log('updateCountdown', countdown)
+  logger.info('updateCountdown', countdown)
   updatePrompt(countdown)
 })

@@ -1,5 +1,6 @@
 const Gpio = require('orange-pi-gpio');
 const eventEmitter = require('./utils/emit');
+const logger = require('./utils/logger');
 
 let prevState = 0;
 let lastStableState = 0;
@@ -25,8 +26,8 @@ const gpio19 = new Gpio({
 
               // 检查从低电平到高电平的变化
               if (prevState == 0 && state == 1) {
-                console.log('pin 19 -' + state);
-                eventEmitter.emit('startRfidReading');
+                logger.info('pin 19 -' + state);
+                // eventEmitter.emit('startRfidReading');
               }
 
               prevState = state;

@@ -12,7 +12,7 @@ const port = new SerialPort({
 const messageQueue = new MessageQueue()
 
 port.on('open', function() {
-  console.log('Rfid SerialPort Open')
+  logger.info('Rfid SerialPort Open')
 })
 
 port.on('data', function(data) {
@@ -27,7 +27,7 @@ function writeCommand(command) {
       console.error('Error writing to rfid serial port:', err)
     }
 
-    console.log('Command written to rfid serial port', command.toString('hex'))
+    logger.info('Command written to rfid serial port', command.toString('hex'))
   })
 }
 
@@ -35,7 +35,7 @@ let countdown = 5
 let timer = null
 
 function startReading() {
-  console.log('Start reading RFID...')
+  logger.info('Start reading RFID...')
 
   const COMMAND_HEADER = '5A'
   const commandBody = `000102100008${generateAntennaCommand()}01020006`
