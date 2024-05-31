@@ -5,7 +5,7 @@ const logger = require('./utils/logger');
 let prevState = 0;
 let lastStableState = 0;
 let lastDebounceTime = 0;
-const debounceDelay = 120; // 50ms的去抖动延迟
+const debounceDelay = 200; // 50ms的去抖动延迟
 
 const gpio19 = new Gpio({
   pin: 19, mode: 'in', ready: () => {
@@ -16,14 +16,14 @@ const gpio19 = new Gpio({
 
           const currentTime = Date.now();
 
-          if (state !== lastStableState) {
+          if (state != lastStableState) {
             // 如果状态与上次稳定状态不同，则重置去抖动时间
             lastDebounceTime = currentTime;
           }
 
           if ((currentTime - lastDebounceTime) > debounceDelay) {
             // 如果状态已经稳定超过去抖动延迟时间
-            if (lastStableState !== state) {
+            if (lastStableState != state) {
               lastStableState = state;
 
               // 检查从低电平到高电平的变化
