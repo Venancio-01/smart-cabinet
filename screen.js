@@ -55,12 +55,12 @@ function fun1(str) {
 }
 
 function fun2() {
-  const command = Buffer.from('A55A 11 82 0004 B2E2CAD4D1D0B7A2B0F3B6A8FFFF', 'hex')
+  const command = Buffer.from('A55A11820004B2E2CAD4D1D0B7A2B0F3B6A8FFFF', 'hex')
   port.write(command)
 }
 
 function fun3() {
-  const command = Buffer.from('A55A05 82 0010FFFF', 'hex')
+  const command = Buffer.from('A55A05820010FFFF', 'hex')
   port.write(command)
 }
 
@@ -83,8 +83,8 @@ function fun6() {
 function initScreen() {
   console.log(config,'config')
   console.log(config.usr,'usr')
-  const command1 = generateCommand(`${block1}${generateScreenCommandBody('  0')}`)
-  const command2 = generateCommand(`${block2}${generateScreenCommandBody(' ')}`)
+  const command1 = generateCommand(`${block1}${generateScreenCommandBody(' 0')}`)
+  const command2 = generateCommand(`${block2}${generateScreenCommandBody('')}`)
   const command3 = generateCommand(`${block3}${generateScreenCommandBody(config.user)}`)
   const command4 = generateCommand(`${block4}${generateScreenCommandBody('')}`)
   const command5 = generateCommand(`${block5}${generateScreenCommandBody('')}`)
@@ -98,7 +98,7 @@ function initScreen() {
 }
 
 function restoreScreen(){
-  fun1()
+  fun1('1234')
   fun2()
   fun3()
   fun4()
@@ -106,8 +106,8 @@ function restoreScreen(){
   fun6()
 }
 
-// initScreen()
-restoreScreen()
+initScreen()
+// restoreScreen()
 
 
 eventEmitter.on('updateScreen', (num) => {
