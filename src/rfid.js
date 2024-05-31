@@ -76,3 +76,26 @@ function getRfidTIDList() {
 
 eventEmitter.on('startRfidReading', startReading)
 
+
+// 当进程即将退出时
+process.on('exit', () => {
+  stopReading()
+});
+
+// 捕捉 Ctrl+C 事件
+process.on('SIGINT', () => {
+  console.log('Received SIGINT. Exiting...');
+  stopReading()
+});
+
+// 捕捉终止信号
+process.on('SIGTERM', () => {
+  console.log('Received SIGTERM. Exiting...');
+  stopReading()
+});
+
+// 捕捉未捕获的异常
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
+  stopReading()
+});
