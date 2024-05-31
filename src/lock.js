@@ -2,7 +2,6 @@ const Gpio = require('orange-pi-gpio');
 const eventEmitter = require('./utils/emit');
 const logger = require('./utils/logger');
 
-let prevState = '0';
 let debounceTimer = null;
 
 const gpio19 = new Gpio({
@@ -12,9 +11,9 @@ const gpio19 = new Gpio({
         .then((state) => {
           logger.info('pin 19 通电状态: ' + state);
 
-          if (prevState === '0' && state === '1') {
+          if (state === '1') {
             if (debounceTimer) {
-              clearTimeout(debounceTimer);
+              return
             }
             debounceTimer = setTimeout(() => {
               logger.info('level changed');
