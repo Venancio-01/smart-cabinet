@@ -1,7 +1,6 @@
 const Gpio = require('orange-pi-gpio');
 const eventEmitter = require('./utils/emit');
 
-let prevState = 0
 
 function debounce(func, delay) {
   let timerId;
@@ -23,26 +22,26 @@ function debounce(func, delay) {
 
 const handleCloseDoor = debounce(function(state) {
   if (prevState == 0 && state == 1) {
-    console.log('pin 23 -' + state)
+    console.log('pin 19 -' + state)
     eventEmitter.emit('startRfidReading');
   }
 
   prevState = state;
 }, 300);
 
+let prevState = 0
 const gpio19 = new Gpio({
   pin: 19, mode: 'in', ready: () => {
     setInterval(function() {
       gpio19.read()
         .then((state) => {
-          handleCloseDoor(state)
-          // if (prevState == 0 && state == 1) {
-          //   console.log('pin 23 -' + state)
-          //   eventEmitter.emit('startRfidReading');
-          //   prevState = 0
-          // }
+          // handleCloseDoor(state)
+          if (prevState == 0 && state == 1) {
+            console.log('pin 19 -' + state)
+            eventEmitter.emit('startRfidReading');
+          }
 
-          // prevState = state;
+          prevState = state;
         });
     }, 200)
   }
