@@ -67,6 +67,10 @@ class MessageQueue {
   getData() {
     return this.data
   }
+
+  reset() {
+    this.data = '';
+  }
 }
 
 // 生成屏幕指令, unicode 转 gb2312 转 16 进制
@@ -93,7 +97,7 @@ function parseRFIDReportData(data) {
   return parseArr
 }
 
-function getTIDByReportData(data ) {
+function getTIDByReportData(data) {
   let str = data
   const PREFIX = '5a00011200'
   const TIDLengthCommandLength = 4

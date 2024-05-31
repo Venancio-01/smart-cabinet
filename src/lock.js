@@ -22,14 +22,14 @@ const gpio19 = new Gpio({
               flag = true;
 
               eventEmitter.emit('startRfidReading');
-            }, 500);
+            }, 1000);
           } else if (state === '0') {
             if (debounceTimer) {
               clearTimeout(debounceTimer);
               debounceTimer = null; // Reset the debounce timer
             }
 
-            flag = false
+            // flag = false
           }
 
           prevState = state;

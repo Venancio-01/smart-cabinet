@@ -37,6 +37,8 @@ let timer = null
 function startReading() {
   logger.info('Start reading RFID...')
 
+  // 重置消息队列
+  messageQueue.reset()
   const COMMAND_HEADER = '5A'
   const commandBody = `000102100008${generateAntennaCommand()}01020006`
   const checkCode = generateCRC16Code(commandBody)

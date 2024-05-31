@@ -67,7 +67,7 @@ function updateRfidCount(count) {
 }
 
 function updatePrompt(countdown) {
-  const body = generateScreenCommandBody('载体检测中，倒计时' + countdown + '秒')
+  const body = generateScreenCommandBody('检测中 - ' + countdown + '秒')
   const command = generateCommand(`${block6}${body}`)
   writeCommand(command)
 }
