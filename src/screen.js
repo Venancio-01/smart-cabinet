@@ -71,9 +71,9 @@ function updatePrompt(countdown) {
   if (countdown === 0) {
     body = generateScreenCommandBody('')
   } else {
-    body = generateScreenCommandBody('检测中 - ' + countdown + '秒')
+    body = generateScreenCommandBody(' 检测中 - ' + countdown + '秒')
   }
-  
+
   const command = generateCommand(`${block6}${body}`)
   writeCommand(command)
 }
