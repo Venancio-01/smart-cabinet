@@ -1,7 +1,7 @@
 const { SerialPort } = require('serialport')
 const eventEmitter = require('./utils/emit');
 const { generateScreenCommandBody } = require('./utils/util');
-const config = require('./config');
+const config = require('../config');
 
 const port = new SerialPort({
   path: '/dev/ttyS3',
