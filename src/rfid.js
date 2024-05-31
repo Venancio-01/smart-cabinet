@@ -32,10 +32,11 @@ function writeCommand(command) {
 }
 
 let countdown = 5
-const readTime = 5 * 1000 // 读取时间
 let timer = null
+
 function startReading() {
   console.log('Start reading RFID...')
+  
   const COMMAND_HEADER = '5A'
   const commandBody = `000102100008${generateAntennaCommand()}01020006`
   const checkCode = generateCRC16Code(commandBody)
@@ -46,7 +47,7 @@ function startReading() {
   countdown = 5;
 
   if (timer) clearInterval(timer)
-    
+
   eventEmitter.emit('updateCountdown', countdown)
   timer = setInterval(() => {
     countdown--

@@ -79,5 +79,6 @@ eventEmitter.on('updateScreen', (count) => {
 })
 
 eventEmitter.on('updateCountdown', (countdown) => {
+  console.log('updateCountdown', countdown)
   updatePrompt(countdown)
 })
