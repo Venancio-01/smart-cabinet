@@ -16,9 +16,6 @@ port.on('data', function(data) {
   console.log('Screen Data:' + data.toString('hex'))
 })
 
-
-
-
 function writeCommand(command) {
   port.write(command, (err) => {
     if (err) {
@@ -28,7 +25,6 @@ function writeCommand(command) {
     console.log('Command written to screen serial port', command.toString('hex'))
   })
 }
-
 
 function generateCommand(body) {
   const head = 'A55A';
@@ -49,41 +45,8 @@ const block5 = '0030'
 const block6 = '0050'
 
 
-function fun1(str) {
-  const command = generateCommand(`${block1}${generateScreenCommandBody(str)}`)
-  writeCommand(command)
-}
-
-function fun2() {
-  const command = Buffer.from('A55A11820004B2E2CAD4D1D0B7A2B0F3B6A8FFFF', 'hex')
-  port.write(command)
-}
-
-function fun3() {
-  const command = Buffer.from('A55A05820010FFFF', 'hex')
-  port.write(command)
-}
-
-function fun4() {
-  const command = Buffer.from('A55A0982002031323435FFFF', 'hex')
-  port.write(command)
-}
-
-function fun5() {
-  const command = Buffer.from('A55A0A8200302F39383736FFFF', 'hex')
-  port.write(command)
-}
-
-function fun6() {
-  const command = Buffer.from('A55A05820050FFFF', 'hex')
-  port.write(command)
-}
-
-
 function initScreen() {
-  console.log(config,'config')
-  console.log(config.usr,'usr')
-  const command1 = generateCommand(`${block1}${generateScreenCommandBody(' 0')}`)
+  const command1 = generateCommand(`${block1}${generateScreenCommandBody('  0')}`)
   const command2 = generateCommand(`${block2}${generateScreenCommandBody('')}`)
   const command3 = generateCommand(`${block3}${generateScreenCommandBody(' ' + config.user)}`)
   const command4 = generateCommand(`${block4}${generateScreenCommandBody('')}`)
@@ -97,21 +60,24 @@ function initScreen() {
   })
 }
 
-function restoreScreen(){
-  fun1('1234')
-  fun2()
-  fun3()
-  fun4()
-  fun5()
-  fun6()
+initScreen()
+
+
+function updateRfidCount(count) {
+  const command = generateCommand(`${block2}${generateScreenCommandBody(count.toString().padStart(3, ' '))}`)
+  writeCommand(command)
 }
 
-initScreen()
-// restoreScreen()
+function updatePrompt(countdown) {
+  const body = generateScreenCommandBody('载体检测中，倒计时' + countdown + '秒')
+  const command = generateCommand(`${block6}${body}`)
+  writeCommand(command)
+}
 
+eventEmitter.on('updateScreen', (count) => {
+  updateRfidCount(count)
+})
 
-eventEmitter.on('updateScreen', (num) => {
-  console.log('Update Screen',)
-  const str = `${num}`
-  fun1(str)
+eventEmitter.on('updateCountdown', (countdown) => {
+  updatePrompt(countdown)
 })

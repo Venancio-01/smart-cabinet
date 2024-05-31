@@ -31,7 +31,8 @@ function writeCommand(command) {
   })
 }
 
-const readTime = 5 * 1000 // 10s
+let countdown = 5
+const readTime = 5 * 1000 // 读取时间
 let timer = null
 function startReading() {
   console.log('Start reading RFID...')
@@ -42,14 +43,17 @@ function startReading() {
 
   writeCommand(Buffer.from(command, 'hex'))
 
-  if (timer) clearTimeout(timer)
-  timer = setTimeout(() => {
-    stopReading()
-  }, readTime)
+  if (timer) clearInterval(timer)
+  timer = setInterval(() => {
+    countdown--
+    eventEmitter.emit('updateCountdown', countdown)
+    if (countdown <= 0) {
+      stopReading()
+    }
+  },readTime)
 }
 
 function stopReading() {
-  console.log('Stop reading RFID')
   const command = Buffer.from('5A000102FF0000885A', 'hex')
   writeCommand(command)
   getRfidTIDList()

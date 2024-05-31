@@ -21,7 +21,6 @@ function debounce(func, delay) {
   };
 }
 
-
 const handleCloseDoor = debounce(function(state) {
   if (prevState == 0 && state == 1) {
     console.log('pin 23 -' + state)
@@ -31,20 +30,19 @@ const handleCloseDoor = debounce(function(state) {
   prevState = state;
 }, 300);
 
-
-const gpio23 = new Gpio({
-  pin: 23, mode: 'in', ready: () => {
+const gpio19 = new Gpio({
+  pin: 19, mode: 'in', ready: () => {
     setInterval(function() {
-      gpio23.read()
+      gpio19.read()
         .then((state) => {
-          // handleCloseDoor(state)
-          if (prevState == 0 && state == 1) {
-            console.log('pin 23 -' + state)
-            eventEmitter.emit('startRfidReading');
-            prevState = 0
-          }
+          handleCloseDoor(state)
+          // if (prevState == 0 && state == 1) {
+          //   console.log('pin 23 -' + state)
+          //   eventEmitter.emit('startRfidReading');
+          //   prevState = 0
+          // }
 
-          prevState = state;
+          // prevState = state;
         });
     }, 200)
   }
@@ -53,12 +51,6 @@ const gpio23 = new Gpio({
 const gpio25 = new Gpio({
   pin: 25, mode: 'out', ready: () => {
     gpio25.write(1);
-    // setInterval(function() {
-    //   gpio25.read()
-    //     .then((state) => {
-    //       console.log('pin 25 -' + state);
-    //     });
-    // }, 200)
   }
 });
 
