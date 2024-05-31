@@ -77,25 +77,36 @@ function getRfidTIDList() {
 eventEmitter.on('startRfidReading', startReading)
 
 
-// 当进程即将退出时
-process.on('exit', () => {
+function cleanup() {
   stopReading()
+}
+
+function handleExit(options, exitCode) {
+  if (options.cleanup) cleanup();
+  if (exitCode || exitCode === 0) console.log(exitCode);
+  if (options.exit) process.exit();
+}
+
+// 当进程即将退出时
+process.on('exit', (code) => {
+  handleExit({ cleanup: true }, code);
 });
 
 // 捕捉 Ctrl+C 事件
 process.on('SIGINT', () => {
   console.log('Received SIGINT. Exiting...');
-  stopReading()
+  handleExit({ cleanup: true, exit: true });
 });
 
 // 捕捉终止信号
 process.on('SIGTERM', () => {
   console.log('Received SIGTERM. Exiting...');
-  stopReading()
+  handleExit({ cleanup: true, exit: true });
 });
 
 // 捕捉未捕获的异常
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception:', err);
-  stopReading()
+  handleExit({ cleanup: true, exit: true }, 1);
 });
+
