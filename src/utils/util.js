@@ -1,3 +1,5 @@
+const str2gbk = require('./gbk')
+
 function generateBinaryString(numbers) {
   const binaryArray = Array.from({ length: 32 }, () => '0')
 
@@ -69,12 +71,9 @@ class MessageQueue {
 
 // 生成屏幕指令, unicode 转 gb2312 转 16 进制
 function generateScreenCommandBody(str) {
-  const encoder = new TextEncoder('gb2312');
-
-  // 编码Unicode字符串为GB2312字节序列
-  const encodedBytes = encoder.encode(str);
+  const encodedBytes = str2gbk(str);
   // 转十六进制字符串
-  const hexString = Array.from(encodedBytes).map(byte => byte.toString(16).padStart(2, '0')).join('');
+  const hexString = Array.from(encodedBytes).map(byte => byte.toString(16).toUpperCase().padStart(2, '0')).join('');
   return hexString
 }
 

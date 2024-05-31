@@ -1,8 +1,8 @@
 const { SerialPort } = require('serialport')
-const eventEmitter = require('./emit');
-const { generateCRC16Code, generateAntennaCommand, MessageQueue } = require('./util')
+const eventEmitter = require('./utils/emit');
+const { generateCRC16Code, generateAntennaCommand, MessageQueue } = require('./utils/util')
 const logger = require('./logger');
-const { parseRFIDReportData, getTIDByReportData } = require('./util')
+const { parseRFIDReportData, getTIDByReportData } = require('./utils/util')
 
 const port = new SerialPort({
   path: '/dev/ttyS1',

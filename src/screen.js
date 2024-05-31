@@ -1,6 +1,6 @@
 const { SerialPort } = require('serialport')
-const eventEmitter = require('./emit');
-const { generateScreenCommandBody } = require('./util');
+const eventEmitter = require('./utils/emit');
+const { generateScreenCommandBody } = require('./utils/util');
 const config = require('./config');
 
 const port = new SerialPort({
@@ -83,7 +83,7 @@ function fun6() {
 function initScreen() {
   console.log(config,'config')
   console.log(config.usr,'usr')
-  const command1 = generateCommand(`${block1}${generateScreenCommandBody(' 0')}`)
+  const command1 = generateCommand(`${block1}${generateScreenCommandBody('  0')}`)
   const command2 = generateCommand(`${block2}${generateScreenCommandBody('')}`)
   const command3 = generateCommand(`${block3}${generateScreenCommandBody(config.user)}`)
   const command4 = generateCommand(`${block4}${generateScreenCommandBody('')}`)

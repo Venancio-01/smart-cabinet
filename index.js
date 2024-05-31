@@ -1,4 +1,4 @@
-require('./lock')
-require('./screen')
-require('./rfid')
-require('./logger')
+require('./src/lock')
+require('./src/screen')
+require('./src/rfid')
+require('./src/logger')

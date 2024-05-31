@@ -1,5 +1,5 @@
 const Gpio = require('orange-pi-gpio');
-const eventEmitter = require('./emit');
+const eventEmitter = require('./utils/emit');
 
 let prevState = 0
 
