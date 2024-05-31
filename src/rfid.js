@@ -36,7 +36,7 @@ let timer = null
 
 function startReading() {
   console.log('Start reading RFID...')
-  
+
   const COMMAND_HEADER = '5A'
   const commandBody = `000102100008${generateAntennaCommand()}01020006`
   const checkCode = generateCRC16Code(commandBody)

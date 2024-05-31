@@ -36,14 +36,12 @@ function generateCommand(body) {
   return Buffer.from(commandStr, 'hex')
 }
 
-
 const block1 = '0001'
 const block2 = '0004'
 const block3 = '0010'
 const block4 = '0020'
 const block5 = '0030'
 const block6 = '0050'
-
 
 function initScreen() {
   const command1 = generateCommand(`${block1}${generateScreenCommandBody('  0')}`)
@@ -61,7 +59,6 @@ function initScreen() {
 }
 
 initScreen()
-
 
 function updateRfidCount(count) {
   const command = generateCommand(`${block2}${generateScreenCommandBody(count.toString().padStart(3, ' '))}`)
