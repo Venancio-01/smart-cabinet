@@ -54,8 +54,11 @@ function startReading() {
   timer = setInterval(() => {
     countdown--
     eventEmitter.emit('updateCountdown', countdown)
+
     if (countdown <= 0) {
       stopReading()
+      clearInterval(timer)
+      timer = null
     }
   }, 1000)
 }
