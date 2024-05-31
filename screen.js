@@ -1,6 +1,7 @@
 const { SerialPort } = require('serialport')
 const eventEmitter = require('./emit');
 const { generateScreenCommandBody } = require('./util');
+const config = require('./config');
 
 const port = new SerialPort({
   path: '/dev/ttyS3',
@@ -16,11 +17,7 @@ port.on('data', function(data) {
 })
 
 
-eventEmitter.on('updateScreen', (num) => {
-  console.log('Update Screen', )
-  const str = `${num}`
-  fun1(str)
-})
+
 
 function writeCommand(command) {
   port.write(command, (err) => {
@@ -82,3 +79,25 @@ function fun6() {
   port.write(command)
 }
 
+
+function initScreen(){
+  const command1 = generateCommand(`${block1}${generateScreenCommandBody('  0')}`)
+  const command2 = generateCommand(`${block2}${generateScreenCommandBody(' ')}`)
+  const command3 = generateCommand(`${block3}${generateScreenCommandBody(config.user)}`)
+  const command4 = generateCommand(`${block4}${generateScreenCommandBody('')}`)
+  const command5 = generateCommand(`${block5}${generateScreenCommandBody('')}`)
+  const command6 = generateCommand(`${block6}${generateScreenCommandBody('')}`)
+
+  [command1, command2, command3, command4, command5, command6].forEach(command => {
+    writeCommand(command)
+  })
+}
+
+
+initScreen()
+
+eventEmitter.on('updateScreen', (num) => {
+  console.log('Update Screen', )
+  const str = `${num}`
+  fun1(str)
+})
