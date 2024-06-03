@@ -3,6 +3,7 @@ const eventEmitter = require('./utils/emit');
 const { generateCRC16Code, generateAntennaCommand, MessageQueue } = require('./utils/util')
 const logger = require('./utils/logger');
 const { parseRFIDReportData, getTIDByReportData } = require('./utils/util')
+// const {generateStartCommand,generateStopCommand,getTIDList} = require('rfid-utils')
 
 const port = new SerialPort({
   path: '/dev/ttyS1',

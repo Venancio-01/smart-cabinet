@@ -14,7 +14,7 @@ function binaryToHex(binary) {
 }
 
 function generateAntennaCommand() {
-  const antennaIds = [1, 2]
+  const antennaIds = [1, 2, 3, 4]
   const binary = generateBinaryString(antennaIds)
   const command = binaryToHex(binary)
   return command
