@@ -1,9 +1,8 @@
 const { SerialPort } = require('serialport')
 const eventEmitter = require('./utils/emit');
-const { generateCRC16Code, generateAntennaCommand, MessageQueue } = require('./utils/util')
+const { MessageQueue } = require('./utils/util')
 const logger = require('./utils/logger');
-const { parseRFIDReportData, getTIDByReportData } = require('./utils/util')
-// const {generateStartCommand,generateStopCommand,getTIDList} = require('rfid-utils')
+const { generateStartCommand, generateStopCommand, getTIDList } = require('rfid-utils')
 
 const port = new SerialPort({
   path: '/dev/ttyS1',
@@ -40,12 +39,8 @@ function startReading() {
 
   // 重置消息队列
   messageQueue.reset()
-  const COMMAND_HEADER = '5A'
-  const commandBody = `000102100008${generateAntennaCommand()}01020006`
-  const checkCode = generateCRC16Code(commandBody)
-  const command = COMMAND_HEADER + commandBody + checkCode
 
-  writeCommand(Buffer.from(command, 'hex'))
+  writeCommand(generateStartCommand())
 
   countdown = 5;
 
@@ -65,15 +60,13 @@ function startReading() {
 }
 
 function stopReading() {
-  const command = Buffer.from('5A000102FF0000885A', 'hex')
-  writeCommand(command)
+  writeCommand(generateStopCommand())
   getRfidTIDList()
 }
 
 function getRfidTIDList() {
   const data = messageQueue.getData()
-  const reportData = parseRFIDReportData(data)
-  const TIDList = [...new Set(reportData.map((item) => getTIDByReportData(item)))]
+  const TIDList = getTIDList(data)
 
   logger.info('检测到 Rfid TID 数量:' + TIDList.length)
 
