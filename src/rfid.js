@@ -39,8 +39,9 @@ function startReading() {
 
   // 重置消息队列
   messageQueue.reset()
+  const antennaIds = [1, 2, 3, 4]
 
-  writeCommand(generateStartCommand())
+  writeCommand(generateStartCommand(antennaIds))
 
   countdown = 5;
 
