@@ -4,6 +4,7 @@ const logger = require('./utils/logger');
 
 let debounceTimer = null;
 let prevState = null
+let triggered = false
 
 const gpio19 = new Gpio({
   pin: 19, mode: 'in', ready: () => {
@@ -15,7 +16,7 @@ const gpio19 = new Gpio({
           }
 
           if (state === '1') {
-            if (debounceTimer) {
+            if (debounceTimer || triggered) {
               return
             }
             debounceTimer = setTimeout(() => {
@@ -23,12 +24,15 @@ const gpio19 = new Gpio({
               debounceTimer = null;
 
               eventEmitter.emit('startRfidReading');
+              triggered = true
             }, 2000);
           } else if (state === '0') {
             if (debounceTimer) {
               clearTimeout(debounceTimer);
               debounceTimer = null;
             }
+
+            triggered = false
           }
 
           prevState = state;
