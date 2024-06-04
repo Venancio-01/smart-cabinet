@@ -114,3 +114,8 @@ process.on('uncaughtException', (err) => {
   handleExit({ cleanup: true, exit: true }, 1);
 });
 
+
+
+module.exports = {
+  startReading
+}
