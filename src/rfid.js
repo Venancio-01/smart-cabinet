@@ -40,8 +40,10 @@ function startReading() {
   // 重置消息队列
   messageQueue.reset()
   const antennaIds = [1, 2, 3, 4]
+  const startCommand = generateStartCommand(antennaIds)
 
-  writeCommand(generateStartCommand(antennaIds))
+  console.log('🚀 - startReading - startCommand:', startCommand)
+  writeCommand(startCommand)
 
   countdown = 5;
 
