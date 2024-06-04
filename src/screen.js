@@ -45,6 +45,7 @@ const block5 = '0030'
 const block6 = '0050'
 
 function initScreen() {
+  writeCommand(Buffer.from('A55A0480030002', 'hex'))
   writeCommand(Buffer.from('A55A0480030001', 'hex'))
   const command1 = generateCommand(`${block1}${generateScreenCommandBody('  0')}`)
   const command2 = generateCommand(`${block2}${generateScreenCommandBody('')}`)
