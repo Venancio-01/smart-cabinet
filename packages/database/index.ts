@@ -7,7 +7,6 @@ const prisma = new PrismaClient()
  * @return {*}
  */
 export async function connectToDatabase() {
-  
   return prisma.$connect()
 }
 
