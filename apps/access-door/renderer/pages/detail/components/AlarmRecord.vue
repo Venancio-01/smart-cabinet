@@ -10,20 +10,28 @@ import { AccessTimeRange, OperationStatus } from '~/enums'
 import { useStore } from '@/store'
 import ipcNames from '#/ipcNames'
 
+interface Props {
+  id?: number
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  id: undefined,
+})
+
 const store = useStore()
 const { departmentList } = storeToRefs(store)
 const { selectAlarmRecordList } = useEquipment()
 const { operationTimeoutCountdown, startMountHook } = useListenAction()
-const { equipmentList } = useEquipment()
 
 const data = ref<DoorAlarmrecordProps[]>([])
 const total = ref(0)
 const condition = reactive<AlarmQueryProps>({
   carrierName: '',
-  equipmentId: undefined,
+  equipmentId: props.id,
   deptId: undefined,
   timeRange: undefined,
 })
+
 const pagination = reactive<PaginationType>({
   page: 1,
   size: 6,
@@ -50,7 +58,7 @@ async function handleQuery() {
 async function handleInit() {
   pagination.page = 1
   condition.carrierName = ''
-  condition.equipmentId = undefined
+  condition.equipmentId = props.id
   condition.deptId = undefined
   condition.timeRange = undefined
   data.value = []
@@ -155,17 +163,7 @@ startMountHook()
 
 <template>
   <div class="w-h-full">
-    <div class="flex items-center justify-between">
-      <div flex items-center>
-        <BackButton />
-        <span class="text-light text-[28px] ml-6"> 报警记录 </span>
-      </div>
-      <div text="light 2xl" font="thin">
-        {{ operationTimeoutCountdown }}秒后返回首页
-      </div>
-    </div>
-
-    <div class="flex" m="t-8" p="b-4">
+    <div class="flex" m="t-4" p="b-2">
       <a-form
         :model="condition"
         :label-col="{ span: 8 }"
@@ -176,17 +174,6 @@ startMountHook()
       >
         <a-form-item label="载体名称" name="title">
           <a-input v-model:value="condition.carrierName" placeholder="请输入载体名称" />
-        </a-form-item>
-
-        <a-form-item label="检测设备" name="equipmentName">
-          <a-select v-model:value="condition.equipmentId" allow-clear placeholder="请选择检测设备" @change="handleQuery">
-            <a-select-option value="">
-              全部
-            </a-select-option>
-            <a-select-option v-for="item in equipmentList" :key="item.equipmentid" :value="item.equipmentid">
-              {{ item.equipmentName }}
-            </a-select-option>
-          </a-select>
         </a-form-item>
 
         <a-form-item label="所属部门" name="title">

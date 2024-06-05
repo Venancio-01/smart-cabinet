@@ -1,6 +1,7 @@
 import type { DoorEquipment } from '@smart-cabinet/database'
 import { getLocalIpAddress } from '@smart-cabinet/utils'
 import {
+  selectDoorAlarmRecord,
   selectDoorAlarmRecordCount,
   selectDoorAlarmRecordList,
   selectDoorAlarmRecordListWithPage,
@@ -102,6 +103,10 @@ export function registerAccessDoorService() {
 
   ipcMain.handle(ipcNames.accessDoor.selectDoorRfidrecordListWithPage, async (_, { pagination, queryCondition }) => {
     return selectDoorRfidrecordListWithPage(pagination, queryCondition)
+  })
+
+  ipcMain.handle(ipcNames.accessDoor.selectDoorAlarmRecord, async (_, args) => {
+    return selectDoorAlarmRecord(args)
   })
 
   ipcMain.handle(ipcNames.accessDoor.selectDoorAlarmRecordCount, async (_, args) => {

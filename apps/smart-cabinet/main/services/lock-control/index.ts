@@ -64,8 +64,11 @@ function queryAllState() {
  */
 function open(boardAddress = '01', lockAddress = '01') {
   const command = generateLockCommand(`8a${boardAddress}${lockAddress}11`)
-  instance?.write(command)
+  // instance?.write(command)
+  console.log('🚀 - open - command:', command)
 }
+
+open()
 
 /**
  * @description: 获取门锁开启状态

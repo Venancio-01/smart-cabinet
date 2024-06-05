@@ -11,7 +11,10 @@ export function convertDecimalToBinary(number: number) {
   const binary = number.toString(2)
   const binaryLength = binary.length
   const MAX_LENGTH = 8
-  const binaryString = Array.from({ length: MAX_LENGTH - binaryLength }).fill('0').join('') + binary
+  const binaryString =
+    Array.from({ length: MAX_LENGTH - binaryLength })
+      .fill('0')
+      .join('') + binary
   const result = binaryString.split('').reverse().join('')
 
   return result
@@ -36,9 +39,11 @@ export function generateLockCommand(source: string) {
   }, '')
 
   const command = [...arr, result]
-    .map(item => item.slice(2, 4))
+    .map((item) => item.slice(2, 4))
     .join('')
     .toLocaleUpperCase()
+
+  console.log('🚀 - generateLockCommand - command:', command)
 
   return Buffer.from(command, 'hex')
 }
@@ -49,8 +54,7 @@ export async function setPermissions() {
   try {
     await execSync('sudo chmod 777 /dev/ttyUSB0')
     info('设置串口权限成功')
-  }
-  catch (e) {
+  } catch (e) {
     error(`设置串口权限失败,${e}`)
   }
 }

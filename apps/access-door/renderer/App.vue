@@ -31,14 +31,22 @@ useInit()
       :style="{ backgroundImage: `url(${backgroundImage})` }"
     >
       <div class="w-h-full mask wrap-padding">
-        <router-view :key="route.fullPath" v-slot="{ Component }">
-          <transition mode="out-in">
-            <component :is="Component" />
-          </transition>
-        </router-view>
+        <!-- <transition name="fade" mode="out-in"> -->
+        <!-- <RouterView > -->
+        <RouterView :key="route.fullPath" v-slot="{ Component }">
+          <component :is="Component" />
+        </RouterView>
+        <!-- </transition> -->
       </div>
     </div>
   </a-config-provider>
 </template>
 
-<style></style>
+<style>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.2s;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+</style>

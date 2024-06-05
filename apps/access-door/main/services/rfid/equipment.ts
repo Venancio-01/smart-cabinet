@@ -52,19 +52,19 @@ export default class Equipment {
 
     await new Promise<void>((resolve, reject) => {
       this.socket!.on('connect', () => {
-        info('socket 连接成功')
+        info(`socket 连接成功 - ${this.equipment.equipmentAddr}`)
         this.connected = true
         resolve()
       })
 
       this.socket.on('timeout', () => {
-        error('socket 连接超时')
+        error(`socket 连接超时 - ${this.equipment.equipmentAddr}`)
         this.socket?.destroy()
         reject(new Error('socket 连接超时'))
       })
 
       this.socket?.on('close', () => {
-        info('关闭 socket 连接')
+        info(`关闭 socket 连接 - ${this.equipment.equipmentAddr}`)
         this.connected = false
         reject(new Error('socket 连接关闭'))
       })

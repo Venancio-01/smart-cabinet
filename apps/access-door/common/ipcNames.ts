@@ -13,6 +13,7 @@ const ipcNames = {
     selectDoorRfidrecordListWithPage: 'select-door-rfidrecord-list-with-page',
     selectDoorAlarmRecordList: 'select-door-alarm-record-list',
     selectDoorAlarmRecordListWithPage: 'select-door-alarm-record-list-with-page',
+    selectDoorAlarmRecord: 'select-door-alarm-record',
     selectDoorAlarmRecordCount: 'select-door-alarm-record-count',
     updateDoorAlarmRecord: 'update-door-alarm-record',
     updateManyDoorAlarmRecord: 'update-many-door-alarm-record',

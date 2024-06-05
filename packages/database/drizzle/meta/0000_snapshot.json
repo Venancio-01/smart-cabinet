@@ -1,0 +1,5027 @@
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "prevId": "",
+  "version": "5",
+  "dialect": "mysql",
+  "tables": {
+    "doc_carrier_type": {
+      "name": "doc_carrier_type",
+      "columns": {
+        "carrier_type_id": {
+          "autoincrement": true,
+          "name": "carrier_type_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type_name": {
+          "autoincrement": false,
+          "name": "type_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "doc_carrier_type_carrier_type_id": {
+          "name": "doc_carrier_type_carrier_type_id",
+          "columns": [
+            "carrier_type_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "doc_directory": {
+      "name": "doc_directory",
+      "columns": {
+        "directory_id": {
+          "autoincrement": true,
+          "name": "directory_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "parent_id": {
+          "autoincrement": false,
+          "name": "parent_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "display_name": {
+          "autoincrement": false,
+          "name": "display_name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "doc_name": {
+          "autoincrement": false,
+          "name": "doc_name",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "doc_e_directory": {
+          "autoincrement": false,
+          "name": "doc_e_directory",
+          "type": "varchar(300)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sort": {
+          "autoincrement": false,
+          "name": "sort",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "autoincrement": false,
+          "name": "status",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "update_time": {
+          "autoincrement": false,
+          "name": "update_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_time": {
+          "autoincrement": false,
+          "name": "create_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "doc_directory_directory_id": {
+          "name": "doc_directory_directory_id",
+          "columns": [
+            "directory_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {
+        "index_doc_e_directory": {
+          "name": "index_doc_e_directory",
+          "columns": [
+            "doc_e_directory"
+          ]
+        },
+        "index_id": {
+          "name": "index_id",
+          "columns": [
+            "directory_id"
+          ]
+        }
+      }
+    },
+    "doc_document": {
+      "name": "doc_document",
+      "columns": {
+        "doc_id": {
+          "autoincrement": true,
+          "name": "doc_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "doc_name": {
+          "autoincrement": false,
+          "name": "doc_name",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "doc_secret_level": {
+          "autoincrement": false,
+          "name": "doc_secret_level",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "doc_type": {
+          "autoincrement": false,
+          "name": "doc_type",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "doc_rfid": {
+          "autoincrement": false,
+          "name": "doc_rfid",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "IS_one": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "IS_one",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_time": {
+          "autoincrement": false,
+          "name": "create_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "end_time": {
+          "autoincrement": false,
+          "name": "end_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "remark": {
+          "autoincrement": false,
+          "name": "remark",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "doc_p_status": {
+          "default": 1,
+          "autoincrement": false,
+          "name": "doc_p_status",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_id": {
+          "autoincrement": false,
+          "name": "user_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cabinet_id": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "cabinet_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cabinet_door_id": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "cabinet_door_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_time": {
+          "autoincrement": false,
+          "name": "update_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "doc_last_time": {
+          "autoincrement": false,
+          "name": "doc_last_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "remove_status": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "remove_status",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "code": {
+          "autoincrement": false,
+          "name": "code",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "urgency": {
+          "autoincrement": false,
+          "name": "urgency",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "send_dep": {
+          "autoincrement": false,
+          "name": "send_dep",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "send_code": {
+          "autoincrement": false,
+          "name": "send_code",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bureau_depId": {
+          "autoincrement": false,
+          "name": "bureau_depId",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bindingType": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "bindingType",
+          "type": "bigint(1) unsigned zerofill",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bind_user_id": {
+          "autoincrement": false,
+          "name": "bind_user_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "binding_dept_id": {
+          "autoincrement": false,
+          "name": "binding_dept_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "binding_id": {
+          "autoincrement": false,
+          "name": "binding_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "doc_document_doc_id": {
+          "name": "doc_document_doc_id",
+          "columns": [
+            "doc_id"
+          ]
+        }
+      },
+      "indexes": {
+        "doc_name": {
+          "name": "doc_name",
+          "columns": [
+            "doc_name"
+          ],
+          "isUnique": false
+        },
+        "rfid": {
+          "name": "rfid",
+          "columns": [
+            "doc_rfid"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "doc_operation_log": {
+      "name": "doc_operation_log",
+      "columns": {
+        "operationlog_id": {
+          "autoincrement": false,
+          "name": "operationlog_id",
+          "type": "varchar(32)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "doc_id": {
+          "autoincrement": false,
+          "name": "doc_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "doc_name": {
+          "autoincrement": false,
+          "name": "doc_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "operation_type": {
+          "autoincrement": false,
+          "name": "operation_type",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "operation_name": {
+          "autoincrement": false,
+          "name": "operation_name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_id": {
+          "autoincrement": false,
+          "name": "user_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_name": {
+          "autoincrement": false,
+          "name": "user_name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "dept_id": {
+          "autoincrement": false,
+          "name": "dept_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "dept_name": {
+          "autoincrement": false,
+          "name": "dept_name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "update_time": {
+          "autoincrement": false,
+          "name": "update_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_time": {
+          "autoincrement": false,
+          "name": "create_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "doc_operation_log_operationlog_id": {
+          "name": "doc_operation_log_operationlog_id",
+          "columns": [
+            "operationlog_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "doc_secret_level_role": {
+      "name": "doc_secret_level_role",
+      "columns": {
+        "slr_id": {
+          "autoincrement": true,
+          "name": "slr_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role_id": {
+          "autoincrement": false,
+          "name": "role_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role_name": {
+          "autoincrement": false,
+          "name": "role_name",
+          "type": "varchar(30)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "slr_name": {
+          "autoincrement": false,
+          "name": "slr_name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "slr_code": {
+          "autoincrement": false,
+          "name": "slr_code",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_time": {
+          "autoincrement": false,
+          "name": "update_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_time": {
+          "autoincrement": false,
+          "name": "create_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "doc_secret_level_role_slr_id": {
+          "name": "doc_secret_level_role_slr_id",
+          "columns": [
+            "slr_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "door_access_records": {
+      "name": "door_access_records",
+      "columns": {
+        "AccessID": {
+          "autoincrement": true,
+          "name": "AccessID",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "AccessDirection": {
+          "autoincrement": false,
+          "name": "AccessDirection",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "directionCreateTime": {
+          "autoincrement": false,
+          "name": "directionCreateTime",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "EquipmentID": {
+          "autoincrement": false,
+          "name": "EquipmentID",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "EquipmentName": {
+          "autoincrement": false,
+          "name": "EquipmentName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "remark": {
+          "autoincrement": false,
+          "name": "remark",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "door_access_records_AccessID": {
+          "name": "door_access_records_AccessID",
+          "columns": [
+            "AccessID"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "door_alarmrecord": {
+      "name": "door_alarmrecord",
+      "columns": {
+        "Alarmid": {
+          "autoincrement": true,
+          "name": "Alarmid",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "EquipmentId": {
+          "autoincrement": false,
+          "name": "EquipmentId",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "EquipmentName": {
+          "autoincrement": false,
+          "name": "EquipmentName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Carrier_Id": {
+          "autoincrement": false,
+          "name": "Carrier_Id",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Carrier_rfid": {
+          "autoincrement": false,
+          "name": "Carrier_rfid",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Carrier_Name": {
+          "autoincrement": false,
+          "name": "Carrier_Name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Carrier_Deptid": {
+          "autoincrement": false,
+          "name": "Carrier_Deptid",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Carrier_DeptName": {
+          "autoincrement": false,
+          "name": "Carrier_DeptName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Carrier_type": {
+          "autoincrement": false,
+          "name": "Carrier_type",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "isOperation": {
+          "autoincrement": false,
+          "name": "isOperation",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "remark": {
+          "autoincrement": false,
+          "name": "remark",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "CreateTime": {
+          "autoincrement": false,
+          "name": "CreateTime",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "door_alarmrecord_Alarmid": {
+          "name": "door_alarmrecord_Alarmid",
+          "columns": [
+            "Alarmid"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "door_equipment": {
+      "name": "door_equipment",
+      "columns": {
+        "equipmentid": {
+          "autoincrement": true,
+          "name": "equipmentid",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "equipment_name": {
+          "autoincrement": false,
+          "name": "equipment_name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "addressip": {
+          "autoincrement": false,
+          "name": "addressip",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "type": {
+          "autoincrement": false,
+          "name": "type",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "fid": {
+          "autoincrement": false,
+          "name": "fid",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "autoincrement": false,
+          "name": "status",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "equipment_addr": {
+          "autoincrement": false,
+          "name": "equipment_addr",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "equipment_Port": {
+          "autoincrement": false,
+          "name": "equipment_Port",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "equipment_txid": {
+          "autoincrement": false,
+          "name": "equipment_txid",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "remark": {
+          "autoincrement": false,
+          "name": "remark",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "macAddress": {
+          "autoincrement": false,
+          "name": "macAddress",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "macIp": {
+          "autoincrement": false,
+          "name": "macIp",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Alarm_switch": {
+          "autoincrement": false,
+          "name": "Alarm_switch",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "CreatorTime": {
+          "autoincrement": false,
+          "name": "CreatorTime",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "equipment_In": {
+          "autoincrement": false,
+          "name": "equipment_In",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "equipment_InIP": {
+          "autoincrement": false,
+          "name": "equipment_InIP",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "equipment_Out": {
+          "autoincrement": false,
+          "name": "equipment_Out",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "equipment_OutIp": {
+          "autoincrement": false,
+          "name": "equipment_OutIp",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "equipment_Type": {
+          "autoincrement": false,
+          "name": "equipment_Type",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deviceUserName": {
+          "autoincrement": false,
+          "name": "deviceUserName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deviceUserPwd": {
+          "autoincrement": false,
+          "name": "deviceUserPwd",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "devicePort": {
+          "autoincrement": false,
+          "name": "devicePort",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "door_equipment_equipmentid": {
+          "name": "door_equipment_equipmentid",
+          "columns": [
+            "equipmentid"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "door_read_record": {
+      "name": "door_read_record",
+      "columns": {
+        "ReadID": {
+          "autoincrement": true,
+          "name": "ReadID",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ReadCreateTine": {
+          "autoincrement": false,
+          "name": "ReadCreateTine",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ReadRfid": {
+          "autoincrement": false,
+          "name": "ReadRfid",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "EquipmentID": {
+          "autoincrement": false,
+          "name": "EquipmentID",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "EquipmentName": {
+          "autoincrement": false,
+          "name": "EquipmentName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "remark": {
+          "autoincrement": false,
+          "name": "remark",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "door_read_record_ReadID": {
+          "name": "door_read_record_ReadID",
+          "columns": [
+            "ReadID"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "door_rfidrecord": {
+      "name": "door_rfidrecord",
+      "columns": {
+        "Record_id": {
+          "autoincrement": true,
+          "name": "Record_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "EquipmentId": {
+          "autoincrement": false,
+          "name": "EquipmentId",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "EquipmentName": {
+          "autoincrement": false,
+          "name": "EquipmentName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Carrier_Id": {
+          "autoincrement": false,
+          "name": "Carrier_Id",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Carrier_Name": {
+          "autoincrement": false,
+          "name": "Carrier_Name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Carrier_rfid": {
+          "autoincrement": false,
+          "name": "Carrier_rfid",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Carrier_Deptid": {
+          "autoincrement": false,
+          "name": "Carrier_Deptid",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Carrier_DeptName": {
+          "autoincrement": false,
+          "name": "Carrier_DeptName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Carrier_type": {
+          "autoincrement": false,
+          "name": "Carrier_type",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "equipment_Type": {
+          "autoincrement": false,
+          "name": "equipment_Type",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "type": {
+          "autoincrement": false,
+          "name": "type",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_alarm": {
+          "autoincrement": false,
+          "name": "is_alarm",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "alarmid": {
+          "autoincrement": false,
+          "name": "alarmid",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "CreatorTime": {
+          "autoincrement": false,
+          "name": "CreatorTime",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_Register": {
+          "autoincrement": false,
+          "name": "is_Register",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "door_rfidrecord_Record_id": {
+          "name": "door_rfidrecord_Record_id",
+          "columns": [
+            "Record_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "door_rfidregister": {
+      "name": "door_rfidregister",
+      "columns": {
+        "register_id": {
+          "autoincrement": true,
+          "name": "register_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Carrier_ID": {
+          "autoincrement": false,
+          "name": "Carrier_ID",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Carrier_Deptid_ID": {
+          "autoincrement": false,
+          "name": "Carrier_Deptid_ID",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "start_time": {
+          "autoincrement": false,
+          "name": "start_time",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_time": {
+          "autoincrement": false,
+          "name": "end_time",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reamrk": {
+          "autoincrement": false,
+          "name": "reamrk",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_userid": {
+          "autoincrement": false,
+          "name": "create_userid",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "CreatorTime": {
+          "autoincrement": false,
+          "name": "CreatorTime",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "DeleteTime": {
+          "autoincrement": false,
+          "name": "DeleteTime",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "door_rfidregister_register_id": {
+          "name": "door_rfidregister_register_id",
+          "columns": [
+            "register_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "qrtz_blob_triggers": {
+      "name": "qrtz_blob_triggers",
+      "columns": {
+        "sched_name": {
+          "autoincrement": false,
+          "name": "sched_name",
+          "type": "varchar(120)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trigger_name": {
+          "autoincrement": false,
+          "name": "trigger_name",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trigger_group": {
+          "autoincrement": false,
+          "name": "trigger_group",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "blob_data": {
+          "autoincrement": false,
+          "name": "blob_data",
+          "type": "blob",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "qrtz_blob_triggers_sched_name_trigger_name_trigger_group": {
+          "name": "qrtz_blob_triggers_sched_name_trigger_name_trigger_group",
+          "columns": [
+            "sched_name",
+            "trigger_name",
+            "trigger_group"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "qrtz_blob_triggers_ibfk_1": {
+          "name": "qrtz_blob_triggers_ibfk_1",
+          "tableFrom": "qrtz_blob_triggers",
+          "tableTo": "qrtz_triggers",
+          "columnsFrom": [
+            "sched_name",
+            "trigger_name",
+            "trigger_group"
+          ],
+          "columnsTo": [
+            "sched_name",
+            "trigger_name",
+            "trigger_group"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "qrtz_calendars": {
+      "name": "qrtz_calendars",
+      "columns": {
+        "sched_name": {
+          "autoincrement": false,
+          "name": "sched_name",
+          "type": "varchar(120)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "calendar_name": {
+          "autoincrement": false,
+          "name": "calendar_name",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "calendar": {
+          "autoincrement": false,
+          "name": "calendar",
+          "type": "blob",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "qrtz_calendars_sched_name_calendar_name": {
+          "name": "qrtz_calendars_sched_name_calendar_name",
+          "columns": [
+            "sched_name",
+            "calendar_name"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "qrtz_cron_triggers": {
+      "name": "qrtz_cron_triggers",
+      "columns": {
+        "sched_name": {
+          "autoincrement": false,
+          "name": "sched_name",
+          "type": "varchar(120)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trigger_name": {
+          "autoincrement": false,
+          "name": "trigger_name",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trigger_group": {
+          "autoincrement": false,
+          "name": "trigger_group",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cron_expression": {
+          "autoincrement": false,
+          "name": "cron_expression",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "time_zone_id": {
+          "autoincrement": false,
+          "name": "time_zone_id",
+          "type": "varchar(80)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "qrtz_cron_triggers_sched_name_trigger_name_trigger_group": {
+          "name": "qrtz_cron_triggers_sched_name_trigger_name_trigger_group",
+          "columns": [
+            "sched_name",
+            "trigger_name",
+            "trigger_group"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "qrtz_cron_triggers_ibfk_1": {
+          "name": "qrtz_cron_triggers_ibfk_1",
+          "tableFrom": "qrtz_cron_triggers",
+          "tableTo": "qrtz_triggers",
+          "columnsFrom": [
+            "sched_name",
+            "trigger_name",
+            "trigger_group"
+          ],
+          "columnsTo": [
+            "sched_name",
+            "trigger_name",
+            "trigger_group"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "qrtz_fired_triggers": {
+      "name": "qrtz_fired_triggers",
+      "columns": {
+        "sched_name": {
+          "autoincrement": false,
+          "name": "sched_name",
+          "type": "varchar(120)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "entry_id": {
+          "autoincrement": false,
+          "name": "entry_id",
+          "type": "varchar(95)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trigger_name": {
+          "autoincrement": false,
+          "name": "trigger_name",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trigger_group": {
+          "autoincrement": false,
+          "name": "trigger_group",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "instance_name": {
+          "autoincrement": false,
+          "name": "instance_name",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fired_time": {
+          "autoincrement": false,
+          "name": "fired_time",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sched_time": {
+          "autoincrement": false,
+          "name": "sched_time",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "priority": {
+          "autoincrement": false,
+          "name": "priority",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "state": {
+          "autoincrement": false,
+          "name": "state",
+          "type": "varchar(16)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "job_name": {
+          "autoincrement": false,
+          "name": "job_name",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "job_group": {
+          "autoincrement": false,
+          "name": "job_group",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_nonconcurrent": {
+          "autoincrement": false,
+          "name": "is_nonconcurrent",
+          "type": "varchar(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "requests_recovery": {
+          "autoincrement": false,
+          "name": "requests_recovery",
+          "type": "varchar(1)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "qrtz_fired_triggers_sched_name_entry_id": {
+          "name": "qrtz_fired_triggers_sched_name_entry_id",
+          "columns": [
+            "sched_name",
+            "entry_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "qrtz_job_details": {
+      "name": "qrtz_job_details",
+      "columns": {
+        "sched_name": {
+          "autoincrement": false,
+          "name": "sched_name",
+          "type": "varchar(120)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "job_name": {
+          "autoincrement": false,
+          "name": "job_name",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "job_group": {
+          "autoincrement": false,
+          "name": "job_group",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "autoincrement": false,
+          "name": "description",
+          "type": "varchar(250)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "job_class_name": {
+          "autoincrement": false,
+          "name": "job_class_name",
+          "type": "varchar(250)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_durable": {
+          "autoincrement": false,
+          "name": "is_durable",
+          "type": "varchar(1)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_nonconcurrent": {
+          "autoincrement": false,
+          "name": "is_nonconcurrent",
+          "type": "varchar(1)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_update_data": {
+          "autoincrement": false,
+          "name": "is_update_data",
+          "type": "varchar(1)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "requests_recovery": {
+          "autoincrement": false,
+          "name": "requests_recovery",
+          "type": "varchar(1)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "job_data": {
+          "autoincrement": false,
+          "name": "job_data",
+          "type": "blob",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "qrtz_job_details_sched_name_job_name_job_group": {
+          "name": "qrtz_job_details_sched_name_job_name_job_group",
+          "columns": [
+            "sched_name",
+            "job_name",
+            "job_group"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "qrtz_locks": {
+      "name": "qrtz_locks",
+      "columns": {
+        "sched_name": {
+          "autoincrement": false,
+          "name": "sched_name",
+          "type": "varchar(120)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lock_name": {
+          "autoincrement": false,
+          "name": "lock_name",
+          "type": "varchar(40)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "qrtz_locks_sched_name_lock_name": {
+          "name": "qrtz_locks_sched_name_lock_name",
+          "columns": [
+            "sched_name",
+            "lock_name"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "qrtz_paused_trigger_grps": {
+      "name": "qrtz_paused_trigger_grps",
+      "columns": {
+        "sched_name": {
+          "autoincrement": false,
+          "name": "sched_name",
+          "type": "varchar(120)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trigger_group": {
+          "autoincrement": false,
+          "name": "trigger_group",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "qrtz_paused_trigger_grps_sched_name_trigger_group": {
+          "name": "qrtz_paused_trigger_grps_sched_name_trigger_group",
+          "columns": [
+            "sched_name",
+            "trigger_group"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "qrtz_scheduler_state": {
+      "name": "qrtz_scheduler_state",
+      "columns": {
+        "sched_name": {
+          "autoincrement": false,
+          "name": "sched_name",
+          "type": "varchar(120)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "instance_name": {
+          "autoincrement": false,
+          "name": "instance_name",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "last_checkin_time": {
+          "autoincrement": false,
+          "name": "last_checkin_time",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "checkin_interval": {
+          "autoincrement": false,
+          "name": "checkin_interval",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "qrtz_scheduler_state_sched_name_instance_name": {
+          "name": "qrtz_scheduler_state_sched_name_instance_name",
+          "columns": [
+            "sched_name",
+            "instance_name"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "qrtz_simple_triggers": {
+      "name": "qrtz_simple_triggers",
+      "columns": {
+        "sched_name": {
+          "autoincrement": false,
+          "name": "sched_name",
+          "type": "varchar(120)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trigger_name": {
+          "autoincrement": false,
+          "name": "trigger_name",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trigger_group": {
+          "autoincrement": false,
+          "name": "trigger_group",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "repeat_count": {
+          "autoincrement": false,
+          "name": "repeat_count",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "repeat_interval": {
+          "autoincrement": false,
+          "name": "repeat_interval",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "times_triggered": {
+          "autoincrement": false,
+          "name": "times_triggered",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "qrtz_simple_triggers_sched_name_trigger_name_trigger_group": {
+          "name": "qrtz_simple_triggers_sched_name_trigger_name_trigger_group",
+          "columns": [
+            "sched_name",
+            "trigger_name",
+            "trigger_group"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "qrtz_simple_triggers_ibfk_1": {
+          "name": "qrtz_simple_triggers_ibfk_1",
+          "tableFrom": "qrtz_simple_triggers",
+          "tableTo": "qrtz_triggers",
+          "columnsFrom": [
+            "sched_name",
+            "trigger_name",
+            "trigger_group"
+          ],
+          "columnsTo": [
+            "sched_name",
+            "trigger_name",
+            "trigger_group"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "qrtz_simprop_triggers": {
+      "name": "qrtz_simprop_triggers",
+      "columns": {
+        "sched_name": {
+          "autoincrement": false,
+          "name": "sched_name",
+          "type": "varchar(120)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trigger_name": {
+          "autoincrement": false,
+          "name": "trigger_name",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trigger_group": {
+          "autoincrement": false,
+          "name": "trigger_group",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "str_prop_1": {
+          "autoincrement": false,
+          "name": "str_prop_1",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "str_prop_2": {
+          "autoincrement": false,
+          "name": "str_prop_2",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "str_prop_3": {
+          "autoincrement": false,
+          "name": "str_prop_3",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "int_prop_1": {
+          "autoincrement": false,
+          "name": "int_prop_1",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "int_prop_2": {
+          "autoincrement": false,
+          "name": "int_prop_2",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "long_prop_1": {
+          "autoincrement": false,
+          "name": "long_prop_1",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "long_prop_2": {
+          "autoincrement": false,
+          "name": "long_prop_2",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dec_prop_1": {
+          "autoincrement": false,
+          "name": "dec_prop_1",
+          "type": "decimal(13,4)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dec_prop_2": {
+          "autoincrement": false,
+          "name": "dec_prop_2",
+          "type": "decimal(13,4)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bool_prop_1": {
+          "autoincrement": false,
+          "name": "bool_prop_1",
+          "type": "varchar(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bool_prop_2": {
+          "autoincrement": false,
+          "name": "bool_prop_2",
+          "type": "varchar(1)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "qrtz_simprop_triggers_sched_name_trigger_name_trigger_group": {
+          "name": "qrtz_simprop_triggers_sched_name_trigger_name_trigger_group",
+          "columns": [
+            "sched_name",
+            "trigger_name",
+            "trigger_group"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "qrtz_simprop_triggers_ibfk_1": {
+          "name": "qrtz_simprop_triggers_ibfk_1",
+          "tableFrom": "qrtz_simprop_triggers",
+          "tableTo": "qrtz_triggers",
+          "columnsFrom": [
+            "sched_name",
+            "trigger_name",
+            "trigger_group"
+          ],
+          "columnsTo": [
+            "sched_name",
+            "trigger_name",
+            "trigger_group"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "qrtz_triggers": {
+      "name": "qrtz_triggers",
+      "columns": {
+        "sched_name": {
+          "autoincrement": false,
+          "name": "sched_name",
+          "type": "varchar(120)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trigger_name": {
+          "autoincrement": false,
+          "name": "trigger_name",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trigger_group": {
+          "autoincrement": false,
+          "name": "trigger_group",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "job_name": {
+          "autoincrement": false,
+          "name": "job_name",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "job_group": {
+          "autoincrement": false,
+          "name": "job_group",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "autoincrement": false,
+          "name": "description",
+          "type": "varchar(250)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "next_fire_time": {
+          "autoincrement": false,
+          "name": "next_fire_time",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "prev_fire_time": {
+          "autoincrement": false,
+          "name": "prev_fire_time",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "priority": {
+          "autoincrement": false,
+          "name": "priority",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "trigger_state": {
+          "autoincrement": false,
+          "name": "trigger_state",
+          "type": "varchar(16)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "trigger_type": {
+          "autoincrement": false,
+          "name": "trigger_type",
+          "type": "varchar(8)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "start_time": {
+          "autoincrement": false,
+          "name": "start_time",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "end_time": {
+          "autoincrement": false,
+          "name": "end_time",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "calendar_name": {
+          "autoincrement": false,
+          "name": "calendar_name",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "misfire_instr": {
+          "autoincrement": false,
+          "name": "misfire_instr",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "job_data": {
+          "autoincrement": false,
+          "name": "job_data",
+          "type": "blob",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "qrtz_triggers_sched_name_trigger_name_trigger_group": {
+          "name": "qrtz_triggers_sched_name_trigger_name_trigger_group",
+          "columns": [
+            "sched_name",
+            "trigger_name",
+            "trigger_group"
+          ]
+        }
+      },
+      "indexes": {
+        "sched_name": {
+          "name": "sched_name",
+          "columns": [
+            "sched_name",
+            "job_name",
+            "job_group"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "qrtz_triggers_ibfk_1": {
+          "name": "qrtz_triggers_ibfk_1",
+          "tableFrom": "qrtz_triggers",
+          "tableTo": "qrtz_job_details",
+          "columnsFrom": [
+            "sched_name",
+            "job_name",
+            "job_group"
+          ],
+          "columnsTo": [
+            "sched_name",
+            "job_name",
+            "job_group"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "rfid_cabinet": {
+      "name": "rfid_cabinet",
+      "columns": {
+        "ID": {
+          "autoincrement": true,
+          "name": "ID",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Name": {
+          "autoincrement": false,
+          "name": "Name",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "State": {
+          "autoincrement": false,
+          "name": "State",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "TypeClass": {
+          "autoincrement": false,
+          "name": "TypeClass",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "fid": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "fid",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cabIndex": {
+          "autoincrement": false,
+          "name": "cabIndex",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cabAddr": {
+          "autoincrement": false,
+          "name": "cabAddr",
+          "type": "varchar(15)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "RDAddr": {
+          "autoincrement": false,
+          "name": "RDAddr",
+          "type": "varchar(15)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "RDAddr2": {
+          "autoincrement": false,
+          "name": "RDAddr2",
+          "type": "varchar(15)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "RFAD_Com": {
+          "autoincrement": false,
+          "name": "RFAD_Com",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "RFAD_baudrate": {
+          "autoincrement": false,
+          "name": "RFAD_baudrate",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "operateOut": {
+          "autoincrement": false,
+          "name": "operateOut",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "openDoor": {
+          "autoincrement": false,
+          "name": "openDoor",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "fingerServer": {
+          "autoincrement": false,
+          "name": "fingerServer",
+          "type": "varchar(15)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "SecretLevel": {
+          "autoincrement": false,
+          "name": "SecretLevel",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Classification": {
+          "autoincrement": false,
+          "name": "Classification",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dept_id": {
+          "autoincrement": false,
+          "name": "dept_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "rfid_cabinet_ID": {
+          "name": "rfid_cabinet_ID",
+          "columns": [
+            "ID"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "rfid_cabinetdoor": {
+      "name": "rfid_cabinetdoor",
+      "columns": {
+        "Id": {
+          "autoincrement": true,
+          "name": "Id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "CabinetId": {
+          "autoincrement": false,
+          "name": "CabinetId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Name": {
+          "autoincrement": false,
+          "name": "Name",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "State": {
+          "autoincrement": false,
+          "name": "State",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Kgbh": {
+          "autoincrement": false,
+          "name": "Kgbh",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Kgzt": {
+          "autoincrement": false,
+          "name": "Kgzt",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bindingType": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "bindingType",
+          "type": "bigint(1) unsigned zerofill",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "FolderPath": {
+          "autoincrement": false,
+          "name": "FolderPath",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "OrderIndex": {
+          "autoincrement": false,
+          "name": "OrderIndex",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "txAddr": {
+          "autoincrement": false,
+          "name": "txAddr",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "txId": {
+          "autoincrement": false,
+          "name": "txId",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "viewName": {
+          "autoincrement": false,
+          "name": "viewName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "rfid_cabinetdoor_Id": {
+          "name": "rfid_cabinetdoor_Id",
+          "columns": [
+            "Id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "rfid_card_user": {
+      "name": "rfid_card_user",
+      "columns": {
+        "CardId": {
+          "autoincrement": true,
+          "name": "CardId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Userid": {
+          "autoincrement": false,
+          "name": "Userid",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "CardData": {
+          "autoincrement": false,
+          "name": "CardData",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "CreateDate": {
+          "autoincrement": false,
+          "name": "CreateDate",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "rfid_card_user_CardId": {
+          "name": "rfid_card_user_CardId",
+          "columns": [
+            "CardId"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "rfid_door_dept": {
+      "name": "rfid_door_dept",
+      "columns": {
+        "dd_id": {
+          "autoincrement": true,
+          "name": "dd_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "DoorID": {
+          "autoincrement": false,
+          "name": "DoorID",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deptid": {
+          "autoincrement": false,
+          "name": "deptid",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "rfid_door_dept_dd_id": {
+          "name": "rfid_door_dept_dd_id",
+          "columns": [
+            "dd_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "rfid_door_user": {
+      "name": "rfid_door_user",
+      "columns": {
+        "du_id": {
+          "autoincrement": true,
+          "name": "du_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "DoorID": {
+          "autoincrement": false,
+          "name": "DoorID",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Userid": {
+          "autoincrement": false,
+          "name": "Userid",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "rfid_door_user_du_id": {
+          "name": "rfid_door_user_du_id",
+          "columns": [
+            "du_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "rfid_finger_user": {
+      "name": "rfid_finger_user",
+      "columns": {
+        "FingerID": {
+          "autoincrement": true,
+          "name": "FingerID",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Userid": {
+          "autoincrement": false,
+          "name": "Userid",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "order": {
+          "autoincrement": false,
+          "name": "order",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "FingerData": {
+          "autoincrement": false,
+          "name": "FingerData",
+          "type": "varchar(3000)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "CreateDate": {
+          "autoincrement": false,
+          "name": "CreateDate",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "rfid_finger_user_FingerID": {
+          "name": "rfid_finger_user_FingerID",
+          "columns": [
+            "FingerID"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "rfid_operation_record": {
+      "name": "rfid_operation_record",
+      "columns": {
+        "recordId": {
+          "autoincrement": true,
+          "name": "recordId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "operationid": {
+          "autoincrement": false,
+          "name": "operationid",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "UserID": {
+          "autoincrement": false,
+          "name": "UserID",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "CreateDate": {
+          "autoincrement": false,
+          "name": "CreateDate",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Type": {
+          "autoincrement": false,
+          "name": "Type",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cadinetID": {
+          "autoincrement": false,
+          "name": "cadinetID",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "doorid": {
+          "autoincrement": false,
+          "name": "doorid",
+          "type": "varchar(11)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "content": {
+          "autoincrement": false,
+          "name": "content",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "rfid_operation_record_recordId": {
+          "name": "rfid_operation_record_recordId",
+          "columns": [
+            "recordId"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "rfid_remove_carrier": {
+      "name": "rfid_remove_carrier",
+      "columns": {
+        "Carrier_ID": {
+          "autoincrement": true,
+          "name": "Carrier_ID",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "carrier_rfid": {
+          "autoincrement": false,
+          "name": "carrier_rfid",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cabinet_id": {
+          "autoincrement": false,
+          "name": "cabinet_id",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cabinet_door_id": {
+          "autoincrement": false,
+          "name": "cabinet_door_id",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "carrier_p_status": {
+          "autoincrement": false,
+          "name": "carrier_p_status",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_id": {
+          "autoincrement": false,
+          "name": "user_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "add_user": {
+          "autoincrement": false,
+          "name": "add_user",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "type": {
+          "autoincrement": false,
+          "name": "type",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "remark": {
+          "autoincrement": false,
+          "name": "remark",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_time": {
+          "autoincrement": false,
+          "name": "create_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "autoincrement": false,
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "record_id": {
+          "autoincrement": false,
+          "name": "record_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "rfid_remove_carrier_Carrier_ID": {
+          "name": "rfid_remove_carrier_Carrier_ID",
+          "columns": [
+            "Carrier_ID"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "rfid_remove_document": {
+      "name": "rfid_remove_document",
+      "columns": {
+        "doc_id": {
+          "autoincrement": true,
+          "name": "doc_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "doc_name": {
+          "autoincrement": false,
+          "name": "doc_name",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "doc_secret_level": {
+          "autoincrement": false,
+          "name": "doc_secret_level",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "doc_type": {
+          "autoincrement": false,
+          "name": "doc_type",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "doc_rfid": {
+          "autoincrement": false,
+          "name": "doc_rfid",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "remark": {
+          "autoincrement": false,
+          "name": "remark",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "doc_p_status": {
+          "default": 1,
+          "autoincrement": false,
+          "name": "doc_p_status",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_id": {
+          "autoincrement": false,
+          "name": "user_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "binding_id": {
+          "autoincrement": false,
+          "name": "binding_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cabinet_id": {
+          "autoincrement": false,
+          "name": "cabinet_id",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cabinet_door_id": {
+          "autoincrement": false,
+          "name": "cabinet_door_id",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_time": {
+          "autoincrement": false,
+          "name": "update_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_time": {
+          "autoincrement": false,
+          "name": "create_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "IS_one": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "IS_one",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "doc_last_time": {
+          "autoincrement": false,
+          "name": "doc_last_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "end_time": {
+          "autoincrement": false,
+          "name": "end_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "record_id": {
+          "autoincrement": false,
+          "name": "record_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "binding_dept_id": {
+          "autoincrement": false,
+          "name": "binding_dept_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bindingType": {
+          "autoincrement": false,
+          "name": "bindingType",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "rfid_remove_document_doc_id": {
+          "name": "rfid_remove_document_doc_id",
+          "columns": [
+            "doc_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "rfid_remove_record": {
+      "name": "rfid_remove_record",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "remove_time": {
+          "autoincrement": false,
+          "name": "remove_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_id": {
+          "autoincrement": false,
+          "name": "user_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "rfid_remove_record_id": {
+          "name": "rfid_remove_record_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "rfid_rfid_record": {
+      "name": "rfid_rfid_record",
+      "columns": {
+        "id": {
+          "autoincrement": true,
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "autoincrement": false,
+          "name": "userId",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "operationID": {
+          "autoincrement": false,
+          "name": "operationID",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cabinetId": {
+          "autoincrement": false,
+          "name": "cabinetId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cabDoorId": {
+          "autoincrement": false,
+          "name": "cabDoorId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "RFIDId": {
+          "autoincrement": false,
+          "name": "RFIDId",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createTime": {
+          "autoincrement": false,
+          "name": "createTime",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "handleID": {
+          "default": -1,
+          "autoincrement": false,
+          "name": "handleID",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "isOpen": {
+          "autoincrement": false,
+          "name": "isOpen",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "isBorrow": {
+          "autoincrement": false,
+          "name": "isBorrow",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "type": {
+          "autoincrement": false,
+          "name": "type",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_name": {
+          "autoincrement": false,
+          "name": "user_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_dept_name": {
+          "autoincrement": false,
+          "name": "user_dept_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "doc_car_name": {
+          "autoincrement": false,
+          "name": "doc_car_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "doccar_dept_name": {
+          "autoincrement": false,
+          "name": "doccar_dept_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cab_name": {
+          "autoincrement": false,
+          "name": "cab_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cabdoor_name": {
+          "autoincrement": false,
+          "name": "cabdoor_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "rfid_rfid_record_id": {
+          "name": "rfid_rfid_record_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "indexes": {
+        "index_operationID": {
+          "name": "index_operationID",
+          "columns": [
+            "operationID"
+          ],
+          "isUnique": false
+        },
+        "index_rfid": {
+          "name": "index_rfid",
+          "columns": [
+            "RFIDId"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "rfid_switch_record": {
+      "name": "rfid_switch_record",
+      "columns": {
+        "Id": {
+          "autoincrement": true,
+          "name": "Id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "CabinetId": {
+          "autoincrement": false,
+          "name": "CabinetId",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "CabinetDoorId": {
+          "autoincrement": false,
+          "name": "CabinetDoorId",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "operationID": {
+          "autoincrement": false,
+          "name": "operationID",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "userID": {
+          "autoincrement": false,
+          "name": "userID",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "TYPE": {
+          "autoincrement": false,
+          "name": "TYPE",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "content": {
+          "autoincrement": false,
+          "name": "content",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Datetime": {
+          "autoincrement": false,
+          "name": "Datetime",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "rfid_switch_record_Id": {
+          "name": "rfid_switch_record_Id",
+          "columns": [
+            "Id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "rfid_tips_alarm_record": {
+      "name": "rfid_tips_alarm_record",
+      "columns": {
+        "recordId": {
+          "autoincrement": true,
+          "name": "recordId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Alarm_Type": {
+          "autoincrement": false,
+          "name": "Alarm_Type",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Type": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "Type",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "UserID": {
+          "autoincrement": false,
+          "name": "UserID",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "operationid": {
+          "autoincrement": false,
+          "name": "operationid",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "CreateDate": {
+          "autoincrement": false,
+          "name": "CreateDate",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Handle_UserID": {
+          "autoincrement": false,
+          "name": "Handle_UserID",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Handle_operationid": {
+          "autoincrement": false,
+          "name": "Handle_operationid",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Handle_Date": {
+          "autoincrement": false,
+          "name": "Handle_Date",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cadinetID": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "cadinetID",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "doorid": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "doorid",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "content": {
+          "autoincrement": false,
+          "name": "content",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contentType": {
+          "autoincrement": false,
+          "name": "contentType",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Rfid": {
+          "autoincrement": false,
+          "name": "Rfid",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "groupid": {
+          "autoincrement": false,
+          "name": "groupid",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "docId": {
+          "autoincrement": false,
+          "name": "docId",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "doc_car_name": {
+          "autoincrement": false,
+          "name": "doc_car_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dept_name": {
+          "autoincrement": false,
+          "name": "dept_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "car_user_name": {
+          "autoincrement": false,
+          "name": "car_user_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cab_name": {
+          "autoincrement": false,
+          "name": "cab_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cabdoor_name": {
+          "autoincrement": false,
+          "name": "cabdoor_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ope_user_name": {
+          "autoincrement": false,
+          "name": "ope_user_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cabdoor_User_name": {
+          "autoincrement": false,
+          "name": "cabdoor_User_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cabdoor_dept_name": {
+          "autoincrement": false,
+          "name": "cabdoor_dept_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "isOperation": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "isOperation",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "rfid_tips_alarm_record_recordId": {
+          "name": "rfid_tips_alarm_record_recordId",
+          "columns": [
+            "recordId"
+          ]
+        }
+      },
+      "indexes": {
+        "index_type": {
+          "name": "index_type",
+          "columns": [
+            "Type"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "rfid_tips_record": {
+      "name": "rfid_tips_record",
+      "columns": {
+        "recordId": {
+          "autoincrement": true,
+          "name": "recordId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "UserID": {
+          "autoincrement": false,
+          "name": "UserID",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "operationid": {
+          "autoincrement": false,
+          "name": "operationid",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "CreateDate": {
+          "autoincrement": false,
+          "name": "CreateDate",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Handle_UserID": {
+          "autoincrement": false,
+          "name": "Handle_UserID",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Handle_operationid": {
+          "autoincrement": false,
+          "name": "Handle_operationid",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Handle_Date": {
+          "autoincrement": false,
+          "name": "Handle_Date",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cadinetID": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "cadinetID",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "doorid": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "doorid",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "content": {
+          "autoincrement": false,
+          "name": "content",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contentType": {
+          "autoincrement": false,
+          "name": "contentType",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Rfid": {
+          "autoincrement": false,
+          "name": "Rfid",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "groupid": {
+          "autoincrement": false,
+          "name": "groupid",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "docId": {
+          "autoincrement": false,
+          "name": "docId",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "doc_car_name": {
+          "autoincrement": false,
+          "name": "doc_car_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dept_name": {
+          "autoincrement": false,
+          "name": "dept_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "car_user_name": {
+          "autoincrement": false,
+          "name": "car_user_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cab_name": {
+          "autoincrement": false,
+          "name": "cab_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cabdoor_name": {
+          "autoincrement": false,
+          "name": "cabdoor_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ope_user_name": {
+          "autoincrement": false,
+          "name": "ope_user_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cabdoor_User_name": {
+          "autoincrement": false,
+          "name": "cabdoor_User_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cabdoor_dept_name": {
+          "autoincrement": false,
+          "name": "cabdoor_dept_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "isOperation": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "isOperation",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "rfid_tips_record_recordId": {
+          "name": "rfid_tips_record_recordId",
+          "columns": [
+            "recordId"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sys_config": {
+      "name": "sys_config",
+      "columns": {
+        "config_id": {
+          "autoincrement": true,
+          "name": "config_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "config_name": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "config_name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "config_key": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "config_key",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "config_value": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "config_value",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "config_type": {
+          "default": "'N'",
+          "autoincrement": false,
+          "name": "config_type",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_by": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "create_by",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_time": {
+          "autoincrement": false,
+          "name": "create_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_by": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "update_by",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_time": {
+          "autoincrement": false,
+          "name": "update_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "remark": {
+          "autoincrement": false,
+          "name": "remark",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "sys_config_config_id": {
+          "name": "sys_config_config_id",
+          "columns": [
+            "config_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sys_dept": {
+      "name": "sys_dept",
+      "columns": {
+        "dept_id": {
+          "autoincrement": true,
+          "name": "dept_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "parent_id": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "parent_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ancestors": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "ancestors",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dept_name": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "dept_name",
+          "type": "varchar(30)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "order_num": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "order_num",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "leader": {
+          "autoincrement": false,
+          "name": "leader",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phone": {
+          "autoincrement": false,
+          "name": "phone",
+          "type": "varchar(11)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "email": {
+          "autoincrement": false,
+          "name": "email",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "status",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "del_flag": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "del_flag",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_by": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "create_by",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_time": {
+          "autoincrement": false,
+          "name": "create_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_by": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "update_by",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_time": {
+          "autoincrement": false,
+          "name": "update_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "level": {
+          "autoincrement": false,
+          "name": "level",
+          "type": "tinyint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "code": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "code",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "sys_dept_dept_id": {
+          "name": "sys_dept_dept_id",
+          "columns": [
+            "dept_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sys_dict_data": {
+      "name": "sys_dict_data",
+      "columns": {
+        "dict_code": {
+          "autoincrement": true,
+          "name": "dict_code",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "dict_sort": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "dict_sort",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dict_label": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "dict_label",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dict_value": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "dict_value",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dict_type": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "dict_type",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "css_class": {
+          "autoincrement": false,
+          "name": "css_class",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "list_class": {
+          "autoincrement": false,
+          "name": "list_class",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "is_default": {
+          "default": "'N'",
+          "autoincrement": false,
+          "name": "is_default",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "status",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_by": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "create_by",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_time": {
+          "autoincrement": false,
+          "name": "create_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_by": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "update_by",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_time": {
+          "autoincrement": false,
+          "name": "update_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "remark": {
+          "autoincrement": false,
+          "name": "remark",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "sys_dict_data_dict_code": {
+          "name": "sys_dict_data_dict_code",
+          "columns": [
+            "dict_code"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sys_dict_type": {
+      "name": "sys_dict_type",
+      "columns": {
+        "dict_id": {
+          "autoincrement": true,
+          "name": "dict_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "dict_name": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "dict_name",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dict_type": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "dict_type",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "status",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_by": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "create_by",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_time": {
+          "autoincrement": false,
+          "name": "create_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_by": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "update_by",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_time": {
+          "autoincrement": false,
+          "name": "update_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "remark": {
+          "autoincrement": false,
+          "name": "remark",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "sys_dict_type_dict_id": {
+          "name": "sys_dict_type_dict_id",
+          "columns": [
+            "dict_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {
+        "dict_type": {
+          "name": "dict_type",
+          "columns": [
+            "dict_type"
+          ]
+        }
+      }
+    },
+    "sys_file_info": {
+      "name": "sys_file_info",
+      "columns": {
+        "file_id": {
+          "autoincrement": true,
+          "name": "file_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "file_name": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "file_name",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "file_path": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "file_path",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "sys_file_info_file_id": {
+          "name": "sys_file_info_file_id",
+          "columns": [
+            "file_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sys_job": {
+      "name": "sys_job",
+      "columns": {
+        "job_id": {
+          "autoincrement": true,
+          "name": "job_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "job_name": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "job_name",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "job_group": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "job_group",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "method_name": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "method_name",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "method_params": {
+          "autoincrement": false,
+          "name": "method_params",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "cron_expression": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "cron_expression",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "misfire_policy": {
+          "default": 3,
+          "autoincrement": false,
+          "name": "misfire_policy",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "concurrent": {
+          "default": 1,
+          "autoincrement": false,
+          "name": "concurrent",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "status",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_by": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "create_by",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_time": {
+          "autoincrement": false,
+          "name": "create_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_by": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "update_by",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_time": {
+          "autoincrement": false,
+          "name": "update_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "remark": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "remark",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "sys_job_job_id_job_name_job_group": {
+          "name": "sys_job_job_id_job_name_job_group",
+          "columns": [
+            "job_id",
+            "job_name",
+            "job_group"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sys_job_log": {
+      "name": "sys_job_log",
+      "columns": {
+        "job_log_id": {
+          "autoincrement": true,
+          "name": "job_log_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "job_name": {
+          "autoincrement": false,
+          "name": "job_name",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "job_group": {
+          "autoincrement": false,
+          "name": "job_group",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "method_name": {
+          "autoincrement": false,
+          "name": "method_name",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "method_params": {
+          "autoincrement": false,
+          "name": "method_params",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "job_message": {
+          "autoincrement": false,
+          "name": "job_message",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "status",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "exception_info": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "exception_info",
+          "type": "varchar(2000)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_time": {
+          "autoincrement": false,
+          "name": "create_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "sys_job_log_job_log_id": {
+          "name": "sys_job_log_job_log_id",
+          "columns": [
+            "job_log_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sys_logininfor": {
+      "name": "sys_logininfor",
+      "columns": {
+        "info_id": {
+          "autoincrement": true,
+          "name": "info_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "login_name": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "login_name",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ipaddr": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "ipaddr",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "login_location": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "login_location",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "browser": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "browser",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "os": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "os",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "status",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "msg": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "msg",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "login_time": {
+          "autoincrement": false,
+          "name": "login_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "sys_logininfor_info_id": {
+          "name": "sys_logininfor_info_id",
+          "columns": [
+            "info_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sys_menu": {
+      "name": "sys_menu",
+      "columns": {
+        "menu_id": {
+          "autoincrement": true,
+          "name": "menu_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "menu_name": {
+          "autoincrement": false,
+          "name": "menu_name",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "parent_id": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "parent_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "order_num": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "order_num",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "url": {
+          "default": "'#'",
+          "autoincrement": false,
+          "name": "url",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "menu_type": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "menu_type",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "visible": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "visible",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "perms": {
+          "autoincrement": false,
+          "name": "perms",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "icon": {
+          "default": "'#'",
+          "autoincrement": false,
+          "name": "icon",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_by": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "create_by",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_time": {
+          "autoincrement": false,
+          "name": "create_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_by": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "update_by",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_time": {
+          "autoincrement": false,
+          "name": "update_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "remark": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "remark",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "sys_menu_menu_id": {
+          "name": "sys_menu_menu_id",
+          "columns": [
+            "menu_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sys_notice": {
+      "name": "sys_notice",
+      "columns": {
+        "notice_id": {
+          "autoincrement": true,
+          "name": "notice_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "notice_title": {
+          "autoincrement": false,
+          "name": "notice_title",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "notice_type": {
+          "autoincrement": false,
+          "name": "notice_type",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "notice_content": {
+          "autoincrement": false,
+          "name": "notice_content",
+          "type": "varchar(2000)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "status",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_by": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "create_by",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_time": {
+          "autoincrement": false,
+          "name": "create_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_by": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "update_by",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_time": {
+          "autoincrement": false,
+          "name": "update_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "remark": {
+          "autoincrement": false,
+          "name": "remark",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "sys_notice_notice_id": {
+          "name": "sys_notice_notice_id",
+          "columns": [
+            "notice_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sys_oper_log": {
+      "name": "sys_oper_log",
+      "columns": {
+        "oper_id": {
+          "autoincrement": true,
+          "name": "oper_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "title",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "business_type": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "business_type",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "method": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "method",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "operator_type": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "operator_type",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "oper_name": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "oper_name",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dept_name": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "dept_name",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "oper_url": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "oper_url",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "oper_ip": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "oper_ip",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "oper_location": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "oper_location",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "oper_param": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "oper_param",
+          "type": "varchar(2000)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "status",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "error_msg": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "error_msg",
+          "type": "varchar(2000)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "oper_time": {
+          "autoincrement": false,
+          "name": "oper_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "sys_oper_log_oper_id": {
+          "name": "sys_oper_log_oper_id",
+          "columns": [
+            "oper_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sys_post": {
+      "name": "sys_post",
+      "columns": {
+        "post_id": {
+          "autoincrement": true,
+          "name": "post_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "post_code": {
+          "autoincrement": false,
+          "name": "post_code",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "post_name": {
+          "autoincrement": false,
+          "name": "post_name",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "post_sort": {
+          "autoincrement": false,
+          "name": "post_sort",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "autoincrement": false,
+          "name": "status",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "create_by": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "create_by",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_time": {
+          "autoincrement": false,
+          "name": "create_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_by": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "update_by",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_time": {
+          "autoincrement": false,
+          "name": "update_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "remark": {
+          "autoincrement": false,
+          "name": "remark",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "sys_post_post_id": {
+          "name": "sys_post_post_id",
+          "columns": [
+            "post_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sys_role": {
+      "name": "sys_role",
+      "columns": {
+        "role_id": {
+          "autoincrement": true,
+          "name": "role_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role_name": {
+          "autoincrement": false,
+          "name": "role_name",
+          "type": "varchar(30)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role_key": {
+          "autoincrement": false,
+          "name": "role_key",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role_sort": {
+          "autoincrement": false,
+          "name": "role_sort",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "data_scope": {
+          "default": 1,
+          "autoincrement": false,
+          "name": "data_scope",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "autoincrement": false,
+          "name": "status",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "del_flag": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "del_flag",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_by": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "create_by",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_time": {
+          "autoincrement": false,
+          "name": "create_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_by": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "update_by",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_time": {
+          "autoincrement": false,
+          "name": "update_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "remark": {
+          "autoincrement": false,
+          "name": "remark",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "sys_role_role_id": {
+          "name": "sys_role_role_id",
+          "columns": [
+            "role_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sys_role_dept": {
+      "name": "sys_role_dept",
+      "columns": {
+        "role_id": {
+          "autoincrement": false,
+          "name": "role_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "dept_id": {
+          "autoincrement": false,
+          "name": "dept_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "sys_role_dept_role_id_dept_id": {
+          "name": "sys_role_dept_role_id_dept_id",
+          "columns": [
+            "role_id",
+            "dept_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sys_role_menu": {
+      "name": "sys_role_menu",
+      "columns": {
+        "role_id": {
+          "autoincrement": false,
+          "name": "role_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "menu_id": {
+          "autoincrement": false,
+          "name": "menu_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "sys_role_menu_role_id_menu_id": {
+          "name": "sys_role_menu_role_id_menu_id",
+          "columns": [
+            "role_id",
+            "menu_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sys_user": {
+      "name": "sys_user",
+      "columns": {
+        "user_id": {
+          "autoincrement": true,
+          "name": "user_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "dept_id": {
+          "autoincrement": false,
+          "name": "dept_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "login_name": {
+          "autoincrement": false,
+          "name": "login_name",
+          "type": "varchar(30)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_name": {
+          "autoincrement": false,
+          "name": "user_name",
+          "type": "varchar(30)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_type": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "user_type",
+          "type": "varchar(2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "email": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "email",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "phonenumber": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "phonenumber",
+          "type": "varchar(11)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sex": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "sex",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "avatar": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "avatar",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "password": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "password",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "salt": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "salt",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "status",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "del_flag": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "del_flag",
+          "type": "char(1)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "login_ip": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "login_ip",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "login_date": {
+          "autoincrement": false,
+          "name": "login_date",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_by": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "create_by",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "create_time": {
+          "autoincrement": false,
+          "name": "create_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_by": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "update_by",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "update_time": {
+          "autoincrement": false,
+          "name": "update_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "remark": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "remark",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "type": {
+          "default": 1,
+          "autoincrement": false,
+          "name": "type",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "code": {
+          "autoincrement": false,
+          "name": "code",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "sys_user_user_id": {
+          "name": "sys_user_user_id",
+          "columns": [
+            "user_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sys_user_online": {
+      "name": "sys_user_online",
+      "columns": {
+        "sessionId": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "sessionId",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "login_name": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "login_name",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dept_name": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "dept_name",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ipaddr": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "ipaddr",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "login_location": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "login_location",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "browser": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "browser",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "os": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "os",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "default": "''",
+          "autoincrement": false,
+          "name": "status",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "start_timestamp": {
+          "autoincrement": false,
+          "name": "start_timestamp",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "last_access_time": {
+          "autoincrement": false,
+          "name": "last_access_time",
+          "type": "datetime",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "expire_time": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "expire_time",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "compositePrimaryKeys": {
+        "sys_user_online_sessionId": {
+          "name": "sys_user_online_sessionId",
+          "columns": [
+            "sessionId"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sys_user_post": {
+      "name": "sys_user_post",
+      "columns": {
+        "user_id": {
+          "autoincrement": false,
+          "name": "user_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "post_id": {
+          "autoincrement": false,
+          "name": "post_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "sys_user_post_user_id_post_id": {
+          "name": "sys_user_post_user_id_post_id",
+          "columns": [
+            "user_id",
+            "post_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "sys_user_role": {
+      "name": "sys_user_role",
+      "columns": {
+        "user_id": {
+          "autoincrement": false,
+          "name": "user_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "role_id": {
+          "autoincrement": false,
+          "name": "role_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {
+        "sys_user_role_user_id_role_id": {
+          "name": "sys_user_role_user_id_role_id",
+          "columns": [
+            "user_id",
+            "role_id"
+          ]
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "tables": {},
+    "indexes": {}
+  }
+}

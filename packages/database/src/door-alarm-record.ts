@@ -59,6 +59,17 @@ export async function selectDoorAlarmRecordListWithPage(
 }
 
 /**
+ * @description: 查询通道门报警记录
+ * @param {Prisma.DoorAlarmrecordWhereInput} condition
+ * @return {*}
+ */
+export function selectDoorAlarmRecord(condition: Prisma.DoorAlarmrecordWhereInput) {
+  return prisma.doorAlarmrecord.findMany({
+    where: condition,
+  })
+}
+
+/**
  * @description: 查询通道门报警记录数量
  * @param {Prisma.DoorAlarmrecordWhereInput} condition
  * @return {*}

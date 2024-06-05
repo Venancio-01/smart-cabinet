@@ -45,12 +45,14 @@ export default function () {
       },
     }
 
+    const allEquipmentIdList = equipmentList.value.map(item => item.equipmentid)
+    const equipmentIdList = condition?.equipmentId ? allEquipmentIdList.filter(item => item === condition.equipmentId) : allEquipmentIdList
+
     const queryCondition: Prisma.DoorRfidrecordWhereInput = {
       equipmentId: {
-        in: equipmentList.value.map(item => `${item.equipmentid}`),
+        in: equipmentIdList,
       },
       carrierName: condition?.carrierName ? { contains: condition.carrierName } : undefined,
-      equipmentName: condition?.equipmentName ? { contains: condition.equipmentName } : undefined,
       creatorTime: condition?.timeRange ? timeRangeMap?.[condition.timeRange] : undefined,
     }
 
@@ -61,9 +63,22 @@ export default function () {
     return rendererInvoke(ipcNames.accessDoor.selectDoorRfidrecordListWithPage, { pagination, queryCondition })
   }
 
+  // 获取未查看的报警记录
+  const selectUnviewedAlarmRecord = async () => {
+    const equipmentIdList = equipmentList.value.map(item => item.equipmentid)
+    const result = await rendererInvoke(ipcNames.accessDoor.selectDoorAlarmRecord, {
+      equipmentId: {
+        in: equipmentIdList,
+      },
+      isOperation: '0',
+    })
+
+    console.log('🚀 - selectUnviewedAlarmRecord - result:', result)
+  }
+
   // 获取未查看的报警记录总数
   const selectUnviewedAlarmRecordCount = async () => {
-    const equipmentIdList = equipmentList.value.map(item => `${item.equipmentid}`)
+    const equipmentIdList = equipmentList.value.map(item => item.equipmentid)
     const result = await rendererInvoke(ipcNames.accessDoor.selectDoorAlarmRecordCount, {
       equipmentId: {
         in: equipmentIdList,
@@ -91,7 +106,9 @@ export default function () {
       },
     }
 
-    const equipmentIdList = equipmentList.value.map(item => `${item.equipmentid}`)
+    const allEquipmentIdList = equipmentList.value.map(item => item.equipmentid)
+    const equipmentIdList = condition?.equipmentId ? allEquipmentIdList.filter(item => item === condition.equipmentId) : allEquipmentIdList
+
     const queryCondition: Prisma.DoorAlarmrecordWhereInput = {
       equipmentId: {
         in: equipmentIdList,
@@ -108,6 +125,7 @@ export default function () {
     await getIsControlEquipment()
     await getEquipmentList()
     await selectUnviewedAlarmRecordCount()
+    await selectUnviewedAlarmRecord()
     getControlEquipment()
   }
 

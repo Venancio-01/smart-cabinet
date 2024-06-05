@@ -103,8 +103,7 @@ export default function () {
     rendererOn(ipcNames.renderer.resetUI, (_: unknown, equipment: DoorEquipment) => {
       const list = equipmentList.value.map((item) => {
         if (item.equipmentid === equipment.equipmentid) {
-          const detectionResult = item.detectionResult === EquipmentDetectionResult.ILLEGAL ? EquipmentDetectionResult.ILLEGAL : null
-          return { ...item, ...equipment, detectionState: null, detectionResult }
+          return { ...item, ...equipment, detectionState: null, detectionResult: null }
         }
         return item
       })

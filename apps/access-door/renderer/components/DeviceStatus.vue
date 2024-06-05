@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { SolutionDialog, VIcon } from '@smart-cabinet/components'
+import { Color } from '@smart-cabinet/ui'
 import { useStore } from '@/store'
 
 const router = useRouter()
@@ -49,18 +50,17 @@ function goWarningRecordPage() {
       </div>
 
       <div class="flex items-center justify-center">
-        <a-badge :count="unviewedAccessRecordCount">
-          <VIcon
-            icon="warn"
-            class="text-icon-normal"
-            :class="[unviewedAccessRecordCount === 0 ? 'text-light' : 'text-error-color']"
-            @click="goWarningRecordPage"
-          />
+        <a-badge :count="unviewedAccessRecordCount" :color="Color.error">
+          <div class="flex" @click="goWarningRecordPage">
+            <i class="i-solar:danger-circle-linear text-[33px] text-light" />
+          </div>
         </a-badge>
       </div>
 
       <div v-show="!rfidIsConnected" class="flex items-center justify-center">
-        <VIcon icon="RFID" class="text-icon-normal text-error-color" @click="rfidVisible = true" />
+        <a-badge :dot="!rfidIsConnected" :color="Color.error">
+          <VIcon icon="RFID" class="text-icon-normal text-light" @click="rfidVisible = true" />
+        </a-badge>
       </div>
 
       <div v-show="!networkIsConnected" class="flex items-center justify-center">

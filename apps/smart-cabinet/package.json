@@ -54,7 +54,6 @@
     "electron-builder": "^24.9.1",
     "lodash-es": "^4.17.21",
     "pinia": "^2.1.7",
-    "typescript": "^5.3.3",
     "unocss": "^0.58.3",
     "unplugin-auto-import": "^0.17.3",
     "unplugin-vue-components": "^0.26.0",

@@ -1,5 +1,6 @@
 import type {
   DoorEquipment,
+  Prisma,
 } from '@smart-cabinet/database'
 import type { electronAPI } from '@electron-toolkit/preload'
 import type { AccessDirection, AccessTimeRange } from './enums'
@@ -16,7 +17,7 @@ declare global {
 
   interface ReadRecordQueryProps {
     carrierName: string
-    equipmentName?: string
+    equipmentId?: number
     deptId?: string
     type?: AccessDirection
     timeRange?: AccessTimeRange
@@ -24,7 +25,7 @@ declare global {
 
   interface AlarmQueryProps {
     carrierName?: string
-    equipmentName?: number
+    equipmentId?: number
     deptId?: number
     timeRange?: AccessTimeRange
   }
@@ -41,6 +42,7 @@ declare global {
     direction: AccessDirection | null
     isAlerting: boolean
     rfidRecordList: DoorRfidrecord[]
+    _count: Prisma.DoorEquipmentCountOutputType
   }
 
   type AlarmEquipmentProps = DoorEquipment & {

@@ -69,7 +69,7 @@ export function startRfidReading(address: string, antennaIds: number[]) {
 export function getRfidTIDList(address: string) {
   const data = rfidInstanceMap?.[address]?.getData() || ''
   const reportData = parseRFIDReportData(data)
-  const TIDList = [...new Set(reportData.map(item => getTIDByReportData(item)))]
+  const TIDList = [...new Set(reportData.map((item) => getTIDByReportData(item)))]
 
   return TIDList
 }
