@@ -34,7 +34,10 @@ function generateCommand(body) {
   const len = ((head.length + prefix.length + end.length + body.length) / 2 - 2).toString(16).padStart(2, '0');
 
   const commandStr = `${head}${len}${prefix}${body}${end}`
-  return Buffer.from(commandStr, 'hex')
+  const buf = Buffer.from(commandStr, 'hex')
+  
+  console.log(buf.toString(16))
+  return buf
 }
 
 const block1 = '0001'
