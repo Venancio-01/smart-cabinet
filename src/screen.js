@@ -38,15 +38,13 @@ function generateCommand(body) {
 }
 
 const block1 = '0001'
-const block2 = '0004'
-const block3 = '0010'
-const block4 = '0020'
+const block2 = '0010'
+const block3 = '0020'
+const block4 = '0050'
 const block5 = '0030'
-const block6 = '0050'
+const block6 = '0040'
 
 function initScreen() {
-  writeCommand(Buffer.from('A55A0480030002', 'hex'))
-  writeCommand(Buffer.from('A55A0480030001', 'hex'))
   const command1 = generateCommand(`${block1}${generateScreenCommandBody('  0')}`)
   const command2 = generateCommand(`${block2}${generateScreenCommandBody('')}`)
   const command3 = generateCommand(`${block3}${generateScreenCommandBody(' ' + config.user)}`)
