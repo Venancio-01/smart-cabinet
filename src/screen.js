@@ -35,8 +35,8 @@ function generateCommand(body) {
 
   const commandStr = `${head}${len}${prefix}${body}${end}`
   const buf = Buffer.from(commandStr, 'hex')
-  
-  console.log(buf.toString(16))
+
+  console.log(buf.toString())
   return buf
 }
 
