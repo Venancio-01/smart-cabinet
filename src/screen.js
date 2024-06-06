@@ -41,11 +41,11 @@ function generateCommand(body) {
 }
 
 const block1 = '0001'
-const block2 = '0010'
-const block3 = '0020'
-const block4 = '0030'
-const block5 = '0040'
-const block6 = '0050'
+const block2 = '0020'
+const block3 = '0040'
+const block4 = '0060'
+const block5 = '0080'
+const block6 = '0100'
 
 function initScreen() {
   const command1 = generateCommand(`${block1}${generateScreenCommandBody('  0')}`)
