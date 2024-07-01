@@ -69,7 +69,9 @@ function stopReading() {
 
 function getRfidTIDList() {
   const data = messageQueue.getData()
+  console.log('🚀 - getRfidTIDList - data:', data)
   const TIDList = getTIDList(data)
+  console.log('🚀 - getRfidTIDList - TIDList:', TIDList)
 
   logger.info('检测到 Rfid TID 数量:' + TIDList.length)
 
